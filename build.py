@@ -33,6 +33,16 @@ with open(r'C:\Users\daviaraujo\resellers-grid\daily_device_orders.csv') as f:
             dev_daily.append({'data':row['data'],'nivel':row['nivel'],'devices':int(row['devices'])})
 dev_daily_json = json.dumps(dev_daily)
 
+lp_daily = []
+try:
+    with open(r'C:\Users\daviaraujo\resellers-grid\daily_lp.csv') as f:
+        for row in csv.DictReader(f):
+            if row.get('data','').startswith('2026'):
+                lp_daily.append({'data':row['data'],'visitas':int(row['visitas'] or 0)})
+except FileNotFoundError:
+    pass
+lp_json = json.dumps(lp_daily)
+
 html = """<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -729,6 +739,7 @@ function renderChartDevices(){
 
 // ── DIARIZADO ──
 const LEADS = """ + leads_json + """;
+const LP_DAILY = """ + lp_json + """;
 const MES_PREFIX={"Jan/26":"2026-01","Fev/26":"2026-02","Mar/26":"2026-03","Abr/26":"2026-04","Mai/26":"2026-05"};
 const PRIMEIRA_COMPRA={"2026-01-02":14,"2026-01-03":3,"2026-01-04":6,"2026-01-05":11,"2026-01-06":11,"2026-01-07":8,"2026-01-08":8,"2026-01-09":5,"2026-01-10":5,"2026-01-11":5,"2026-01-12":10,"2026-01-13":8,"2026-01-14":6,"2026-01-15":12,"2026-01-16":7,"2026-01-17":4,"2026-01-18":4,"2026-01-19":8,"2026-01-20":7,"2026-01-21":6,"2026-01-22":7,"2026-01-23":9,"2026-01-24":3,"2026-01-25":4,"2026-01-26":11,"2026-01-27":8,"2026-01-28":12,"2026-01-29":7,"2026-01-30":7,"2026-01-31":10,"2026-02-01":3,"2026-02-02":9,"2026-02-03":19,"2026-02-04":17,"2026-02-05":15,"2026-02-06":17,"2026-02-07":13,"2026-02-08":1,"2026-02-09":12,"2026-02-10":14,"2026-02-11":11,"2026-02-12":8,"2026-02-13":6,"2026-02-14":6,"2026-02-15":4,"2026-02-16":3,"2026-02-17":2,"2026-02-18":12,"2026-02-19":14,"2026-02-20":18,"2026-02-21":7,"2026-02-22":3,"2026-02-23":11,"2026-02-24":16,"2026-02-25":13,"2026-02-26":14,"2026-02-27":8,"2026-02-28":5,"2026-03-01":7,"2026-03-02":13,"2026-03-03":12,"2026-03-04":6,"2026-03-05":10,"2026-03-06":8,"2026-03-07":16,"2026-03-08":5,"2026-03-09":10,"2026-03-10":14,"2026-03-11":11,"2026-03-12":12,"2026-03-13":12,"2026-03-14":8,"2026-03-15":4,"2026-03-16":15,"2026-03-17":10,"2026-03-18":6,"2026-03-19":12,"2026-03-20":8,"2026-03-21":8,"2026-03-22":3,"2026-03-23":17,"2026-03-24":10,"2026-03-25":15,"2026-03-26":12,"2026-03-27":12,"2026-03-28":13,"2026-03-29":2,"2026-03-30":9,"2026-03-31":15,"2026-04-01":20,"2026-04-02":7,"2026-04-03":8,"2026-04-04":3,"2026-04-05":4,"2026-04-06":9,"2026-04-07":14,"2026-04-08":9,"2026-04-09":8,"2026-04-10":6,"2026-04-11":3,"2026-04-12":5,"2026-04-13":12,"2026-04-14":7,"2026-04-15":10,"2026-04-16":6,"2026-04-17":9,"2026-04-18":8,"2026-04-19":5,"2026-04-20":7,"2026-04-21":3,"2026-04-22":6,"2026-04-23":8,"2026-04-24":9,"2026-04-25":5,"2026-04-26":4,"2026-04-27":11,"2026-04-28":3};
 
@@ -810,17 +821,21 @@ function renderDiarizado(){
     </tr>`;
   }
 
+  const lpDia          = funilDias.map(d=>{const r=LP_DAILY.find(x=>x.data===d);return r?r.visitas:0;});
   const cadDia         = funilDias.map(d=>LEADS.filter(r=>r.data===d).reduce((s,r)=>s+r.cadastrados,0));
   const funilConvDia   = funilDias.map(d=>LEADS.filter(r=>r.data===d).reduce((s,r)=>s+r.convertidos,0));
   const primeiraCompDia= funilDias.map(d=>PRIMEIRA_COMPRA[d]||0);
 
+  const totLP     = lpDia.reduce((s,v)=>s+v,0);
   const totCadF   = cadDia.reduce((s,v)=>s+v,0);
   const totConvF  = funilConvDia.reduce((s,v)=>s+v,0);
   const totPrimF  = primeiraCompDia.reduce((s,v)=>s+v,0);
   const taxaConvF = totCadF ? (totConvF/totCadF*100).toFixed(1)+'%' : '—';
+  const taxaLP2Cad= totLP   ? (totCadF/totLP*100).toFixed(1)+'%'    : '—';
 
   document.getElementById('tbody-funil').innerHTML=funilDias.length?[
-    funilRow('Cadastrados',                cadDia,          v=>fmtN(v),  fmtN(totCadF)),
+    funilRow('Entradas LP',                lpDia,           v=>fmtN(v),  fmtN(totLP)),
+    funilRow('Cadastrados',                cadDia,          v=>fmtN(v),  `${fmtN(totCadF)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaLP2Cad})</span>`),
     funilRow('Aprendizes Funil 1ª Compra', funilConvDia,    v=>fmtN(v),  `${fmtN(totConvF)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaConvF})</span>`),
     funilRow('1ª Compra no Dia',           primeiraCompDia, v=>fmtN(v),  fmtN(totPrimF)),
   ].join(''):'<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Selecione um mês</td></tr>';
