@@ -1397,15 +1397,26 @@ function renderRmkt(){
 function shareGrid(){
   const url = 'https://davidaraujo-alt.github.io/resellers-grid/';
   const btn = document.getElementById('btn-share');
-  if(navigator.share){
-    navigator.share({title:'Reseller 2026 — Renda na Mao',url});
-  } else {
-    navigator.clipboard.writeText(url).then(()=>{
-      btn.textContent = 'Link copiado!';
-      btn.style.background = '#16a34a';
-      setTimeout(()=>{btn.innerHTML='&#128279; Compartilhar';btn.style.background='#1A1F6B';},2000);
-    });
-  }
+  const GRID_BOT_ID = 'U0AGWQPC4K1';
+
+  // 1. Copia o link para a area de transferencia
+  navigator.clipboard.writeText(url).then(()=>{
+    btn.innerHTML = '&#10003; Copiado! Abrindo Grid Bot...';
+    btn.style.background = '#16a34a';
+
+    // 2. Abre DM com o Grid Bot no Slack (apos 800ms para dar tempo de ver o feedback)
+    setTimeout(()=>{
+      window.open('https://app.slack.com/client/0/'+GRID_BOT_ID,'_blank');
+    }, 800);
+
+    setTimeout(()=>{
+      btn.innerHTML = '&#128279; Compartilhar';
+      btn.style.background = '#1A1F6B';
+    }, 3000);
+  }).catch(()=>{
+    // fallback: abre direto sem copiar
+    window.open('https://app.slack.com/client/0/'+GRID_BOT_ID,'_blank');
+  });
 }
 
 try {
