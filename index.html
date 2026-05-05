@@ -1356,8 +1356,9 @@ function renderRmkt(){
     '<tr><td colspan="8" style="text-align:center;color:#ccc;padding:24px">Sem dados</td></tr>';
 }
 
-const GRID_BOT_ID = 'U0AGWQPC4K1';
-const GRID_URL    = 'https://davidaraujo-alt.github.io/resellers-grid/';
+const GRID_BOT_ID  = 'U0AGWQPC4K1';
+const GRID_CHANNEL = 'D0ARBNVBAHK';
+const GRID_URL     = 'https://davidaraujo-alt.github.io/resellers-grid/';
 let   shareTags   = [];
 
 function openShareModal(){
@@ -1410,7 +1411,7 @@ ${GRID_URL}`;
 
   navigator.clipboard.writeText(mensagem).then(()=>{
     closeShareModal();
-    window.open('https://app.slack.com/client/0/'+GRID_BOT_ID,'_blank');
+    window.open('https://slack.com/app_redirect?channel='+GRID_CHANNEL,'_blank');
     setTimeout(()=>{
       const btn = document.getElementById('btn-share');
       btn.innerHTML = '&#10003; Enviado!';
