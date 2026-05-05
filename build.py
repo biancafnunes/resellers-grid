@@ -41,6 +41,14 @@ except FileNotFoundError:
     pass
 rmkt_json = json.dumps(rmkt_data, ensure_ascii=False)
 
+rmkt_reativ_data = []
+try:
+    with open(r'C:\Users\daviaraujo\resellers-grid\rmkt_reativ.json', encoding='utf-8') as f:
+        rmkt_reativ_data = json.load(f)
+except FileNotFoundError:
+    pass
+rmkt_reativ_json = json.dumps(rmkt_reativ_data, ensure_ascii=False)
+
 lp_daily = []
 try:
     with open(r'C:\Users\daviaraujo\resellers-grid\daily_lp.csv') as f:
@@ -428,13 +436,15 @@ canvas{max-height:320px}
   <div style="font-size:18px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;border-left:5px solid #FFE600;padding-left:14px">Acao RMKT Maio/26</div>
   <div style="font-size:12px;color:#888;margin-bottom:24px;padding-left:20px">Comunicacoes enviadas no inicio de Mai/26 — resultado acumulado no mes</div>
 
-  <div class="grid-wrapper">
+  <!-- Tabela 1: todos os impactados -->
+  <div style="font-size:13px;font-weight:700;color:#1A1F6B;margin-bottom:10px">Resultado desde 01/05 — base total impactada</div>
+  <div class="grid-wrapper" style="margin-bottom:8px">
     <table>
       <thead><tr>
         <th style="text-align:left;width:32%">Comunicacao</th>
         <th>Custs Impactados</th>
-        <th>Reativados</th>
-        <th>Tx Reat.</th>
+        <th>Com resultado</th>
+        <th>Tx</th>
         <th>Devices Pedidos</th>
         <th>Devices Ativos</th>
         <th>TPV M0</th>
@@ -443,11 +453,27 @@ canvas{max-height:320px}
       <tbody id="tbody-rmkt"></tbody>
     </table>
   </div>
+  <div style="font-size:11px;color:#bbb;margin-bottom:28px;padding-left:4px">* Com resultado = fez ao menos 1 pedido de device desde 01/05 &nbsp;|&nbsp; Metricas somadas sobre quem voltou</div>
 
-  <div style="margin-top:16px;font-size:11px;color:#bbb;padding-left:4px">
-    * Reativados = impactados com ao menos 1 registro de atividade em Mai/26 na BD_CUST_RESELLER_INFO<br>
-    * Tx Reat. = Reativados / Custs Impactados
+  <!-- Tabela 2: zerados em abril que voltaram -->
+  <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;border-left:5px solid #009EE3;padding-left:14px">Zerados em Abril que Voltaram em Maio</div>
+  <div style="font-size:12px;color:#888;margin-bottom:14px">Apenas os que nao fizeram nenhum pedido em Abr/26 e retomaram em Mai/26</div>
+  <div class="grid-wrapper" style="margin-bottom:8px">
+    <table>
+      <thead><tr>
+        <th style="text-align:left;width:32%">Comunicacao</th>
+        <th>Zerados Abr/26</th>
+        <th>Voltaram Mai/26</th>
+        <th>Tx Retorno</th>
+        <th>Devices Pedidos</th>
+        <th>Devices Ativos</th>
+        <th>TPV M0</th>
+        <th>TPV M1</th>
+      </tr></thead>
+      <tbody id="tbody-rmkt-reativ"></tbody>
+    </table>
   </div>
+  <div style="font-size:11px;color:#bbb;padding-left:4px">* Tx Retorno = Voltaram / Zerados &nbsp;|&nbsp; Metricas somadas sobre quem voltou</div>
 </div>
 
 <div class="footer">
@@ -1274,42 +1300,60 @@ function renderFunilTab(){
 }
 
 // ── RMKT MAIO ──
-const RMKT_DATA = """ + rmkt_json + """;
+const RMKT_DATA       = """ + rmkt_json + """;
+const RMKT_REATIV     = """ + rmkt_reativ_json + """;
+
+function rmktRow(r, cols, isEven, cor){
+  const fmtR = n => !n?'R$ 0':n>=1e6?'R$ '+(n/1e6).toFixed(2).replace('.',',')+'M':'R$ '+n.toLocaleString('pt-BR');
+  const fmtN2 = n => (n||0).toLocaleString('pt-BR');
+  const td = (v,opts='') => `<td style="padding:12px 16px;text-align:right;font-size:13px;border-bottom:1px solid #f0f0f0${opts}">${v}</td>`;
+  return `<tr style="background:${isEven?'#fff':'#f9f9ff'};border-bottom:1px solid #f0f0f0">
+    <td style="padding:12px 16px;font-size:13px;font-weight:600;color:#1A1F6B;border-bottom:1px solid #f0f0f0">
+      <span style="display:inline-flex;align-items:center;gap:8px">
+        <span style="width:10px;height:10px;border-radius:50%;background:${cor};flex-shrink:0"></span>${r.comunicacao}
+      </span>
+    </td>
+    ${cols.map(c=>td(c.v,c.s||'')).join('')}
+  </tr>`;
+}
 
 function renderRmkt(){
-  const fmtR = n => n==null?'—':n>=1e6?'R$ '+(n/1e6).toFixed(2).replace('.',',')+'M':'R$ '+n.toLocaleString('pt-BR');
+  const fmtR = n => !n?'R$ 0':n>=1e6?'R$ '+(n/1e6).toFixed(2).replace('.',',')+'M':'R$ '+n.toLocaleString('pt-BR');
   const fmtN2 = n => (n||0).toLocaleString('pt-BR');
-
   const CORES = ['#3b82f6','#f59e0b','#9ca3af','#1A1F6B'];
-  const BADGE_LABELS = [
-    'Novo Incentivo — Novos Cadastrados',
-    'Novo Incentivo — Aprendizes 2026',
-    'Novo Preco — Aprendizes 12m',
-    'Subida de Nivel — Aprendizes 2026'
-  ];
 
-  let html = '';
+  // ── Tabela 1: impacto geral
+  let html1 = '';
   RMKT_DATA.forEach((r,i) => {
-    const cor   = CORES[i] || '#999';
-    const tx    = r.custs_impactados ? (r.reativados/r.custs_impactados*100).toFixed(1)+'%' : '—';
-    const isEven = i%2===0;
-    html += `<tr style="background:${isEven?'#fff':'#f9f9ff'};border-bottom:1px solid #f0f0f0">
-      <td style="padding:14px 16px;font-size:13px;font-weight:600;color:#1A1F6B">
-        <span style="display:inline-flex;align-items:center;gap:8px">
-          <span style="width:10px;height:10px;border-radius:50%;background:${cor};flex-shrink:0"></span>
-          ${r.comunicacao}
-        </span>
-      </td>
-      <td style="padding:14px 16px;text-align:right;font-size:13px">${fmtN2(r.custs_impactados)}</td>
-      <td style="padding:14px 16px;text-align:right;font-size:13px;font-weight:700;color:#16a34a">${fmtN2(r.reativados)}</td>
-      <td style="padding:14px 16px;text-align:right;font-size:13px;font-weight:700;color:#1A1F6B">${tx}</td>
-      <td style="padding:14px 16px;text-align:right;font-size:13px">${fmtN2(r.devices_pedidos)}</td>
-      <td style="padding:14px 16px;text-align:right;font-size:13px">${fmtN2(r.devices_ativos)}</td>
-      <td style="padding:14px 16px;text-align:right;font-size:13px">${fmtR(r.tpv_m0)}</td>
-      <td style="padding:14px 16px;text-align:right;font-size:13px">${fmtR(r.tpv_m1)}</td>
-    </tr>`;
+    const tx = r.custs_impactados ? (r.reativados/r.custs_impactados*100).toFixed(1)+'%' : '—';
+    html1 += rmktRow(r,[
+      {v: fmtN2(r.custs_impactados)},
+      {v: `<span style="font-weight:700;color:#16a34a">${fmtN2(r.reativados)}</span>`},
+      {v: `<span style="font-weight:700;color:#1A1F6B">${tx}</span>`},
+      {v: fmtN2(r.devices_pedidos)},
+      {v: fmtN2(r.devices_ativos)},
+      {v: fmtR(r.tpv_m0)},
+      {v: fmtR(r.tpv_m1)},
+    ], i%2===0, CORES[i]||'#999');
   });
-  document.getElementById('tbody-rmkt').innerHTML = html ||
+  document.getElementById('tbody-rmkt').innerHTML = html1 ||
+    '<tr><td colspan="8" style="text-align:center;color:#ccc;padding:24px">Sem dados</td></tr>';
+
+  // ── Tabela 2: zerados em abril que voltaram
+  let html2 = '';
+  RMKT_REATIV.forEach((r,i) => {
+    const tx = r.zerados_abril ? (r.voltaram_maio/r.zerados_abril*100).toFixed(1)+'%' : '—';
+    html2 += rmktRow(r,[
+      {v: fmtN2(r.zerados_abril)},
+      {v: `<span style="font-weight:700;color:#16a34a">${fmtN2(r.voltaram_maio)}</span>`},
+      {v: `<span style="font-weight:700;color:#1A1F6B">${tx}</span>`},
+      {v: fmtN2(r.devices_pedidos)},
+      {v: fmtN2(r.devices_ativos)},
+      {v: fmtR(r.tpv_m0)},
+      {v: fmtR(r.tpv_m1)},
+    ], i%2===0, CORES[i]||'#999');
+  });
+  document.getElementById('tbody-rmkt-reativ').innerHTML = html2 ||
     '<tr><td colspan="8" style="text-align:center;color:#ccc;padding:24px">Sem dados</td></tr>';
 }
 
