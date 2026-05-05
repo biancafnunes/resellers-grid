@@ -81,9 +81,32 @@ canvas{max-height:320px}
 
 <div style="background:#FFE600;padding:14px 32px;display:flex;align-items:center;justify-content:space-between">
   <span style="font-size:20px;font-weight:900;color:#1A1F6B;letter-spacing:.06em;text-transform:uppercase">RESELLER 2026</span>
-  <button id="btn-share" onclick="shareGrid()" style="display:inline-flex;align-items:center;gap:8px;background:#1A1F6B;color:#FFE600;border:none;border-radius:20px;padding:8px 20px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.05em;text-transform:uppercase">
+  <button id="btn-share" onclick="openShareModal()" style="display:inline-flex;align-items:center;gap:8px;background:#1A1F6B;color:#FFE600;border:none;border-radius:20px;padding:8px 20px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.05em;text-transform:uppercase">
     &#128279; Compartilhar
   </button>
+
+  <!-- Modal de compartilhamento -->
+  <div id="share-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center">
+    <div style="background:#fff;border-radius:16px;padding:32px;width:460px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <span style="font-size:16px;font-weight:800;color:#1A1F6B">Compartilhar via Grid Bot</span>
+        <span onclick="closeShareModal()" style="cursor:pointer;font-size:20px;color:#999;line-height:1">&times;</span>
+      </div>
+      <div style="font-size:12px;color:#888;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Compartilhar com</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;min-height:42px;border:1.5px solid #ddd;border-radius:10px;padding:8px 10px;margin-bottom:16px;cursor:text" id="tags-area" onclick="document.getElementById('share-input').focus()">
+        <input id="share-input" type="text" placeholder="Nome ou @usuario..." onkeydown="handleShareKey(event)" style="border:none;outline:none;font-size:13px;flex:1;min-width:120px;background:transparent"/>
+      </div>
+      <div style="font-size:11px;color:#aaa;margin-bottom:20px">Pressione Enter para adicionar cada pessoa</div>
+      <div style="background:#f5f5ff;border-radius:10px;padding:12px 14px;margin-bottom:20px;font-size:12px;color:#555">
+        <span style="font-weight:700;color:#1A1F6B">Link: </span>
+        <span style="font-family:monospace">https://davidaraujo-alt.github.io/resellers-grid/</span>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button onclick="closeShareModal()" style="padding:9px 20px;border-radius:20px;border:1.5px solid #ddd;background:#fff;color:#666;font-size:13px;cursor:pointer">Cancelar</button>
+        <button onclick="sendShare()" style="padding:9px 22px;border-radius:20px;border:none;background:#1A1F6B;color:#FFE600;font-size:13px;font-weight:700;cursor:pointer">Compartilhar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="tabs">
@@ -1333,28 +1356,67 @@ function renderRmkt(){
     '<tr><td colspan="8" style="text-align:center;color:#ccc;padding:24px">Sem dados</td></tr>';
 }
 
-function shareGrid(){
-  const url = 'https://davidaraujo-alt.github.io/resellers-grid/';
-  const btn = document.getElementById('btn-share');
-  const GRID_BOT_ID = 'U0AGWQPC4K1';
+const GRID_BOT_ID = 'U0AGWQPC4K1';
+const GRID_URL    = 'https://davidaraujo-alt.github.io/resellers-grid/';
+let   shareTags   = [];
 
-  // 1. Copia o link para a area de transferencia
-  navigator.clipboard.writeText(url).then(()=>{
-    btn.innerHTML = '&#10003; Copiado! Abrindo Grid Bot...';
-    btn.style.background = '#16a34a';
+function openShareModal(){
+  shareTags = [];
+  document.getElementById('tags-area').querySelectorAll('.share-tag').forEach(t=>t.remove());
+  document.getElementById('share-input').value = '';
+  const m = document.getElementById('share-modal');
+  m.style.display = 'flex';
+  setTimeout(()=>document.getElementById('share-input').focus(), 50);
+}
+function closeShareModal(){
+  document.getElementById('share-modal').style.display = 'none';
+}
+function handleShareKey(e){
+  if(e.key==='Enter'||e.key===','||e.key===';'){
+    e.preventDefault();
+    const val = document.getElementById('share-input').value.trim().replace(/^@/,'');
+    if(!val) return;
+    addTag(val);
+    document.getElementById('share-input').value = '';
+  }
+  if(e.key==='Backspace'&&!document.getElementById('share-input').value&&shareTags.length){
+    removeTag(shareTags[shareTags.length-1]);
+  }
+}
+function addTag(name){
+  if(shareTags.includes(name)) return;
+  shareTags.push(name);
+  const tag = document.createElement('span');
+  tag.className = 'share-tag';
+  tag.style.cssText = 'display:inline-flex;align-items:center;gap:5px;background:#E8EAFF;color:#1A1F6B;border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600';
+  tag.innerHTML = `${name} <span onclick="removeTag('${name}')" style="cursor:pointer;opacity:.6;font-size:14px">&times;</span>`;
+  tag.dataset.name = name;
+  document.getElementById('tags-area').insertBefore(tag, document.getElementById('share-input'));
+}
+function removeTag(name){
+  shareTags = shareTags.filter(t=>t!==name);
+  document.getElementById('tags-area').querySelectorAll('.share-tag').forEach(t=>{
+    if(t.dataset.name===name) t.remove();
+  });
+}
+function sendShare(){
+  const inputVal = document.getElementById('share-input').value.trim().replace(/^@/,'');
+  if(inputVal) addTag(inputVal);
+  if(!shareTags.length){ alert('Adicione ao menos uma pessoa.'); return; }
 
-    // 2. Abre DM com o Grid Bot no Slack (apos 800ms para dar tempo de ver o feedback)
-    setTimeout(()=>{
-      window.open('https://app.slack.com/client/0/'+GRID_BOT_ID,'_blank');
-    }, 800);
+  const nomes   = shareTags.join(', ');
+  const mensagem = `Compartilhando o dashboard Reseller 2026 com: ${nomes}
+${GRID_URL}`;
 
-    setTimeout(()=>{
-      btn.innerHTML = '&#128279; Compartilhar';
-      btn.style.background = '#1A1F6B';
-    }, 3000);
-  }).catch(()=>{
-    // fallback: abre direto sem copiar
+  navigator.clipboard.writeText(mensagem).then(()=>{
+    closeShareModal();
     window.open('https://app.slack.com/client/0/'+GRID_BOT_ID,'_blank');
+    setTimeout(()=>{
+      const btn = document.getElementById('btn-share');
+      btn.innerHTML = '&#10003; Enviado!';
+      btn.style.background = '#16a34a';
+      setTimeout(()=>{ btn.innerHTML='&#128279; Compartilhar'; btn.style.background='#1A1F6B'; }, 2500);
+    }, 300);
   });
 }
 
