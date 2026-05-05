@@ -1221,7 +1221,7 @@ function renderFunilTab(){
 }
 
 // ── RMKT MAIO ──
-const RMKT_DATA = [{"comunicacao": "Novo Incentivo - Novos Cadastrados (6m)", "custs_impactados": 112573, "reativados": 8, "devices_pedidos": 0, "devices_ativos": 0, "tpv_m0": 10635, "tpv_m1": 1499}, {"comunicacao": "Novo Incentivo - Aprendizes Ativos 2026", "custs_impactados": 6343, "reativados": 2086, "devices_pedidos": 3889, "devices_ativos": 3672, "tpv_m0": 7965791, "tpv_m1": 10068095}, {"comunicacao": "Novo Preco - Aprendizes Compra 12m", "custs_impactados": 10411, "reativados": 3022, "devices_pedidos": 5479, "devices_ativos": 4863, "tpv_m0": 6049057, "tpv_m1": 7720182}, {"comunicacao": "Subida de Nivel - Aprendizes 2026", "custs_impactados": 6343, "reativados": 2086, "devices_pedidos": 3889, "devices_ativos": 3672, "tpv_m0": 7965791, "tpv_m1": 10068095}];
+const RMKT_DATA = [{"comunicacao": "Novo Incentivo - Novos Cadastrados (6m)", "custs_impactados": 112573, "reativados": 227, "devices_pedidos": 108, "devices_ativos": 462, "tpv_m0": 8929, "tpv_m1": 96502}, {"comunicacao": "Novo Incentivo - Aprendizes Ativos 2026", "custs_impactados": 6343, "reativados": 58, "devices_pedidos": 39, "devices_ativos": 1522, "tpv_m0": 27824, "tpv_m1": 214792}, {"comunicacao": "Novo Preco - Aprendizes Compra 12m", "custs_impactados": 10411, "reativados": 77, "devices_pedidos": 51, "devices_ativos": 815, "tpv_m0": 12583, "tpv_m1": 113313}, {"comunicacao": "Subida de Nivel - Aprendizes 2026", "custs_impactados": 6343, "reativados": 58, "devices_pedidos": 39, "devices_ativos": 1522, "tpv_m0": 27824, "tpv_m1": 214792}];
 
 function renderRmkt(){
   const fmtR = n => n==null?'—':n>=1e6?'R$ '+(n/1e6).toFixed(2).replace('.',',')+'M':'R$ '+n.toLocaleString('pt-BR');
