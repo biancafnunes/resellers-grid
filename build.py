@@ -33,6 +33,14 @@ with open(r'C:\Users\daviaraujo\resellers-grid\daily_device_orders.csv') as f:
             dev_daily.append({'data':row['data'],'nivel':row['nivel'],'devices':int(row['devices'])})
 dev_daily_json = json.dumps(dev_daily)
 
+rmkt_data = []
+try:
+    with open(r'C:\Users\daviaraujo\resellers-grid\rmkt_maio.json', encoding='utf-8') as f:
+        rmkt_data = json.load(f)
+except FileNotFoundError:
+    pass
+rmkt_json = json.dumps(rmkt_data, ensure_ascii=False)
+
 lp_daily = []
 try:
     with open(r'C:\Users\daviaraujo\resellers-grid\daily_lp.csv') as f:
@@ -135,6 +143,7 @@ canvas{max-height:320px}
   <div class="tab" onclick="showTab('diarizado',this)">&#128197; Diarizado</div>
   <div class="tab" onclick="showTab('niveis',this)">&#11014; Subidas de Nível</div>
   <div class="tab" onclick="showTab('aprendiz',this)">&#127891; Aprendiz &amp; Especialista</div>
+  <div class="tab" onclick="showTab('rmkt',this)">&#127919; Acao RMKT Maio</div>
 </div>
 
 <div class="body">
@@ -414,6 +423,33 @@ canvas{max-height:320px}
 </div>
 
 </div>
+<!-- ── TAB RMKT MAIO ── -->
+<div class="pane" id="pane-rmkt">
+  <div style="font-size:18px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;border-left:5px solid #FFE600;padding-left:14px">Acao RMKT Maio/26</div>
+  <div style="font-size:12px;color:#888;margin-bottom:24px;padding-left:20px">Comunicacoes enviadas no inicio de Mai/26 — resultado acumulado no mes</div>
+
+  <div class="grid-wrapper">
+    <table>
+      <thead><tr>
+        <th style="text-align:left;width:32%">Comunicacao</th>
+        <th>Custs Impactados</th>
+        <th>Reativados</th>
+        <th>Tx Reat.</th>
+        <th>Devices Pedidos</th>
+        <th>Devices Ativos</th>
+        <th>TPV M0</th>
+        <th>TPV M1</th>
+      </tr></thead>
+      <tbody id="tbody-rmkt"></tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:16px;font-size:11px;color:#bbb;padding-left:4px">
+    * Reativados = impactados com ao menos 1 registro de atividade em Mai/26 na BD_CUST_RESELLER_INFO<br>
+    * Tx Reat. = Reativados / Custs Impactados
+  </div>
+</div>
+
 <div class="footer">
   Mercado Pago · Programa Renda na Mão · Fonte: BD_CUST_RESELLER_INFO / BD_CUST_RESELLER_INFO_DAILY
   <span style="margin-left:16px;color:#bbb">&#128197; Atualizado: 05/05/2026</span>
@@ -473,6 +509,7 @@ function showTab(id,el){
   if(id==='diarizado'){try{renderDiarizado();}catch(e){document.getElementById('pane-diarizado').innerHTML='<div style="padding:40px;font-family:monospace;color:red;background:#fff;border-radius:8px"><b>Erro no Diarizado:</b><br>'+e.message+'<br><pre>'+e.stack+'</pre></div>';}}
   if(id==='niveis')renderNiveis();
   if(id==='aprendiz')renderAprendiz();
+  if(id==='rmkt')renderRmkt();
 }
 
 let sortCol=null,sortDir=1,activeMes=null,activeNivel=null,searchTerm='';
@@ -1234,6 +1271,46 @@ function renderFunilTab(){
     ['Todos', ...NIV_ORDER].map(n =>
       `<button class="filter-btn${funilNivelTab===n?' active':''}" onclick="funilNivelTab='${n}';renderFunilTab()">${n}</button>`
     ).join('');
+}
+
+// ── RMKT MAIO ──
+const RMKT_DATA = """ + rmkt_json + """;
+
+function renderRmkt(){
+  const fmtR = n => n==null?'—':n>=1e6?'R$ '+(n/1e6).toFixed(2).replace('.',',')+'M':'R$ '+n.toLocaleString('pt-BR');
+  const fmtN2 = n => (n||0).toLocaleString('pt-BR');
+
+  const CORES = ['#3b82f6','#f59e0b','#9ca3af','#1A1F6B'];
+  const BADGE_LABELS = [
+    'Novo Incentivo — Novos Cadastrados',
+    'Novo Incentivo — Aprendizes 2026',
+    'Novo Preco — Aprendizes 12m',
+    'Subida de Nivel — Aprendizes 2026'
+  ];
+
+  let html = '';
+  RMKT_DATA.forEach((r,i) => {
+    const cor   = CORES[i] || '#999';
+    const tx    = r.custs_impactados ? (r.reativados/r.custs_impactados*100).toFixed(1)+'%' : '—';
+    const isEven = i%2===0;
+    html += `<tr style="background:${isEven?'#fff':'#f9f9ff'};border-bottom:1px solid #f0f0f0">
+      <td style="padding:14px 16px;font-size:13px;font-weight:600;color:#1A1F6B">
+        <span style="display:inline-flex;align-items:center;gap:8px">
+          <span style="width:10px;height:10px;border-radius:50%;background:${cor};flex-shrink:0"></span>
+          ${r.comunicacao}
+        </span>
+      </td>
+      <td style="padding:14px 16px;text-align:right;font-size:13px">${fmtN2(r.custs_impactados)}</td>
+      <td style="padding:14px 16px;text-align:right;font-size:13px;font-weight:700;color:#16a34a">${fmtN2(r.reativados)}</td>
+      <td style="padding:14px 16px;text-align:right;font-size:13px;font-weight:700;color:#1A1F6B">${tx}</td>
+      <td style="padding:14px 16px;text-align:right;font-size:13px">${fmtN2(r.devices_pedidos)}</td>
+      <td style="padding:14px 16px;text-align:right;font-size:13px">${fmtN2(r.devices_ativos)}</td>
+      <td style="padding:14px 16px;text-align:right;font-size:13px">${fmtR(r.tpv_m0)}</td>
+      <td style="padding:14px 16px;text-align:right;font-size:13px">${fmtR(r.tpv_m1)}</td>
+    </tr>`;
+  });
+  document.getElementById('tbody-rmkt').innerHTML = html ||
+    '<tr><td colspan="8" style="text-align:center;color:#ccc;padding:24px">Sem dados</td></tr>';
 }
 
 try {
