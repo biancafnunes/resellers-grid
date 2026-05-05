@@ -406,7 +406,7 @@ canvas{max-height:320px}
 </div>
 <div class="footer">
   Mercado Pago · Programa Renda na Mão · Fonte: BD_CUST_RESELLER_INFO / BD_CUST_RESELLER_INFO_DAILY
-  <span style="margin-left:16px;color:#bbb">&#128197; Atualizado: 04/05/2026 v2</span>
+  <span style="margin-left:16px;color:#bbb">&#128197; Atualizado: 05/05/2026</span>
 </div>
 
 <script>
@@ -427,10 +427,10 @@ const RAW = [
   {mes:"Abr/26",nivel:"Especialista",     resellers:83,  pedidos:643,  ativos:232,  tpv_m0:3018150,  tpv_m1:4928603,  tpv_total:15786386,  pedidos_pro:518,  pedidos_smart:125, ativos_pro:193,  ativos_smart:39},
   {mes:"Abr/26",nivel:"Empreendedor",     resellers:38,  pedidos:630,  ativos:217,  tpv_m0:2605479,  tpv_m1:6136579,  tpv_total:17093142,  pedidos_pro:512,  pedidos_smart:118, ativos_pro:154,  ativos_smart:63},
   {mes:"Abr/26",nivel:"Top Empreendedor", resellers:44,  pedidos:2379, ativos:936,  tpv_m0:7409872,  tpv_m1:15294971, tpv_total:44996865,  pedidos_pro:1890, pedidos_smart:489, ativos_pro:750,  ativos_smart:186},
-  {mes:"Mai/26",nivel:"Aprendiz",        resellers:9,   pedidos:20,   ativos:0,    tpv_m0:82158,    tpv_m1:709871,   tpv_total:2472188,   pedidos_pro:15,   pedidos_smart:5,   ativos_pro:0,    ativos_smart:0},
-  {mes:"Mai/26",nivel:"Especialista",     resellers:1,   pedidos:2,    ativos:0,    tpv_m0:30454,    tpv_m1:408829,   tpv_total:1383201,   pedidos_pro:2,    pedidos_smart:0,   ativos_pro:0,    ativos_smart:0},
-  {mes:"Mai/26",nivel:"Empreendedor",     resellers:2,   pedidos:15,   ativos:0,    tpv_m0:25784,    tpv_m1:456397,   tpv_total:1800006,   pedidos_pro:15,   pedidos_smart:0,   ativos_pro:0,    ativos_smart:0},
-  {mes:"Mai/26",nivel:"Top Empreendedor", resellers:2,   pedidos:55,   ativos:0,    tpv_m0:46980,    tpv_m1:1074650,  tpv_total:3848387,   pedidos_pro:43,   pedidos_smart:12,  ativos_pro:0,    ativos_smart:0},
+  {mes:"Mai/26",nivel:"Aprendiz",         resellers:1857, pedidos:5149, ativos:4546, tpv_m0:3401859,  tpv_m1:null,     tpv_total:9507079,   pedidos_pro:15,   pedidos_smart:3,   ativos_pro:512,  ativos_smart:232},
+  {mes:"Mai/26",nivel:"Especialista",     resellers:226,  pedidos:2304, ativos:2218, tpv_m0:4325172,  tpv_m1:null,     tpv_total:17320389,  pedidos_pro:22,   pedidos_smart:0,   ativos_pro:190,  ativos_smart:40},
+  {mes:"Mai/26",nivel:"Empreendedor",     resellers:98,   pedidos:2398, ativos:2313, tpv_m0:5418250,  tpv_m1:null,     tpv_total:23172919,  pedidos_pro:13,   pedidos_smart:2,   ativos_pro:212,  ativos_smart:35},
+  {mes:"Mai/26",nivel:"Top Empreendedor", resellers:40,   pedidos:2380, ativos:2300, tpv_m0:5471878,  tpv_m1:null,     tpv_total:31829001,  pedidos_pro:50,   pedidos_smart:12,  ativos_pro:187,  ativos_smart:52},
 ];
 
 const DAILY = """ + daily_json + """;
