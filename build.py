@@ -140,8 +140,11 @@ canvas{max-height:320px}
 </head>
 <body>
 
-<div style="background:#FFE600;padding:14px 32px;display:flex;align-items:center">
+<div style="background:#FFE600;padding:14px 32px;display:flex;align-items:center;justify-content:space-between">
   <span style="font-size:20px;font-weight:900;color:#1A1F6B;letter-spacing:.06em;text-transform:uppercase">RESELLER 2026</span>
+  <button id="btn-share" onclick="shareGrid()" style="display:inline-flex;align-items:center;gap:8px;background:#1A1F6B;color:#FFE600;border:none;border-radius:20px;padding:8px 20px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.05em;text-transform:uppercase">
+    &#128279; Compartilhar
+  </button>
 </div>
 
 <div class="tabs">
@@ -1389,6 +1392,20 @@ function renderRmkt(){
   }
   document.getElementById('tbody-rmkt-reativ').innerHTML = html2 ||
     '<tr><td colspan="8" style="text-align:center;color:#ccc;padding:24px">Sem dados</td></tr>';
+}
+
+function shareGrid(){
+  const url = 'https://davidaraujo-alt.github.io/resellers-grid/';
+  const btn = document.getElementById('btn-share');
+  if(navigator.share){
+    navigator.share({title:'Reseller 2026 — Renda na Mao',url});
+  } else {
+    navigator.clipboard.writeText(url).then(()=>{
+      btn.textContent = 'Link copiado!';
+      btn.style.background = '#16a34a';
+      setTimeout(()=>{btn.innerHTML='&#128279; Compartilhar';btn.style.background='#1A1F6B';},2000);
+    });
+  }
 }
 
 try {
