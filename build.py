@@ -1018,7 +1018,8 @@ function renderDiarizado(){
 
   // ── Perfilamento diário ──
   const PERFIL_DAILY = """ + perfil_json_placeholder + """;  // eslint-disable-line
-  const PERFIS = [...new Set(PERFIL_DAILY.map(r=>r.perfil))].sort();
+  const PERFIS_ORDER = ['Iniciante','Intermediario','Especialista'];
+  const PERFIS = PERFIS_ORDER.filter(p=>[...new Set(PERFIL_DAILY.map(r=>r.perfil))].includes(p));
   const PERFIL_COLORS_MAP = {'Aprendiz':'#1A1F6B','Especialista':'#3b82f6','Empreendedor':'#f59e0b','Top Empreendedor':'#16a34a','Iniciante':'#9ca3af','Intermediario':'#f59e0b'};
   const PERFIL_COLOR = Object.fromEntries(PERFIS.map((p,i)=>[p, PERFIL_COLORS_MAP[p]||['#1A1F6B','#3b82f6','#f59e0b','#16a34a'][i%4]]));
   const MES_PERFIL = Object.fromEntries([...new Set(PERFIL_DAILY.map(r=>r.data.slice(0,7)))].sort().map(m=>[m, MES_LABEL[m]||m]));
@@ -1034,15 +1035,19 @@ function renderDiarizado(){
     perfilDias.map(d=>`<th style="${thP}">${shortP(d)}</th>`).join('')+
     `<th style="${thP};background:#FFE600;color:#1A1F6B;font-weight:900">TOTAL</th>`;
 
-  function perfilRow(label,color,nums){
+  function perfilRow(label,color,nums,totCad){
     const cs=colorScale(nums);
     const tot=nums.reduce((s,v)=>s+v,0);
+    // Se totCad fornecido, mostra % conversao no TOTAL; senao mostra o total simples
+    const totDisplay = totCad!=null && totCad>0
+      ? `${fmtN(tot)} <span style="font-size:11px;font-weight:700;color:#1A1F6B">(${(tot/totCad*100).toFixed(1)}%)</span>`
+      : fmtN(tot);
     return `<tr>
       <td style="padding:8px 14px;font-size:12px;font-weight:600;background:#f9f9ff;border-bottom:1px solid #f0f0f0;white-space:nowrap">
         <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:${color}"></span>${label}</span>
       </td>
       ${nums.map((v,i)=>`<td style="padding:8px 12px;text-align:right;font-size:12px;border-bottom:1px solid #f0f0f0;${cs[i]}">${fmtN(v)}</td>`).join('')}
-      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#fffde7;font-weight:800;color:#1A1F6B;border-bottom:1px solid #f0f0f0">${fmtN(tot)}</td>
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#fffde7;font-weight:800;color:#1A1F6B;border-bottom:1px solid #f0f0f0">${totDisplay}</td>
     </tr>`;
   }
 
@@ -1060,8 +1065,8 @@ function renderDiarizado(){
         ● ${p} &nbsp;·&nbsp; <span style="font-weight:400;font-size:11px">${fmtN(totCad)} cadastrados · ${fmtN(totComp)} com 1ª compra · ${taxa} conversão</span>
       </td>
     </tr>`;
-    perfilHtml+=perfilRow('Cadastrados', col, cadVals);
-    perfilHtml+=perfilRow(`1ª Compra`, col, compVals);
+    perfilHtml+=perfilRow('Cadastrados', col, cadVals, null);
+    perfilHtml+=perfilRow('1ª Compra', col, compVals, totCad);
   });
   // Linha de total geral com % conversão
   if(perfilDias.length && PERFIS.length){
