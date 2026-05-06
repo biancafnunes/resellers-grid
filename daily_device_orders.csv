@@ -1,3 +1,376 @@
-BigQuery error in query operation: Error processing job 'meli-bi-
-data:bqjob_r269741fde89e823b_0000019dfdd4482a_1': Not found: Table meli-bi-
-data:SBOX_WHMPBR.BT_MP_IC_ATIVACAO_VENDAS_DEVICES was not found in location US
+data,nivel,devices
+2026-01-01,Aprendiz,29
+2026-01-01,Especialista,2
+2026-01-01,Top Empreendedor,8
+2026-01-02,Aprendiz,209
+2026-01-03,Aprendiz,118
+2026-01-04,Aprendiz,89
+2026-01-05,Aprendiz,229
+2026-01-05,Empreendedor,10
+2026-01-05,Especialista,2
+2026-01-06,Aprendiz,468
+2026-01-06,Empreendedor,11
+2026-01-06,Especialista,2
+2026-01-06,Top Empreendedor,82
+2026-01-07,Aprendiz,446
+2026-01-07,Especialista,6
+2026-01-07,Top Empreendedor,3
+2026-01-08,Aprendiz,316
+2026-01-08,Empreendedor,16
+2026-01-08,Especialista,36
+2026-01-08,Top Empreendedor,6
+2026-01-09,Aprendiz,240
+2026-01-09,Empreendedor,15
+2026-01-09,Especialista,9
+2026-01-09,Top Empreendedor,18
+2026-01-10,Aprendiz,126
+2026-01-10,Especialista,8
+2026-01-10,Top Empreendedor,6
+2026-01-11,Aprendiz,129
+2026-01-11,Especialista,2
+2026-01-12,Aprendiz,466
+2026-01-12,Empreendedor,9
+2026-01-12,Especialista,26
+2026-01-12,Top Empreendedor,32
+2026-01-13,Aprendiz,429
+2026-01-13,Especialista,96
+2026-01-13,Top Empreendedor,10
+2026-01-14,Aprendiz,303
+2026-01-14,Empreendedor,6
+2026-01-14,Especialista,21
+2026-01-14,Top Empreendedor,32
+2026-01-15,Aprendiz,249
+2026-01-15,Empreendedor,24
+2026-01-15,Especialista,7
+2026-01-16,Aprendiz,243
+2026-01-16,Empreendedor,20
+2026-01-16,Top Empreendedor,34
+2026-01-17,Aprendiz,131
+2026-01-17,Especialista,4
+2026-01-18,Aprendiz,97
+2026-01-18,Top Empreendedor,4
+2026-01-19,Aprendiz,294
+2026-01-19,Empreendedor,21
+2026-01-19,Especialista,10
+2026-01-19,Top Empreendedor,10
+2026-01-20,Aprendiz,241
+2026-01-20,Top Empreendedor,18
+2026-01-21,Aprendiz,258
+2026-01-21,Empreendedor,8
+2026-01-21,Especialista,6
+2026-01-21,Top Empreendedor,16
+2026-01-22,Aprendiz,199
+2026-01-22,Empreendedor,22
+2026-01-23,Aprendiz,181
+2026-01-23,Empreendedor,14
+2026-01-23,Especialista,4
+2026-01-24,Aprendiz,142
+2026-01-24,Especialista,4
+2026-01-24,Top Empreendedor,10
+2026-01-25,Aprendiz,122
+2026-01-25,Empreendedor,4
+2026-01-25,Especialista,5
+2026-01-25,Top Empreendedor,4
+2026-01-26,Aprendiz,227
+2026-01-26,Empreendedor,6
+2026-01-26,Top Empreendedor,5
+2026-01-27,Aprendiz,254
+2026-01-27,Especialista,2
+2026-01-27,Top Empreendedor,80
+2026-01-28,Aprendiz,198
+2026-01-28,Top Empreendedor,6
+2026-01-29,Aprendiz,167
+2026-01-29,Empreendedor,5
+2026-01-29,Especialista,12
+2026-01-29,Top Empreendedor,6
+2026-01-30,Aprendiz,191
+2026-01-30,Empreendedor,10
+2026-01-30,Top Empreendedor,40
+2026-01-31,Aprendiz,141
+2026-01-31,Especialista,2
+2026-01-31,Top Empreendedor,10
+2026-02-01,Aprendiz,101
+2026-02-02,Aprendiz,254
+2026-02-02,Empreendedor,4
+2026-02-02,Especialista,2
+2026-02-03,Aprendiz,305
+2026-02-03,Especialista,3
+2026-02-03,Top Empreendedor,4
+2026-02-04,Aprendiz,234
+2026-02-04,Empreendedor,30
+2026-02-04,Especialista,3
+2026-02-04,Top Empreendedor,14
+2026-02-05,Aprendiz,334
+2026-02-05,Empreendedor,7
+2026-02-05,Especialista,14
+2026-02-05,Top Empreendedor,10
+2026-02-06,Aprendiz,312
+2026-02-06,Empreendedor,19
+2026-02-06,Especialista,17
+2026-02-06,Top Empreendedor,49
+2026-02-07,Aprendiz,243
+2026-02-07,Especialista,28
+2026-02-07,Top Empreendedor,20
+2026-02-08,Aprendiz,49
+2026-02-09,Aprendiz,196
+2026-02-09,Empreendedor,11
+2026-02-09,Especialista,6
+2026-02-09,Top Empreendedor,44
+2026-02-10,Aprendiz,376
+2026-02-10,Empreendedor,4
+2026-02-10,Especialista,13
+2026-02-10,Top Empreendedor,2
+2026-02-11,Aprendiz,275
+2026-02-11,Empreendedor,2
+2026-02-11,Especialista,19
+2026-02-11,Top Empreendedor,37
+2026-02-12,Aprendiz,291
+2026-02-12,Empreendedor,26
+2026-02-12,Especialista,13
+2026-02-12,Top Empreendedor,3
+2026-02-13,Aprendiz,281
+2026-02-13,Especialista,2
+2026-02-13,Top Empreendedor,20
+2026-02-14,Aprendiz,137
+2026-02-14,Especialista,9
+2026-02-14,Top Empreendedor,23
+2026-02-15,Aprendiz,104
+2026-02-15,Top Empreendedor,16
+2026-02-16,Aprendiz,129
+2026-02-16,Empreendedor,6
+2026-02-16,Especialista,4
+2026-02-17,Aprendiz,111
+2026-02-18,Aprendiz,317
+2026-02-18,Top Empreendedor,30
+2026-02-19,Aprendiz,274
+2026-02-19,Empreendedor,4
+2026-02-19,Especialista,5
+2026-02-19,Top Empreendedor,8
+2026-02-20,Aprendiz,228
+2026-02-20,Empreendedor,5
+2026-02-20,Especialista,2
+2026-02-20,Top Empreendedor,18
+2026-02-21,Aprendiz,161
+2026-02-21,Empreendedor,10
+2026-02-21,Especialista,4
+2026-02-21,Top Empreendedor,24
+2026-02-22,Aprendiz,52
+2026-02-23,Aprendiz,252
+2026-02-23,Especialista,18
+2026-02-23,Top Empreendedor,26
+2026-02-24,Aprendiz,264
+2026-02-24,Empreendedor,2
+2026-02-24,Top Empreendedor,40
+2026-02-25,Aprendiz,252
+2026-02-25,Empreendedor,4
+2026-02-25,Especialista,16
+2026-02-25,Top Empreendedor,34
+2026-02-26,Aprendiz,207
+2026-02-26,Empreendedor,40
+2026-02-26,Especialista,2
+2026-02-26,Top Empreendedor,41
+2026-02-27,Aprendiz,160
+2026-02-27,Top Empreendedor,91
+2026-02-28,Aprendiz,144
+2026-02-28,Empreendedor,10
+2026-02-28,Especialista,6
+2026-03-01,Aprendiz,111
+2026-03-02,Aprendiz,264
+2026-03-02,Empreendedor,1
+2026-03-02,Especialista,14
+2026-03-03,Aprendiz,267
+2026-03-03,Empreendedor,10
+2026-03-03,Especialista,7
+2026-03-03,Top Empreendedor,20
+2026-03-04,Aprendiz,257
+2026-03-04,Empreendedor,1
+2026-03-04,Especialista,22
+2026-03-04,Top Empreendedor,12
+2026-03-05,Aprendiz,325
+2026-03-05,Empreendedor,18
+2026-03-05,Especialista,11
+2026-03-06,Aprendiz,232
+2026-03-06,Empreendedor,7
+2026-03-06,Especialista,16
+2026-03-06,Top Empreendedor,16
+2026-03-07,Aprendiz,197
+2026-03-08,Aprendiz,147
+2026-03-08,Especialista,3
+2026-03-09,Aprendiz,244
+2026-03-09,Empreendedor,4
+2026-03-09,Especialista,25
+2026-03-09,Top Empreendedor,18
+2026-03-10,Aprendiz,285
+2026-03-10,Especialista,13
+2026-03-11,Aprendiz,261
+2026-03-11,Empreendedor,12
+2026-03-11,Especialista,10
+2026-03-12,Aprendiz,294
+2026-03-12,Empreendedor,4
+2026-03-12,Especialista,2
+2026-03-12,Top Empreendedor,10
+2026-03-13,Aprendiz,223
+2026-03-13,Empreendedor,0
+2026-03-13,Top Empreendedor,67
+2026-03-14,Aprendiz,157
+2026-03-14,Empreendedor,2
+2026-03-14,Top Empreendedor,10
+2026-03-15,Aprendiz,116
+2026-03-15,Empreendedor,2
+2026-03-15,Especialista,2
+2026-03-16,Aprendiz,290
+2026-03-16,Especialista,2
+2026-03-16,Top Empreendedor,12
+2026-03-17,Aprendiz,231
+2026-03-17,Empreendedor,23
+2026-03-17,Especialista,6
+2026-03-17,Top Empreendedor,9
+2026-03-18,Aprendiz,217
+2026-03-18,Empreendedor,10
+2026-03-18,Especialista,3
+2026-03-18,Top Empreendedor,4
+2026-03-19,Aprendiz,161
+2026-03-19,Empreendedor,2
+2026-03-19,Top Empreendedor,45
+2026-03-20,Aprendiz,170
+2026-03-20,Empreendedor,14
+2026-03-20,Especialista,5
+2026-03-20,Top Empreendedor,44
+2026-03-21,Aprendiz,131
+2026-03-21,Empreendedor,10
+2026-03-21,Top Empreendedor,14
+2026-03-22,Aprendiz,96
+2026-03-22,Empreendedor,28
+2026-03-23,Aprendiz,220
+2026-03-23,Empreendedor,2
+2026-03-23,Especialista,10
+2026-03-23,Top Empreendedor,26
+2026-03-24,Aprendiz,199
+2026-03-24,Empreendedor,16
+2026-03-24,Especialista,6
+2026-03-24,Top Empreendedor,46
+2026-03-25,Aprendiz,195
+2026-03-25,Empreendedor,23
+2026-03-25,Especialista,10
+2026-03-25,Top Empreendedor,34
+2026-03-26,Aprendiz,196
+2026-03-26,Empreendedor,18
+2026-03-26,Especialista,2
+2026-03-26,Top Empreendedor,94
+2026-03-27,Aprendiz,190
+2026-03-27,Empreendedor,2
+2026-03-27,Especialista,2
+2026-03-27,Top Empreendedor,20
+2026-03-28,Aprendiz,126
+2026-03-28,Empreendedor,4
+2026-03-28,Especialista,30
+2026-03-28,Top Empreendedor,26
+2026-03-29,Aprendiz,71
+2026-03-30,Aprendiz,174
+2026-03-30,Empreendedor,12
+2026-03-30,Especialista,16
+2026-03-30,Top Empreendedor,36
+2026-03-31,Aprendiz,201
+2026-03-31,Especialista,4
+2026-03-31,Top Empreendedor,30
+2026-04-01,Aprendiz,196
+2026-04-01,Empreendedor,22
+2026-04-01,Especialista,29
+2026-04-01,Top Empreendedor,47
+2026-04-02,Aprendiz,188
+2026-04-02,Empreendedor,10
+2026-04-02,Top Empreendedor,54
+2026-04-03,Aprendiz,115
+2026-04-03,Especialista,12
+2026-04-04,Aprendiz,86
+2026-04-05,Aprendiz,86
+2026-04-05,Empreendedor,7
+2026-04-05,Especialista,6
+2026-04-05,Top Empreendedor,70
+2026-04-06,Aprendiz,176
+2026-04-06,Empreendedor,10
+2026-04-06,Top Empreendedor,2
+2026-04-07,Aprendiz,296
+2026-04-07,Empreendedor,10
+2026-04-07,Especialista,1
+2026-04-07,Top Empreendedor,12
+2026-04-08,Aprendiz,210
+2026-04-09,Aprendiz,217
+2026-04-09,Especialista,13
+2026-04-09,Top Empreendedor,45
+2026-04-10,Aprendiz,246
+2026-04-10,Especialista,6
+2026-04-10,Top Empreendedor,3
+2026-04-11,Aprendiz,166
+2026-04-11,Especialista,10
+2026-04-12,Aprendiz,126
+2026-04-12,Top Empreendedor,10
+2026-04-13,Aprendiz,268
+2026-04-13,Empreendedor,2
+2026-04-13,Especialista,18
+2026-04-13,Top Empreendedor,72
+2026-04-14,Aprendiz,245
+2026-04-14,Empreendedor,15
+2026-04-14,Especialista,6
+2026-04-14,Top Empreendedor,2
+2026-04-15,Aprendiz,240
+2026-04-15,Especialista,10
+2026-04-15,Top Empreendedor,32
+2026-04-16,Aprendiz,216
+2026-04-16,Empreendedor,10
+2026-04-16,Especialista,6
+2026-04-16,Top Empreendedor,12
+2026-04-17,Aprendiz,181
+2026-04-17,Empreendedor,1
+2026-04-17,Especialista,15
+2026-04-17,Top Empreendedor,4
+2026-04-18,Aprendiz,99
+2026-04-18,Top Empreendedor,10
+2026-04-19,Aprendiz,97
+2026-04-20,Aprendiz,177
+2026-04-20,Especialista,10
+2026-04-20,Top Empreendedor,15
+2026-04-21,Aprendiz,115
+2026-04-21,Top Empreendedor,8
+2026-04-22,Aprendiz,177
+2026-04-22,Empreendedor,1
+2026-04-22,Especialista,8
+2026-04-22,Top Empreendedor,8
+2026-04-23,Aprendiz,160
+2026-04-23,Empreendedor,4
+2026-04-23,Especialista,19
+2026-04-23,Top Empreendedor,1
+2026-04-24,Aprendiz,204
+2026-04-24,Empreendedor,20
+2026-04-25,Aprendiz,129
+2026-04-25,Empreendedor,6
+2026-04-25,Especialista,9
+2026-04-25,Top Empreendedor,4
+2026-04-26,Aprendiz,99
+2026-04-26,Empreendedor,6
+2026-04-26,Top Empreendedor,4
+2026-04-27,Aprendiz,160
+2026-04-27,Empreendedor,3
+2026-04-27,Especialista,4
+2026-04-27,Top Empreendedor,12
+2026-04-28,Aprendiz,147
+2026-04-28,Empreendedor,14
+2026-04-28,Especialista,10
+2026-04-28,Top Empreendedor,12
+2026-04-29,Aprendiz,243
+2026-04-29,Empreendedor,12
+2026-04-29,Top Empreendedor,6
+2026-04-30,Aprendiz,120
+2026-04-30,Empreendedor,2
+2026-04-30,Top Empreendedor,20
+2026-05-01,Aprendiz,111
+2026-05-02,Aprendiz,50
+2026-05-02,Especialista,10
+2026-05-02,Top Empreendedor,10
+2026-05-03,Aprendiz,40
+2026-05-04,Aprendiz,30
+2026-05-04,Empreendedor,0
+2026-05-04,Especialista,0
+2026-05-04,Top Empreendedor,0
+2026-05-05,Aprendiz,0
+2026-05-05,Empreendedor,0
