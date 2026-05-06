@@ -583,8 +583,9 @@ function renderTabela(){
     const isLast=i===data.length-1||data[i+1].mes!==r.mes;
     const t=totals[r.mes]||{};
     const bp=Math.round((r.tpv_m0/maxTPV)*100);
-    const tpvMedM0=r.resellers?r.tpv_m0/r.resellers:0;
-    const tpvMedM1=r.resellers&&r.tpv_m1!=null?r.tpv_m1/r.resellers:null;
+    const tpvMedM0=r.ativos?r.tpv_m0/r.ativos:0;
+    const prevAtivM1=getMoM(r.nivel,r.mes,'ativos');
+    const tpvMedM1=prevAtivM1&&r.tpv_m1!=null?r.tpv_m1/prevAtivM1:null;
     const prevRes=getMoM(r.nivel,r.mes,'resellers');
     const prevPed=getMoM(r.nivel,r.mes,'pedidos');
     const prevAtiv=getMoM(r.nivel,r.mes,'ativos');
@@ -606,8 +607,9 @@ function renderTabela(){
       <td style="text-align:center">${fmtN(r.ativos)}${momBadge(r.ativos,prevAtiv)}</td>
     </tr>`;
     if(isLast&&!activeMes&&!sortCol){
-      const totMedM0=t.resellers?t.tpv_m0/t.resellers:0;
-      const totMedM1=t.resellers&&t.haM1?t.tpv_m1/t.resellers:null;
+      const totMedM0=t.ativos?t.tpv_m0/t.ativos:0;
+      const prevMesAtivos=(()=>{const idx=MES_ORDER.indexOf(r.mes);if(idx<=0)return 0;const pm=MES_ORDER[idx-1];return RAW.filter(x=>x.mes===pm&&(!activeNivel||x.nivel===activeNivel)).reduce((s,x)=>s+x.ativos,0);})();
+      const totMedM1=prevMesAtivos&&t.haM1?t.tpv_m1/prevMesAtivos:null;
       const totBg=mesBg==='#ffffff'?'#e8e8e8':'#dcdcdc';
       html+=`<tr class="group-total" style="background:${totBg}"><td><span class="mes-badge">${r.mes}</span></td><td style="font-size:11px">TOTAL</td>
         <td>${fmtN(t.resellers)}</td><td>${fmtN(t.pedidos)}</td><td>${fmtN(t.ativos)}</td>
