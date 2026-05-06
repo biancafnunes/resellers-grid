@@ -1124,25 +1124,28 @@ function renderDiarizado(){
   const convMes=mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.convertidos,0));
   const primMes=mesesDiar.map(m=>Object.entries(PRIMEIRA_COMPRA).filter(([d])=>d.startsWith(prefDiar[m]||'')).reduce((s,[,v])=>s+v,0));
 
+  // % de conversão: de quem se cadastrou no mês, quem fez 1ª compra
   const taxaConvMes=mesesDiar.map((m,i)=>cadMes[i]?+(primMes[i]/cadMes[i]*100).toFixed(1):0);
 
   const ex1=Chart.getChart('chartDiarMensal');if(ex1)ex1.destroy();
   new Chart(document.getElementById('chartDiarMensal').getContext('2d'),{
     type:'bar',data:{labels:mesesDiar,datasets:[
-      {label:'Cadastrados',data:cadMes,backgroundColor:'#1A1F6B',borderRadius:4,yAxisID:'y'},
-      {label:'1ª Compra',data:primMes,backgroundColor:'#FFE600',borderRadius:4,yAxisID:'y'},
-      {label:'Conversão %',data:taxaConvMes,type:'line',borderColor:'#009EE3',backgroundColor:'transparent',
+      {label:'Cadastrados no Mês',data:cadMes,backgroundColor:'#1A1F6B',borderRadius:4,yAxisID:'y'},
+      {label:'Fez 1ª Compra',data:primMes,backgroundColor:'#FFE600',borderRadius:4,yAxisID:'y'},
+      {label:'% Conversão',data:taxaConvMes,type:'line',borderColor:'#009EE3',backgroundColor:'transparent',
        borderWidth:2.5,pointRadius:5,pointBackgroundColor:'#009EE3',pointBorderColor:'#fff',pointBorderWidth:2,
        fill:false,tension:.3,yAxisID:'y2',order:0},
     ]},options:{responsive:true,plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}},
       tooltip:{mode:'index',intersect:false,callbacks:{
-        label:i=>i.dataset.yAxisID==='y2'?`Conversão: ${i.raw}%`:`${i.dataset.label}: ${fmtN(i.raw)}`,
-        footer:items=>{const b=items.filter(i=>i.dataset.yAxisID==='y');return b.length?'TOTAL: '+fmtN(b.reduce((s,i)=>s+(i.raw||0),0)):'';}
+        label:i=>i.dataset.yAxisID==='y2'
+          ?`Conversão: ${i.raw}% (${fmtN(primMes[i.dataIndex])} de ${fmtN(cadMes[i.dataIndex])})`
+          :`${i.dataset.label}: ${fmtN(i.raw)}`,
+        footer:()=>''
       }}},
       scales:{
         x:{grid:{display:false}},
         y:{position:'left',ticks:{font:{size:10}},grid:{color:'#f0f0f0'}},
-        y2:{position:'right',ticks:{callback:v=>v+'%',font:{size:10}},grid:{display:false},min:0}
+        y2:{position:'right',ticks:{callback:v=>v+'%',font:{size:10}},grid:{display:false},min:0,max:5}
       }}
   });
 
