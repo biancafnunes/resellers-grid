@@ -569,10 +569,10 @@ const RAW = [
   {mes:"Abr/26",nivel:"Especialista",     resellers:83,  pedidos:643,  ativos:232,  tpv_m0:3018150,  tpv_m1:4928603,  tpv_total:15786386,  pedidos_pro:518,  pedidos_smart:125, ativos_pro:193,  ativos_smart:39},
   {mes:"Abr/26",nivel:"Empreendedor",     resellers:38,  pedidos:630,  ativos:217,  tpv_m0:2605479,  tpv_m1:6136579,  tpv_total:17093142,  pedidos_pro:512,  pedidos_smart:118, ativos_pro:154,  ativos_smart:63},
   {mes:"Abr/26",nivel:"Top Empreendedor", resellers:44,  pedidos:2379, ativos:936,  tpv_m0:7409872,  tpv_m1:15294971, tpv_total:44996865,  pedidos_pro:1890, pedidos_smart:489, ativos_pro:750,  ativos_smart:186},
-  {mes:"Mai/26",nivel:"Aprendiz",         resellers:109,  pedidos:168,  ativos:20,   tpv_m0:6894,     tpv_m1:100420,   tpv_total:24449896,  pedidos_pro:0,    pedidos_smart:0,   ativos_pro:0,    ativos_smart:0},
-  {mes:"Mai/26",nivel:"Especialista",     resellers:17,   pedidos:52,   ativos:1,    tpv_m0:14403,    tpv_m1:185988,   tpv_total:835619,    pedidos_pro:0,    pedidos_smart:0,   ativos_pro:0,    ativos_smart:0},
-  {mes:"Mai/26",nivel:"Empreendedor",     resellers:22,   pedidos:216,  ativos:1,    tpv_m0:25188,    tpv_m1:295692,   tpv_total:1676553,   pedidos_pro:0,    pedidos_smart:0,   ativos_pro:0,    ativos_smart:0},
-  {mes:"Mai/26",nivel:"Top Empreendedor", resellers:10,   pedidos:87,   ativos:2,    tpv_m0:74465,    tpv_m1:771117,   tpv_total:4386108,   pedidos_pro:0,    pedidos_smart:0,   ativos_pro:0,    ativos_smart:0},
+  {mes:"Mai/26",nivel:"Aprendiz",         resellers:109,  pedidos:168,  ativos:20,   tpv_m0:6894,     tpv_m1:100420,   tpv_total:24449896,  pedidos_pro:111,  pedidos_smart:40,  ativos_pro:0,    ativos_smart:0},
+  {mes:"Mai/26",nivel:"Especialista",     resellers:17,   pedidos:52,   ativos:1,    tpv_m0:14403,    tpv_m1:185988,   tpv_total:835619,    pedidos_pro:43,   pedidos_smart:7,   ativos_pro:0,    ativos_smart:0},
+  {mes:"Mai/26",nivel:"Empreendedor",     resellers:22,   pedidos:216,  ativos:1,    tpv_m0:25188,    tpv_m1:295692,   tpv_total:1676553,   pedidos_pro:79,   pedidos_smart:137, ativos_pro:0,    ativos_smart:0},
+  {mes:"Mai/26",nivel:"Top Empreendedor", resellers:10,   pedidos:87,   ativos:2,    tpv_m0:74465,    tpv_m1:771117,   tpv_total:4386108,   pedidos_pro:69,   pedidos_smart:18,  ativos_pro:0,    ativos_smart:0},
 ];
 
 const DAILY = """ + daily_json + """;
@@ -784,28 +784,58 @@ function renderChartDevices(){
   const ativProData=MES_ORDER.map(m=>data.filter(r=>r.mes===m).reduce((s,r)=>s+r.ativos_pro,0));
   const ativSmartData=MES_ORDER.map(m=>data.filter(r=>r.mes===m).reduce((s,r)=>s+r.ativos_smart,0));
 
-  const tooltipDev=(items,label)=>`${label}: `+fmtN(items.reduce((s,i)=>s+(i.raw||0),0));
-  const devOpts=(footerLabel)=>({responsive:true,
+  const devOpts=(footerLabel,proArr,smartArr)=>({responsive:true,
     plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}},
       tooltip:{mode:'index',intersect:false,callbacks:{
-        label:i=>`${i.dataset.label}: ${fmtN(i.raw)}`,
-        footer:items=>tooltipDev(items,footerLabel)
+        label:i=>{
+          const tot=(proArr[i.dataIndex]||0)+(smartArr[i.dataIndex]||0);
+          const pct=tot>0?` (${(i.raw/tot*100).toFixed(1)}%)`:'';
+          return `${i.dataset.label}: ${fmtN(i.raw)}${pct}`;
+        },
+        footer:items=>'TOTAL: '+fmtN(items.reduce((s,i)=>s+(i.raw||0),0))
       }}},
     scales:{x:{grid:{display:false}},y:{ticks:{font:{size:10}},grid:{color:'#f0f0f0'}}}});
+
+  // Linha de % Pro/Smart por mes
+  const pctRow = (proArr, smartArr) => MES_ORDER.map((m,i)=>{
+    const tot=(proArr[i]||0)+(smartArr[i]||0);
+    if(!tot) return `<td style="text-align:center;font-size:11px;color:#ccc;padding:4px">-</td>`;
+    return `<td style="text-align:center;font-size:11px;padding:4px">
+      <span style="color:#1A1F6B;font-weight:700">${(proArr[i]/tot*100).toFixed(0)}%</span>
+      <span style="color:#888"> / </span>
+      <span style="color:#b8960c;font-weight:700">${(smartArr[i]/tot*100).toFixed(0)}%</span>
+    </td>`;
+  }).join('');
+  const pctTable = (proArr, smartArr) =>
+    `<table style="width:100%;border-collapse:collapse;margin-top:6px">
+      <tr>
+        <td style="font-size:11px;color:#888;padding:4px;white-space:nowrap">% Pro / Smart</td>
+        ${pctRow(proArr, smartArr)}
+      </tr>
+    </table>`;
 
   if(chartDevPedidos)chartDevPedidos.destroy();
   chartDevPedidos=new Chart(document.getElementById('chartDevicesPedidos').getContext('2d'),{
     type:'bar',data:{labels:MES_ORDER,datasets:[
       {label:'Point Pro',data:proData,backgroundColor:'#1A1F6B',borderRadius:4},
       {label:'Point Smart',data:smartData,backgroundColor:'#FFE600',borderRadius:4},
-    ]},options:devOpts('TOTAL PEDIDOS')});
+    ]},options:devOpts('TOTAL PEDIDOS',proData,smartData)});
+  // injeta tabela de % abaixo do chart de pedidos
+  const wrapPed = document.getElementById('chartDevicesPedidos').closest('.chart-wrap');
+  let tblPed = wrapPed.querySelector('.pct-table');
+  if(!tblPed){tblPed=document.createElement('div');tblPed.className='pct-table';wrapPed.appendChild(tblPed);}
+  tblPed.innerHTML = pctTable(proData, smartData);
 
   if(chartDevAtivos)chartDevAtivos.destroy();
   chartDevAtivos=new Chart(document.getElementById('chartDevicesAtivos').getContext('2d'),{
     type:'bar',data:{labels:MES_ORDER,datasets:[
       {label:'Point Pro',data:ativProData,backgroundColor:'#1A1F6B',borderRadius:4},
       {label:'Point Smart',data:ativSmartData,backgroundColor:'#FFE600',borderRadius:4},
-    ]},options:devOpts('TOTAL ATIVOS')});
+    ]},options:devOpts('TOTAL ATIVOS',ativProData,ativSmartData)});
+  const wrapAtiv = document.getElementById('chartDevicesAtivos').closest('.chart-wrap');
+  let tblAtiv = wrapAtiv.querySelector('.pct-table');
+  if(!tblAtiv){tblAtiv=document.createElement('div');tblAtiv.className='pct-table';wrapAtiv.appendChild(tblAtiv);}
+  tblAtiv.innerHTML = pctTable(ativProData, ativSmartData);
 
   document.getElementById('nivel-filter-dev').innerHTML=['Todos',...NIV_ORDER].map(n=>`<button class="filter-btn${activeNivelDev===n?' active':''}" onclick="activeNivelDev='${n}';renderChartDevices()">${n}</button>`).join('');
 
