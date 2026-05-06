@@ -1018,9 +1018,10 @@ function renderDiarizado(){
 
   // ── Perfilamento diário ──
   const PERFIL_DAILY = """ + perfil_json_placeholder + """;  // eslint-disable-line
-  const PERFIS = ['Iniciante','Intermediario','Especialista'];
-  const PERFIL_COLOR = {'Iniciante':'#9ca3af','Intermediario':'#f59e0b','Especialista':'#3b82f6'};
-  const MES_PERFIL = {'2026-04':'Abr/26','2026-05':'Mai/26'};
+  const PERFIS = [...new Set(PERFIL_DAILY.map(r=>r.perfil))].sort();
+  const PERFIL_COLORS_MAP = {'Aprendiz':'#1A1F6B','Especialista':'#3b82f6','Empreendedor':'#f59e0b','Top Empreendedor':'#16a34a','Iniciante':'#9ca3af','Intermediario':'#f59e0b'};
+  const PERFIL_COLOR = Object.fromEntries(PERFIS.map((p,i)=>[p, PERFIL_COLORS_MAP[p]||['#1A1F6B','#3b82f6','#f59e0b','#16a34a'][i%4]]));
+  const MES_PERFIL = Object.fromEntries([...new Set(PERFIL_DAILY.map(r=>r.data.slice(0,7)))].sort().map(m=>[m, MES_LABEL[m]||m]));
 
   if(!window._perfilMes) window._perfilMes = '2026-04';
   const perfilPref = window._perfilMes;
@@ -1062,6 +1063,18 @@ function renderDiarizado(){
     perfilHtml+=perfilRow('Cadastrados', col, cadVals);
     perfilHtml+=perfilRow(`1ª Compra`, col, compVals);
   });
+  // Linha de total geral com % conversão
+  if(perfilDias.length && PERFIS.length){
+    const totCadAll  = PERFIS.reduce((s,p)=>s+perfilDias.reduce((s2,d)=>{const r=PERFIL_DAILY.find(x=>x.data===d&&x.perfil===p);return s2+(r?r.cadastrados:0);},0),0);
+    const totCompAll = PERFIS.reduce((s,p)=>s+perfilDias.reduce((s2,d)=>{const r=PERFIL_DAILY.find(x=>x.data===d&&x.perfil===p);return s2+(r?r.compra:0);},0),0);
+    const taxaAll = totCadAll?(totCompAll/totCadAll*100).toFixed(1)+'%':'—';
+    const nCols = perfilDias.length+2;
+    perfilHtml+=`<tr style="background:#1A1F6B;font-weight:900;color:#FFE600">
+      <td style="padding:10px 14px;font-size:12px;border-top:2px solid #FFE600">TOTAL</td>
+      <td colspan="${nCols-2}" style="padding:10px 14px;font-size:12px;border-top:2px solid #FFE600;text-align:right">${fmtN(totCadAll)} cadastrados · ${fmtN(totCompAll)} com 1ª compra</td>
+      <td style="padding:10px 14px;font-size:13px;font-weight:900;border-top:2px solid #FFE600;text-align:right;background:#FFE600;color:#1A1F6B">${taxaAll}</td>
+    </tr>`;
+  }
   document.getElementById('tbody-perfil').innerHTML=perfilHtml||'<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Sem dados</td></tr>';
 
   document.getElementById('mes-filter-perfil').innerHTML=Object.keys(MES_PERFIL).map(m=>
@@ -1105,11 +1118,11 @@ function renderDiarizado(){
     `<button class="filter-btn${tpvDiaNivel===n?' active':''}" onclick="tpvDiaNivel='${n}';renderDiarizado()">${n}</button>`).join('');
 
   // Gráfico 1 — Cadastrados vs Convertidos por mês
-  const mesesDiar=["Jan/26","Fev/26","Mar/26","Abr/26"];
-  const prefDiar={"Jan/26":"2026-01","Fev/26":"2026-02","Mar/26":"2026-03","Abr/26":"2026-04","Mai/26":"2026-05"};
-  const cadMes=mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m])).reduce((s,r)=>s+r.cadastrados,0));
-  const convMes=mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m])).reduce((s,r)=>s+r.convertidos,0));
-  const primMes=mesesDiar.map(m=>Object.entries(PRIMEIRA_COMPRA).filter(([d])=>d.startsWith(prefDiar[m])).reduce((s,[,v])=>s+v,0));
+  const mesesDiar=MES_ORDER;
+  const prefDiar=MES_PREFIX;
+  const cadMes=mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.cadastrados,0));
+  const convMes=mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.convertidos,0));
+  const primMes=mesesDiar.map(m=>Object.entries(PRIMEIRA_COMPRA).filter(([d])=>d.startsWith(prefDiar[m]||'')).reduce((s,[,v])=>s+v,0));
 
   const taxaConvMes=mesesDiar.map((m,i)=>cadMes[i]?+(primMes[i]/cadMes[i]*100).toFixed(1):0);
 
@@ -1135,7 +1148,7 @@ function renderDiarizado(){
 
   // Gráfico 2 — Aprendiz com compra no mês vs 1ª compra
   const aprendizComCompra=mesesDiar.map(m=>RAW.find(r=>r.mes===m&&r.nivel==='Aprendiz')?.resellers||0);
-  const aprendizPrimeira=[213,282,313,235,7];
+  const aprendizPrimeira=mesesDiar.map(m=>Object.entries(PRIMEIRA_COMPRA).filter(([d])=>d.startsWith(prefDiar[m]||'')).reduce((s,[,v])=>s+v,0));
   const ex2=Chart.getChart('chartDiarPrimeira');if(ex2)ex2.destroy();
   const pctNovos=aprendizComCompra.map((v,i)=>v?+(aprendizPrimeira[i]/v*100).toFixed(1):0);
   new Chart(document.getElementById('chartDiarPrimeira').getContext('2d'),{
