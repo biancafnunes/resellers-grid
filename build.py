@@ -261,9 +261,11 @@ canvas{max-height:320px}
         <th data-col="tpv_m0">TPV M0 <span title="TPV dos sellers captados no mês (M0 = mês de entrada)" style="cursor:help;opacity:.6">?</span></th>
         <th data-col="tpv_m1">TPV M1 <span title="TPV desses mesmos sellers no mês seguinte" style="cursor:help;opacity:.6">?</span></th>
         <th data-col="tpv_total">TPV Total <span title="TPV total da carteira do reseller no mês (todos os sellers, todas as safras)" style="cursor:help;opacity:.6">?</span></th>
-        <th data-col="ticket">Ticket Médio <span title="TPV M0 ÷ Resellers com compra — qualidade média do novo reseller" style="cursor:help;opacity:.6">?</span></th>
+        <th data-col="tpv_medio_m0">TPV Médio M0 <span title="TPV M0 ÷ Resellers — ticket médio do seller captado" style="cursor:help;opacity:.6">?</span></th>
+        <th data-col="tpv_medio_m1">TPV Médio M1 <span title="TPV M1 ÷ Resellers — ticket médio no mês seguinte" style="cursor:help;opacity:.6">?</span></th>
         <th data-col="mom_resellers">MoM Resellers <span title="Variação % vs mês anterior" style="cursor:help;opacity:.6">?</span></th>
-        <th data-col="mom_tpv">MoM TPV M0 <span title="Variação % do TPV M0 vs mês anterior" style="cursor:help;opacity:.6">?</span></th>
+        <th data-col="mom_pedidos">MoM Pedidos <span title="Variação % de pedidos de devices vs mês anterior" style="cursor:help;opacity:.6">?</span></th>
+        <th data-col="mom_ativos">MoM Dev. Ativos <span title="Variação % de devices ativos vs mês anterior" style="cursor:help;opacity:.6">?</span></th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
@@ -642,9 +644,11 @@ function renderTabela(){
     const isLast=i===data.length-1||data[i+1].mes!==r.mes;
     const t=totals[r.mes]||{};
     const bp=Math.round((r.tpv_m0/maxTPV)*100);
-    const ticket=r.resellers?r.tpv_m0/r.resellers:0;
+    const tpvMedM0=r.resellers?r.tpv_m0/r.resellers:0;
+    const tpvMedM1=r.resellers&&r.tpv_m1!=null?r.tpv_m1/r.resellers:null;
     const prevRes=getMoM(r.nivel,r.mes,'resellers');
-    const prevTpv=getMoM(r.nivel,r.mes,'tpv_m0');
+    const prevPed=getMoM(r.nivel,r.mes,'pedidos');
+    const prevAtiv=getMoM(r.nivel,r.mes,'ativos');
     const mesBg=['#ffffff','#f2f2f2','#ffffff','#f2f2f2','#ffffff'][MES_ORDER.indexOf(r.mes)%5]||'#fff';
     const isFirst=i===0||data[i-1].mes!==r.mes;
     html+=`<tr style="background:${mesBg}">
@@ -656,21 +660,25 @@ function renderTabela(){
       <td><div class="bar-cell">${fmt(r.tpv_m0)}${pct(r.tpv_m0,t.tpv_m0)}<div class="bar-bg"><div class="bar-fill" style="width:${bp}%"></div></div></div></td>
       <td>${fmt(r.tpv_m1)}${r.tpv_m1!=null&&t.haM1?pct(r.tpv_m1,t.tpv_m1):''}</td>
       <td>${fmt(r.tpv_total)}${pct(r.tpv_total,t.tpv_total)}</td>
-      <td style="text-align:right">${ticket>=1e6?'R$ '+(ticket/1e6).toFixed(2).replace('.',',')+'M':'R$ '+fmtN(Math.round(ticket))}</td>
+      <td style="text-align:right">${tpvMedM0>=1e6?'R$ '+(tpvMedM0/1e6).toFixed(2).replace('.',',')+'M':'R$ '+fmtN(Math.round(tpvMedM0))}</td>
+      <td style="text-align:right">${tpvMedM1==null?'<span class="tpv-zero">-</span>':tpvMedM1>=1e6?'R$ '+(tpvMedM1/1e6).toFixed(2).replace('.',',')+'M':'R$ '+fmtN(Math.round(tpvMedM1))}</td>
       <td style="text-align:center">${fmtN(r.resellers)}${momBadge(r.resellers,prevRes)}</td>
-      <td style="text-align:center">${fmt(r.tpv_m0)}${momBadge(r.tpv_m0,prevTpv)}</td>
+      <td style="text-align:center">${fmtN(r.pedidos)}${momBadge(r.pedidos,prevPed)}</td>
+      <td style="text-align:center">${fmtN(r.ativos)}${momBadge(r.ativos,prevAtiv)}</td>
     </tr>`;
     if(isLast&&!activeMes&&!sortCol){
-      const totTicket=t.resellers?t.tpv_m0/t.resellers:0;
+      const totMedM0=t.resellers?t.tpv_m0/t.resellers:0;
+      const totMedM1=t.resellers&&t.haM1?t.tpv_m1/t.resellers:null;
       const totBg=mesBg==='#ffffff'?'#e8e8e8':'#dcdcdc';
       html+=`<tr class="group-total" style="background:${totBg}"><td><span class="mes-badge">${r.mes}</span></td><td style="font-size:11px">TOTAL</td>
         <td>${fmtN(t.resellers)}</td><td>${fmtN(t.pedidos)}</td><td>${fmtN(t.ativos)}</td>
         <td>${fmt(t.tpv_m0)}</td><td>${t.haM1?fmt(t.tpv_m1):fmt(null)}</td><td>${fmt(t.tpv_total)}</td>
-        <td style="text-align:right">${totTicket>=1e6?'R$ '+(totTicket/1e6).toFixed(2).replace('.',',')+'M':'R$ '+fmtN(Math.round(totTicket))}</td>
-        <td></td><td></td></tr>`;
+        <td style="text-align:right">${totMedM0>=1e6?'R$ '+(totMedM0/1e6).toFixed(2).replace('.',',')+'M':'R$ '+fmtN(Math.round(totMedM0))}</td>
+        <td style="text-align:right">${totMedM1==null?'<span class="tpv-zero">-</span>':totMedM1>=1e6?'R$ '+(totMedM1/1e6).toFixed(2).replace('.',',')+'M':'R$ '+fmtN(Math.round(totMedM1))}</td>
+        <td></td><td></td><td></td></tr>`;
     }
   });
-  document.getElementById('tbody').innerHTML=html||'<tr><td colspan="11" style="text-align:center;color:#ccc;padding:32px">Sem resultados</td></tr>';
+  document.getElementById('tbody').innerHTML=html||'<tr><td colspan="13" style="text-align:center;color:#ccc;padding:32px">Sem resultados</td></tr>';
 }
 
 function renderFiltersTabela(){
