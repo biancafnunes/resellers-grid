@@ -718,8 +718,8 @@ document.querySelector('thead').addEventListener('click',e=>{const th=e.target.c
 
 
 // ── HELPERS ──
-const MES_TO_YYYYMM={"Jan/26":"2026-01","Fev/26":"2026-02","Mar/26":"2026-03","Abr/26":"2026-04"};
-const MES_LABEL={"2026-01":"Jan/26","2026-02":"Fev/26","2026-03":"Mar/26","2026-04":"Abr/26"};
+const MES_TO_YYYYMM={"Jan/26":"2026-01","Fev/26":"2026-02","Mar/26":"2026-03","Abr/26":"2026-04","Mai/26":"2026-05"};
+const MES_LABEL={"2026-01":"Jan/26","2026-02":"Fev/26","2026-03":"Mar/26","2026-04":"Abr/26","2026-05":"Mai/26"};
 
 const tooltipTotal=(items,yFmt)=>'TOTAL: '+yFmt(items.reduce((s,i)=>s+(i.raw||0),0));
 
@@ -1186,7 +1186,7 @@ const TRANS_ORDER = ["Aprendiz -> Especialista","Especialista -> Empreendedor","
 const TRANS_COLOR = {"Aprendiz -> Especialista":"#3b82f6","Especialista -> Empreendedor":"#f59e0b","Empreendedor -> Top Empreendedor":"#1A1F6B"};
 const TRANS_LABEL = {"Aprendiz -> Especialista":"Aprendiz → Esp.","Especialista -> Empreendedor":"Esp. → Empreendedor","Empreendedor -> Top Empreendedor":"Empreendedor → Top"};
 const MESES_NIVEIS = ["2026-01","2026-02","2026-03","2026-04"];
-const MES_LABEL_N  = {"2026-01":"Jan/26","2026-02":"Fev/26","2026-03":"Mar/26","2026-04":"Abr/26"};
+const MES_LABEL_N  = {"2026-01":"Jan/26","2026-02":"Fev/26","2026-03":"Mar/26","2026-04":"Abr/26","2026-05":"Mai/26"};
 const NIV_COLOR_MAP = {"Aprendiz":"#9ca3af","Especialista":"#3b82f6","Empreendedor":"#f59e0b","Top Empreendedor":"#1A1F6B","—":"#ddd"};
 
 let activeMesNiv=null, activeTransNiv=null, searchNiv='', sortColN='dt', sortDirN=-1, chartNiveis=null;
