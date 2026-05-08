@@ -1447,14 +1447,22 @@ function renderFunilTab(){
 const RMKT_DATA       = """ + rmkt_json + """;
 const RMKT_REATIV     = """ + rmkt_reativ_json + """;
 
+const RMKT_NOMES = {
+  'NOVOS INCENTIVOS > CADASTRADOS NOS ULTIMOS 6 MESES':       'NOVOS INCENTIVOS > CADASTRADOS NOS Últimos 6 MESES',
+  'NOVOS INCENTIVOS > ATIVOS NOS ULTIMOS 12 MESES':           'NOVOS INCENTIVOS > ATIVOS NOS Últimos 12 MESES',
+  'PRECO ESPECIAL > APRENDIZES COM COMPRA ULTIMOS 12 MESES':  'PREÇO ESPECIAL > APRENDIZES COM COMPRA ÚLTIMOS 12 MESES',
+  'SUBIDA DE NIVEL > APRENDIZES ATIVOS 2026':                 'SUBIDA DE NÍVEL > APRENDIZES ATIVOS 2026',
+};
+
 function rmktRow(r, cols, isEven, cor){
   const fmtR = n => !n?'R$ 0':n>=1e6?'R$ '+(n/1e6).toFixed(2).replace('.',',')+'M':'R$ '+n.toLocaleString('pt-BR');
   const fmtN2 = n => (n||0).toLocaleString('pt-BR');
+  const nomeDisplay = RMKT_NOMES[r.comunicacao] || r.comunicacao;
   const td = (v,opts='') => `<td style="padding:12px 16px;text-align:right;font-size:13px;border-bottom:1px solid #f0f0f0${opts}">${v}</td>`;
   return `<tr style="background:${isEven?'#fff':'#f9f9ff'};border-bottom:1px solid #f0f0f0">
     <td style="padding:12px 16px;font-size:13px;font-weight:600;color:#1A1F6B;border-bottom:1px solid #f0f0f0">
       <span style="display:inline-flex;align-items:center;gap:8px">
-        <span style="width:10px;height:10px;border-radius:50%;background:${cor};flex-shrink:0"></span>${r.comunicacao}
+        <span style="width:10px;height:10px;border-radius:50%;background:${cor};flex-shrink:0"></span>${nomeDisplay}
       </span>
     </td>
     ${cols.map(c=>td(c.v,c.s||'')).join('')}
