@@ -27,10 +27,24 @@ with open(r'C:\Users\daviaraujo\resellers-grid\perfilamento_daily.csv') as f:
 perfil_json_placeholder = json.dumps(perfil_daily)
 
 dev_daily = []
-with open(r'C:\Users\daviaraujo\resellers-grid\daily_device_orders.csv') as f:
-    for row in csv.DictReader(f):
-        if row.get('data','').startswith('2026'):
-            dev_daily.append({'data':row['data'],'nivel':row['nivel'],'devices':int(row['devices'])})
+try:
+    with open(r'C:\Users\daviaraujo\resellers-grid\daily_device_orders.csv', encoding='utf-8') as f:
+        for row in csv.DictReader(f):
+            if row.get('data','').startswith('2026'):
+                dev_daily.append({'data':row['data'],'nivel':row['nivel'],'devices':int(row['devices'])})
+except Exception:
+    pass
+
+if not dev_daily:
+    # CSV corrompido — carrega backup
+    bkp = r'C:\Users\daviaraujo\resellers-grid\daily_device_orders_backup.json'
+    try:
+        with open(bkp, encoding='utf-8') as f:
+            dev_daily = json.load(f)
+        print('[build] AVISO: daily_device_orders.csv corrompido — usando backup')
+    except Exception:
+        print('[build] AVISO: CSV e backup ausentes — tabela diaria vazia')
+
 dev_daily_json = json.dumps(dev_daily)
 
 rmkt_data = []
