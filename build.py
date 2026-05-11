@@ -321,6 +321,27 @@ canvas{max-height:320px}
     <canvas id="chartDevicesAtivos"></canvas>
   </div>
 
+  <!-- Tabela diária de devices pedidos -->
+  <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin:32px 0 12px;border-left:5px solid #FFE600;padding-left:14px">Devices Pedidos por Dia <span style="font-size:11px;font-weight:400;color:#999;text-transform:none;letter-spacing:0">(fonte: BT_MP_IC_ORDENS_VENDAS_DEVICES)</span></div>
+  <div style="background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+    <div style="display:flex;gap:20px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Mês</div>
+        <div id="mes-filter-dev-daily" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Nível</div>
+        <div id="nivel-filter-dev-daily" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      </div>
+    </div>
+  </div>
+  <div style="overflow-x:auto;margin-bottom:24px">
+    <table style="min-width:500px">
+      <thead><tr id="thead-dev-daily"></tr></thead>
+      <tbody id="tbody-dev-daily"></tbody>
+    </table>
+  </div>
+
 </div>
 
 <!-- ── TAB DIARIZADO ── -->
@@ -832,6 +853,72 @@ function renderChartDevices(){
 
   document.getElementById('nivel-filter-dev').innerHTML=['Todos',...NIV_ORDER].map(n=>`<button class="filter-btn${activeNivelDev===n?' active':''}" onclick="activeNivelDev='${n}';renderChartDevices()">${n}</button>`).join('');
 
+  // ── Tabela diária de devices pedidos ──
+  const DEV_DAILY = """ + dev_daily_json + """;
+  if(!window._devDailyMes) window._devDailyMes='Mai/26';
+  if(!window._devDailyNivel) window._devDailyNivel='Todos';
+  const devPref=MES_PREFIX[window._devDailyMes]||'2026-05';
+  const devDias=[...new Set(DEV_DAILY.filter(r=>r.data.startsWith(devPref)).map(r=>r.data))].sort();
+  const shortDD=d=>d.slice(8)+'/'+d.slice(5,7);
+  const thDD='background:#1A1F6B;color:#FFE600;padding:10px 12px;font-size:11px;white-space:nowrap;text-align:right';
+
+  document.getElementById('thead-dev-daily').innerHTML=
+    `<th style="${thDD};text-align:left">Nível</th>`+
+    devDias.map(d=>`<th style="${thDD}">${shortDD(d)}</th>`).join('')+
+    `<th style="${thDD};background:#FFE600;color:#1A1F6B;font-weight:900">TOTAL</th>`+
+    `<th style="${thDD};background:#1A1F6B;color:#FFE600;font-weight:900">Média/dia</th>`;
+
+  function colorScale2(nums){
+    const sorted=[...nums].sort((a,b)=>a-b);
+    const p33=sorted[Math.floor(sorted.length*0.33)];
+    const p66=sorted[Math.floor(sorted.length*0.66)];
+    return nums.map(v=>v<=p33?'background:#ffe5e5':v<=p66?'background:#fffde7':'background:#e6f9ec');
+  }
+
+  function devRow(label,color,nums,grand){
+    const cs=colorScale2(nums);
+    const tot=nums.reduce((s,v)=>s+v,0);
+    const dias=nums.filter(v=>v>0).length||nums.length;
+    const media=dias>0?(tot/dias).toFixed(1):'-';
+    const pct=grand>0?`<span style="font-size:10px;color:#888;font-weight:400;margin-left:4px">${(tot/grand*100).toFixed(1)}%</span>`:'';
+    return `<tr>
+      <td style="padding:10px 14px;font-weight:600;color:#1A1F6B;background:#f9f9ff;white-space:nowrap;font-size:12px;border-bottom:1px solid #f0f0f0">
+        <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:${color}"></span>${label}</span>
+      </td>
+      ${nums.map((v,i)=>`<td style="padding:10px 12px;text-align:right;font-size:12px;border-bottom:1px solid #f0f0f0;${cs[i]}">${fmtN(v)}</td>`).join('')}
+      <td style="padding:10px 12px;text-align:right;font-size:12px;background:#fffde7;font-weight:800;color:#1A1F6B;border-bottom:1px solid #f0f0f0">${fmtN(tot)} ${pct}</td>
+      <td style="padding:10px 12px;text-align:right;font-size:12px;background:#1A1F6B;font-weight:700;color:#FFE600;border-bottom:1px solid #f0f0f0">${media}</td>
+    </tr>`;
+  }
+
+  const nivDevFilter=window._devDailyNivel==='Todos'?NIV_ORDER:[window._devDailyNivel];
+  let devDailyHtml='';
+  if(devDias.length){
+    const grandTot=DEV_DAILY.filter(r=>r.data.startsWith(devPref)).reduce((s,r)=>s+r.devices,0);
+    nivDevFilter.forEach(n=>{
+      const vals=devDias.map(d=>{const r=DEV_DAILY.find(x=>x.data===d&&x.nivel===n);return r?r.devices:0;});
+      devDailyHtml+=devRow(n,NIV_COLOR[n]||'#999',vals,grandTot);
+    });
+    if(window._devDailyNivel==='Todos'){
+      const totVals=devDias.map(d=>DEV_DAILY.filter(r=>r.data===d).reduce((s,r)=>s+r.devices,0));
+      const cs=colorScale2(totVals);
+      const grand=totVals.reduce((s,v)=>s+v,0);
+      const diasComDado=totVals.filter(v=>v>0).length||totVals.length;
+      const mediaTot=diasComDado>0?(grand/diasComDado).toFixed(1):'-';
+      devDailyHtml+=`<tr style="background:#f5f5ff;font-weight:700;color:#1A1F6B">
+        <td style="padding:10px 14px;font-size:12px;border-bottom:1px solid #ddd">TOTAL</td>
+        ${totVals.map((v,i)=>`<td style="padding:10px 12px;text-align:right;font-size:12px;border-bottom:1px solid #ddd;${cs[i]}">${fmtN(v)}</td>`).join('')}
+        <td style="padding:10px 12px;text-align:right;font-size:12px;background:#FFE600;font-weight:900;color:#1A1F6B;border-bottom:1px solid #ddd">${fmtN(grand)}</td>
+        <td style="padding:10px 12px;text-align:right;font-size:12px;background:#1A1F6B;font-weight:900;color:#FFE600;border-bottom:1px solid #ddd">${mediaTot}</td>
+      </tr>`;
+    }
+  }
+  document.getElementById('tbody-dev-daily').innerHTML=devDailyHtml||'<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Sem dados</td></tr>';
+
+  document.getElementById('mes-filter-dev-daily').innerHTML=MES_ORDER.map(m=>
+    `<button class="filter-btn${window._devDailyMes===m?' active':''}" onclick="window._devDailyMes='${m}';renderChartDevices()">${m}</button>`).join('');
+  document.getElementById('nivel-filter-dev-daily').innerHTML=['Todos',...NIV_ORDER].map(n=>
+    `<button class="filter-btn${window._devDailyNivel===n?' active':''}" onclick="window._devDailyNivel='${n}';renderChartDevices()">${n}</button>`).join('');
 }
 
 // ── DIARIZADO ──
