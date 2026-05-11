@@ -1099,7 +1099,7 @@ function renderDiarizado(){
     perfilHtml+=perfilRow('Cadastrados', col, cadVals, null);
     perfilHtml+=perfilRow('1ª Compra', col, compVals, totCad);
   });
-  // Linha de total geral com % conversão
+  // Linha de total geral com % conversão + linha de visitantes sem cadastro
   if(perfilDias.length && PERFIS.length){
     const totCadAll  = PERFIS.reduce((s,p)=>s+perfilDias.reduce((s2,d)=>{const r=PERFIL_DAILY.find(x=>x.data===d&&x.perfil===p);return s2+(r?r.cadastrados:0);},0),0);
     const totCompAll = PERFIS.reduce((s,p)=>s+perfilDias.reduce((s2,d)=>{const r=PERFIL_DAILY.find(x=>x.data===d&&x.perfil===p);return s2+(r?r.compra:0);},0),0);
@@ -1109,6 +1109,29 @@ function renderDiarizado(){
       <td style="padding:10px 14px;font-size:12px;border-top:2px solid #FFE600">TOTAL</td>
       <td colspan="${nCols-2}" style="padding:10px 14px;font-size:12px;border-top:2px solid #FFE600;text-align:right;color:#fff">${fmtN(totCadAll)} cadastrados · ${fmtN(totCompAll)} com 1ª compra</td>
       <td style="padding:10px 14px;font-size:13px;font-weight:900;border-top:2px solid #FFE600;text-align:right;background:#FFE600;color:#1A1F6B">${taxaAll}</td>
+    </tr>`;
+
+    // Linha: visitantes LP vs cadastrados (opção A — mesmo dia)
+    const lpVals = perfilDias.map(d=>{const r=LP_DAILY.find(x=>x.data===d);return r?r.visitas:0;});
+    const cadDia = perfilDias.map(d=>PERFIS.reduce((s,p)=>{const r=PERFIL_DAILY.find(x=>x.data===d&&x.perfil===p);return s+(r?r.cadastrados:0);},0));
+    const semCadVals = lpVals.map((v,i)=>Math.max(0, v-cadDia[i]));
+    const totLP   = lpVals.reduce((s,v)=>s+v,0);
+    const totSemCad = semCadVals.reduce((s,v)=>s+v,0);
+    const taxaConvLP = totLP>0?((totCadAll/totLP)*100).toFixed(1)+'%':'—';
+    const cs=colorScale(semCadVals.map(v=>-v));
+    perfilHtml+=`<tr style="background:#f5f5f5;border-top:2px dashed #ccc">
+      <td style="padding:10px 14px;font-size:11px;font-weight:700;color:#666;white-space:nowrap">
+        <span style="display:inline-flex;align-items:center;gap:5px">
+          <span style="width:7px;height:7px;border-radius:50%;background:#ccc"></span>
+          Visitaram LP sem cadastro
+          <span style="font-size:10px;font-weight:400;color:#999">(mesmo dia)</span>
+        </span>
+      </td>
+      ${semCadVals.map((v,i)=>`<td style="padding:8px 12px;text-align:right;font-size:12px;color:#888;border-bottom:1px solid #eee">${lpVals[i]>0?fmtN(v):'—'}</td>`).join('')}
+      <td style="padding:10px 12px;text-align:right;font-size:12px;background:#f0f0f0;font-weight:800;color:#555">
+        ${fmtN(totSemCad)}
+        <span style="font-size:11px;font-weight:400;color:#999;margin-left:4px">(conv. LP: ${taxaConvLP})</span>
+      </td>
     </tr>`;
   }
   document.getElementById('tbody-perfil').innerHTML=perfilHtml||'<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Sem dados</td></tr>';
