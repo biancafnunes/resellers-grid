@@ -1155,14 +1155,9 @@ function renderDiarizado(){
   // Gráfico 1 — Cadastrados vs Convertidos por mês
   const mesesDiar=MES_ORDER;
   const prefDiar=MES_PREFIX;
-  const cadMes=mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.cadastrados,0));
-  const convMes=mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.convertidos,0));
-  const primMes=mesesDiar.map(m=>Object.entries(PRIMEIRA_COMPRA).filter(([d])=>d.startsWith(prefDiar[m]||'')).reduce((s,[,v])=>s+v,0));
-
-  // Cohort correto: de quem se cadastrou no mes, quantos JA fizeram 1a compra
-  // Fonte: LK_MP_IC_LEADS_FUNIL_RSL (DT_CADASTRO_COMPLETO x DT_PRIMEIRA_COMPRA_DEVICE)
-  const cohortCompra={"Jan/26":134,"Fev/26":174,"Mar/26":198,"Abr/26":66,"Mai/26":22};
-  const cohortMes=mesesDiar.map(m=>cohortCompra[m]||0);
+  // Cadastrados e 1a compra do grafico = mesma fonte da tabela (PERFIL_DAILY)
+  const cadMes=mesesDiar.map(m=>PERFIL_DAILY.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.cadastrados,0));
+  const cohortMes=mesesDiar.map(m=>PERFIL_DAILY.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.compra,0));
   const taxaConvMes=mesesDiar.map((m,i)=>cadMes[i]?+(cohortMes[i]/cadMes[i]*100).toFixed(1):0);
 
   const ex1=Chart.getChart('chartDiarMensal');if(ex1)ex1.destroy();
