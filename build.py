@@ -374,8 +374,8 @@ canvas{max-height:320px}
     </table>
   </div>
 
-  <!-- Tabela: devices vendidos por modelo por dia (BT_PRODUCT_ORDERS) -->
-  <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin:32px 0 12px;border-left:5px solid #009EE3;padding-left:14px">Devices Vendidos por Dia <span style="font-size:11px;font-weight:400;color:#999;text-transform:none;letter-spacing:0">(BT_PRODUCT_ORDERS — canal resellers)</span></div>
+  <!-- Tabela: devices vendidos por nivel por dia (BT_PRODUCT_ORDERS) -->
+  <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin:32px 0 12px;border-left:5px solid #009EE3;padding-left:14px">Devices Vendidos (Visão App) <span style="font-size:11px;font-weight:400;color:#999;text-transform:none;letter-spacing:0">(Pro 3 + Smart 2 — canal resellers)</span></div>
   <div style="background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
     <div style="font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Mês</div>
     <div id="mes-filter-sold" style="display:flex;gap:6px;flex-wrap:wrap"></div>
@@ -983,9 +983,10 @@ function renderChartDevices(){
   if(!window._soldMes) window._soldMes = 'Mai/26';
   const soldPref = MES_PREFIX[window._soldMes] || '2026-05';
 
-  // Dias e modelos do mês selecionado
+  // Dias e níveis do mês selecionado
   const soldDias    = [...new Set(SOLD.filter(r=>r.data.startsWith(soldPref)).map(r=>r.data))].sort();
-  const soldModelos = [...new Set(SOLD.filter(r=>r.data.startsWith(soldPref)).map(r=>r.device))].sort();
+  const NIV_SOLD_ORDER = ['Aprendiz','Especialista','Empreendedor','Top Empreendedor'];
+  const soldModelos = NIV_SOLD_ORDER.filter(n=>SOLD.some(r=>r.data.startsWith(soldPref)&&r.nivel===n));
 
   const DIAS_SEM2 = ['DOM','SEG','TER','QUA','QUI','SEX','SAB'];
   const shortSold = d=>{
@@ -1024,9 +1025,9 @@ function renderChartDevices(){
   let soldHtml = '';
   if(soldDias.length){
     const grandTot = SOLD.filter(r=>r.data.startsWith(soldPref)).reduce((s,r)=>s+r.qtd,0);
-    soldModelos.forEach(mod=>{
-      const vals = soldDias.map(d=>{const r=SOLD.find(x=>x.data===d&&x.device===mod);return r?r.qtd:0;});
-      soldHtml += soldRow(mod, vals, grandTot);
+    soldModelos.forEach(niv=>{
+      const vals = soldDias.map(d=>{const r=SOLD.find(x=>x.data===d&&x.nivel===niv);return r?r.qtd:0;});
+      soldHtml += soldRow(niv, vals, grandTot);
     });
     // Total
     const totVals = soldDias.map(d=>SOLD.filter(r=>r.data===d&&r.data.startsWith(soldPref)).reduce((s,r)=>s+r.qtd,0));
