@@ -1006,7 +1006,7 @@ function renderDiarizado(){
   const funilMesFiltro = funilDiarMes || 'Abr/26';
   const funilPrefixo = MES_PREFIX[funilMesFiltro] || '2026-04';
   const funilDias = [...new Set(LEADS.filter(r=>r.data.startsWith(funilPrefixo)).map(r=>r.data))].sort();
-  const shortFD = d=>d.slice(8)+'/'+d.slice(5,7);
+  const shortFD = d=>{const ds=['DOM','SEG','TER','QUA','QUI','SEX','SAB'][new Date(d+'T12:00:00').getDay()];return `<span style="font-size:9px;opacity:.8;display:block">${ds}</span>${d.slice(8)}/${d.slice(5,7)}`;};
 
   const thFS='background:#1A1F6B;color:#FFE600;padding:10px 12px;font-size:11px;text-transform:uppercase;white-space:nowrap;text-align:right';
   document.getElementById('thead-funil-row').innerHTML=
@@ -1058,7 +1058,7 @@ function renderDiarizado(){
   if(!window._perfilMes) window._perfilMes = '2026-04';
   const perfilPref = window._perfilMes;
   const perfilDias = [...new Set(PERFIL_DAILY.filter(r=>r.data.startsWith(perfilPref)).map(r=>r.data))].sort();
-  const shortP = d=>d.slice(8)+'/'+d.slice(5,7);
+  const shortP = d=>{const ds=['DOM','SEG','TER','QUA','QUI','SEX','SAB'][new Date(d+'T12:00:00').getDay()];return `<span style="font-size:9px;opacity:.8;display:block">${ds}</span>${d.slice(8)}/${d.slice(5,7)}`;};
 
   const thP='background:#009EE3;color:#fff;padding:10px 12px;font-size:11px;white-space:nowrap;text-align:right';
   document.getElementById('thead-perfil-row').innerHTML=
@@ -1122,7 +1122,7 @@ function renderDiarizado(){
   const prefDiario=MES_PREFIX[tpvDiaMes]||'2026-02';
   const tpvDiaNiv=tpvDiaNivel;
   const diasTpv=[...new Set(DAILY.filter(d=>d.data.startsWith(prefDiario)).map(d=>d.data))].sort();
-  const shortD=d=>d.slice(8)+'/'+d.slice(5,7);
+  const shortD=d=>{const ds=['DOM','SEG','TER','QUA','QUI','SEX','SAB'][new Date(d+'T12:00:00').getDay()];return `<span style="font-size:9px;opacity:.8;display:block">${ds}</span>${d.slice(8)}/${d.slice(5,7)}`;};
   const thTD='background:#009EE3;color:#fff;padding:10px 12px;font-size:11px;text-transform:uppercase;white-space:nowrap;text-align:right';
   document.getElementById('thead-tpv-dia-row').innerHTML=
     `<th style="${thTD};text-align:left">Métrica</th>`+
