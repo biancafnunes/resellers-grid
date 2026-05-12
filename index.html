@@ -961,7 +961,7 @@ function renderChartDevices(){
   document.getElementById('thead-orders-summary').innerHTML =
     `<th style="${thSumm};text-align:left">Métrica</th>` +
     summDias.map(d=>`<th style="${thSumm}">${shortSold(d)}</th>`).join('') +
-    `<th style="${thSumm};background:#FFE600;color:#1A1F6B;font-weight:900">TOTAL</th>` +
+    `<th style="${thSumm};background:#FFE600;color:#1A1F6B;font-weight:900"></th>` +
     `<th style="${thSumm};background:#009EE3;color:#fff;font-weight:900">Média/dia</th>`;
 
   function summRow(label, nums){
