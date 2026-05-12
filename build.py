@@ -1155,9 +1155,9 @@ function renderDiarizado(){
   // Gráfico 1 — Cadastrados vs Convertidos por mês
   const mesesDiar=MES_ORDER;
   const prefDiar=MES_PREFIX;
-  // Cadastrados e 1a compra do grafico = mesma fonte da tabela (PERFIL_DAILY)
-  const cadMes=mesesDiar.map(m=>PERFIL_DAILY.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.cadastrados,0));
-  const cohortMes=mesesDiar.map(m=>PERFIL_DAILY.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.compra,0));
+  // Cadastrados e 1a compra do grafico = mesma fonte do funil diario (LEADS)
+  const cadMes=mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.cadastrados,0));
+  const cohortMes=mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.convertidos,0));
   const taxaConvMes=mesesDiar.map((m,i)=>cadMes[i]?+(cohortMes[i]/cadMes[i]*100).toFixed(1):0);
 
   const ex1=Chart.getChart('chartDiarMensal');if(ex1)ex1.destroy();
