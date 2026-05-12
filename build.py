@@ -965,8 +965,9 @@ function renderChartDevices(){
   if(!window._soldMes) window._soldMes = 'Mai/26';
   const soldPref = MES_PREFIX[window._soldMes] || '2026-05';
 
-  // Dias do mês selecionado
-  const soldDias = SOLD.filter(r=>r.data.startsWith(soldPref)).map(r=>r.data).sort();
+  // Dias e modelos do mês selecionado
+  const soldDias    = [...new Set(SOLD.filter(r=>r.data.startsWith(soldPref)).map(r=>r.data))].sort();
+  const soldModelos = [...new Set(SOLD.filter(r=>r.data.startsWith(soldPref)).map(r=>r.device))].sort();
 
   const DIAS_SEM2 = ['DOM','SEG','TER','QUA','QUI','SEX','SAB'];
   const shortSold = d=>{
@@ -977,7 +978,7 @@ function renderChartDevices(){
   const thS='background:#009EE3;color:#fff;padding:10px 12px;font-size:11px;white-space:nowrap;text-align:right';
 
   document.getElementById('thead-sold').innerHTML =
-    `<th style="${thS};text-align:left">Métrica</th>` +
+    `<th style="${thS};text-align:left">Modelo</th>` +
     soldDias.map(d=>`<th style="${thS}">${shortSold(d)}</th>`).join('') +
     `<th style="${thS};background:#FFE600;color:#1A1F6B;font-weight:900">TOTAL</th>` +
     `<th style="${thS};background:#1A1F6B;color:#FFE600;font-weight:900">Média/dia</th>`;
@@ -988,25 +989,38 @@ function renderChartDevices(){
     return nums.map(v=>v<=p33?'background:#ffe5e5':v<=p66?'background:#fffde7':'background:#e6f9ec');
   }
 
-  function soldRow(label, nums){
+  function soldRow(label, nums, grand){
     const cs=colorScaleSold(nums);
     const tot=nums.reduce((s,v)=>s+v,0);
     const dias=nums.filter(v=>v>0).length||1;
     const media=(tot/dias).toFixed(1);
+    const pct=grand>0?`<span style="font-size:10px;color:#888;margin-left:4px">${(tot/grand*100).toFixed(1)}%</span>`:'';
     return `<tr>
-      <td style="padding:10px 14px;font-weight:700;color:#1A1F6B;background:#f9f9ff;white-space:nowrap;font-size:12px;border-bottom:1px solid #f0f0f0">${label}</td>
+      <td style="padding:10px 14px;font-weight:600;color:#1A1F6B;background:#f9f9ff;white-space:nowrap;font-size:12px;border-bottom:1px solid #f0f0f0">${label}</td>
       ${nums.map((v,i)=>`<td style="padding:8px 12px;text-align:right;font-size:12px;border-bottom:1px solid #f0f0f0;${cs[i]}">${fmtN(v)}</td>`).join('')}
-      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#fffde7;font-weight:800;color:#1A1F6B;border-bottom:1px solid #f0f0f0">${fmtN(tot)}</td>
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#fffde7;font-weight:800;color:#1A1F6B;border-bottom:1px solid #f0f0f0">${fmtN(tot)}${pct}</td>
       <td style="padding:8px 12px;text-align:right;font-size:12px;background:#1A1F6B;font-weight:700;color:#FFE600;border-bottom:1px solid #f0f0f0">${media}</td>
     </tr>`;
   }
 
   let soldHtml = '';
   if(soldDias.length){
-    const pedVals  = soldDias.map(d=>{const r=SOLD.find(x=>x.data===d);return r?r.pedidos:0;});
-    const devVals  = soldDias.map(d=>{const r=SOLD.find(x=>x.data===d);return r?r.devices:0;});
-    soldHtml += soldRow('Pedidos únicos', pedVals);
-    soldHtml += soldRow('Devices (Q_DEVICES)', devVals);
+    const grandTot = SOLD.filter(r=>r.data.startsWith(soldPref)).reduce((s,r)=>s+r.qtd,0);
+    soldModelos.forEach(mod=>{
+      const vals = soldDias.map(d=>{const r=SOLD.find(x=>x.data===d&&x.device===mod);return r?r.qtd:0;});
+      soldHtml += soldRow(mod, vals, grandTot);
+    });
+    // Total
+    const totVals = soldDias.map(d=>SOLD.filter(r=>r.data===d&&r.data.startsWith(soldPref)).reduce((s,r)=>s+r.qtd,0));
+    const cs=colorScaleSold(totVals);
+    const grand=totVals.reduce((s,v)=>s+v,0);
+    const dias=totVals.filter(v=>v>0).length||1;
+    soldHtml+=`<tr style="background:#1A1F6B;font-weight:900;color:#FFE600">
+      <td style="padding:10px 14px;font-size:12px;border-top:2px solid #FFE600">TOTAL</td>
+      ${totVals.map((v,i)=>`<td style="padding:8px 12px;text-align:right;font-size:12px;border-top:2px solid #FFE600;${cs[i]};color:#1A1F6B">${fmtN(v)}</td>`).join('')}
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#FFE600;font-weight:900;color:#1A1F6B;border-top:2px solid #FFE600">${fmtN(grand)}</td>
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#1A1F6B;font-weight:900;color:#FFE600;border-top:2px solid #FFE600">${(grand/dias).toFixed(1)}</td>
+    </tr>`;
   }
   document.getElementById('tbody-sold').innerHTML = soldHtml ||
     '<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Sem dados</td></tr>';
