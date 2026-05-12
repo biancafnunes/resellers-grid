@@ -1088,7 +1088,7 @@ function renderDiarizado(){
 
   // Cohort correto: de quem se cadastrou no mes, quantos JA fizeram 1a compra
   // Fonte: LK_MP_IC_LEADS_FUNIL_RSL (DT_CADASTRO_COMPLETO x DT_PRIMEIRA_COMPRA_DEVICE)
-  const cohortCompra={"Jan/26":134,"Fev/26":174,"Mar/26":198,"Abr/26":105,"Mai/26":7};
+  const cohortCompra={"Jan/26":134,"Fev/26":174,"Mar/26":198,"Abr/26":66,"Mai/26":22};
   const cohortMes=mesesDiar.map(m=>cohortCompra[m]||0);
   const taxaConvMes=mesesDiar.map((m,i)=>cadMes[i]?+(cohortMes[i]/cadMes[i]*100).toFixed(1):0);
 
