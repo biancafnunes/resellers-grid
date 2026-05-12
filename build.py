@@ -56,6 +56,15 @@ except FileNotFoundError:
     pass
 devices_sold_json = json.dumps(devices_sold, ensure_ascii=False)
 
+# daily_orders_summary.json — resumo diário: resellers, pedidos, devices
+orders_summary = []
+try:
+    with open(r'C:\Users\daviaraujo\resellers-grid\daily_orders_summary.json', encoding='utf-8') as f:
+        orders_summary = json.load(f)
+except FileNotFoundError:
+    pass
+orders_summary_json = json.dumps(orders_summary, ensure_ascii=False)
+
 rmkt_data = []
 try:
     with open(r'C:\Users\daviaraujo\resellers-grid\rmkt_maio.json', encoding='utf-8') as f:
@@ -365,7 +374,7 @@ canvas{max-height:320px}
     </table>
   </div>
 
-  <!-- Tabela: devices vendidos por dia (BT_PRODUCT_ORDERS) -->
+  <!-- Tabela: devices vendidos por modelo por dia (BT_PRODUCT_ORDERS) -->
   <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin:32px 0 12px;border-left:5px solid #009EE3;padding-left:14px">Devices Vendidos por Dia <span style="font-size:11px;font-weight:400;color:#999;text-transform:none;letter-spacing:0">(BT_PRODUCT_ORDERS — canal resellers)</span></div>
   <div style="background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
     <div style="font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Mês</div>
@@ -375,6 +384,15 @@ canvas{max-height:320px}
     <table style="min-width:500px">
       <thead><tr id="thead-sold"></tr></thead>
       <tbody id="tbody-sold"></tbody>
+    </table>
+  </div>
+
+  <!-- Tabela: resumo diário resellers x pedidos x devices -->
+  <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin:32px 0 12px;border-left:5px solid #FFE600;padding-left:14px">Resellers × Pedidos × Devices por Dia</div>
+  <div style="overflow-x:auto;margin-bottom:24px">
+    <table style="min-width:500px">
+      <thead><tr id="thead-orders-summary"></tr></thead>
+      <tbody id="tbody-orders-summary"></tbody>
     </table>
   </div>
 
@@ -1027,6 +1045,42 @@ function renderChartDevices(){
 
   document.getElementById('mes-filter-sold').innerHTML = MES_ORDER.map(m=>
     `<button class="filter-btn${window._soldMes===m?' active':''}" onclick="window._soldMes='${m}';renderChartDevices()">${m}</button>`).join('');
+
+  // ── Tabela resumo: Resellers × Pedidos × Devices por dia ───────────────
+  const SUMMARY = """ + orders_summary_json + """;
+  const summDias = SUMMARY.filter(r=>r.data.startsWith(soldPref)).map(r=>r.data).sort();
+
+  const thSumm = 'background:#1A1F6B;color:#FFE600;padding:10px 12px;font-size:11px;white-space:nowrap;text-align:right';
+  document.getElementById('thead-orders-summary').innerHTML =
+    `<th style="${thSumm};text-align:left">Métrica</th>` +
+    summDias.map(d=>`<th style="${thSumm}">${shortSold(d)}</th>`).join('') +
+    `<th style="${thSumm};background:#FFE600;color:#1A1F6B;font-weight:900">TOTAL</th>` +
+    `<th style="${thSumm};background:#009EE3;color:#fff;font-weight:900">Média/dia</th>`;
+
+  function summRow(label, nums){
+    const cs = colorScaleSold(nums);
+    const tot = nums.reduce((s,v)=>s+v,0);
+    const dias = nums.filter(v=>v>0).length||1;
+    const media = (tot/dias).toFixed(1);
+    return `<tr>
+      <td style="padding:10px 14px;font-weight:700;color:#1A1F6B;background:#f9f9ff;white-space:nowrap;font-size:12px;border-bottom:1px solid #f0f0f0">${label}</td>
+      ${nums.map((v,i)=>`<td style="padding:8px 12px;text-align:right;font-size:12px;border-bottom:1px solid #f0f0f0;${cs[i]}">${fmtN(v)}</td>`).join('')}
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#fffde7;font-weight:800;color:#1A1F6B;border-bottom:1px solid #f0f0f0">${fmtN(tot)}</td>
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#009EE3;font-weight:700;color:#fff;border-bottom:1px solid #f0f0f0">${media}</td>
+    </tr>`;
+  }
+
+  let summHtml = '';
+  if(summDias.length){
+    const resVals = summDias.map(d=>{const r=SUMMARY.find(x=>x.data===d);return r?r.resellers:0;});
+    const pedVals = summDias.map(d=>{const r=SUMMARY.find(x=>x.data===d);return r?r.pedidos:0;});
+    const devVals = summDias.map(d=>{const r=SUMMARY.find(x=>x.data===d);return r?r.devices:0;});
+    summHtml += summRow('Resellers', resVals);
+    summHtml += summRow('Pedidos', pedVals);
+    summHtml += summRow('Devices', devVals);
+  }
+  document.getElementById('tbody-orders-summary').innerHTML = summHtml ||
+    '<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Sem dados</td></tr>';
 }
 
 // ── DIARIZADO ──

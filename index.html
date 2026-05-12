@@ -281,7 +281,7 @@ canvas{max-height:320px}
     </table>
   </div>
 
-  <!-- Tabela: devices vendidos por dia (BT_PRODUCT_ORDERS) -->
+  <!-- Tabela: devices vendidos por modelo por dia (BT_PRODUCT_ORDERS) -->
   <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin:32px 0 12px;border-left:5px solid #009EE3;padding-left:14px">Devices Vendidos por Dia <span style="font-size:11px;font-weight:400;color:#999;text-transform:none;letter-spacing:0">(BT_PRODUCT_ORDERS — canal resellers)</span></div>
   <div style="background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
     <div style="font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Mês</div>
@@ -291,6 +291,15 @@ canvas{max-height:320px}
     <table style="min-width:500px">
       <thead><tr id="thead-sold"></tr></thead>
       <tbody id="tbody-sold"></tbody>
+    </table>
+  </div>
+
+  <!-- Tabela: resumo diário resellers x pedidos x devices -->
+  <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin:32px 0 12px;border-left:5px solid #FFE600;padding-left:14px">Resellers × Pedidos × Devices por Dia</div>
+  <div style="overflow-x:auto;margin-bottom:24px">
+    <table style="min-width:500px">
+      <thead><tr id="thead-orders-summary"></tr></thead>
+      <tbody id="tbody-orders-summary"></tbody>
     </table>
   </div>
 
@@ -943,6 +952,42 @@ function renderChartDevices(){
 
   document.getElementById('mes-filter-sold').innerHTML = MES_ORDER.map(m=>
     `<button class="filter-btn${window._soldMes===m?' active':''}" onclick="window._soldMes='${m}';renderChartDevices()">${m}</button>`).join('');
+
+  // ── Tabela resumo: Resellers × Pedidos × Devices por dia ───────────────
+  const SUMMARY = [{"data": "2026-03-13", "resellers": 11, "pedidos": 17, "devices": 28}, {"data": "2026-03-14", "resellers": 55, "pedidos": 68, "devices": 135}, {"data": "2026-03-15", "resellers": 23, "pedidos": 35, "devices": 67}, {"data": "2026-03-16", "resellers": 69, "pedidos": 87, "devices": 265}, {"data": "2026-03-17", "resellers": 50, "pedidos": 78, "devices": 141}, {"data": "2026-03-18", "resellers": 47, "pedidos": 60, "devices": 163}, {"data": "2026-03-19", "resellers": 48, "pedidos": 88, "devices": 225}, {"data": "2026-03-20", "resellers": 45, "pedidos": 63, "devices": 181}, {"data": "2026-03-21", "resellers": 41, "pedidos": 75, "devices": 194}, {"data": "2026-03-22", "resellers": 32, "pedidos": 41, "devices": 121}, {"data": "2026-03-23", "resellers": 66, "pedidos": 92, "devices": 251}, {"data": "2026-03-24", "resellers": 66, "pedidos": 86, "devices": 204}, {"data": "2026-03-25", "resellers": 68, "pedidos": 90, "devices": 225}, {"data": "2026-03-26", "resellers": 55, "pedidos": 93, "devices": 284}, {"data": "2026-03-27", "resellers": 53, "pedidos": 88, "devices": 273}, {"data": "2026-03-28", "resellers": 45, "pedidos": 71, "devices": 223}, {"data": "2026-03-29", "resellers": 14, "pedidos": 25, "devices": 57}, {"data": "2026-03-30", "resellers": 53, "pedidos": 88, "devices": 248}, {"data": "2026-03-31", "resellers": 49, "pedidos": 73, "devices": 262}, {"data": "2026-04-01", "resellers": 113, "pedidos": 218, "devices": 895}, {"data": "2026-04-02", "resellers": 43, "pedidos": 71, "devices": 246}, {"data": "2026-04-03", "resellers": 32, "pedidos": 41, "devices": 86}, {"data": "2026-04-04", "resellers": 18, "pedidos": 22, "devices": 40}, {"data": "2026-04-05", "resellers": 25, "pedidos": 51, "devices": 204}, {"data": "2026-04-06", "resellers": 53, "pedidos": 78, "devices": 261}, {"data": "2026-04-07", "resellers": 50, "pedidos": 88, "devices": 188}, {"data": "2026-04-08", "resellers": 59, "pedidos": 86, "devices": 192}, {"data": "2026-04-09", "resellers": 59, "pedidos": 103, "devices": 291}, {"data": "2026-04-10", "resellers": 49, "pedidos": 91, "devices": 186}, {"data": "2026-04-11", "resellers": 29, "pedidos": 51, "devices": 130}, {"data": "2026-04-12", "resellers": 34, "pedidos": 62, "devices": 169}, {"data": "2026-04-13", "resellers": 77, "pedidos": 99, "devices": 251}, {"data": "2026-04-14", "resellers": 62, "pedidos": 89, "devices": 180}, {"data": "2026-04-15", "resellers": 47, "pedidos": 61, "devices": 125}, {"data": "2026-04-16", "resellers": 58, "pedidos": 94, "devices": 209}, {"data": "2026-04-17", "resellers": 59, "pedidos": 88, "devices": 157}, {"data": "2026-04-18", "resellers": 31, "pedidos": 42, "devices": 94}, {"data": "2026-04-19", "resellers": 15, "pedidos": 16, "devices": 37}, {"data": "2026-04-20", "resellers": 72, "pedidos": 94, "devices": 246}, {"data": "2026-04-21", "resellers": 21, "pedidos": 37, "devices": 72}, {"data": "2026-04-22", "resellers": 65, "pedidos": 86, "devices": 171}, {"data": "2026-04-23", "resellers": 37, "pedidos": 55, "devices": 143}, {"data": "2026-04-24", "resellers": 63, "pedidos": 77, "devices": 127}, {"data": "2026-04-25", "resellers": 26, "pedidos": 35, "devices": 76}, {"data": "2026-04-26", "resellers": 24, "pedidos": 54, "devices": 112}, {"data": "2026-04-27", "resellers": 39, "pedidos": 57, "devices": 116}, {"data": "2026-04-28", "resellers": 42, "pedidos": 65, "devices": 171}, {"data": "2026-04-29", "resellers": 51, "pedidos": 92, "devices": 316}, {"data": "2026-04-30", "resellers": 32, "pedidos": 43, "devices": 173}, {"data": "2026-05-01", "resellers": 23, "pedidos": 34, "devices": 113}, {"data": "2026-05-02", "resellers": 22, "pedidos": 26, "devices": 77}, {"data": "2026-05-03", "resellers": 14, "pedidos": 18, "devices": 34}, {"data": "2026-05-04", "resellers": 59, "pedidos": 81, "devices": 202}, {"data": "2026-05-05", "resellers": 58, "pedidos": 76, "devices": 174}, {"data": "2026-05-06", "resellers": 92, "pedidos": 111, "devices": 214}, {"data": "2026-05-07", "resellers": 104, "pedidos": 169, "devices": 449}, {"data": "2026-05-08", "resellers": 81, "pedidos": 107, "devices": 226}, {"data": "2026-05-09", "resellers": 42, "pedidos": 54, "devices": 143}, {"data": "2026-05-10", "resellers": 29, "pedidos": 39, "devices": 107}, {"data": "2026-05-11", "resellers": 95, "pedidos": 111, "devices": 187}, {"data": "2026-05-12", "resellers": 45, "pedidos": 56, "devices": 134}];
+  const summDias = SUMMARY.filter(r=>r.data.startsWith(soldPref)).map(r=>r.data).sort();
+
+  const thSumm = 'background:#1A1F6B;color:#FFE600;padding:10px 12px;font-size:11px;white-space:nowrap;text-align:right';
+  document.getElementById('thead-orders-summary').innerHTML =
+    `<th style="${thSumm};text-align:left">Métrica</th>` +
+    summDias.map(d=>`<th style="${thSumm}">${shortSold(d)}</th>`).join('') +
+    `<th style="${thSumm};background:#FFE600;color:#1A1F6B;font-weight:900">TOTAL</th>` +
+    `<th style="${thSumm};background:#009EE3;color:#fff;font-weight:900">Média/dia</th>`;
+
+  function summRow(label, nums){
+    const cs = colorScaleSold(nums);
+    const tot = nums.reduce((s,v)=>s+v,0);
+    const dias = nums.filter(v=>v>0).length||1;
+    const media = (tot/dias).toFixed(1);
+    return `<tr>
+      <td style="padding:10px 14px;font-weight:700;color:#1A1F6B;background:#f9f9ff;white-space:nowrap;font-size:12px;border-bottom:1px solid #f0f0f0">${label}</td>
+      ${nums.map((v,i)=>`<td style="padding:8px 12px;text-align:right;font-size:12px;border-bottom:1px solid #f0f0f0;${cs[i]}">${fmtN(v)}</td>`).join('')}
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#fffde7;font-weight:800;color:#1A1F6B;border-bottom:1px solid #f0f0f0">${fmtN(tot)}</td>
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#009EE3;font-weight:700;color:#fff;border-bottom:1px solid #f0f0f0">${media}</td>
+    </tr>`;
+  }
+
+  let summHtml = '';
+  if(summDias.length){
+    const resVals = summDias.map(d=>{const r=SUMMARY.find(x=>x.data===d);return r?r.resellers:0;});
+    const pedVals = summDias.map(d=>{const r=SUMMARY.find(x=>x.data===d);return r?r.pedidos:0;});
+    const devVals = summDias.map(d=>{const r=SUMMARY.find(x=>x.data===d);return r?r.devices:0;});
+    summHtml += summRow('Resellers', resVals);
+    summHtml += summRow('Pedidos', pedVals);
+    summHtml += summRow('Devices', devVals);
+  }
+  document.getElementById('tbody-orders-summary').innerHTML = summHtml ||
+    '<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Sem dados</td></tr>';
 }
 
 // ── DIARIZADO ──
