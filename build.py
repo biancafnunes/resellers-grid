@@ -536,7 +536,6 @@ canvas{max-height:320px}
         <th>Devices Pedidos</th>
         <th>Devices Ativos</th>
         <th>TPV M0</th>
-        <th>TPV M1</th>
       </tr></thead>
       <tbody id="tbody-rmkt"></tbody>
     </table>
@@ -556,7 +555,6 @@ canvas{max-height:320px}
         <th>Devices Pedidos</th>
         <th>Devices Ativos</th>
         <th>TPV M0</th>
-        <th>TPV M1</th>
       </tr></thead>
       <tbody id="tbody-rmkt-reativ"></tbody>
     </table>
@@ -1507,13 +1505,12 @@ function renderRmkt(){
       {v: fmtN2(r.devices_pedidos)},
       {v: fmtN2(r.devices_ativos)},
       {v: fmtR(r.tpv_m0)},
-      {v: fmtR(r.tpv_m1)},
     ], i%2===0, CORES[i]||'#999');
   });
   // total tabela 1
   if(RMKT_DATA.length){
-    const t1={custs_impactados:0,reativados:0,devices_pedidos:0,devices_ativos:0,tpv_m0:0,tpv_m1:0};
-    RMKT_DATA.forEach(r=>{t1.custs_impactados+=r.custs_impactados;t1.reativados+=r.reativados;t1.devices_pedidos+=r.devices_pedidos;t1.devices_ativos+=r.devices_ativos;t1.tpv_m0+=r.tpv_m0;t1.tpv_m1+=r.tpv_m1;});
+    const t1={custs_impactados:0,reativados:0,devices_pedidos:0,devices_ativos:0,tpv_m0:0};
+    RMKT_DATA.forEach(r=>{t1.custs_impactados+=r.custs_impactados;t1.reativados+=r.reativados;t1.devices_pedidos+=r.devices_pedidos;t1.devices_ativos+=r.devices_ativos;t1.tpv_m0+=r.tpv_m0;});
     const tx1=t1.custs_impactados?(t1.reativados/t1.custs_impactados*100).toFixed(1)+'%':'—';
     const tdT='padding:12px 16px;text-align:right;font-size:13px;font-weight:900;color:#FFE600;border-top:2px solid #FFE600';
     html1+=`<tr style="background:#1A1F6B">
@@ -1524,11 +1521,10 @@ function renderRmkt(){
       <td style="${tdT}">${fmtN2(t1.devices_pedidos)}</td>
       <td style="${tdT}">${fmtN2(t1.devices_ativos)}</td>
       <td style="${tdT}">${fmtR(t1.tpv_m0)}</td>
-      <td style="${tdT}">${fmtR(t1.tpv_m1)}</td>
     </tr>`;
   }
   document.getElementById('tbody-rmkt').innerHTML = html1 ||
-    '<tr><td colspan="8" style="text-align:center;color:#ccc;padding:24px">Sem dados</td></tr>';
+    '<tr><td colspan="7" style="text-align:center;color:#ccc;padding:24px">Sem dados</td></tr>';
 
   // ── Tabela 2: zerados em abril que voltaram
   let html2 = '';
@@ -1541,13 +1537,12 @@ function renderRmkt(){
       {v: fmtN2(r.devices_pedidos)},
       {v: fmtN2(r.devices_ativos)},
       {v: fmtR(r.tpv_m0)},
-      {v: fmtR(r.tpv_m1)},
     ], i%2===0, CORES[i]||'#999');
   });
   // total tabela 2
   if(RMKT_REATIV.length){
-    const t2={zerados_abril:0,voltaram_maio:0,devices_pedidos:0,devices_ativos:0,tpv_m0:0,tpv_m1:0};
-    RMKT_REATIV.forEach(r=>{t2.zerados_abril+=r.zerados_abril;t2.voltaram_maio+=r.voltaram_maio;t2.devices_pedidos+=r.devices_pedidos;t2.devices_ativos+=r.devices_ativos;t2.tpv_m0+=r.tpv_m0;t2.tpv_m1+=r.tpv_m1;});
+    const t2={zerados_abril:0,voltaram_maio:0,devices_pedidos:0,devices_ativos:0,tpv_m0:0};
+    RMKT_REATIV.forEach(r=>{t2.zerados_abril+=r.zerados_abril;t2.voltaram_maio+=r.voltaram_maio;t2.devices_pedidos+=r.devices_pedidos;t2.devices_ativos+=r.devices_ativos;t2.tpv_m0+=r.tpv_m0;});
     const tx2=t2.zerados_abril?(t2.voltaram_maio/t2.zerados_abril*100).toFixed(1)+'%':'—';
     const tdT2='padding:12px 16px;text-align:right;font-size:13px;font-weight:900;color:#FFE600;border-top:2px solid #FFE600';
     html2+=`<tr style="background:#1A1F6B">
@@ -1558,11 +1553,10 @@ function renderRmkt(){
       <td style="${tdT2}">${fmtN2(t2.devices_pedidos)}</td>
       <td style="${tdT2}">${fmtN2(t2.devices_ativos)}</td>
       <td style="${tdT2}">${fmtR(t2.tpv_m0)}</td>
-      <td style="${tdT2}">${fmtR(t2.tpv_m1)}</td>
     </tr>`;
   }
   document.getElementById('tbody-rmkt-reativ').innerHTML = html2 ||
-    '<tr><td colspan="8" style="text-align:center;color:#ccc;padding:24px">Sem dados</td></tr>';
+    '<tr><td colspan="7" style="text-align:center;color:#ccc;padding:24px">Sem dados</td></tr>';
 }
 
 const GRID_BOT_ID  = 'U0AGWQPC4K1';
