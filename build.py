@@ -1047,41 +1047,55 @@ function renderChartDevices(){
   document.getElementById('mes-filter-sold').innerHTML = MES_ORDER.map(m=>
     `<button class="filter-btn${window._soldMes===m?' active':''}" onclick="window._soldMes='${m}';renderChartDevices()">${m}</button>`).join('');
 
-  // ── Tabela resumo: Resellers × Pedidos × Devices por dia ───────────────
+  // ── Tabela resumo mensal: Resellers × Pedidos × Devices por nível ───────
   const SUMMARY = """ + orders_summary_json + """;
-  const summDias = SUMMARY.filter(r=>r.data.startsWith(soldPref)).map(r=>r.data).sort();
+  const MESES_SUMM  = ['2026-01','2026-02','2026-03','2026-04','2026-05'];
+  const MES_LABEL   = {'2026-01':'Jan/26','2026-02':'Fev/26','2026-03':'Mar/26','2026-04':'Abr/26','2026-05':'Mai/26'};
+  const NIV_SUMM    = ['Aprendiz','Especialista','Empreendedor','Top Empreendedor'];
+  const NIV_COLOR_S = {'Aprendiz':'#1A1F6B','Especialista':'#f59e0b','Empreendedor':'#9ca3af','Top Empreendedor':'#009EE3'};
 
   const thSumm = 'background:#1A1F6B;color:#FFE600;padding:10px 12px;font-size:11px;white-space:nowrap;text-align:right';
   document.getElementById('thead-orders-summary').innerHTML =
-    `<th style="${thSumm};text-align:left">Métrica</th>` +
-    summDias.map(d=>`<th style="${thSumm}">${shortSold(d)}</th>`).join('') +
-    `<th style="${thSumm};background:#FFE600;color:#1A1F6B;font-weight:900"></th>` +
-    `<th style="${thSumm};background:#009EE3;color:#fff;font-weight:900">Média/dia</th>`;
+    `<th style="${thSumm};text-align:left">Nível / Métrica</th>` +
+    MESES_SUMM.map(m=>`<th style="${thSumm}">${MES_LABEL[m]||m}</th>`).join('') +
+    `<th style="${thSumm};background:#FFE600;color:#1A1F6B;font-weight:900">TOTAL</th>`;
 
-  function summRow(label, nums){
-    const cs = colorScaleSold(nums);
-    const tot = nums.reduce((s,v)=>s+v,0);
-    const dias = nums.filter(v=>v>0).length||1;
-    const media = (tot/dias).toFixed(1);
+  function summNivRow(label, vals, cor, isLast){
+    const tot = vals.reduce((s,v)=>s+v,0);
+    const bb  = isLast ? 'border-bottom:2px solid #e0e0e0' : 'border-bottom:1px solid #f0f0f0';
     return `<tr>
-      <td style="padding:10px 14px;font-weight:700;color:#1A1F6B;background:#f9f9ff;white-space:nowrap;font-size:12px;border-bottom:1px solid #f0f0f0">${label}</td>
-      ${nums.map((v,i)=>`<td style="padding:8px 12px;text-align:right;font-size:12px;border-bottom:1px solid #f0f0f0;${cs[i]}">${fmtN(v)}</td>`).join('')}
-      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#fffde7;font-weight:800;color:#1A1F6B;border-bottom:1px solid #f0f0f0">${fmtN(tot)}</td>
-      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#009EE3;font-weight:700;color:#fff;border-bottom:1px solid #f0f0f0">${media}</td>
+      <td style="padding:8px 14px;font-size:12px;color:#555;background:#fafafa;border-bottom:1px solid #f0f0f0;padding-left:28px">${label}</td>
+      ${vals.map(v=>`<td style="padding:8px 12px;text-align:right;font-size:12px;${bb}">${fmtN(v)}</td>`).join('')}
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#fffde7;font-weight:800;color:#1A1F6B;${bb}">${fmtN(tot)}</td>
     </tr>`;
   }
 
   let summHtml = '';
-  if(summDias.length){
-    const resVals = summDias.map(d=>{const r=SUMMARY.find(x=>x.data===d);return r?r.resellers:0;});
-    const pedVals = summDias.map(d=>{const r=SUMMARY.find(x=>x.data===d);return r?r.pedidos:0;});
-    const devVals = summDias.map(d=>{const r=SUMMARY.find(x=>x.data===d);return r?r.devices:0;});
-    summHtml += summRow('Resellers', resVals);
-    summHtml += summRow('Pedidos', pedVals);
-    summHtml += summRow('Devices', devVals);
-  }
+  NIV_SUMM.forEach((niv,ni)=>{
+    const cor = NIV_COLOR_S[niv]||'#999';
+    summHtml+=`<tr style="background:${cor}18;border-top:2px solid ${cor}">
+      <td colspan="${MESES_SUMM.length+2}" style="padding:8px 14px;font-size:12px;font-weight:900;color:${cor};letter-spacing:.05em">● ${niv}</td>
+    </tr>`;
+    const resVals = MESES_SUMM.map(m=>{const r=SUMMARY.find(x=>x.mes===m&&x.nivel===niv);return r?r.resellers:0;});
+    const pedVals = MESES_SUMM.map(m=>{const r=SUMMARY.find(x=>x.mes===m&&x.nivel===niv);return r?r.pedidos:0;});
+    const devVals = MESES_SUMM.map(m=>{const r=SUMMARY.find(x=>x.mes===m&&x.nivel===niv);return r?r.devices:0;});
+    summHtml += summNivRow('Resellers', resVals, cor, false);
+    summHtml += summNivRow('Pedidos',   pedVals, cor, false);
+    summHtml += summNivRow('Devices',   devVals, cor, true);
+  });
+  // Total geral
+  const totResVals = MESES_SUMM.map(m=>NIV_SUMM.reduce((s,n)=>{const r=SUMMARY.find(x=>x.mes===m&&x.nivel===n);return s+(r?r.resellers:0);},0));
+  const totPedVals = MESES_SUMM.map(m=>NIV_SUMM.reduce((s,n)=>{const r=SUMMARY.find(x=>x.mes===m&&x.nivel===n);return s+(r?r.pedidos:0);},0));
+  const totDevVals = MESES_SUMM.map(m=>NIV_SUMM.reduce((s,n)=>{const r=SUMMARY.find(x=>x.mes===m&&x.nivel===n);return s+(r?r.devices:0);},0));
+  const tdT='padding:10px 12px;text-align:right;font-size:13px;font-weight:900;color:#FFE600;border-top:2px solid #FFE600';
+  summHtml+=`<tr style="background:#1A1F6B">
+    <td style="padding:10px 14px;font-size:13px;font-weight:900;color:#FFE600;border-top:2px solid #FFE600">TOTAL</td>
+    ${MESES_SUMM.map((_,i)=>`<td style="${tdT}">${fmtN(totDevVals[i])}</td>`).join('')}
+    <td style="${tdT};background:#FFE600;color:#1A1F6B">${fmtN(totDevVals.reduce((s,v)=>s+v,0))}</td>
+  </tr>`;
+
   document.getElementById('tbody-orders-summary').innerHTML = summHtml ||
-    '<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Sem dados</td></tr>';
+    '<tr><td colspan="7" style="text-align:center;color:#ccc;padding:20px">Sem dados</td></tr>';
 }
 
 // ── DIARIZADO ──
