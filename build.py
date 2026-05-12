@@ -47,6 +47,15 @@ if not dev_daily:
 
 dev_daily_json = json.dumps(dev_daily)
 
+# daily_devices_sold.json — BT_PRODUCT_ORDERS (canal resellers)
+devices_sold = []
+try:
+    with open(r'C:\Users\daviaraujo\resellers-grid\daily_devices_sold.json', encoding='utf-8') as f:
+        devices_sold = json.load(f)
+except FileNotFoundError:
+    pass
+devices_sold_json = json.dumps(devices_sold, ensure_ascii=False)
+
 rmkt_data = []
 try:
     with open(r'C:\Users\daviaraujo\resellers-grid\rmkt_maio.json', encoding='utf-8') as f:
@@ -353,6 +362,19 @@ canvas{max-height:320px}
     <table style="min-width:500px">
       <thead><tr id="thead-dev-daily"></tr></thead>
       <tbody id="tbody-dev-daily"></tbody>
+    </table>
+  </div>
+
+  <!-- Tabela: devices vendidos por dia (BT_PRODUCT_ORDERS) -->
+  <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin:32px 0 12px;border-left:5px solid #009EE3;padding-left:14px">Devices Vendidos por Dia <span style="font-size:11px;font-weight:400;color:#999;text-transform:none;letter-spacing:0">(BT_PRODUCT_ORDERS — canal resellers)</span></div>
+  <div style="background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+    <div style="font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Mês</div>
+    <div id="mes-filter-sold" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+  </div>
+  <div style="overflow-x:auto;margin-bottom:24px">
+    <table style="min-width:500px">
+      <thead><tr id="thead-sold"></tr></thead>
+      <tbody id="tbody-sold"></tbody>
     </table>
   </div>
 
@@ -937,6 +959,78 @@ function renderChartDevices(){
     `<button class="filter-btn${window._devDailyMes===m?' active':''}" onclick="window._devDailyMes='${m}';renderChartDevices()">${m}</button>`).join('');
   document.getElementById('nivel-filter-dev-daily').innerHTML=['Todos',...NIV_ORDER].map(n=>
     `<button class="filter-btn${window._devDailyNivel===n?' active':''}" onclick="window._devDailyNivel='${n}';renderChartDevices()">${n}</button>`).join('');
+
+  // ── Tabela: Devices Vendidos por Dia (BT_PRODUCT_ORDERS) ──────────────
+  const SOLD = """ + devices_sold_json + """;
+  if(!window._soldMes) window._soldMes = 'Mai/26';
+  const soldPref = MES_PREFIX[window._soldMes] || '2026-05';
+
+  // Dias disponíveis no mês selecionado
+  const soldDias = [...new Set(SOLD.filter(r=>r.data.startsWith(soldPref)).map(r=>r.data))].sort();
+  // Modelos disponíveis
+  const soldDevices = [...new Set(SOLD.filter(r=>r.data.startsWith(soldPref)).map(r=>r.device))].sort();
+
+  const DIAS_SEM = ['DOM','SEG','TER','QUA','QUI','SEX','SAB'];
+  const shortSold = d=>{
+    const ds=DIAS_SEM[new Date(d+'T12:00:00').getDay()];
+    const isWE=new Date(d+'T12:00:00').getDay()===0||new Date(d+'T12:00:00').getDay()===6;
+    return `<span style="font-size:9px;opacity:.75;display:block;${isWE?'color:#FFE600':''}">${ds}</span>${d.slice(8)}/${d.slice(5,7)}`;
+  };
+  const thS='background:#009EE3;color:#fff;padding:10px 12px;font-size:11px;white-space:nowrap;text-align:right';
+
+  document.getElementById('thead-sold').innerHTML =
+    `<th style="${thS};text-align:left">Modelo</th>` +
+    soldDias.map(d=>`<th style="${thS}">${shortSold(d)}</th>`).join('') +
+    `<th style="${thS};background:#FFE600;color:#1A1F6B;font-weight:900">TOTAL</th>` +
+    `<th style="${thS};background:#1A1F6B;color:#FFE600;font-weight:900">Média/dia</th>`;
+
+  function colorScaleSold(nums){
+    const s=[...nums].sort((a,b)=>a-b);
+    const p33=s[Math.floor(s.length*0.33)],p66=s[Math.floor(s.length*0.66)];
+    return nums.map(v=>v<=p33?'background:#ffe5e5':v<=p66?'background:#fffde7':'background:#e6f9ec');
+  }
+
+  function soldRow(label, nums, grand){
+    const cs=colorScaleSold(nums);
+    const tot=nums.reduce((s,v)=>s+v,0);
+    const dias=nums.filter(v=>v>0).length||1;
+    const media=(tot/dias).toFixed(1);
+    const pct=grand>0?`<span style="font-size:10px;color:#888;margin-left:4px">${(tot/grand*100).toFixed(1)}%</span>`:'';
+    return `<tr>
+      <td style="padding:10px 14px;font-weight:600;color:#1A1F6B;background:#f9f9ff;white-space:nowrap;font-size:12px;border-bottom:1px solid #f0f0f0">${label}</td>
+      ${nums.map((v,i)=>`<td style="padding:8px 12px;text-align:right;font-size:12px;border-bottom:1px solid #f0f0f0;${cs[i]}">${fmtN(v)}</td>`).join('')}
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#fffde7;font-weight:800;color:#1A1F6B;border-bottom:1px solid #f0f0f0">${fmtN(tot)}${pct}</td>
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#1A1F6B;font-weight:700;color:#FFE600;border-bottom:1px solid #f0f0f0">${media}</td>
+    </tr>`;
+  }
+
+  let soldHtml = '';
+  if(soldDias.length){
+    const grandTot = SOLD.filter(r=>r.data.startsWith(soldPref)).reduce((s,r)=>s+r.qtd,0);
+    soldDevices.forEach(dev=>{
+      const vals = soldDias.map(d=>{
+        const r=SOLD.find(x=>x.data===d&&x.device===dev);
+        return r?r.qtd:0;
+      });
+      soldHtml += soldRow(dev, vals, grandTot);
+    });
+    // Linha total
+    const totVals = soldDias.map(d=>SOLD.filter(r=>r.data.startsWith(soldPref)&&r.data===d).reduce((s,r)=>s+r.qtd,0));
+    const cs=colorScaleSold(totVals);
+    const grand=totVals.reduce((s,v)=>s+v,0);
+    const dias=totVals.filter(v=>v>0).length||1;
+    soldHtml+=`<tr style="background:#f5f5ff;font-weight:700;color:#1A1F6B">
+      <td style="padding:10px 14px;font-size:12px;border-bottom:1px solid #ddd">TOTAL</td>
+      ${totVals.map((v,i)=>`<td style="padding:8px 12px;text-align:right;font-size:12px;border-bottom:1px solid #ddd;${cs[i]}">${fmtN(v)}</td>`).join('')}
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#FFE600;font-weight:900;color:#1A1F6B;border-bottom:1px solid #ddd">${fmtN(grand)}</td>
+      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#1A1F6B;font-weight:900;color:#FFE600;border-bottom:1px solid #ddd">${(grand/dias).toFixed(1)}</td>
+    </tr>`;
+  }
+  document.getElementById('tbody-sold').innerHTML = soldHtml ||
+    '<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Sem dados</td></tr>';
+
+  document.getElementById('mes-filter-sold').innerHTML = MES_ORDER.map(m=>
+    `<button class="filter-btn${window._soldMes===m?' active':''}" onclick="window._soldMes='${m}';renderChartDevices()">${m}</button>`).join('');
 }
 
 // ── DIARIZADO ──
