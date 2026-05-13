@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
   <style>
     :root {
       --yellow: #FFE600;
@@ -368,6 +369,8 @@
     top:            [60,  32,   4,   7,  16,  18, 130,  61,   4,  15,  15,  58,   0]
   };
 
+  Chart.register(ChartDataLabels);
+
   new Chart(document.getElementById('chartNivel'), {
     type: 'bar',
     data: {
@@ -422,6 +425,19 @@
               return `Total: ${total}`;
             }
           }
+        },
+        datalabels: {
+          display: (ctx) => ctx.datasetIndex === 3,
+          anchor: 'end',
+          align: 'end',
+          offset: 2,
+          formatter: (_, ctx) => {
+            const i = ctx.dataIndex;
+            const total = data.aprendiz[i] + data.especialista[i] + data.empreendedor[i] + data.top[i];
+            return total > 0 ? total : '';
+          },
+          font: { family: 'Inter', size: 11, weight: '700' },
+          color: '#1A1A1A'
         },
         annotation: {
           annotations: {
