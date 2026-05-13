@@ -923,7 +923,7 @@ function renderChartDevices(){
   document.getElementById('thead-dev-daily').innerHTML=
     `<th style="${thDD};text-align:left">Nível</th>`+
     devDias.map(d=>`<th style="${thDD}">${shortDD(d)}</th>`).join('')+
-    `<th style="${thDD};background:#FFE600;color:#1A1F6B;font-weight:900">TOTAL</th>`+
+    `<th style="${thDD};background:#1A1F6B;color:#FFE600;font-weight:900">TOTAL</th>`+
     `<th style="${thDD};background:#1A1F6B;color:#FFE600;font-weight:900">Média/dia</th>`;
 
   function colorScale2(nums){
@@ -1000,7 +1000,7 @@ function renderChartDevices(){
   document.getElementById('thead-sold').innerHTML =
     `<th style="${thS};text-align:left">Modelo</th>` +
     soldDias.map(d=>`<th style="${thS}">${shortSold(d)}</th>`).join('') +
-    `<th style="${thS};background:#FFE600;color:#1A1F6B;font-weight:900">TOTAL</th>` +
+    `<th style="${thS};background:#1A1F6B;color:#FFE600;font-weight:900">TOTAL</th>` +
     `<th style="${thS};background:#1A1F6B;color:#FFE600;font-weight:900">Média/dia</th>`;
 
   function colorScaleSold(nums){
@@ -1035,11 +1035,12 @@ function renderChartDevices(){
     const cs=colorScaleSold(totVals);
     const grand=totVals.reduce((s,v)=>s+v,0);
     const dias=totVals.filter(v=>v>0).length||1;
+    const tdSoldTot='padding:8px 12px;text-align:right;font-size:12px;font-weight:900;background:#1A1F6B;color:#FFE600;border-top:2px solid #FFE600';
     soldHtml+=`<tr style="background:#1A1F6B;font-weight:900;color:#FFE600">
       <td style="padding:10px 14px;font-size:12px;border-top:2px solid #FFE600"></td>
-      ${totVals.map((v,i)=>`<td style="padding:8px 12px;text-align:right;font-size:12px;border-top:2px solid #FFE600;${cs[i]};color:#1A1F6B">${fmtN(v)}</td>`).join('')}
-      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#FFE600;font-weight:900;color:#1A1F6B;border-top:2px solid #FFE600">${fmtN(grand)}</td>
-      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#1A1F6B;font-weight:900;color:#FFE600;border-top:2px solid #FFE600">${(grand/dias).toFixed(1)}</td>
+      ${totVals.map(v=>`<td style="${tdSoldTot}">${fmtN(v)}</td>`).join('')}
+      <td style="${tdSoldTot};background:#FFE600;color:#1A1F6B">${fmtN(grand)}</td>
+      <td style="${tdSoldTot}">${(grand/dias).toFixed(1)}</td>
     </tr>`;
   }
   document.getElementById('tbody-sold').innerHTML = soldHtml ||
