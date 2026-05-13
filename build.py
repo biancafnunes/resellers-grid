@@ -439,17 +439,6 @@ canvas{max-height:320px}
     </table>
   </div>
 
-  <!-- Perfilamento -->
-  <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin:28px 0 8px;border-left:5px solid #009EE3;padding-left:14px">Perfilamento</div>
-  <div style="font-size:11px;color:#888;margin-bottom:12px">Fonte: Formulário de cadastro · Nível de experiência · disponível a partir de 08/04/26</div>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="mes-filter-perfil"></div>
-  <div style="overflow-x:auto;margin-bottom:24px">
-    <table style="min-width:500px">
-      <thead><tr id="thead-perfil-row"></tr></thead>
-      <tbody id="tbody-perfil"></tbody>
-    </table>
-  </div>
-
   <!-- TPV Diário transposto -->
   <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin:28px 0 14px;border-left:5px solid #009EE3;padding-left:14px">TPV Diário</div>
   <div style="background:#fff;border-radius:12px;padding:12px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)">
@@ -1225,69 +1214,6 @@ function renderDiarizado(){
   const PERFIL_COLORS_MAP = {'Aprendiz':'#1A1F6B','Especialista':'#3b82f6','Empreendedor':'#f59e0b','Top Empreendedor':'#16a34a','Iniciante':'#9ca3af','Intermediario':'#f59e0b'};
   const PERFIL_COLOR = Object.fromEntries(PERFIS.map((p,i)=>[p, PERFIL_COLORS_MAP[p]||['#1A1F6B','#3b82f6','#f59e0b','#16a34a'][i%4]]));
   const MES_PERFIL = Object.fromEntries([...new Set(PERFIL_DAILY.map(r=>r.data.slice(0,7)))].sort().map(m=>[m, MES_LABEL[m]||m]));
-
-  if(!window._perfilMes) window._perfilMes = '2026-04';
-  const perfilPref = window._perfilMes;
-  const perfilDias = [...new Set(PERFIL_DAILY.filter(r=>r.data.startsWith(perfilPref)).map(r=>r.data))].sort();
-  const shortP = d=>{const ds=['DOM','SEG','TER','QUA','QUI','SEX','SAB'][new Date(d+'T12:00:00').getDay()];return `<span style="font-size:9px;opacity:.8;display:block">${ds}</span>${d.slice(8)}/${d.slice(5,7)}`;};
-
-  const thP='background:#009EE3;color:#fff;padding:10px 12px;font-size:11px;white-space:nowrap;text-align:right';
-  document.getElementById('thead-perfil-row').innerHTML=
-    `<th style="${thP};text-align:left">Perfil / Métrica</th>`+
-    perfilDias.map(d=>`<th style="${thP}">${shortP(d)}</th>`).join('')+
-    `<th style="${thP};background:#FFE600;color:#1A1F6B;font-weight:900">TOTAL</th>`;
-
-  function perfilRow(label,color,nums,totCad){
-    const cs=colorScale(nums);
-    const tot=nums.reduce((s,v)=>s+v,0);
-    // Se totCad fornecido, mostra % conversao no TOTAL; senao mostra o total simples
-    const totDisplay = totCad!=null && totCad>0
-      ? `${fmtN(tot)} <span style="font-size:11px;font-weight:700;color:#1A1F6B">(${(tot/totCad*100).toFixed(1)}%)</span>`
-      : fmtN(tot);
-    return `<tr>
-      <td style="padding:8px 14px;font-size:12px;font-weight:600;background:#f9f9ff;border-bottom:1px solid #f0f0f0;white-space:nowrap">
-        <span style="display:inline-flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:${color}"></span>${label}</span>
-      </td>
-      ${nums.map((v,i)=>`<td style="padding:8px 12px;text-align:right;font-size:12px;border-bottom:1px solid #f0f0f0;${cs[i]}">${fmtN(v)}</td>`).join('')}
-      <td style="padding:8px 12px;text-align:right;font-size:12px;background:#fffde7;font-weight:800;color:#1A1F6B;border-bottom:1px solid #f0f0f0">${totDisplay}</td>
-    </tr>`;
-  }
-
-  let perfilHtml='';
-  PERFIS.forEach((p,pi)=>{
-    const cadVals = perfilDias.map(d=>{const r=PERFIL_DAILY.find(x=>x.data===d&&x.perfil===p);return r?r.cadastrados:0;});
-    const compVals= perfilDias.map(d=>{const r=PERFIL_DAILY.find(x=>x.data===d&&x.perfil===p);return r?r.compra:0;});
-    const totCad=cadVals.reduce((s,v)=>s+v,0), totComp=compVals.reduce((s,v)=>s+v,0);
-    const taxa=totCad?(totComp/totCad*100).toFixed(1)+'%':'—';
-    const col=PERFIL_COLOR[p];
-    // Linha de cabeçalho do grupo
-    const nCols=perfilDias.length+2;
-    perfilHtml+=`<tr style="background:${col}15;border-top:2px solid ${col}">
-      <td colspan="${nCols}" style="padding:7px 14px;font-size:12px;font-weight:900;color:${col};letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid ${col}33">
-        ● ${p} &nbsp;·&nbsp; <span style="font-weight:400;font-size:11px">${fmtN(totCad)} cadastrados · ${fmtN(totComp)} com 1ª compra · ${taxa} conversão</span>
-      </td>
-    </tr>`;
-    perfilHtml+=perfilRow('Cadastrados', col, cadVals, null);
-    perfilHtml+=perfilRow('1ª Compra', col, compVals, totCad);
-  });
-  // Linha de total geral com % conversão + linha de visitantes sem cadastro
-  if(perfilDias.length && PERFIS.length){
-    const totCadAll  = PERFIS.reduce((s,p)=>s+perfilDias.reduce((s2,d)=>{const r=PERFIL_DAILY.find(x=>x.data===d&&x.perfil===p);return s2+(r?r.cadastrados:0);},0),0);
-    const totCompAll = PERFIS.reduce((s,p)=>s+perfilDias.reduce((s2,d)=>{const r=PERFIL_DAILY.find(x=>x.data===d&&x.perfil===p);return s2+(r?r.compra:0);},0),0);
-    const taxaAll = totCadAll?(totCompAll/totCadAll*100).toFixed(1)+'%':'—';
-    const nCols = perfilDias.length+2;
-    perfilHtml+=`<tr style="background:#1A1F6B;font-weight:900;color:#FFE600">
-      <td style="padding:10px 14px;font-size:12px;border-top:2px solid #FFE600">TOTAL</td>
-      <td colspan="${nCols-2}" style="padding:10px 14px;font-size:12px;border-top:2px solid #FFE600;text-align:right;color:#fff">${fmtN(totCadAll)} cadastrados · ${fmtN(totCompAll)} com 1ª compra</td>
-      <td style="padding:10px 14px;font-size:13px;font-weight:900;border-top:2px solid #FFE600;text-align:right;background:#FFE600;color:#1A1F6B">${taxaAll}</td>
-    </tr>`;
-
-  }
-  document.getElementById('tbody-perfil').innerHTML=perfilHtml||'<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Sem dados</td></tr>';
-
-  document.getElementById('mes-filter-perfil').innerHTML=Object.keys(MES_PERFIL).map(m=>
-    `<button class="filter-btn${perfilPref===m?' active':''}" onclick="window._perfilMes='${m}';renderDiarizado()">${MES_PERFIL[m]}</button>`
-  ).join('');
 
   // ── TPV Diário transposto ──
   const prefDiario=MES_PREFIX[tpvDiaMes]||'2026-02';
