@@ -993,7 +993,7 @@ function renderChartDevices(){
   const shortSold = d=>{
     const ds=DIAS_SEM2[new Date(d+'T12:00:00').getDay()];
     const isWE=new Date(d+'T12:00:00').getDay()===0||new Date(d+'T12:00:00').getDay()===6;
-    return `<span style="font-size:9px;opacity:.75;display:block;${isWE?'color:#FFE600':''}">${ds}</span>${d.slice(8)}/${d.slice(5,7)}`;
+    return `${d.slice(8)}/${d.slice(5,7)}<span style="font-size:9px;opacity:.75;display:block;${isWE?'color:#FFE600':''}">${ds}</span>`;
   };
   const thS='background:#009EE3;color:#fff;padding:10px 12px;font-size:11px;white-space:nowrap;text-align:right';
 
