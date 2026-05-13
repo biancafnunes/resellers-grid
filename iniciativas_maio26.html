@@ -36,10 +36,7 @@
     .topbar-title { color: #AAAAAA; font-size: 12px; font-weight: 500; }
 
     /* ── HERO ── */
-    .hero {
-      background: var(--yellow);
-      padding: 32px 40px 28px;
-    }
+    .hero { background: var(--yellow); padding: 32px 40px 28px; }
     .hero-badge {
       display: inline-block;
       background: var(--black);
@@ -52,116 +49,13 @@
       text-transform: uppercase;
       margin-bottom: 14px;
     }
-    .hero-title {
-      font-size: 38px;
-      font-weight: 900;
-      color: var(--black);
-      line-height: 1.1;
-      margin-bottom: 10px;
-      letter-spacing: -1px;
-    }
-    .hero-subtitle {
-      font-size: 12px;
-      color: #3A3A3A;
-      margin-bottom: 18px;
-      max-width: 680px;
-      line-height: 1.6;
-    }
+    .hero-title { font-size: 38px; font-weight: 900; color: var(--black); line-height: 1.1; margin-bottom: 10px; letter-spacing: -1px; }
+    .hero-subtitle { font-size: 12px; color: #3A3A3A; margin-bottom: 18px; max-width: 680px; line-height: 1.6; }
     .hero-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-    .hero-tag {
-      background: var(--black);
-      color: var(--yellow);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 13px;
-      border-radius: 20px;
-    }
-
-    /* ── TABS ── */
-    .tabs-bar {
-      background: var(--white);
-      border-bottom: 2px solid var(--border);
-      padding: 0 40px;
-      display: flex;
-      gap: 4px;
-    }
-    .tab {
-      padding: 14px 18px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      transition: color 0.15s;
-      white-space: nowrap;
-      user-select: none;
-    }
-    .tab:hover { color: var(--black); }
-    .tab.active { color: var(--black); font-weight: 700; border-bottom: 3px solid var(--black); }
+    .hero-tag { background: var(--black); color: var(--yellow); font-size: 11px; font-weight: 600; padding: 4px 13px; border-radius: 20px; }
 
     /* ── CONTENT ── */
     .content { padding: 28px 40px 48px; }
-    .tab-pane { display: none; }
-    .tab-pane.active { display: block; }
-
-    /* ── FILTER CARD ── */
-    .filter-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 24px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: flex-end;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .filter-icon-label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--black);
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      align-self: center;
-    }
-    .filter-icon-label span { font-size: 14px; }
-    .filter-group { display: flex; flex-direction: column; gap: 5px; }
-    .filter-group label { font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: 0.8px; text-transform: uppercase; }
-    .filter-group select {
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 7px 32px 7px 12px;
-      font-size: 13px;
-      font-family: inherit;
-      background: var(--white);
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      min-width: 140px;
-      cursor: pointer;
-    }
-    .btn-reset {
-      background: var(--black);
-      color: var(--yellow);
-      border: none;
-      border-radius: 8px;
-      padding: 9px 18px;
-      font-size: 12px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      letter-spacing: 0.3px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-left: auto;
-    }
-    .btn-reset:hover { background: #333; }
 
     /* ── SUMMARY BAR ── */
     .summary-bar {
@@ -172,18 +66,13 @@
       gap: 48px;
       margin-bottom: 24px;
       align-items: center;
+      flex-wrap: wrap;
     }
-    .summary-item {}
     .summary-value { font-size: 30px; font-weight: 900; color: var(--white); line-height: 1; letter-spacing: -1px; }
     .summary-label { font-size: 10px; font-weight: 600; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; }
 
     /* ── SECTION HEADER ── */
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; margin-top: 28px; }
     .section-badge {
       background: var(--yellow);
       color: var(--black);
@@ -195,7 +84,6 @@
       text-transform: uppercase;
     }
     .section-title { font-size: 14px; font-weight: 700; color: var(--black); }
-    .section-subtitle { font-size: 12px; color: var(--muted); }
 
     /* ── TABLE ── */
     .table-wrap {
@@ -203,7 +91,7 @@
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-      margin-bottom: 24px;
+      margin-bottom: 16px;
     }
     table { width: 100%; border-collapse: collapse; }
     thead th {
@@ -221,40 +109,35 @@
     tbody td { padding: 11px 16px; border-bottom: 1px solid #F2F2F2; color: var(--black); }
     tbody tr:last-child td { border-bottom: none; }
     tbody tr:hover td { background: #FAFAFA; }
-    .total-row td { font-weight: 800; background: #F7F7F7; font-size: 13px; }
-    td.right { text-align: right; font-variant-numeric: tabular-nums; }
+    .total-row td { font-weight: 800; background: #F7F7F7; }
+    td.right { text-align: right; }
     td.center { text-align: center; }
     td.bold { font-weight: 700; }
     td.number { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
 
     /* ── BADGES ── */
-    .badge {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 20px;
-      letter-spacing: 0.3px;
-    }
+    .badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.3px; }
     .badge-1a { background: var(--black); color: var(--yellow); }
     .badge-2a { background: #555555; color: #FFFFFF; }
     .badge-ambas { background: #E0E0E0; color: #333; }
-    .badge-yellow { background: var(--yellow); color: var(--black); }
+
+    /* ── OVERLAP CARDS ── */
+    .overlap-row { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+    .overlap-card {
+      flex: 1;
+      min-width: 200px;
+      background: var(--black);
+      border-radius: 10px;
+      padding: 20px 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .overlap-value { font-size: 32px; font-weight: 900; color: var(--yellow); letter-spacing: -1px; }
+    .overlap-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #888; margin-top: 6px; }
+    .overlap-sub { font-size: 11px; color: #555; margin-top: 4px; }
 
     /* ── KPI CARDS ── */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-    .kpi-card {
-      background: var(--white);
-      border-radius: 10px;
-      padding: 18px 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-      border-left: 4px solid var(--yellow);
-    }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 14px; margin-bottom: 16px; }
+    .kpi-card { background: var(--white); border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-left: 4px solid var(--yellow); }
     .kpi-card.dark { border-left-color: var(--black); }
     .kpi-card.gray { border-left-color: #AAAAAA; }
     .kpi-value { font-size: 26px; font-weight: 900; color: var(--black); letter-spacing: -0.5px; line-height: 1; }
@@ -262,46 +145,19 @@
     .kpi-label { font-size: 10px; color: var(--muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.7px; font-weight: 600; }
     .kpi-sub { font-size: 11px; color: #AAAAAA; margin-top: 3px; }
 
-    /* ── OVERLAP VISUAL ── */
-    .overlap-row {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-    .overlap-card {
-      flex: 1;
-      min-width: 200px;
-      background: var(--white);
-      border-radius: 10px;
-      padding: 20px 24px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-    }
-    .overlap-card.highlight { background: var(--black); }
-    .overlap-card.highlight .overlap-value { color: var(--yellow); }
-    .overlap-card.highlight .overlap-label { color: #888; }
-    .overlap-card.highlight .overlap-sub { color: #666; }
-    .overlap-value { font-size: 32px; font-weight: 900; color: var(--black); letter-spacing: -1px; }
-    .overlap-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-top: 6px; }
-    .overlap-sub { font-size: 11px; color: #BBBBBB; margin-top: 4px; }
-
     /* ── TPV HIGHLIGHT ── */
     .tpv-highlight {
       background: var(--yellow);
       border-radius: 10px;
       padding: 20px 28px;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
-      gap: 32px;
+      gap: 40px;
       flex-wrap: wrap;
     }
-    .tpv-highlight-item { }
-    .tpv-hl-value { font-size: 28px; font-weight: 900; color: var(--black); letter-spacing: -0.5px; }
+    .tpv-hl-value { font-size: 26px; font-weight: 900; color: var(--black); letter-spacing: -0.5px; }
     .tpv-hl-label { font-size: 10px; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 4px; }
-
-    /* ── SPACER ── */
-    .spacer { height: 20px; }
 
     /* ── NOTE ── */
     .note {
@@ -311,8 +167,11 @@
       border-left: 3px solid var(--border);
       padding: 8px 14px;
       border-radius: 0 6px 6px 0;
-      margin-top: 8px;
+      margin-bottom: 8px;
     }
+
+    /* ── DIVIDER ── */
+    .divider { border: none; border-top: 2px solid var(--border); margin: 32px 0 0; }
   </style>
 </head>
 <body>
@@ -340,340 +199,253 @@
   </div>
 </div>
 
-<!-- TABS -->
-<div class="tabs-bar">
-  <div class="tab active" onclick="showTab('visao-geral', this)">Visão Geral</div>
-  <div class="tab" onclick="showTab('por-comunicacao', this)">Por Comunicação</div>
-  <div class="tab" onclick="showTab('resultados', this)">Resultados Maio/26</div>
-</div>
-
 <!-- CONTENT -->
 <div class="content">
 
-  <!-- ═══════════════ TAB 1 — VISÃO GERAL ═══════════════ -->
-  <div id="visao-geral" class="tab-pane active">
-
-    <!-- Filters -->
-    <div class="filter-card">
-      <div class="filter-icon-label"><span>🔍</span> Filtros</div>
-      <div class="filter-group">
-        <label>Comunicação</label>
-        <select onchange="filterTable(this.value)">
-          <option value="todas">Todas</option>
-          <option value="1">1ª Comunicação</option>
-          <option value="2">2ª Comunicação</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label>Referência</label>
-        <select>
-          <option>Maio/26</option>
-        </select>
-      </div>
-      <button class="btn-reset" onclick="filterTable('todas'); document.querySelectorAll('select')[0].value='todas'">
-        ↺ Resetar
-      </button>
+  <!-- ── BLOCO 1: AUDIÊNCIAS ── -->
+  <div class="summary-bar">
+    <div class="summary-item">
+      <div class="summary-value">147.262</div>
+      <div class="summary-label">Custs Únicos</div>
     </div>
-
-    <!-- Summary bar -->
-    <div class="summary-bar">
-      <div class="summary-item">
-        <div class="summary-value">147.262</div>
-        <div class="summary-label">Custs Únicos</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-value">4</div>
-        <div class="summary-label">Iniciativas</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-value">2</div>
-        <div class="summary-label">Comunicações</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-value">Mai/26</div>
-        <div class="summary-label">Referência</div>
-      </div>
+    <div class="summary-item">
+      <div class="summary-value">4</div>
+      <div class="summary-label">Iniciativas</div>
     </div>
-
-    <!-- Table -->
-    <div class="section-header">
-      <span class="section-badge">Audiências</span>
-      <span class="section-title">Breakdown por Iniciativa · Custs Impactados</span>
+    <div class="summary-item">
+      <div class="summary-value">2</div>
+      <div class="summary-label">Comunicações</div>
     </div>
-
-    <div class="table-wrap">
-      <table id="iniciativas-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Iniciativa</th>
-            <th>Critério de Seleção</th>
-            <th class="right">Custs</th>
-            <th class="center">Comunicação</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr data-com="1">
-            <td>1</td>
-            <td class="bold">Leads TAN</td>
-            <td>Cadastro ≥ Out/25 sem primeira compra</td>
-            <td class="number">113.554</td>
-            <td class="center"><span class="badge badge-1a">1ª Comunicação</span></td>
-          </tr>
-          <tr data-com="1">
-            <td>2</td>
-            <td class="bold">Aprendizes sem evolução</td>
-            <td>NIVEL Aprendiz desde Jan/25, sem progressão</td>
-            <td class="number">30.707</td>
-            <td class="center"><span class="badge badge-1a">1ª Comunicação</span></td>
-          </tr>
-          <tr data-com="2">
-            <td>3</td>
-            <td class="bold">Aprendizes com compras</td>
-            <td>Compras de devices Mai/25–Abr/26, nível Aprendiz</td>
-            <td class="number">10.416</td>
-            <td class="center"><span class="badge badge-2a">2ª Comunicação</span></td>
-          </tr>
-          <tr data-com="2">
-            <td>4</td>
-            <td class="bold">Leads RSL sem device</td>
-            <td>Cadastro em 2026 sem 1ª compra de device</td>
-            <td class="number">65.734</td>
-            <td class="center"><span class="badge badge-2a">2ª Comunicação</span></td>
-          </tr>
-          <tr class="total-row">
-            <td colspan="3">Total único (UNION das 4 iniciativas)</td>
-            <td class="number">147.262</td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="note">
-      ⚠️ O total único (147.262) é inferior à soma das iniciativas (220.411) pois há sobreposição de ~73k custs presentes em mais de uma iniciativa.
+    <div class="summary-item">
+      <div class="summary-value">Mai/26</div>
+      <div class="summary-label">Referência</div>
     </div>
   </div>
 
+  <div class="section-header" style="margin-top:0">
+    <span class="section-badge">Audiências</span>
+    <span class="section-title">Breakdown por Iniciativa · Custs Impactados</span>
+  </div>
 
-  <!-- ═══════════════ TAB 2 — POR COMUNICAÇÃO ═══════════════ -->
-  <div id="por-comunicacao" class="tab-pane">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Iniciativa</th>
+          <th>Critério de Seleção</th>
+          <th class="right">Custs</th>
+          <th class="center">Comunicação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td class="bold">Leads TAN</td>
+          <td>Cadastro ≥ Out/25 sem primeira compra</td>
+          <td class="number">113.554</td>
+          <td class="center"><span class="badge badge-1a">1ª Comunicação</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td class="bold">Aprendizes sem evolução</td>
+          <td>NIVEL Aprendiz desde Jan/25, sem progressão</td>
+          <td class="number">30.707</td>
+          <td class="center"><span class="badge badge-1a">1ª Comunicação</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td class="bold">Aprendizes com compras</td>
+          <td>Compras de devices Mai/25–Abr/26, nível Aprendiz</td>
+          <td class="number">10.416</td>
+          <td class="center"><span class="badge badge-2a">2ª Comunicação</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td class="bold">Leads RSL sem device</td>
+          <td>Cadastro em 2026 sem 1ª compra de device</td>
+          <td class="number">65.734</td>
+          <td class="center"><span class="badge badge-2a">2ª Comunicação</span></td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="3">Total único (UNION das 4 iniciativas)</td>
+          <td class="number">147.262</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">⚠️ O total único (147.262) é inferior à soma das iniciativas (220.411) pois há sobreposição de ~73k custs presentes em mais de uma iniciativa.</div>
 
-    <div class="summary-bar">
-      <div class="summary-item">
-        <div class="summary-value">143.574</div>
-        <div class="summary-label">1ª Comunicação</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-value">76.106</div>
-        <div class="summary-label">2ª Comunicação</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-value">72.418</div>
-        <div class="summary-label">Receberam Ambas</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-value">147.262</div>
-        <div class="summary-label">Total Único</div>
-      </div>
+  <!-- ── BLOCO 2: POR COMUNICAÇÃO ── -->
+  <hr class="divider">
+
+  <div class="section-header">
+    <span class="section-badge">Comunicações</span>
+    <span class="section-title">Breakdown por Grupo de Comunicação</span>
+  </div>
+
+  <div class="overlap-row">
+    <div class="overlap-card">
+      <div class="overlap-value">143.574</div>
+      <div class="overlap-label">1ª Comunicação</div>
+      <div class="overlap-sub">Iniciativas Q1 + Q2 · Leads TAN + Aprendizes sem evolução</div>
     </div>
-
-    <div class="section-header">
-      <span class="section-badge">Comunicações</span>
-      <span class="section-title">Breakdown por Grupo de Comunicação</span>
+    <div class="overlap-card">
+      <div class="overlap-value">76.106</div>
+      <div class="overlap-label">2ª Comunicação</div>
+      <div class="overlap-sub">Iniciativas Q3 + Q4 · Aprendizes c/ compras + Leads RSL</div>
     </div>
-
-    <div class="overlap-row">
-      <div class="overlap-card highlight">
-        <div class="overlap-value">143.574</div>
-        <div class="overlap-label">1ª Comunicação</div>
-        <div class="overlap-sub">Iniciativas Q1 + Q2 (Leads TAN + Aprendizes sem evolução)</div>
-      </div>
-      <div class="overlap-card highlight">
-        <div class="overlap-value">76.106</div>
-        <div class="overlap-label">2ª Comunicação</div>
-        <div class="overlap-sub">Iniciativas Q3 + Q4 (Aprendizes c/ compras + Leads RSL)</div>
-      </div>
-    </div>
-
-    <div class="section-header">
-      <span class="section-badge">Sobreposição</span>
-      <span class="section-title">Distribuição Exclusiva × Ambas Comunicações</span>
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Grupo</th>
-            <th>Descrição</th>
-            <th class="right">Custs</th>
-            <th class="right">% do Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="badge badge-1a">Apenas 1ª</span></td>
-            <td>Receberam somente a 1ª comunicação</td>
-            <td class="number">71.156</td>
-            <td class="number">48,3%</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-2a">Apenas 2ª</span></td>
-            <td>Receberam somente a 2ª comunicação</td>
-            <td class="number">3.688</td>
-            <td class="number">2,5%</td>
-          </tr>
-          <tr>
-            <td><span class="badge badge-ambas">Ambas</span></td>
-            <td>Receberam 1ª e 2ª comunicação</td>
-            <td class="number">72.418</td>
-            <td class="number">49,2%</td>
-          </tr>
-          <tr class="total-row">
-            <td colspan="2">Total único</td>
-            <td class="number">147.262</td>
-            <td class="number">100%</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="note">
-      ℹ️ A sobreposição de 72.418 custs indica que quase metade do universo elegível foi impactado pelas duas ondas de comunicação — reforço de mensagem para esse grupo.
+    <div class="overlap-card">
+      <div class="overlap-value">72.418</div>
+      <div class="overlap-label">Receberam Ambas</div>
+      <div class="overlap-sub">Quase metade do universo impactado nas duas ondas</div>
     </div>
   </div>
 
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Grupo</th>
+          <th>Descrição</th>
+          <th class="right">Custs</th>
+          <th class="right">% do Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-1a">Apenas 1ª</span></td>
+          <td>Receberam somente a 1ª comunicação</td>
+          <td class="number">71.156</td>
+          <td class="number">48,3%</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-2a">Apenas 2ª</span></td>
+          <td>Receberam somente a 2ª comunicação</td>
+          <td class="number">3.688</td>
+          <td class="number">2,5%</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-ambas">Ambas</span></td>
+          <td>Receberam 1ª e 2ª comunicação</td>
+          <td class="number">72.418</td>
+          <td class="number">49,2%</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="2">Total único</td>
+          <td class="number">147.262</td>
+          <td class="number">100%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <!-- ═══════════════ TAB 3 — RESULTADOS MAIO/26 ═══════════════ -->
-  <div id="resultados" class="tab-pane">
+  <!-- ── BLOCO 3: RESULTADOS MAIO/26 ── -->
+  <hr class="divider">
 
-    <div class="summary-bar">
-      <div class="summary-item">
-        <div class="summary-value">3.860</div>
-        <div class="summary-label">Custs c/ Atividade</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-value">2,6%</div>
-        <div class="summary-label">Taxa de Ativação</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-value">210</div>
-        <div class="summary-label">Compradores de Device</div>
-      </div>
-      <div class="summary-item">
-        <div class="summary-value">551</div>
-        <div class="summary-label">Pedidos de Devices</div>
-      </div>
+  <div class="summary-bar">
+    <div class="summary-item">
+      <div class="summary-value">3.860</div>
+      <div class="summary-label">Custs c/ Atividade</div>
     </div>
-
-    <!-- TPV Highlight -->
-    <div class="tpv-highlight">
-      <div class="tpv-highlight-item">
-        <div class="tpv-hl-value">R$ 929.679</div>
-        <div class="tpv-hl-label">TPV M0 · Todos com atividade (3.860 custs)</div>
-      </div>
-      <div class="tpv-highlight-item">
-        <div class="tpv-hl-value">R$ 115.769</div>
-        <div class="tpv-hl-label">TPV M0 · Compradores de device (210 custs)</div>
-      </div>
-      <div class="tpv-highlight-item">
-        <div class="tpv-hl-value">R$ 294.982</div>
-        <div class="tpv-hl-label">TPV M0 Point · 551 devices comprados</div>
-      </div>
+    <div class="summary-item">
+      <div class="summary-value">2,6%</div>
+      <div class="summary-label">Taxa de Ativação</div>
     </div>
-
-    <div class="section-header">
-      <span class="section-badge">Devices</span>
-      <span class="section-title">Breakdown de Devices · Maio/26</span>
+    <div class="summary-item">
+      <div class="summary-value">210</div>
+      <div class="summary-label">Compradores de Device</div>
     </div>
-
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-value">551</div>
-        <div class="kpi-label">Pedidos de Devices</div>
-        <div class="kpi-sub">pelos 210 custs compradores</div>
-      </div>
-      <div class="kpi-card dark">
-        <div class="kpi-value">54</div>
-        <div class="kpi-label">Devices Ativos</div>
-        <div class="kpi-sub">1ª transação em Mai/26</div>
-      </div>
-      <div class="kpi-card gray">
-        <div class="kpi-value small">9,8%</div>
-        <div class="kpi-label">Taxa Ativação</div>
-        <div class="kpi-sub">54 ativos / 551 pedidos</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-value small">R$ 294k</div>
-        <div class="kpi-label">TPV M0 Point</div>
-        <div class="kpi-sub">dos 551 devices comprados</div>
-      </div>
-    </div>
-
-    <div class="section-header">
-      <span class="section-badge">TPV</span>
-      <span class="section-title">Resumo de TPV M0 · Maio/26</span>
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Recorte</th>
-            <th>Custs / Devices</th>
-            <th class="right">TPV M0</th>
-            <th class="right">% do Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Todos com atividade em Mai/26</td>
-            <td>3.860 custs</td>
-            <td class="number">R$ 929.679</td>
-            <td class="number">100%</td>
-          </tr>
-          <tr>
-            <td>Apenas compradores de device</td>
-            <td>210 custs</td>
-            <td class="number">R$ 115.769</td>
-            <td class="number">12,5%</td>
-          </tr>
-          <tr>
-            <td>TPV M0 Point dos devices comprados</td>
-            <td>551 devices (614 c/ TPV)</td>
-            <td class="number">R$ 294.982</td>
-            <td class="number">31,7%</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="note">
-      ⚠️ O TPV M0 dos 551 devices inclui sellers M0 atrelados a esses devices, podendo não coincidir diretamente com os 54 ativados — a diferença reflete sellers que já transacionaram mas usaram device comprado em Mai/26.
+    <div class="summary-item">
+      <div class="summary-value">551</div>
+      <div class="summary-label">Pedidos de Devices</div>
     </div>
   </div>
+
+  <div class="tpv-highlight">
+    <div>
+      <div class="tpv-hl-value">R$ 929.679</div>
+      <div class="tpv-hl-label">TPV M0 · Todos com atividade (3.860 custs)</div>
+    </div>
+    <div>
+      <div class="tpv-hl-value">R$ 115.769</div>
+      <div class="tpv-hl-label">TPV M0 · Compradores de device (210 custs)</div>
+    </div>
+    <div>
+      <div class="tpv-hl-value">R$ 294.982</div>
+      <div class="tpv-hl-label">TPV M0 Point · 551 devices comprados</div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-badge">Devices</span>
+    <span class="section-title">Breakdown de Devices · Maio/26</span>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">551</div>
+      <div class="kpi-label">Pedidos de Devices</div>
+      <div class="kpi-sub">pelos 210 custs compradores</div>
+    </div>
+    <div class="kpi-card dark">
+      <div class="kpi-value">54</div>
+      <div class="kpi-label">Devices Ativos</div>
+      <div class="kpi-sub">1ª transação em Mai/26</div>
+    </div>
+    <div class="kpi-card gray">
+      <div class="kpi-value small">9,8%</div>
+      <div class="kpi-label">Taxa de Ativação</div>
+      <div class="kpi-sub">54 ativos / 551 pedidos</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value small">R$ 294k</div>
+      <div class="kpi-label">TPV M0 Point</div>
+      <div class="kpi-sub">dos 551 devices comprados</div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <span class="section-badge">TPV</span>
+    <span class="section-title">Resumo de TPV M0 · Maio/26</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Recorte</th>
+          <th>Custs / Devices</th>
+          <th class="right">TPV M0</th>
+          <th class="right">% do Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Todos com atividade em Mai/26</td>
+          <td>3.860 custs</td>
+          <td class="number">R$ 929.679</td>
+          <td class="number">100%</td>
+        </tr>
+        <tr>
+          <td>Apenas compradores de device</td>
+          <td>210 custs</td>
+          <td class="number">R$ 115.769</td>
+          <td class="number">12,5%</td>
+        </tr>
+        <tr>
+          <td>TPV M0 Point dos devices comprados</td>
+          <td>551 devices</td>
+          <td class="number">R$ 294.982</td>
+          <td class="number">31,7%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">⚠️ O TPV M0 dos 551 devices inclui sellers M0 atrelados a esses devices, podendo não coincidir diretamente com os 54 ativados — a diferença reflete sellers que já transacionaram mas usaram device comprado em Mai/26.</div>
 
 </div>
-
-<script>
-  function showTab(id, el) {
-    document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    el.classList.add('active');
-  }
-
-  function filterTable(val) {
-    const rows = document.querySelectorAll('#iniciativas-table tbody tr[data-com]');
-    rows.forEach(row => {
-      if (val === 'todas' || row.dataset.com === val) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
-    });
-  }
-</script>
 </body>
 </html>
