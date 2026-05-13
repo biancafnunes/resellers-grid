@@ -464,13 +464,13 @@ canvas{max-height:320px}
   <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;border-left:5px solid #FFE600;padding-left:14px">Visão Mensal</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
     <div class="chart-wrap" style="margin-bottom:0">
-      <div class="chart-title">Cadastrados vs Convertidos — por Mês</div>
-      <div class="chart-sub">Cadastros e conversões mensais acumuladas</div>
+      <div class="chart-title">Cadastrados × 1ª Compra (App)</div>
+      <div class="chart-sub">Cadastros mensais vs 1ª compra via BT_PRODUCT_ORDERS — cohort do mês</div>
       <canvas id="chartDiarMensal"></canvas>
     </div>
     <div class="chart-wrap" style="margin-bottom:0">
-      <div class="chart-title">1ª Compra por Mês</div>
-      <div class="chart-sub">Parceiros que fizeram a 1ª compra no mês (independente do cadastro)</div>
+      <div class="chart-title">Cadastrados × 1ª Compra (Leads TAN)</div>
+      <div class="chart-sub">Cadastros mensais vs 1ª compra via RESELLERS_LEADS_TAN</div>
       <canvas id="chartDiarPrimeira"></canvas>
     </div>
   </div>
@@ -1254,53 +1254,57 @@ function renderDiarizado(){
   // Gráfico 1 — Cadastrados vs Convertidos por mês
   const mesesDiar=MES_ORDER;
   const prefDiar=MES_PREFIX;
-  // Cadastrados e 1a compra do grafico = mesma fonte do funil diario (LEADS)
-  const cadMes=mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.cadastrados,0));
-  const cohortMes=mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.convertidos,0));
-  const taxaConvMes=mesesDiar.map((m,i)=>cadMes[i]?+(cohortMes[i]/cadMes[i]*100).toFixed(1):0);
+  // Dados mensais agregados do funil — mesma fonte da tabela
+  const cadMes      = mesesDiar.map(m=>LEADS.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.cadastrados,0));
+  const primAppMes  = mesesDiar.map(m=>FUNIL_APP.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.primeira_compra_app,0));
+  const primTanMes  = mesesDiar.map(m=>FUNIL_APP.filter(r=>r.data.startsWith(prefDiar[m]||'')).reduce((s,r)=>s+r.primeira_compra_ever,0));
+  const taxaApp1    = mesesDiar.map((m,i)=>cadMes[i]?+(primAppMes[i]/cadMes[i]*100).toFixed(1):0);
+  const taxaTan1    = mesesDiar.map((m,i)=>cadMes[i]?+(primTanMes[i]/cadMes[i]*100).toFixed(1):0);
 
+  // Gráfico 1 — Cadastrados × 1ª Compra (App)
   const ex1=Chart.getChart('chartDiarMensal');if(ex1)ex1.destroy();
   new Chart(document.getElementById('chartDiarMensal').getContext('2d'),{
     type:'bar',data:{labels:mesesDiar,datasets:[
-      {label:'Cadastrados no Mês',data:cadMes,backgroundColor:'#1A1F6B',borderRadius:4,yAxisID:'y'},
-      {label:'Fez 1ª Compra (do cohort)',data:cohortMes,backgroundColor:'#FFE600',borderRadius:4,yAxisID:'y'},
-      {label:'% Conversão do Cohort',data:taxaConvMes,type:'line',borderColor:'#009EE3',backgroundColor:'transparent',
+      {label:'Cadastrados',data:cadMes,backgroundColor:'#1A1F6B',borderRadius:4,yAxisID:'y'},
+      {label:'1ª Compra (App)',data:primAppMes,backgroundColor:'#FFE600',borderRadius:4,yAxisID:'y'},
+      {label:'% Conversão',data:taxaApp1,type:'line',borderColor:'#009EE3',backgroundColor:'transparent',
        borderWidth:2.5,pointRadius:5,pointBackgroundColor:'#009EE3',pointBorderColor:'#fff',pointBorderWidth:2,
        fill:false,tension:.3,yAxisID:'y2',order:0},
     ]},options:{responsive:true,plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}},
       tooltip:{mode:'index',intersect:false,callbacks:{
         label:i=>i.dataset.yAxisID==='y2'
-          ?`Conversão: ${i.raw}% (${fmtN(cohortMes[i.dataIndex])} de ${fmtN(cadMes[i.dataIndex])})`
+          ?`Conversão: ${i.raw}% (${fmtN(primAppMes[i.dataIndex])} de ${fmtN(cadMes[i.dataIndex])})`
           :`${i.dataset.label}: ${fmtN(i.raw)}`,
         footer:()=>''
       }}},
       scales:{
         x:{grid:{display:false}},
         y:{position:'left',ticks:{font:{size:10}},grid:{color:'#f0f0f0'}},
-        y2:{position:'right',ticks:{callback:v=>v+'%',font:{size:10}},grid:{display:false},min:0,max:5}
+        y2:{position:'right',ticks:{callback:v=>v+'%',font:{size:10}},grid:{display:false},min:0,max:10}
       }}
   });
 
-  // Gráfico 2 — Aprendiz com compra no mês vs 1ª compra
-  const aprendizComCompra=mesesDiar.map(m=>RAW.find(r=>r.mes===m&&r.nivel==='Aprendiz')?.resellers||0);
-  const aprendizPrimeira=mesesDiar.map(m=>Object.entries(PRIMEIRA_COMPRA).filter(([d])=>d.startsWith(prefDiar[m]||'')).reduce((s,[,v])=>s+v,0));
+  // Gráfico 2 — Cadastrados × 1ª Compra (Leads TAN)
   const ex2=Chart.getChart('chartDiarPrimeira');if(ex2)ex2.destroy();
-  const pctNovos=aprendizComCompra.map((v,i)=>v?+(aprendizPrimeira[i]/v*100).toFixed(1):0);
   new Chart(document.getElementById('chartDiarPrimeira').getContext('2d'),{
     type:'bar',
     data:{labels:mesesDiar,datasets:[
-      {label:'Aprendiz c/ Compra no Mês',data:aprendizComCompra,backgroundColor:'#1A1F6B',borderRadius:4,yAxisID:'y'},
-      {label:'Aprendiz c/ 1ª Compra',data:aprendizPrimeira,backgroundColor:'#009EE3',borderRadius:4,yAxisID:'y'},
-      {label:'% Novos no Mês',data:pctNovos,type:'line',borderColor:'#f59e0b',backgroundColor:'transparent',borderWidth:2.5,pointRadius:6,pointBackgroundColor:'#f59e0b',pointBorderColor:'#fff',pointBorderWidth:2,fill:false,tension:.3,yAxisID:'y2',order:0},
+      {label:'Cadastrados',data:cadMes,backgroundColor:'#1A1F6B',borderRadius:4,yAxisID:'y'},
+      {label:'1ª Compra (Leads TAN)',data:primTanMes,backgroundColor:'#009EE3',borderRadius:4,yAxisID:'y'},
+      {label:'% Conversão',data:taxaTan1,type:'line',borderColor:'#f59e0b',backgroundColor:'transparent',
+       borderWidth:2.5,pointRadius:6,pointBackgroundColor:'#f59e0b',pointBorderColor:'#fff',pointBorderWidth:2,
+       fill:false,tension:.3,yAxisID:'y2',order:0},
     ]},
     options:{responsive:true,plugins:{legend:{position:'top',labels:{font:{size:11},usePointStyle:true}},
       tooltip:{mode:'index',intersect:false,callbacks:{
-        label:i=>i.dataset.yAxisID==='y2'?`% Novos: ${i.raw}%`:`${i.dataset.label}: ${fmtN(i.raw)}`,
+        label:i=>i.dataset.yAxisID==='y2'
+          ?`Conversão: ${i.raw}% (${fmtN(primTanMes[i.dataIndex])} de ${fmtN(cadMes[i.dataIndex])})`
+          :`${i.dataset.label}: ${fmtN(i.raw)}`,
       }}},
       scales:{
         x:{grid:{display:false}},
         y:{ticks:{font:{size:10}},grid:{color:'#f0f0f0'},position:'left'},
-        y2:{ticks:{callback:v=>v+'%',font:{size:10}},grid:{display:false},position:'right',min:0,max:100}
+        y2:{ticks:{callback:v=>v+'%',font:{size:10}},grid:{display:false},position:'right',min:0,max:10}
       }}
   });
 
