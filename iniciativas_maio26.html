@@ -36,6 +36,14 @@
     .topbar-sep { color: #444; }
     .topbar-title { color: #AAAAAA; font-size: 12px; }
 
+    /* ── TABS ── */
+    .tabs-bar { background: var(--white); border-bottom: 2px solid var(--border); padding: 0 40px; display: flex; gap: 4px; }
+    .tab { padding: 13px 18px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: color 0.15s; user-select: none; }
+    .tab:hover { color: var(--black); }
+    .tab.active { color: var(--black); font-weight: 700; border-bottom: 3px solid var(--black); }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
     /* ── HERO ── */
     .hero { background: var(--yellow); padding: 32px 40px 28px; }
     .hero-badge {
@@ -184,7 +192,14 @@
   </p>
 </div>
 
-<!-- MAIN -->
+<!-- TABS -->
+<div class="tabs-bar">
+  <div class="tab active" onclick="showTab('visao', this)">Visão Geral</div>
+  <div class="tab" onclick="showTab('next-steps', this)">Next Steps</div>
+</div>
+
+<!-- TAB: VISÃO GERAL -->
+<div id="visao" class="tab-pane active">
 <div class="main-layout">
 
   <!-- ══════ COLUNA ESQUERDA ══════ -->
@@ -501,6 +516,45 @@
       }
     }
   });
+</script>
+
+</div><!-- fim tab visao -->
+
+<!-- TAB: NEXT STEPS -->
+<div id="next-steps" class="tab-pane" style="padding:40px;">
+  <div style="max-width:860px;">
+
+    <div class="section-label" style="margin-bottom:24px;">
+      <span class="section-badge">Next Steps</span>
+      <span class="section-title">Próximos Passos · Maio/26</span>
+    </div>
+
+    <div style="background:var(--black);border-radius:12px;padding:28px 32px;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <span style="background:var(--yellow);color:var(--black);font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;">01</span>
+        <span style="font-size:15px;font-weight:800;color:var(--white);">Reimpacto de Leads que Não Receberam o Push</span>
+      </div>
+      <p style="font-size:12px;color:#888;line-height:1.7;">Identificar os custs do universo (147.262) que não foram alcançados pelo push e estruturar uma nova onda de comunicação para reengajamento.</p>
+    </div>
+
+    <div style="background:var(--black);border-radius:12px;padding:28px 32px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <span style="background:var(--yellow);color:var(--black);font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;">02</span>
+        <span style="font-size:15px;font-weight:800;color:var(--white);">Plano de Comunicação da Última Semana</span>
+      </div>
+      <p style="font-size:12px;color:#888;line-height:1.7;">Definir cadência e conteúdo das comunicações para a última semana de Maio/26, com foco nos grupos com menor taxa de conversão em devices.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function showTab(id, el) {
+    document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    el.classList.add('active');
+  }
 </script>
 </body>
 </html>
