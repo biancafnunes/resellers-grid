@@ -47,6 +47,15 @@ if not dev_daily:
 
 dev_daily_json = json.dumps(dev_daily)
 
+# daily_funil_app.json — 1ª compra via BT_PRODUCT_ORDERS (cohort cadastros do mes)
+funil_app = []
+try:
+    with open(r'C:\Users\daviaraujo\resellers-grid\daily_funil_app.json', encoding='utf-8') as f:
+        funil_app = json.load(f)
+except FileNotFoundError:
+    pass
+funil_app_json = json.dumps(funil_app, ensure_ascii=False)
+
 # daily_devices_sold.json — BT_PRODUCT_ORDERS (canal resellers)
 devices_sold = []
 try:
@@ -1184,23 +1193,22 @@ function renderDiarizado(){
     </tr>`;
   }
 
+  const FUNIL_APP = """ + funil_app_json + """;
+
   const lpDia          = funilDias.map(d=>{const r=LP_DAILY.find(x=>x.data===d);return r?r.visitas:0;});
   const cadDia         = funilDias.map(d=>LEADS.filter(r=>r.data===d).reduce((s,r)=>s+r.cadastrados,0));
-  const funilConvDia   = funilDias.map(d=>LEADS.filter(r=>r.data===d).reduce((s,r)=>s+r.convertidos,0));
-  const primeiraCompDia= funilDias.map(d=>PRIMEIRA_COMPRA[d]||0);
+  const primeiraAppDia = funilDias.map(d=>{const r=FUNIL_APP.find(x=>x.data===d);return r?r.primeira_compra_app:0;});
 
-  const totLP     = lpDia.reduce((s,v)=>s+v,0);
-  const totCadF   = cadDia.reduce((s,v)=>s+v,0);
-  const totConvF  = funilConvDia.reduce((s,v)=>s+v,0);
-  const totPrimF  = primeiraCompDia.reduce((s,v)=>s+v,0);
-  const taxaConvF = totCadF ? (totConvF/totCadF*100).toFixed(1)+'%' : '—';
-  const taxaLP2Cad= totLP   ? (totCadF/totLP*100).toFixed(1)+'%'    : '—';
+  const totLP      = lpDia.reduce((s,v)=>s+v,0);
+  const totCadF    = cadDia.reduce((s,v)=>s+v,0);
+  const totPrimApp = primeiraAppDia.reduce((s,v)=>s+v,0);
+  const taxaLP2Cad = totLP  ? (totCadF/totLP*100).toFixed(1)+'%'    : '—';
+  const taxaApp    = totCadF? (totPrimApp/totCadF*100).toFixed(1)+'%': '—';
 
   document.getElementById('tbody-funil').innerHTML=funilDias.length?[
-    funilRow('Entradas LP',                lpDia,           v=>fmtN(v),  fmtN(totLP)),
-    funilRow('Cadastrados',                cadDia,          v=>fmtN(v),  `${fmtN(totCadF)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaLP2Cad})</span>`),
-    funilRow('Aprendizes Funil 1ª Compra', funilConvDia,    v=>fmtN(v),  `${fmtN(totConvF)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaConvF})</span>`),
-    funilRow('1ª Compra no Dia',           primeiraCompDia, v=>fmtN(v),  fmtN(totPrimF)),
+    funilRow('Entradas LP',           lpDia,          v=>fmtN(v), fmtN(totLP)),
+    funilRow('Cadastrados',           cadDia,          v=>fmtN(v), `${fmtN(totCadF)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaLP2Cad})</span>`),
+    funilRow('1ª Compra (App)',       primeiraAppDia,  v=>fmtN(v), `${fmtN(totPrimApp)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaApp})</span>`),
   ].join(''):'<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Selecione um mês</td></tr>';
 
   document.getElementById('mes-filter-funil-diar').innerHTML=MES_ORDER.map(m=>

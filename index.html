@@ -1091,23 +1091,22 @@ function renderDiarizado(){
     </tr>`;
   }
 
+  const FUNIL_APP = [{"data": "2026-04-09", "primeira_compra_app": 4}, {"data": "2026-04-10", "primeira_compra_app": 4}, {"data": "2026-04-11", "primeira_compra_app": 1}, {"data": "2026-04-12", "primeira_compra_app": 1}, {"data": "2026-04-13", "primeira_compra_app": 4}, {"data": "2026-04-14", "primeira_compra_app": 2}, {"data": "2026-04-15", "primeira_compra_app": 4}, {"data": "2026-04-16", "primeira_compra_app": 2}, {"data": "2026-04-17", "primeira_compra_app": 1}, {"data": "2026-04-18", "primeira_compra_app": 2}, {"data": "2026-04-19", "primeira_compra_app": 2}, {"data": "2026-04-20", "primeira_compra_app": 2}, {"data": "2026-04-21", "primeira_compra_app": 2}, {"data": "2026-04-22", "primeira_compra_app": 3}, {"data": "2026-04-23", "primeira_compra_app": 4}, {"data": "2026-04-24", "primeira_compra_app": 6}, {"data": "2026-04-25", "primeira_compra_app": 2}, {"data": "2026-04-26", "primeira_compra_app": 3}, {"data": "2026-04-27", "primeira_compra_app": 3}, {"data": "2026-04-28", "primeira_compra_app": 2}, {"data": "2026-04-29", "primeira_compra_app": 6}, {"data": "2026-04-30", "primeira_compra_app": 3}, {"data": "2026-05-01", "primeira_compra_app": 2}, {"data": "2026-05-02", "primeira_compra_app": 1}, {"data": "2026-05-03", "primeira_compra_app": 1}, {"data": "2026-05-04", "primeira_compra_app": 3}, {"data": "2026-05-05", "primeira_compra_app": 1}, {"data": "2026-05-06", "primeira_compra_app": 6}, {"data": "2026-05-07", "primeira_compra_app": 4}, {"data": "2026-05-08", "primeira_compra_app": 2}, {"data": "2026-05-09", "primeira_compra_app": 3}, {"data": "2026-05-11", "primeira_compra_app": 2}, {"data": "2026-05-12", "primeira_compra_app": 1}];
+
   const lpDia          = funilDias.map(d=>{const r=LP_DAILY.find(x=>x.data===d);return r?r.visitas:0;});
   const cadDia         = funilDias.map(d=>LEADS.filter(r=>r.data===d).reduce((s,r)=>s+r.cadastrados,0));
-  const funilConvDia   = funilDias.map(d=>LEADS.filter(r=>r.data===d).reduce((s,r)=>s+r.convertidos,0));
-  const primeiraCompDia= funilDias.map(d=>PRIMEIRA_COMPRA[d]||0);
+  const primeiraAppDia = funilDias.map(d=>{const r=FUNIL_APP.find(x=>x.data===d);return r?r.primeira_compra_app:0;});
 
-  const totLP     = lpDia.reduce((s,v)=>s+v,0);
-  const totCadF   = cadDia.reduce((s,v)=>s+v,0);
-  const totConvF  = funilConvDia.reduce((s,v)=>s+v,0);
-  const totPrimF  = primeiraCompDia.reduce((s,v)=>s+v,0);
-  const taxaConvF = totCadF ? (totConvF/totCadF*100).toFixed(1)+'%' : '—';
-  const taxaLP2Cad= totLP   ? (totCadF/totLP*100).toFixed(1)+'%'    : '—';
+  const totLP      = lpDia.reduce((s,v)=>s+v,0);
+  const totCadF    = cadDia.reduce((s,v)=>s+v,0);
+  const totPrimApp = primeiraAppDia.reduce((s,v)=>s+v,0);
+  const taxaLP2Cad = totLP  ? (totCadF/totLP*100).toFixed(1)+'%'    : '—';
+  const taxaApp    = totCadF? (totPrimApp/totCadF*100).toFixed(1)+'%': '—';
 
   document.getElementById('tbody-funil').innerHTML=funilDias.length?[
-    funilRow('Entradas LP',                lpDia,           v=>fmtN(v),  fmtN(totLP)),
-    funilRow('Cadastrados',                cadDia,          v=>fmtN(v),  `${fmtN(totCadF)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaLP2Cad})</span>`),
-    funilRow('Aprendizes Funil 1ª Compra', funilConvDia,    v=>fmtN(v),  `${fmtN(totConvF)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaConvF})</span>`),
-    funilRow('1ª Compra no Dia',           primeiraCompDia, v=>fmtN(v),  fmtN(totPrimF)),
+    funilRow('Entradas LP',           lpDia,          v=>fmtN(v), fmtN(totLP)),
+    funilRow('Cadastrados',           cadDia,          v=>fmtN(v), `${fmtN(totCadF)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaLP2Cad})</span>`),
+    funilRow('1ª Compra (App)',       primeiraAppDia,  v=>fmtN(v), `${fmtN(totPrimApp)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaApp})</span>`),
   ].join(''):'<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Selecione um mês</td></tr>';
 
   document.getElementById('mes-filter-funil-diar').innerHTML=MES_ORDER.map(m=>
