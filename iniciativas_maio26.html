@@ -6,6 +6,7 @@
   <title>Canal Resellers · RMKT Leads Históricos</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
   <style>
     :root {
       --yellow: #FFE600;
@@ -419,6 +420,48 @@
             footer: (items) => {
               const total = items.reduce((s, i) => s + i.parsed.y, 0);
               return `Total: ${total}`;
+            }
+          }
+        },
+        annotation: {
+          annotations: {
+            event1: {
+              type: 'line',
+              xMin: 3,
+              xMax: 3,
+              borderColor: '#1A1A1A',
+              borderWidth: 2,
+              borderDash: [5, 4],
+              label: {
+                display: true,
+                content: ['📢 04/05', 'Live Aprendizes', 'Novo Preço'],
+                position: 'start',
+                backgroundColor: '#1A1A1A',
+                color: '#FFE600',
+                font: { family: 'Inter', size: 11, weight: '700' },
+                padding: { x: 10, y: 7 },
+                borderRadius: 8,
+                yAdjust: 10
+              }
+            },
+            event2: {
+              type: 'line',
+              xMin: 4,
+              xMax: 4,
+              borderColor: '#555555',
+              borderWidth: 2,
+              borderDash: [5, 4],
+              label: {
+                display: true,
+                content: ['🎯 05/05', 'Novos Incentivos', 'Preço Especial'],
+                position: 'start',
+                backgroundColor: '#555555',
+                color: '#FFFFFF',
+                font: { family: 'Inter', size: 11, weight: '700' },
+                padding: { x: 10, y: 7 },
+                borderRadius: 8,
+                yAdjust: 90
+              }
             }
           }
         }
