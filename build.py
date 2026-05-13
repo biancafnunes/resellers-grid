@@ -1197,18 +1197,22 @@ function renderDiarizado(){
 
   const lpDia          = funilDias.map(d=>{const r=LP_DAILY.find(x=>x.data===d);return r?r.visitas:0;});
   const cadDia         = funilDias.map(d=>LEADS.filter(r=>r.data===d).reduce((s,r)=>s+r.cadastrados,0));
-  const primeiraAppDia = funilDias.map(d=>{const r=FUNIL_APP.find(x=>x.data===d);return r?r.primeira_compra_app:0;});
+  const primeiraAppDia  = funilDias.map(d=>{const r=FUNIL_APP.find(x=>x.data===d);return r?r.primeira_compra_app:0;});
+  const primeiraTanDia  = funilDias.map(d=>{const r=FUNIL_APP.find(x=>x.data===d);return r?r.primeira_compra_ever:0;});
 
-  const totLP      = lpDia.reduce((s,v)=>s+v,0);
-  const totCadF    = cadDia.reduce((s,v)=>s+v,0);
-  const totPrimApp = primeiraAppDia.reduce((s,v)=>s+v,0);
-  const taxaLP2Cad = totLP  ? (totCadF/totLP*100).toFixed(1)+'%'     : '—';
-  const taxaApp    = totCadF? (totPrimApp/totCadF*100).toFixed(1)+'%' : '—';
+  const totLP       = lpDia.reduce((s,v)=>s+v,0);
+  const totCadF     = cadDia.reduce((s,v)=>s+v,0);
+  const totPrimApp  = primeiraAppDia.reduce((s,v)=>s+v,0);
+  const totPrimTan  = primeiraTanDia.reduce((s,v)=>s+v,0);
+  const taxaLP2Cad  = totLP  ? (totCadF/totLP*100).toFixed(1)+'%'     : '—';
+  const taxaApp     = totCadF? (totPrimApp/totCadF*100).toFixed(1)+'%' : '—';
+  const taxaTan     = totCadF? (totPrimTan/totCadF*100).toFixed(1)+'%' : '—';
 
   document.getElementById('tbody-funil').innerHTML=funilDias.length?[
     funilRow('Entradas LP',             lpDia,          v=>fmtN(v), fmtN(totLP)),
     funilRow('Cadastrados',             cadDia,         v=>fmtN(v), `${fmtN(totCadF)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaLP2Cad})</span>`),
     funilRow('1ª Compra (App)',         primeiraAppDia, v=>fmtN(v), `${fmtN(totPrimApp)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaApp})</span>`),
+    funilRow('1ª Compra (Leads TAN)',   primeiraTanDia, v=>fmtN(v), `${fmtN(totPrimTan)} <span style="font-size:11px;color:#1A1F6B;font-weight:900">(${taxaTan})</span>`),
   ].join(''):'<tr><td colspan="33" style="text-align:center;color:#ccc;padding:20px">Selecione um mês</td></tr>';
 
   document.getElementById('mes-filter-funil-diar').innerHTML=MES_ORDER.map(m=>
