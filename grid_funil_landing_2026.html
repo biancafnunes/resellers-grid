@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funil Landing · Resellers 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --yellow: #FFE600;
+      --black: #1A1A1A;
+      --dark: #2D2D2D;
+      --gray-bg: #F4F4F4;
+      --white: #FFFFFF;
+      --border: #E0E0E0;
+      --muted: #888888;
+      --table-header: #2D2D2D;
+      --green: #1A9E5C; --green-bg: #E8F7EF;
+      --red: #C0392B;   --red-bg: #FDEEEC;
+      --amber: #D97706; --amber-bg: #FEF3C7;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--gray-bg); color: var(--black); font-size: 13px; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: var(--black);
+      padding: 13px 32px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-brand { color: var(--yellow); font-weight: 800; font-size: 14px; letter-spacing: -0.3px; }
+    .topbar-sep { color: #444; font-size: 16px; }
+    .topbar-title { color: #AAAAAA; font-size: 12px; font-weight: 500; }
+
+    /* ── HERO ── */
+    .hero { background: var(--yellow); padding: 32px 40px 28px; }
+    .hero-badge {
+      display: inline-block;
+      background: var(--black); color: var(--yellow);
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+      padding: 4px 14px; border-radius: 20px; text-transform: uppercase; margin-bottom: 14px;
+    }
+    .hero-title { font-size: 38px; font-weight: 900; color: var(--black); line-height: 1.1; margin-bottom: 10px; letter-spacing: -1px; }
+    .hero-subtitle { font-size: 12px; color: #3A3A3A; margin-bottom: 18px; max-width: 680px; line-height: 1.6; }
+    .hero-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .hero-tag { background: var(--black); color: var(--yellow); font-size: 11px; font-weight: 600; padding: 4px 13px; border-radius: 20px; }
+
+    /* ── CONTENT ── */
+    .content { padding: 28px 40px 48px; }
+
+    /* ── FILTER CARD ── */
+    .filter-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      padding: 16px 24px; margin-bottom: 20px;
+      display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap;
+    }
+    .filter-icon-label {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; color: var(--black);
+      letter-spacing: 0.8px; text-transform: uppercase; align-self: center;
+    }
+    .filter-group { display: flex; flex-direction: column; gap: 5px; }
+    .filter-group label { font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: 0.8px; text-transform: uppercase; }
+    .filter-group select {
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 7px 32px 7px 12px; font-size: 13px; font-family: inherit;
+      background: var(--white); appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+      min-width: 160px; cursor: pointer;
+    }
+    .btn-reset {
+      background: var(--black); color: var(--yellow); border: none; border-radius: 8px;
+      padding: 9px 18px; font-size: 12px; font-weight: 700; font-family: inherit;
+      cursor: pointer; letter-spacing: 0.3px; display: flex; align-items: center; gap: 6px; margin-left: auto;
+    }
+    .btn-reset:hover { background: #333; }
+
+    /* ── SUMMARY BAR ── */
+    .summary-bar {
+      background: var(--black); border-radius: 10px;
+      padding: 22px 32px; display: flex; gap: 32px;
+      margin-bottom: 24px; align-items: center; flex-wrap: wrap;
+    }
+    .summary-item {}
+    .summary-value { font-size: 26px; font-weight: 900; color: var(--white); line-height: 1; letter-spacing: -1px; }
+    .summary-label { font-size: 10px; font-weight: 600; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; }
+    .summary-divider { width: 1px; height: 40px; background: #444; align-self: center; }
+
+    /* ── SECTION HEADER ── */
+    .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .section-badge {
+      background: var(--yellow); color: var(--black);
+      font-size: 10px; font-weight: 700; padding: 4px 11px;
+      border-radius: 5px; letter-spacing: 0.6px; text-transform: uppercase;
+    }
+    .section-title { font-size: 14px; font-weight: 700; color: var(--black); }
+
+    /* ── TABLE ── */
+    .table-wrap {
+      background: var(--white); border-radius: 10px; overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 24px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      background: var(--table-header); color: var(--white);
+      padding: 11px 16px; text-align: left;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+      white-space: nowrap;
+    }
+    thead th.right  { text-align: right; }
+    thead th.center { text-align: center; }
+    tbody td { padding: 11px 16px; border-bottom: 1px solid #F2F2F2; color: var(--black); vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #FAFAFA; }
+    td.right  { text-align: right; font-variant-numeric: tabular-nums; }
+    td.center { text-align: center; }
+    td.number { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+    td.bold   { font-weight: 700; }
+
+    /* ── BADGES ── */
+    .badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; letter-spacing: 0.3px;
+    }
+    .badge-green { background: var(--green-bg); color: var(--green); }
+    .badge-amber { background: var(--amber-bg); color: var(--amber); }
+    .badge-red   { background: var(--red-bg);   color: var(--red);   }
+    .badge-muted { background: #F0F0F0;          color: #999;         }
+
+    .canal-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      display: inline-block; margin-right: 6px; vertical-align: middle;
+    }
+
+    /* ── TABS ── */
+    .tabs-bar {
+      background: var(--white); border-bottom: 2px solid var(--border);
+      padding: 0 40px; display: flex; gap: 4px;
+    }
+    .tab {
+      padding: 14px 18px; font-size: 13px; font-weight: 500; color: var(--muted);
+      cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px;
+      transition: color 0.15s; white-space: nowrap; user-select: none;
+    }
+    .tab:hover { color: var(--black); }
+    .tab.active { color: var(--black); font-weight: 700; border-bottom: 3px solid var(--black); }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* ── DELTA ── */
+    .delta { font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .delta.up   { color: var(--green); }
+    .delta.down { color: var(--red);   }
+    .delta.flat { color: var(--muted); }
+
+    /* ── KPI COMPARE CARDS ── */
+    .kpi-row { display: flex; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
+    .kpi-card {
+      flex: 1; min-width: 160px; background: var(--white);
+      border-radius: 10px; padding: 18px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-left: 4px solid var(--yellow);
+    }
+    .kpi-card.dark { border-left-color: var(--black); }
+    .kpi-title { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 10px; }
+    .kpi-row2  { display: flex; gap: 20px; align-items: flex-end; }
+    .kpi-month { }
+    .kpi-val   { font-size: 22px; font-weight: 900; color: var(--black); line-height: 1; letter-spacing: -0.5px; }
+    .kpi-lbl   { font-size: 10px; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .kpi-delta { font-size: 13px; font-weight: 800; align-self: center; margin-left: auto; padding: 4px 10px; border-radius: 20px; }
+    .kpi-delta.up   { background: var(--green-bg); color: var(--green); }
+    .kpi-delta.down { background: var(--red-bg);   color: var(--red);   }
+    .kpi-delta.flat { background: #F0F0F0;          color: var(--muted); }
+
+    /* ── NOTE ── */
+    .note {
+      font-size: 11px; color: var(--muted);
+      background: #F9F9F9; border-left: 3px solid var(--border);
+      padding: 8px 14px; border-radius: 0 6px 6px 0; margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <span class="topbar-brand">Mercado Pago</span>
+  <span class="topbar-sep">|</span>
+  <span class="topbar-title">Canal Resellers · Funil Landing 2026</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Canal Resellers — Funil de Conversão</div>
+  <h1 class="hero-title">Funil Landing<br>Resellers 2026</h1>
+  <p class="hero-subtitle">
+    Visitas · Leads · Compras por canal de origem — Jan a Mai/2026.<br>
+    Fontes: MELIDATA.TRACKS · RESELLERS_LEADS_TAN · Atribuição same-month via UTM source/medium.
+  </p>
+  <div class="hero-tags">
+    <span class="hero-tag">Jan–Mai 2026</span>
+    <span class="hero-tag">7 Canais</span>
+    <span class="hero-tag">Same-month Attribution</span>
+    <span class="hero-tag">Dados Reais</span>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <div class="tab active" onclick="showTab('historico', this)">Histórico Mensal</div>
+  <div class="tab" onclick="showTab('mtd', this)">MTD Abr × Mai</div>
+  <div class="tab" onclick="showTab('funil-direto', this)">Funil Direto (LEADS_TAN)</div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ══ TAB HISTÓRICO ══ -->
+  <div id="historico" class="tab-pane active">
+
+  <!-- FILTER -->
+  <div class="filter-card">
+    <div class="filter-icon-label"><span>🔍</span> Filtros</div>
+    <div class="filter-group">
+      <label>Mês</label>
+      <select id="fl-mes" onchange="applyFilter()">
+        <option value="all">Todos os meses</option>
+        <option value="2026-01">Janeiro 2026</option>
+        <option value="2026-02">Fevereiro 2026</option>
+        <option value="2026-03">Março 2026</option>
+        <option value="2026-04">Abril 2026</option>
+        <option value="2026-05">Maio 2026</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Canal</label>
+      <select id="fl-canal" onchange="applyFilter()">
+        <option value="all">Todos os canais</option>
+        <option value="app / push">app / push</option>
+        <option value="micrositio">micrositio</option>
+        <option value="direct">direct</option>
+        <option value="valueprop / canva">valueprop / canva</option>
+        <option value="outros">outros</option>
+        <option value="whatsapp">whatsapp</option>
+        <option value="placement / row_mgm">placement / row_mgm</option>
+      </select>
+    </div>
+    <button class="btn-reset" onclick="resetFilter()">↺ Resetar</button>
+  </div>
+
+  <!-- SUMMARY BAR -->
+  <div class="summary-bar">
+    <div class="summary-item">
+      <div class="summary-value" id="s-vis">—</div>
+      <div class="summary-label">Visitas</div>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-item">
+      <div class="summary-value" id="s-leads">—</div>
+      <div class="summary-label">Leads</div>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-item">
+      <div class="summary-value" id="s-compras">—</div>
+      <div class="summary-label">Compras</div>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-item">
+      <div class="summary-value" id="s-plv">—</div>
+      <div class="summary-label">% Vis → Lead</div>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-item">
+      <div class="summary-value" id="s-plc">—</div>
+      <div class="summary-label">% Lead → Compra</div>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-item">
+      <div class="summary-value" id="s-pvc">—</div>
+      <div class="summary-label">% Vis → Compra</div>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="section-header">
+    <span class="section-badge">Funil</span>
+    <span class="section-title">Visitas · Leads · Compras por Canal</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Mês</th>
+          <th>Canal</th>
+          <th class="right">Visitas</th>
+          <th class="right">Leads</th>
+          <th class="right">Compras</th>
+          <th class="center">% Vis → Lead</th>
+          <th class="center">% Lead → Compra</th>
+          <th class="center">% Vis → Compra</th>
+        </tr>
+      </thead>
+      <tbody id="fl-tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    ⚠️ <strong>Atribuição same-month:</strong> lead/compra contabilizados apenas se ocorreram no mesmo mês da visita à landing. Conversões com ciclo maior (visita em M, compra em M+1) não são capturadas. Um mesmo usuário pode aparecer em mais de um canal caso tenha visitado via origens diferentes no mesmo mês.
+  </div>
+
+  </div><!-- /tab historico -->
+
+
+  <!-- ══ TAB MTD ABR × MAI ══ -->
+  <div id="mtd" class="tab-pane">
+
+    <div class="kpi-row" id="mtd-kpis"></div>
+
+    <div class="section-header">
+      <span class="section-badge">MTD 1–14</span>
+      <span class="section-title">Comparativo por Canal — Abr/26 × Mai/26</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th rowspan="2">Canal</th>
+            <th class="right" colspan="3" style="border-left:1px solid #444;text-align:center">Visitas</th>
+            <th class="right" colspan="3" style="border-left:1px solid #444;text-align:center">Leads</th>
+            <th class="right" colspan="3" style="border-left:1px solid #444;text-align:center">Compras</th>
+            <th class="center" colspan="2" style="border-left:1px solid #444;text-align:center">% Vis→Lead</th>
+            <th class="center" colspan="2" style="border-left:1px solid #444;text-align:center">% Lead→Compra</th>
+            <th class="center" colspan="2" style="border-left:1px solid #444;text-align:center">% Vis→Compra</th>
+          </tr>
+          <tr>
+            <th class="right"  style="border-left:1px solid #444">Abr</th>
+            <th class="right">Mai</th>
+            <th class="center">Δ</th>
+            <th class="right"  style="border-left:1px solid #444">Abr</th>
+            <th class="right">Mai</th>
+            <th class="center">Δ</th>
+            <th class="right"  style="border-left:1px solid #444">Abr</th>
+            <th class="right">Mai</th>
+            <th class="center">Δ</th>
+            <th class="center" style="border-left:1px solid #444">Abr</th>
+            <th class="center">Mai</th>
+            <th class="center" style="border-left:1px solid #444">Abr</th>
+            <th class="center">Mai</th>
+            <th class="center" style="border-left:1px solid #444">Abr</th>
+            <th class="center">Mai</th>
+          </tr>
+        </thead>
+        <tbody id="mtd-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      ⚠️ <strong>MTD 1–14:</strong> dados filtrados do dia 1 ao dia 14 de cada mês para garantir comparabilidade. Leads e compras com restrição de dia ≤ 14 dentro do mês de referência.
+    </div>
+
+    <!-- TABELA DIÁRIA APP/PUSH -->
+    <div class="section-header" style="margin-top:32px">
+      <span class="section-badge">📲 app / push</span>
+      <span class="section-title">Visão Diária — Acessos × Leads × Compras · Abr/26 vs Mai/26</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th rowspan="2">Dia</th>
+            <th class="right" colspan="4" style="text-align:center;border-left:1px solid #444">Abril/26</th>
+            <th class="right" colspan="4" style="text-align:center;border-left:1px solid #444">Maio/26</th>
+          </tr>
+          <tr>
+            <th class="right"  style="border-left:1px solid #444">Visitas</th>
+            <th class="right">Leads</th>
+            <th class="right">Compras</th>
+            <th class="center">% Vis→Lead</th>
+            <th class="right"  style="border-left:1px solid #444">Visitas</th>
+            <th class="right">Leads</th>
+            <th class="right">Compras</th>
+            <th class="center">% Vis→Lead</th>
+          </tr>
+        </thead>
+        <tbody id="diario-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      ⚠️ A partir do dia 06/Mai o canal app/push registra <strong>zero acessos</strong> — indicativo de que a campanha de push foi pausada ou encerrada após 05/Mai/26.
+    </div>
+
+  </div><!-- /tab mtd -->
+
+
+  <!-- ══ TAB FUNIL DIRETO ══ -->
+  <div id="funil-direto" class="tab-pane">
+
+    <div class="kpi-row" id="fd-kpis"></div>
+
+    <div class="section-header">
+      <span class="section-badge">LEADS_TAN</span>
+      <span class="section-title">Visitas × Cadastros × 1ª Compra — Funil Direto · Jan–Mai 2026</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th class="right">Visitas LP</th>
+            <th class="right">Cadastros</th>
+            <th class="center">% Vis → Cad</th>
+            <th class="right">1ª Compra (mesmo mês)</th>
+            <th class="center">% Cad → Compra</th>
+            <th class="right">1ª Compra (acumulado)</th>
+            <th class="center">% Cad → Compra acum</th>
+            <th class="right">Pendentes</th>
+          </tr>
+        </thead>
+        <tbody id="fd-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      ℹ️ <strong>Fonte: RESELLERS_LEADS_TAN</strong> — sem filtro de visita à landing. <strong>Mesmo mês:</strong> cadastro e 1ª compra no mesmo mês calendário. <strong>Acumulado:</strong> 1ª compra em qualquer mês (inclui conversões tardias). <strong>Pendentes:</strong> cadastrados que ainda não compraram.
+    </div>
+
+  </div><!-- /tab funil-direto -->
+
+</div>
+
+<script>
+  const COLORS = {
+    'app / push':'#1A6EE8','micrositio':'#1A9E5C','direct':'#7C3AED',
+    'valueprop / canva':'#D97706','outros':'#888888','whatsapp':'#25D366',
+    'placement / row_mgm':'#E84545'
+  };
+  const MES = {
+    '2026-01':'Jan/26','2026-02':'Fev/26','2026-03':'Mar/26',
+    '2026-04':'Abr/26','2026-05':'Mai/26'
+  };
+  const DATA = [
+    {mes:'2026-01',canal:'app / push',          v:191559,l:13610,c:31,  pLV:7.10, pLC:0.23, pVC:0.02},
+    {mes:'2026-01',canal:'direct',              v:3910,  l:703,  c:42,  pLV:17.98,pLC:5.97, pVC:1.07},
+    {mes:'2026-01',canal:'micrositio',          v:2348,  l:1224, c:31,  pLV:52.13,pLC:2.53, pVC:1.32},
+    {mes:'2026-01',canal:'valueprop / canva',   v:350,   l:152,  c:3,   pLV:43.43,pLC:1.97, pVC:0.86},
+    {mes:'2026-01',canal:'outros',              v:269,   l:38,   c:1,   pLV:14.13,pLC:2.63, pVC:0.37},
+    {mes:'2026-01',canal:'whatsapp',            v:26,    l:13,   c:1,   pLV:50.00,pLC:7.69, pVC:3.85},
+    {mes:'2026-01',canal:'placement / row_mgm', v:1,     l:0,    c:0,   pLV:0,    pLC:null, pVC:0},
+    {mes:'2026-02',canal:'app / push',          v:167055,l:11890,c:38,  pLV:7.12, pLC:0.32, pVC:0.02},
+    {mes:'2026-02',canal:'outros',              v:41570, l:5885, c:24,  pLV:14.16,pLC:0.41, pVC:0.06},
+    {mes:'2026-02',canal:'micrositio',          v:27866, l:3173, c:62,  pLV:11.39,pLC:1.95, pVC:0.22},
+    {mes:'2026-02',canal:'direct',              v:3364,  l:535,  c:71,  pLV:15.90,pLC:13.27,pVC:2.11},
+    {mes:'2026-02',canal:'valueprop / canva',   v:1055,  l:469,  c:10,  pLV:44.45,pLC:2.13, pVC:0.95},
+    {mes:'2026-02',canal:'whatsapp',            v:5,     l:2,    c:0,   pLV:40.00,pLC:0,    pVC:0},
+    {mes:'2026-02',canal:'placement / row_mgm', v:3,     l:0,    c:0,   pLV:0,    pLC:null, pVC:0},
+    {mes:'2026-03',canal:'app / push',          v:165793,l:9778, c:33,  pLV:5.90, pLC:0.34, pVC:0.02},
+    {mes:'2026-03',canal:'micrositio',          v:73300, l:7474, c:115, pLV:10.20,pLC:1.54, pVC:0.16},
+    {mes:'2026-03',canal:'direct',              v:2696,  l:433,  c:71,  pLV:16.06,pLC:16.40,pVC:2.63},
+    {mes:'2026-03',canal:'outros',              v:604,   l:70,   c:1,   pLV:11.59,pLC:1.43, pVC:0.17},
+    {mes:'2026-03',canal:'valueprop / canva',   v:248,   l:106,  c:3,   pLV:42.74,pLC:2.83, pVC:1.21},
+    {mes:'2026-03',canal:'placement / row_mgm', v:2,     l:0,    c:0,   pLV:0,    pLC:null, pVC:0},
+    {mes:'2026-03',canal:'whatsapp',            v:2,     l:1,    c:0,   pLV:50.00,pLC:0,    pVC:0},
+    {mes:'2026-04',canal:'app / push',          v:122908,l:5537, c:19,  pLV:4.50, pLC:0.34, pVC:0.02},
+    {mes:'2026-04',canal:'micrositio',          v:66680, l:5371, c:77,  pLV:8.05, pLC:1.43, pVC:0.12},
+    {mes:'2026-04',canal:'direct',              v:5323,  l:2088, c:51,  pLV:39.23,pLC:2.44, pVC:0.96},
+    {mes:'2026-04',canal:'outros',              v:198,   l:30,   c:1,   pLV:15.15,pLC:3.33, pVC:0.51},
+    {mes:'2026-04',canal:'valueprop / canva',   v:18,    l:7,    c:2,   pLV:38.89,pLC:28.57,pVC:11.11},
+    {mes:'2026-04',canal:'placement / row_mgm', v:4,     l:0,    c:0,   pLV:0,    pLC:null, pVC:0},
+    {mes:'2026-04',canal:'whatsapp',            v:2,     l:0,    c:1,   pLV:0,    pLC:null, pVC:50.00},
+    {mes:'2026-05',canal:'micrositio',          v:24407, l:1402, c:20,  pLV:5.74, pLC:1.43, pVC:0.08},
+    {mes:'2026-05',canal:'app / push',          v:11306, l:291,  c:2,   pLV:2.57, pLC:0.69, pVC:0.02},
+    {mes:'2026-05',canal:'direct',              v:2346,  l:312,  c:29,  pLV:13.30,pLC:9.29, pVC:1.24},
+    {mes:'2026-05',canal:'outros',              v:47,    l:15,   c:3,   pLV:31.91,pLC:20.00,pVC:6.38},
+    {mes:'2026-05',canal:'placement / row_mgm', v:1,     l:0,    c:0,   pLV:0,    pLC:null, pVC:0},
+  ];
+
+  function badge(v, hi, mid) {
+    if (v === null || v === undefined) return '<span class="badge badge-muted">—</span>';
+    const f = v.toFixed(2).replace('.',',') + '%';
+    if (v >= hi)  return `<span class="badge badge-green">${f}</span>`;
+    if (v >= mid) return `<span class="badge badge-amber">${f}</span>`;
+    return `<span class="badge badge-red">${f}</span>`;
+  }
+
+  function totalRow(label, tv, tl, tc, style='') {
+    const pLV = tv > 0 ? tl/tv*100 : null;
+    const pLC = tl > 0 ? tc/tl*100 : null;
+    const pVC = tv > 0 ? tc/tv*100 : null;
+    return `<tr style="background:#F7F7F7;font-weight:800;border-top:1px solid #ddd;${style}">
+      <td style="font-size:11px;color:#888;white-space:nowrap">${label}</td>
+      <td style="font-size:11px;color:#888">—</td>
+      <td class="number">${tv.toLocaleString('pt-BR')}</td>
+      <td class="number">${tl.toLocaleString('pt-BR')}</td>
+      <td class="number">${tc.toLocaleString('pt-BR')}</td>
+      <td class="center">${badge(pLV, 30, 10)}</td>
+      <td class="center">${badge(pLC,  5,  1)}</td>
+      <td class="center">${badge(pVC,  1, 0.2)}</td>
+    </tr>`;
+  }
+
+  function applyFilter() {
+    const mes   = document.getElementById('fl-mes').value;
+    const canal = document.getElementById('fl-canal').value;
+    const rows  = DATA.filter(r => (mes==='all'||r.mes===mes) && (canal==='all'||r.canal===canal));
+
+    // agrupar por mês
+    const byMes = {};
+    rows.forEach(r => { if (!byMes[r.mes]) byMes[r.mes] = []; byMes[r.mes].push(r); });
+
+    let html = '';
+    const meses = [...new Set(rows.map(r => r.mes))];
+    meses.forEach((m, idx) => {
+      const grupo = byMes[m];
+      const border = idx > 0 ? 'border-top:2px solid var(--yellow);' : '';
+      grupo.forEach((r, i) => {
+        const mesLbl = i === 0 ? MES[r.mes] : '';
+        const color  = COLORS[r.canal] || '#888';
+        html += `<tr style="${i===0 ? border : ''}">
+          <td style="font-weight:700;font-size:12px;white-space:nowrap">${mesLbl}</td>
+          <td><span class="canal-dot" style="background:${color}"></span>${r.canal}</td>
+          <td class="number">${r.v.toLocaleString('pt-BR')}</td>
+          <td class="number">${r.l.toLocaleString('pt-BR')}</td>
+          <td class="number">${r.c.toLocaleString('pt-BR')}</td>
+          <td class="center">${badge(r.pLV, 30, 10)}</td>
+          <td class="center">${badge(r.pLC,  5,  1)}</td>
+          <td class="center">${badge(r.pVC,  1, 0.2)}</td>
+        </tr>`;
+      });
+      // linha de subtotal do mês — só exibe se há mais de 1 canal no grupo
+      if (grupo.length > 1) {
+        const tv = grupo.reduce((s,r)=>s+r.v,0);
+        const tl = grupo.reduce((s,r)=>s+r.l,0);
+        const tc = grupo.reduce((s,r)=>s+r.c,0);
+        html += totalRow(`Total ${MES[m]}`, tv, tl, tc);
+      }
+    });
+
+    // linha de total geral — só exibe se há mais de um mês
+    if (meses.length > 1) {
+      const tv = rows.reduce((s,r)=>s+r.v,0);
+      const tl = rows.reduce((s,r)=>s+r.l,0);
+      const tc = rows.reduce((s,r)=>s+r.c,0);
+      html += totalRow('TOTAL GERAL', tv, tl, tc, 'border-top:2px solid var(--black);background:#EFEFEF;');
+    }
+
+    if (!html) html = `<tr><td colspan="8" style="text-align:center;padding:24px;color:#aaa">Nenhum dado para os filtros selecionados.</td></tr>`;
+    document.getElementById('fl-tbody').innerHTML = html;
+
+    const totV = rows.reduce((s,r)=>s+r.v,0);
+    const totL = rows.reduce((s,r)=>s+r.l,0);
+    const totC = rows.reduce((s,r)=>s+r.c,0);
+    const pct  = (n,d) => d>0 ? (n/d*100).toFixed(2).replace('.',',')+'%' : '—';
+    document.getElementById('s-vis').textContent    = totV.toLocaleString('pt-BR');
+    document.getElementById('s-leads').textContent  = totL.toLocaleString('pt-BR');
+    document.getElementById('s-compras').textContent= totC.toLocaleString('pt-BR');
+    document.getElementById('s-plv').textContent    = pct(totL, totV);
+    document.getElementById('s-plc').textContent    = pct(totC, totL);
+    document.getElementById('s-pvc').textContent    = pct(totC, totV);
+  }
+
+  function resetFilter() {
+    document.getElementById('fl-mes').value   = 'all';
+    document.getElementById('fl-canal').value = 'all';
+    applyFilter();
+  }
+
+  applyFilter();
+
+  /* ══ TABS ══ */
+  function showTab(id, el) {
+    document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    el.classList.add('active');
+  }
+
+  /* ══ MTD DATA ══ */
+  const ALL_CANAIS = ['app / push','micrositio','direct','valueprop / canva','outros','whatsapp','placement / row_mgm'];
+
+  const MTD_ABR = {
+    'app / push':          {v:80941, l:3577, c:8,  pLV:4.42,  pLC:0.22,  pVC:0.01},
+    'micrositio':          {v:33639, l:2834, c:41, pLV:8.42,  pLC:1.45,  pVC:0.12},
+    'direct':              {v:2758,  l:1322, c:21, pLV:47.93, pLC:1.59,  pVC:0.76},
+    'outros':              {v:101,   l:10,   c:1,  pLV:9.90,  pLC:10.00, pVC:0.99},
+    'valueprop / canva':   {v:18,    l:7,    c:1,  pLV:38.89, pLC:14.29, pVC:5.56},
+    'placement / row_mgm': {v:3,     l:0,    c:0,  pLV:0,     pLC:null,  pVC:0},
+    'whatsapp':            {v:2,     l:0,    c:1,  pLV:0,     pLC:null,  pVC:50.0},
+  };
+  const MTD_MAI = {
+    'micrositio':          {v:27045, l:1480, c:20, pLV:5.47,  pLC:1.35,  pVC:0.07},
+    'app / push':          {v:11306, l:291,  c:2,  pLV:2.57,  pLC:0.69,  pVC:0.02},
+    'direct':              {v:2684,  l:331,  c:29, pLV:12.33, pLC:8.76,  pVC:1.08},
+    'outros':              {v:53,    l:16,   c:3,  pLV:30.19, pLC:18.75, pVC:5.66},
+    'placement / row_mgm': {v:1,     l:0,    c:0,  pLV:0,     pLC:null,  pVC:0},
+    'whatsapp':            {v:0,     l:0,    c:0,  pLV:null,  pLC:null,  pVC:null},
+    'valueprop / canva':   {v:0,     l:0,    c:0,  pLV:null,  pLC:null,  pVC:null},
+  };
+
+  function delta(a, m, isHigherBetter=true) {
+    if (!a || a === 0) return '<span class="delta flat">—</span>';
+    const pct = ((m - a) / a * 100);
+    const dir = pct > 0 ? 'up' : pct < 0 ? 'down' : 'flat';
+    const eff = isHigherBetter ? dir : (dir==='up'?'down':dir==='down'?'up':'flat');
+    const sym = pct > 0 ? '▲' : pct < 0 ? '▼' : '–';
+    return `<span class="delta ${eff}">${sym} ${Math.abs(pct).toFixed(1)}%</span>`;
+  }
+  function fmtPct(v) {
+    if (v === null || v === undefined) return '<span style="color:#ccc">—</span>';
+    return v.toFixed(2).replace('.',',') + '%';
+  }
+
+  function renderMTD() {
+    // KPI cards
+    const totA = {v:0,l:0,c:0}, totM = {v:0,l:0,c:0};
+    ALL_CANAIS.forEach(cn => {
+      const a = MTD_ABR[cn]||{v:0,l:0,c:0}, m = MTD_MAI[cn]||{v:0,l:0,c:0};
+      totA.v+=a.v; totA.l+=a.l; totA.c+=a.c;
+      totM.v+=m.v; totM.l+=m.l; totM.c+=m.c;
+    });
+
+    function kpiCard(title, aVal, mVal, dark='') {
+      const pct = aVal > 0 ? ((mVal-aVal)/aVal*100) : null;
+      const cls = pct===null?'flat':pct>0?'up':'down';
+      const sym = pct===null?'—':pct>0?`▲ ${Math.abs(pct).toFixed(1)}%`:`▼ ${Math.abs(pct).toFixed(1)}%`;
+      return `<div class="kpi-card ${dark}">
+        <div class="kpi-title">${title}</div>
+        <div class="kpi-row2">
+          <div class="kpi-month"><div class="kpi-val">${aVal.toLocaleString('pt-BR')}</div><div class="kpi-lbl">Abr MTD</div></div>
+          <div class="kpi-month"><div class="kpi-val">${mVal.toLocaleString('pt-BR')}</div><div class="kpi-lbl">Mai MTD</div></div>
+          <div class="kpi-delta ${cls}">${sym}</div>
+        </div>
+      </div>`;
+    }
+    document.getElementById('mtd-kpis').innerHTML =
+      kpiCard('Visitas', totA.v, totM.v) +
+      kpiCard('Leads',   totA.l, totM.l) +
+      kpiCard('Compras', totA.c, totM.c, 'dark');
+
+    // Table — sorted by Abr visitas desc
+    const sorted = [...ALL_CANAIS].sort((a,b)=>(MTD_ABR[b]?.v||0)-(MTD_ABR[a]?.v||0));
+    let html = '';
+    sorted.forEach(cn => {
+      const a = MTD_ABR[cn]||{v:0,l:0,c:0,pLV:null,pLC:null,pVC:null};
+      const m = MTD_MAI[cn]||{v:0,l:0,c:0,pLV:null,pLC:null,pVC:null};
+      const color = COLORS[cn]||'#888';
+      const bl = 'border-left:1px solid #F2F2F2';
+      html += `<tr>
+        <td><span class="canal-dot" style="background:${color}"></span>${cn}</td>
+        <td class="number" style="${bl}">${a.v.toLocaleString('pt-BR')}</td>
+        <td class="number">${m.v.toLocaleString('pt-BR')}</td>
+        <td class="center">${delta(a.v, m.v)}</td>
+        <td class="number" style="${bl}">${a.l.toLocaleString('pt-BR')}</td>
+        <td class="number">${m.l.toLocaleString('pt-BR')}</td>
+        <td class="center">${delta(a.l, m.l)}</td>
+        <td class="number" style="${bl}">${a.c.toLocaleString('pt-BR')}</td>
+        <td class="number">${m.c.toLocaleString('pt-BR')}</td>
+        <td class="center">${delta(a.c, m.c)}</td>
+        <td class="center" style="${bl}">${fmtPct(a.pLV)}</td>
+        <td class="center">${fmtPct(m.pLV)}</td>
+        <td class="center" style="${bl}">${fmtPct(a.pLC)}</td>
+        <td class="center">${fmtPct(m.pLC)}</td>
+        <td class="center" style="${bl}">${fmtPct(a.pVC)}</td>
+        <td class="center">${fmtPct(m.pVC)}</td>
+      </tr>`;
+    });
+    // total row
+    const pLVa = totA.v>0?totA.l/totA.v*100:null, pLVm = totM.v>0?totM.l/totM.v*100:null;
+    const pLCa = totA.l>0?totA.c/totA.l*100:null, pLCm = totM.l>0?totM.c/totM.l*100:null;
+    const pVCa = totA.v>0?totA.c/totA.v*100:null, pVCm = totM.v>0?totM.c/totM.v*100:null;
+    const bl = 'border-left:1px solid #ddd';
+    html += `<tr style="font-weight:800;background:#F7F7F7;border-top:2px solid var(--black)">
+      <td>TOTAL</td>
+      <td class="number" style="${bl}">${totA.v.toLocaleString('pt-BR')}</td>
+      <td class="number">${totM.v.toLocaleString('pt-BR')}</td>
+      <td class="center">${delta(totA.v, totM.v)}</td>
+      <td class="number" style="${bl}">${totA.l.toLocaleString('pt-BR')}</td>
+      <td class="number">${totM.l.toLocaleString('pt-BR')}</td>
+      <td class="center">${delta(totA.l, totM.l)}</td>
+      <td class="number" style="${bl}">${totA.c.toLocaleString('pt-BR')}</td>
+      <td class="number">${totM.c.toLocaleString('pt-BR')}</td>
+      <td class="center">${delta(totA.c, totM.c)}</td>
+      <td class="center" style="${bl}">${fmtPct(pLVa)}</td>
+      <td class="center">${fmtPct(pLVm)}</td>
+      <td class="center" style="${bl}">${fmtPct(pLCa)}</td>
+      <td class="center">${fmtPct(pLCm)}</td>
+      <td class="center" style="${bl}">${fmtPct(pVCa)}</td>
+      <td class="center">${fmtPct(pVCm)}</td>
+    </tr>`;
+    document.getElementById('mtd-tbody').innerHTML = html;
+  }
+
+  renderMTD();
+
+  /* ══ DIÁRIO APP/PUSH ══ */
+  const DIARIO_ABR = {
+    '01':{v:14726,l:548,c:4,  p:3.72},
+    '02':{v:6974, l:260,c:0,  p:3.73},
+    '03':{v:8960, l:359,c:0,  p:4.01},
+    '04':{v:10378,l:349,c:0,  p:3.36},
+    '05':{v:5941, l:222,c:0,  p:3.74},
+    '06':{v:6837, l:281,c:0,  p:4.11},
+    '07':{v:8714, l:375,c:1,  p:4.30},
+    '08':{v:7037, l:201,c:0,  p:2.86},
+    '09':{v:7152, l:219,c:0,  p:3.06},
+    '10':{v:2820, l:86, c:0,  p:3.05},
+    '11':{v:5620, l:205,c:0,  p:3.65},
+    '12':{v:4839, l:150,c:0,  p:3.10},
+    '13':{v:1843, l:64, c:0,  p:3.47},
+    '14':{v:1315, l:63, c:0,  p:4.79},
+  };
+  const DIARIO_MAI = {
+    '01':{v:5742, l:132,c:1,  p:2.30},
+    '02':{v:3427, l:82, c:0,  p:2.39},
+    '03':{v:1799, l:60, c:0,  p:3.34},
+    '04':{v:388,  l:6,  c:0,  p:1.55},
+    '05':{v:29,   l:0,  c:0,  p:0.00},
+    '06':{v:0,    l:0,  c:0,  p:null},
+    '07':{v:1,    l:0,  c:0,  p:0.00},
+    '08':{v:0,    l:0,  c:0,  p:null},
+    '09':{v:0,    l:0,  c:0,  p:null},
+    '10':{v:0,    l:0,  c:0,  p:null},
+    '11':{v:0,    l:0,  c:0,  p:null},
+    '12':{v:0,    l:0,  c:0,  p:null},
+    '13':{v:0,    l:0,  c:0,  p:null},
+    '14':{v:0,    l:0,  c:0,  p:null},
+  };
+
+  function renderDiario() {
+    const dias = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14'];
+    let html = '';
+    let totAV=0,totAL=0,totAC=0, totMV=0,totML=0,totMC=0;
+
+    dias.forEach(d => {
+      const a = DIARIO_ABR[d], m = DIARIO_MAI[d];
+      totAV+=a.v; totAL+=a.l; totAC+=a.c;
+      totMV+=m.v; totML+=m.l; totMC+=m.c;
+      const zeroDia = m.v === 0;
+      const rowStyle = zeroDia ? 'color:#ccc;background:#FAFAFA;' : '';
+      const pA = a.p !== null ? a.p.toFixed(2).replace('.',',')+'%' : '—';
+      const pM = m.p !== null ? m.p.toFixed(2).replace('.',',')+'%' : '<span style="color:#ddd">sem acesso</span>';
+      const bl = 'border-left:1px solid #F2F2F2';
+      html += `<tr style="${rowStyle}">
+        <td style="font-weight:700;white-space:nowrap">${d.replace(/^0/,'')}º</td>
+        <td class="number" style="${bl}">${a.v.toLocaleString('pt-BR')}</td>
+        <td class="number">${a.l.toLocaleString('pt-BR')}</td>
+        <td class="number">${a.c}</td>
+        <td class="center" style="font-size:11px">${pA}</td>
+        <td class="number" style="${bl};${zeroDia?'color:#ddd':''}">${m.v > 0 ? m.v.toLocaleString('pt-BR') : '—'}</td>
+        <td class="number" style="${zeroDia?'color:#ddd':''}">${m.l > 0 ? m.l.toLocaleString('pt-BR') : zeroDia?'—':'0'}</td>
+        <td class="number" style="${zeroDia?'color:#ddd':''}">${m.c}</td>
+        <td class="center" style="font-size:11px">${pM}</td>
+      </tr>`;
+    });
+
+    const pTA = totAV>0?(totAL/totAV*100).toFixed(2).replace('.',',')+'%':'—';
+    const pTM = totMV>0?(totML/totMV*100).toFixed(2).replace('.',',')+'%':'—';
+    const bl  = 'border-left:1px solid #ddd';
+    html += `<tr style="font-weight:800;background:#F7F7F7;border-top:2px solid var(--black)">
+      <td>TOTAL</td>
+      <td class="number" style="${bl}">${totAV.toLocaleString('pt-BR')}</td>
+      <td class="number">${totAL.toLocaleString('pt-BR')}</td>
+      <td class="number">${totAC}</td>
+      <td class="center" style="font-size:11px">${pTA}</td>
+      <td class="number" style="${bl}">${totMV.toLocaleString('pt-BR')}</td>
+      <td class="number">${totML.toLocaleString('pt-BR')}</td>
+      <td class="number">${totMC}</td>
+      <td class="center" style="font-size:11px">${pTM}</td>
+    </tr>`;
+
+    document.getElementById('diario-tbody').innerHTML = html;
+  }
+
+  renderDiario();
+
+  /* ══ FUNIL DIRETO ══ */
+  const FD = [
+    {mes:'Jan/26', vis:198463, cad:15670, cMes:78,  cAcum:143},
+    {mes:'Fev/26', vis:240918, cad:20877, cMes:120, cAcum:194},
+    {mes:'Mar/26', vis:242645, cad:17214, cMes:156, cAcum:212},
+    {mes:'Abr/26', vis:195133, cad:10972, cMes:105, cAcum:125},
+    {mes:'Mai/26', vis:38107,  cad:1943,  cMes:27,  cAcum:29 },
+  ];
+
+  function renderFunilDireto() {
+    const totVis  = FD.reduce((s,r)=>s+r.vis,  0);
+    const totCad  = FD.reduce((s,r)=>s+r.cad,  0);
+    const totMes  = FD.reduce((s,r)=>s+r.cMes,  0);
+    const totAcum = FD.reduce((s,r)=>s+r.cAcum, 0);
+    const totPend = totCad - totAcum;
+
+    function kCard(title, val, sub, dark='') {
+      return `<div class="kpi-card ${dark}">
+        <div class="kpi-title">${title}</div>
+        <div class="kpi-val">${val.toLocaleString('pt-BR')}</div>
+        <div class="kpi-lbl">${sub}</div>
+      </div>`;
+    }
+    document.getElementById('fd-kpis').innerHTML =
+      kCard('Visitas LP', totVis, 'Jan–Mai 2026') +
+      kCard('Cadastros', totCad, (totCad/totVis*100).toFixed(2).replace('.',',')+'% das visitas') +
+      kCard('1ª Compra mesmo mês', totMes,  (totMes/totCad*100).toFixed(2).replace('.',',')+'% dos cadastros') +
+      kCard('1ª Compra acumulado', totAcum, (totAcum/totCad*100).toFixed(2).replace('.',',')+'% dos cadastros', 'dark') +
+      kCard('Pendentes', totPend, 'ainda não compraram');
+
+    function bPct(v, hi, mid) {
+      const cls = v>=hi?'badge-green':v>=mid?'badge-amber':'badge-red';
+      return `<span class="badge ${cls}">${v.toFixed(2).replace('.',',')}%</span>`;
+    }
+
+    let html = '';
+    FD.forEach(r => {
+      const pVC  = r.vis > 0 ? r.cad  / r.vis  * 100 : 0;
+      const pCM  = r.cad > 0 ? r.cMes / r.cad  * 100 : 0;
+      const pCA  = r.cad > 0 ? r.cAcum/ r.cad  * 100 : 0;
+      const pend = r.cad - r.cAcum;
+      html += `<tr>
+        <td style="font-weight:700">${r.mes}</td>
+        <td class="number">${r.vis.toLocaleString('pt-BR')}</td>
+        <td class="number">${r.cad.toLocaleString('pt-BR')}</td>
+        <td class="center">${bPct(pVC, 10, 5)}</td>
+        <td class="number">${r.cMes.toLocaleString('pt-BR')}</td>
+        <td class="center">${bPct(pCM, 1, 0.5)}</td>
+        <td class="number">${r.cAcum.toLocaleString('pt-BR')}</td>
+        <td class="center">${bPct(pCA, 1, 0.5)}</td>
+        <td class="number" style="color:var(--muted)">${pend.toLocaleString('pt-BR')}</td>
+      </tr>`;
+    });
+
+    const pVC = (totCad/totVis*100).toFixed(2).replace('.',',')+'%';
+    const pCM = (totMes/totCad*100).toFixed(2).replace('.',',')+'%';
+    const pCA = (totAcum/totCad*100).toFixed(2).replace('.',',')+'%';
+    html += `<tr style="font-weight:800;background:#F7F7F7;border-top:2px solid var(--black)">
+      <td>TOTAL</td>
+      <td class="number">${totVis.toLocaleString('pt-BR')}</td>
+      <td class="number">${totCad.toLocaleString('pt-BR')}</td>
+      <td class="center"><span class="badge badge-amber">${pVC}</span></td>
+      <td class="number">${totMes.toLocaleString('pt-BR')}</td>
+      <td class="center"><span class="badge badge-red">${pCM}</span></td>
+      <td class="number">${totAcum.toLocaleString('pt-BR')}</td>
+      <td class="center"><span class="badge badge-red">${pCA}</span></td>
+      <td class="number" style="color:var(--muted)">${totPend.toLocaleString('pt-BR')}</td>
+    </tr>`;
+    document.getElementById('fd-tbody').innerHTML = html;
+  }
+
+  renderFunilDireto();
+</script>
+</body>
+</html>
