@@ -413,34 +413,34 @@
         <tbody>
           <tr>
             <td><span class="dot" style="background:#FFE600"></span>Aprendiz</td>
-            <td class="right">893</td>
-            <td class="right">42,8%</td>
+            <td class="right">957</td>
+            <td class="right">44,0%</td>
           </tr>
           <tr>
             <td><span class="dot" style="background:#555555"></span>Especialista</td>
-            <td class="right">311</td>
-            <td class="right">14,9%</td>
+            <td class="right">328</td>
+            <td class="right">15,1%</td>
           </tr>
           <tr>
             <td><span class="dot" style="background:#999999"></span>Empreendedor</td>
-            <td class="right">384</td>
-            <td class="right">18,4%</td>
+            <td class="right">403</td>
+            <td class="right">18,5%</td>
           </tr>
           <tr>
             <td><span class="dot" style="background:#1A1A1A"></span>Top Empreendedor</td>
-            <td class="right">498</td>
-            <td class="right">23,9%</td>
+            <td class="right">487</td>
+            <td class="right">22,4%</td>
           </tr>
           <tr>
             <td><strong>Total</strong></td>
-            <td class="right">2.086</td>
+            <td class="right">2.175</td>
             <td class="right">100%</td>
           </tr>
         </tbody>
       </table>
 
       <div style="font-size:10px;color:#BBBBBB;margin-top:12px;line-height:1.5;">
-        Fonte: BT_PRODUCT_ORDERS × BD_CUST_RESELLER_INFO · Mai/26 (dias 01–13)
+        Fonte: BT_PRODUCT_ORDERS × BT_PRODUCT_ORDER_ITEM × BT_MP_POINT_GROUP · Pro 3 + Smart 2 · Mai/26 (dias 01–13)
       </div>
     </div>
   </div>
@@ -451,10 +451,10 @@
   const labels = ['01/05','02/05','03/05','04/05','05/05','06/05','07/05','08/05','09/05','10/05','11/05','12/05','13/05'];
 
   const data = {
-    aprendiz:       [34,  24,  28,  86, 100, 133, 130, 119,  56,  54, 133, 116,  82],
+    aprendiz:       [34,  24,  28,  85,  98, 102, 109,  98,  56,  54, 110, 100,  59],
     especialista:   [ 4,  20,   0,  26,  20,  15,  73,   8,  70,  32,  13,  26,  21],
     empreendedor:   [15,   1,   2,  83,  38,  47, 115,  34,  13,   6,  14,  16,  19],
-    top:            [60,  32,   4,   7,  16,  18, 130,  61,   4,  15,  15,  58,  47]
+    top:            [60,  32,   4,   7,  16,  18, 130,  61,   4,  15,  15,  78,  47]
   };
 
   Chart.register(ChartDataLabels);
