@@ -632,27 +632,25 @@ function getData(){
 }
 
 // MoM helper — busca valor do mês anterior para o mesmo nível
-// MTD: para o mês atual, escala o mês anterior pelo fator de dias
-const _today = new Date();
-const _currentMes = MES_ORDER[MES_ORDER.length-1];
-const _currentPref = MES_PREFIX[_currentMes]||'';
-const _daysCurrentMTD = _today.getDate();
-const _prevMesPref = MES_PREFIX[MES_ORDER[MES_ORDER.length-2]]||'';
-const _prevMesDays = _prevMesPref ? new Date(parseInt(_prevMesPref.slice(0,4)), parseInt(_prevMesPref.slice(5,7)), 0).getDate() : 30;
-const _mtdScale = _daysCurrentMTD / _prevMesDays;
-
 function getMoM(nivel, mes, field){
   const idx=MES_ORDER.indexOf(mes);
   if(idx<=0) return null;
   const prev=RAW.find(r=>r.mes===MES_ORDER[idx-1]&&r.nivel===nivel);
   if(!prev) return null;
-  // Se mês atual (parcial), escala o mês anterior pelo fator MTD
-  const scale = (mes===_currentMes) ? _mtdScale : 1;
-  return prev[field]*scale;
+  return prev[field];
 }
 function momBadge(cur, prev, isMTD=false){
   if(prev==null||prev===0) return '';
-  const d=((cur-prev)/prev*100);
+  // Se MTD: escala o mês anterior pelo fator de dias
+  let prevScaled = prev;
+  if(isMTD){
+    const currentMes=MES_ORDER[MES_ORDER.length-1];
+    const prevMesPref=MES_PREFIX[MES_ORDER[MES_ORDER.length-2]]||'';
+    const prevMesDays=prevMesPref?new Date(parseInt(prevMesPref.slice(0,4)),parseInt(prevMesPref.slice(5,7)),0).getDate():30;
+    const daysCurrentMTD=new Date().getDate();
+    prevScaled=prev*(daysCurrentMTD/prevMesDays);
+  }
+  const d=((cur-prevScaled)/prevScaled*100);
   const color=d>=0?'#16a34a':'#dc2626';
   const arrow=d>=0?'▲':'▼';
   const label=isMTD?'<span style="font-size:9px;opacity:.7">MTD </span>':'';
@@ -672,7 +670,7 @@ function renderTabela(){
     const prevRes=getMoM(r.nivel,r.mes,'resellers');
     const prevPed=getMoM(r.nivel,r.mes,'pedidos');
     const prevAtiv=getMoM(r.nivel,r.mes,'ativos');
-    const isMTD=(r.mes===_currentMes);
+    const isMTD=(r.mes===MES_ORDER[MES_ORDER.length-1]);
     const mesBg=['#ffffff','#f2f2f2','#ffffff','#f2f2f2','#ffffff'][MES_ORDER.indexOf(r.mes)%5]||'#fff';
     const isFirst=i===0||data[i-1].mes!==r.mes;
     html+=`<tr style="background:${mesBg}">
