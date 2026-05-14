@@ -171,6 +171,78 @@
     .nivel-table tr:last-child td { border-bottom: none; font-weight: 700; background: #F7F7F7; }
     .nivel-table td.right { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
     .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+
+    /* ══ FLOWS TAB ══ */
+    .fl-wrap { padding: 28px 40px 48px; }
+    .fl-summary {
+      background: var(--black);
+      border-radius: 10px;
+      padding: 22px 32px;
+      display: flex;
+      gap: 48px;
+      margin-bottom: 24px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .fl-summary-value { font-size: 30px; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -1px; }
+    .fl-summary-label { font-size: 10px; font-weight: 600; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-top: 5px; }
+
+    .fl-section { display: flex; align-items: center; gap: 10px; margin: 24px 0 10px; }
+    .fl-badge { background: var(--yellow); color: var(--black); font-size: 9px; font-weight: 700; padding: 3px 10px; border-radius: 5px; letter-spacing: 0.6px; text-transform: uppercase; }
+    .fl-badge.dark { background: var(--black); color: var(--yellow); }
+    .fl-section-title { font-size: 13px; font-weight: 700; }
+
+    .fl-table-wrap { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 12px; }
+    .fl-table { width: 100%; border-collapse: collapse; }
+    .fl-table thead th { background: #2D2D2D; color: #fff; padding: 11px 16px; text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+    .fl-table thead th.r { text-align: right; }
+    .fl-table tbody td { padding: 11px 16px; border-bottom: 1px solid #F2F2F2; vertical-align: middle; }
+    .fl-table tbody tr:last-child td { border-bottom: none; }
+    .fl-table tbody tr:hover td { background: #FAFAFA; }
+    .fl-table .fl-total td { font-weight: 800; background: #F7F7F7; }
+    .fl-n { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .fl-b { font-weight: 700; }
+
+    .fl-badge-1a { display: inline-block; background: var(--black); color: var(--yellow); font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+    .fl-badge-2a { display: inline-block; background: #555; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+
+    .fl-rate-wrap { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+    .fl-rate-bar { width: 60px; height: 6px; background: #F0F0F0; border-radius: 3px; overflow: hidden; }
+    .fl-rate-fill { height: 100%; background: #22C55E; border-radius: 3px; }
+    .fl-rate-val { font-size: 12px; font-weight: 700; min-width: 38px; text-align: right; }
+    .fl-or-pill { display: inline-block; background: #EAFAF1; color: #16A34A; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; border: 1px solid #BBF7D0; }
+
+    .fl-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+    .fl-compare-card { background: #fff; border-radius: 10px; padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .fl-compare-header { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .fl-compare-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #F2F2F2; font-size: 12px; }
+    .fl-compare-row:last-child { border-bottom: none; }
+    .fl-compare-key { color: #555; }
+    .fl-compare-val { font-weight: 700; }
+    .fl-compare-val.green { color: #16A34A; }
+
+    .fl-kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .fl-kpi-card { background: #fff; border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border-left: 4px solid var(--yellow); }
+    .fl-kpi-card.dark { border-left-color: var(--black); }
+    .fl-kpi-card.green { border-left-color: #22C55E; }
+    .fl-kpi-card.gray { border-left-color: #AAAAAA; }
+    .fl-kpi-value { font-size: 26px; font-weight: 900; color: var(--black); letter-spacing: -0.5px; line-height: 1; }
+    .fl-kpi-label { font-size: 10px; color: var(--muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.7px; font-weight: 600; }
+    .fl-kpi-sub { font-size: 11px; color: #AAAAAA; margin-top: 3px; }
+
+    .fl-funnel-card { background: #fff; border-radius: 10px; padding: 24px 28px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 12px; }
+    .fl-funnel-steps { display: flex; align-items: center; gap: 0; }
+    .fl-funnel-step { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; }
+    .fl-funnel-step:not(:last-child)::after { content: '▶'; position: absolute; right: -10px; top: 40%; color: #CCC; font-size: 14px; z-index: 2; }
+    .fl-bar-outer { width: 80%; background: #F0F0F0; border-radius: 6px; height: 10px; margin-bottom: 12px; overflow: hidden; }
+    .fl-bar-inner { height: 100%; border-radius: 6px; background: var(--yellow); }
+    .fl-bar-inner.sent { background: var(--black); }
+    .fl-bar-inner.open { background: #22C55E; }
+    .fl-step-val { font-size: 22px; font-weight: 900; color: var(--black); letter-spacing: -0.5px; }
+    .fl-step-pct { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 2px; }
+    .fl-step-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; margin-top: 6px; }
+
+    .fl-note { font-size: 11px; color: var(--muted); background: #F9F9F9; border-left: 3px solid var(--border); padding: 8px 14px; border-radius: 0 6px 6px 0; margin-top: 8px; line-height: 1.6; }
   </style>
 </head>
 <body>
@@ -195,6 +267,7 @@
 <div class="tabs-bar">
   <div class="tab active" onclick="showTab('visao', this)">Visão Geral</div>
   <div class="tab" onclick="showTab('next-steps', this)">Next Steps</div>
+  <div class="tab" onclick="showTab('flows', this)">Flows · Disparos</div>
 </div>
 
 <!-- TAB: VISÃO GERAL -->
@@ -546,6 +619,221 @@
     </div>
 
   </div>
+</div>
+
+<!-- TAB: FLOWS -->
+<div id="flows" class="tab-pane">
+<div class="fl-wrap">
+
+  <!-- Summary -->
+  <div class="fl-summary">
+    <div><div class="fl-summary-value">220.362</div><div class="fl-summary-label">Disparos (Flows)</div></div>
+    <div><div class="fl-summary-value">191.981</div><div class="fl-summary-label">Enviados (Mercurio)</div></div>
+    <div><div class="fl-summary-value">24.021</div><div class="fl-summary-label">Aberturas (Open)</div></div>
+    <div><div class="fl-summary-value">12,5%</div><div class="fl-summary-label">Open Rate</div></div>
+    <div><div class="fl-summary-value">04–13/mai</div><div class="fl-summary-label">Período</div></div>
+  </div>
+
+  <!-- Funil -->
+  <div class="fl-section">
+    <span class="fl-badge">Funil</span>
+    <span class="fl-section-title">Funil Consolidado · 4 Workflows</span>
+  </div>
+  <div class="fl-funnel-card">
+    <div class="fl-funnel-steps">
+      <div class="fl-funnel-step">
+        <div class="fl-bar-outer"><div class="fl-bar-inner" style="width:100%"></div></div>
+        <div class="fl-step-val">220.362</div>
+        <div class="fl-step-pct">100%</div>
+        <div class="fl-step-label">Disparos</div>
+      </div>
+      <div class="fl-funnel-step">
+        <div class="fl-bar-outer"><div class="fl-bar-inner sent" style="width:87.1%"></div></div>
+        <div class="fl-step-val">191.981</div>
+        <div class="fl-step-pct">87,1%</div>
+        <div class="fl-step-label">Enviados</div>
+      </div>
+      <div class="fl-funnel-step">
+        <div class="fl-bar-outer"><div class="fl-bar-inner open" style="width:12.5%"></div></div>
+        <div class="fl-step-val">24.021</div>
+        <div class="fl-step-pct">12,5%</div>
+        <div class="fl-step-label">Aberturas</div>
+      </div>
+    </div>
+  </div>
+  <div class="fl-note">ℹ️ <strong>Disparos</strong> = execuções com sucesso no Flows. <strong>Enviados</strong> = confirmados pelo Mercurio (diferença ~12,9% por token inválido ou DND). <strong>Open Rate</strong> = aberturas únicas ÷ enviados.</div>
+
+  <!-- Comparativo por grupo -->
+  <div class="fl-section">
+    <span class="fl-badge">Grupos</span>
+    <span class="fl-section-title">Comparativo entre Grupos</span>
+  </div>
+  <div class="fl-compare">
+    <div class="fl-compare-card">
+      <div class="fl-compare-header"><span class="fl-badge-1a">Grupo 1</span> 1ª Comunicação · 2 workflows</div>
+      <div class="fl-compare-row"><span class="fl-compare-key">Disparos</span><span class="fl-compare-val">144.179</span></div>
+      <div class="fl-compare-row"><span class="fl-compare-key">Enviados</span><span class="fl-compare-val">122.947</span></div>
+      <div class="fl-compare-row"><span class="fl-compare-key">Aberturas</span><span class="fl-compare-val">15.833</span></div>
+      <div class="fl-compare-row"><span class="fl-compare-key">Open Rate</span><span class="fl-compare-val green">12,9%</span></div>
+    </div>
+    <div class="fl-compare-card">
+      <div class="fl-compare-header"><span class="fl-badge-2a">Grupo 2</span> 2ª Comunicação · 2 workflows</div>
+      <div class="fl-compare-row"><span class="fl-compare-key">Disparos</span><span class="fl-compare-val">76.183</span></div>
+      <div class="fl-compare-row"><span class="fl-compare-key">Enviados</span><span class="fl-compare-val">69.034</span></div>
+      <div class="fl-compare-row"><span class="fl-compare-key">Aberturas</span><span class="fl-compare-val">8.188</span></div>
+      <div class="fl-compare-row"><span class="fl-compare-key">Open Rate</span><span class="fl-compare-val green">11,9%</span></div>
+    </div>
+  </div>
+
+  <!-- Grupo 1 -->
+  <div class="fl-section">
+    <span class="fl-badge">Grupo 1</span>
+    <span class="fl-section-title">1ª Comunicação · Detalhe por Workflow</span>
+  </div>
+  <div class="fl-table-wrap">
+    <table class="fl-table">
+      <thead>
+        <tr>
+          <th>WF_ID</th>
+          <th>Iniciativa</th>
+          <th class="r">Disparos</th>
+          <th class="r">Enviados</th>
+          <th class="r">% Entrega</th>
+          <th class="r">Aberturas</th>
+          <th class="r">Open Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fl-badge-1a">#72335</span></td>
+          <td class="fl-b">Cadastro ≥ Out/25</td>
+          <td class="fl-n">113.426</td>
+          <td class="fl-n">102.722</td>
+          <td class="fl-n">90,6%</td>
+          <td class="fl-n">13.611</td>
+          <td class="fl-n">
+            <div class="fl-rate-wrap">
+              <div class="fl-rate-bar"><div class="fl-rate-fill" style="width:100%"></div></div>
+              <span class="fl-rate-val">13,3%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="fl-badge-1a">#73076</span></td>
+          <td class="fl-b">Aprendizes ativos nos últimos 12 meses</td>
+          <td class="fl-n">30.753</td>
+          <td class="fl-n">20.225</td>
+          <td class="fl-n">65,8%</td>
+          <td class="fl-n">2.222</td>
+          <td class="fl-n">
+            <div class="fl-rate-wrap">
+              <div class="fl-rate-bar"><div class="fl-rate-fill" style="width:82.7%"></div></div>
+              <span class="fl-rate-val">11,0%</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="fl-total">
+          <td colspan="2"><strong>Total Grupo 1</strong></td>
+          <td class="fl-n">144.179</td>
+          <td class="fl-n">122.947</td>
+          <td class="fl-n">85,3%</td>
+          <td class="fl-n">15.833</td>
+          <td class="fl-n"><span class="fl-or-pill">12,9%</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Grupo 2 -->
+  <div class="fl-section">
+    <span class="fl-badge dark">Grupo 2</span>
+    <span class="fl-section-title">2ª Comunicação · Detalhe por Workflow</span>
+  </div>
+  <div class="fl-table-wrap">
+    <table class="fl-table">
+      <thead>
+        <tr>
+          <th>WF_ID</th>
+          <th>Iniciativa</th>
+          <th class="r">Disparos</th>
+          <th class="r">Enviados</th>
+          <th class="r">% Entrega</th>
+          <th class="r">Aberturas</th>
+          <th class="r">Open Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="fl-badge-2a">#73287</span></td>
+          <td class="fl-b">Aprendizes c/ compras · Mai/25–Abr/26</td>
+          <td class="fl-n">10.416</td>
+          <td class="fl-n">7.926</td>
+          <td class="fl-n">76,1%</td>
+          <td class="fl-n">873</td>
+          <td class="fl-n">
+            <div class="fl-rate-wrap">
+              <div class="fl-rate-bar"><div class="fl-rate-fill" style="width:82.7%"></div></div>
+              <span class="fl-rate-val">11,0%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="fl-badge-2a">#73763</span></td>
+          <td class="fl-b">Cadastrados últimos 12 meses s/ 1ª compra</td>
+          <td class="fl-n">65.767</td>
+          <td class="fl-n">61.108</td>
+          <td class="fl-n">92,9%</td>
+          <td class="fl-n">7.315</td>
+          <td class="fl-n">
+            <div class="fl-rate-wrap">
+              <div class="fl-rate-bar"><div class="fl-rate-fill" style="width:90.4%"></div></div>
+              <span class="fl-rate-val">12,0%</span>
+            </div>
+          </td>
+        </tr>
+        <tr class="fl-total">
+          <td colspan="2"><strong>Total Grupo 2</strong></td>
+          <td class="fl-n">76.183</td>
+          <td class="fl-n">69.034</td>
+          <td class="fl-n">90,6%</td>
+          <td class="fl-n">8.188</td>
+          <td class="fl-n"><span class="fl-or-pill">11,9%</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="fl-section">
+    <span class="fl-badge">Consolidado</span>
+    <span class="fl-section-title">Visão Consolidada · 4 Workflows</span>
+  </div>
+  <div class="fl-kpi-grid">
+    <div class="fl-kpi-card">
+      <div class="fl-kpi-value">220.362</div>
+      <div class="fl-kpi-label">Total Disparos</div>
+      <div class="fl-kpi-sub">execuções com sucesso no Flows</div>
+    </div>
+    <div class="fl-kpi-card dark">
+      <div class="fl-kpi-value">191.981</div>
+      <div class="fl-kpi-label">Total Enviados</div>
+      <div class="fl-kpi-sub">87,1% dos disparos</div>
+    </div>
+    <div class="fl-kpi-card green">
+      <div class="fl-kpi-value">24.021</div>
+      <div class="fl-kpi-label">Total Aberturas</div>
+      <div class="fl-kpi-sub">12,5% dos enviados</div>
+    </div>
+    <div class="fl-kpi-card gray">
+      <div class="fl-kpi-value">167.960</div>
+      <div class="fl-kpi-label">Não Abriram</div>
+      <div class="fl-kpi-sub">87,5% dos enviados</div>
+    </div>
+  </div>
+
+  <div class="fl-note">⚠️ A diferença entre enviados e disparos é maior no WF #73076 (65,8% de entrega), possivelmente por base com menor qualidade de token de push. Os demais workflows ficaram acima de 76% de entrega.</div>
+
+</div>
 </div>
 
 <div style="padding: 16px 40px 32px; text-align: left;">
