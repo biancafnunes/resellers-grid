@@ -1,7 +1,12 @@
-BigQuery error in query operation: Error processing job 'meli-bi-
-data:bqjob_r5641ca924fedf472_0000019e21631fc9_1': Not found: Table meli-bi-
-data:SBOX_WHMPBR.BT_MP_IC_ATIVACAO_VENDAS_DEVICES was not found in location US
-op Empreendedor,838
+data,nivel,devices
+2026-01-01,Aprendiz,15
+2026-01-01,Empreendedor,1
+2026-01-01,Especialista,14
+2026-01-01,Top Empreendedor,12
+2026-01-02,Aprendiz,158
+2026-01-02,Empreendedor,43
+2026-01-02,Especialista,49
+2026-01-02,Top Empreendedor,838
 2026-01-03,Aprendiz,58
 2026-01-03,Empreendedor,18
 2026-01-03,Especialista,14
@@ -147,7 +152,7 @@ op Empreendedor,838
 2026-02-08,Empreendedor,2
 2026-02-08,Especialista,5
 2026-02-08,Top Empreendedor,5
-2026-02-09,Aprendiz,70
+2026-02-09,Aprendiz,72
 2026-02-09,Empreendedor,181
 2026-02-09,Especialista,144
 2026-02-09,Top Empreendedor,363
@@ -481,7 +486,7 @@ op Empreendedor,838
 2026-05-04,Empreendedor,83
 2026-05-04,Especialista,32
 2026-05-04,Top Empreendedor,7
-2026-05-05,Aprendiz,81
+2026-05-05,Aprendiz,83
 2026-05-05,Empreendedor,92
 2026-05-05,Especialista,33
 2026-05-05,Top Empreendedor,16
@@ -489,11 +494,11 @@ op Empreendedor,838
 2026-05-06,Empreendedor,48
 2026-05-06,Especialista,34
 2026-05-06,Top Empreendedor,18
-2026-05-07,Aprendiz,67
+2026-05-07,Aprendiz,69
 2026-05-07,Empreendedor,115
 2026-05-07,Especialista,78
 2026-05-07,Top Empreendedor,139
-2026-05-08,Aprendiz,88
+2026-05-08,Aprendiz,89
 2026-05-08,Empreendedor,37
 2026-05-08,Especialista,11
 2026-05-08,Top Empreendedor,61
@@ -501,15 +506,19 @@ op Empreendedor,838
 2026-05-09,Empreendedor,13
 2026-05-09,Especialista,64
 2026-05-09,Top Empreendedor,4
-2026-05-10,Aprendiz,43
+2026-05-10,Aprendiz,45
 2026-05-10,Empreendedor,6
 2026-05-10,Especialista,32
 2026-05-10,Top Empreendedor,15
-2026-05-11,Aprendiz,91
-2026-05-11,Empreendedor,16
-2026-05-11,Especialista,13
-2026-05-11,Top Empreendedor,13
-2026-05-12,Aprendiz,35
-2026-05-12,Empreendedor,16
-2026-05-12,Especialista,5
-2026-05-12,Top Empreendedor,15
+2026-05-11,Aprendiz,109
+2026-05-11,Empreendedor,20
+2026-05-11,Especialista,19
+2026-05-11,Top Empreendedor,15
+2026-05-12,Aprendiz,52
+2026-05-12,Empreendedor,18
+2026-05-12,Especialista,17
+2026-05-12,Top Empreendedor,58
+2026-05-13,Aprendiz,21
+2026-05-13,Empreendedor,6
+2026-05-13,Especialista,12
+2026-05-13,Top Empreendedor,11

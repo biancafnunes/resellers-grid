@@ -262,7 +262,6 @@ canvas{max-height:320px}
   <div class="tab" onclick="showTab('diarizado',this)">&#128197; Diarizado</div>
   <div class="tab" onclick="showTab('niveis',this)">&#11014; Subidas de Nível</div>
   <div class="tab" onclick="showTab('aprendiz',this)">&#127891; Aprendiz &amp; Especialista</div>
-  <div class="tab" onclick="showTab('rmkt',this)">&#127919; Acao RMKT Maio</div>
 </div>
 
 <div class="body">
@@ -557,48 +556,6 @@ canvas{max-height:320px}
 </div>
 
 </div>
-<!-- ── TAB RMKT MAIO ── -->
-<div class="pane" id="pane-rmkt">
-  <div style="font-size:18px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;border-left:5px solid #FFE600;padding-left:14px">Acao RMKT Maio/26</div>
-  <div style="font-size:12px;color:#888;margin-bottom:24px;padding-left:20px">Comunicacoes enviadas no inicio de Mai/26 — resultado acumulado no mes</div>
-
-  <!-- Tabela 1: todos os impactados -->
-  <div style="font-size:13px;font-weight:700;color:#1A1F6B;margin-bottom:10px">Resultado desde 01/05 — base total impactada</div>
-  <div class="grid-wrapper" style="margin-bottom:8px">
-    <table>
-      <thead><tr>
-        <th style="text-align:left;width:32%">Comunicacao</th>
-        <th>Custs Impactados</th>
-        <th>Com resultado</th>
-        <th>Tx</th>
-        <th>Devices Pedidos</th>
-        <th>Devices Ativos</th>
-        <th>TPV M0</th>
-      </tr></thead>
-      <tbody id="tbody-rmkt"></tbody>
-    </table>
-  </div>
-  <div style="font-size:11px;color:#bbb;margin-bottom:28px;padding-left:4px">* Com resultado = fez ao menos 1 pedido de device desde 01/05 &nbsp;|&nbsp; Metricas somadas sobre quem voltou</div>
-
-  <!-- Tabela 2: zerados em abril que voltaram -->
-  <div style="font-size:16px;font-weight:900;color:#1A1F6B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;border-left:5px solid #009EE3;padding-left:14px">Zerados em Abril que Voltaram em Maio</div>
-  <div style="font-size:12px;color:#888;margin-bottom:14px">Apenas os que nao fizeram nenhum pedido em Abr/26 e retomaram em Mai/26</div>
-  <div class="grid-wrapper" style="margin-bottom:8px">
-    <table>
-      <thead><tr>
-        <th style="text-align:left;width:32%">Comunicacao</th>
-        <th>Zerados Abr/26</th>
-        <th>Voltaram Mai/26</th>
-        <th>Tx Retorno</th>
-        <th>Devices Pedidos</th>
-        <th>Devices Ativos</th>
-        <th>TPV M0</th>
-      </tr></thead>
-      <tbody id="tbody-rmkt-reativ"></tbody>
-    </table>
-  </div>
-  <div style="font-size:11px;color:#bbb;padding-left:4px">* Tx Retorno = Voltaram / Zerados &nbsp;|&nbsp; Metricas somadas sobre quem voltou</div>
-</div>
 
 <div class="footer">
   Mercado Pago · Programa Renda na Mão · Fonte: BD_CUST_RESELLER_INFO / BD_CUST_RESELLER_INFO_DAILY
@@ -607,7 +564,7 @@ canvas{max-height:320px}
 
 <script>
 const RAW = [
-  {mes:"Jan/26",nivel:"Aprendiz",        resellers:914,  pedidos:2884, ativos:5873, tpv_m0:5907164,  tpv_m1:null,      tpv_total:5907164,   pedidos_pro:2409, pedidos_smart:475, ativos_pro:5180, ativos_smart:693},
+  {mes:"Jan/26",nivel:"Aprendiz",        resellers:914,  pedidos:2884, ativos:5872, tpv_m0:5907164,  tpv_m1:null,      tpv_total:5907164,   pedidos_pro:2409, pedidos_smart:475, ativos_pro:5179, ativos_smart:693},
   {mes:"Jan/26",nivel:"Especialista",     resellers:113,  pedidos:1397, ativos:107, tpv_m0:3043182,  tpv_m1:null,      tpv_total:3043182,   pedidos_pro:1231, pedidos_smart:166, ativos_pro:94, ativos_smart:13},
   {mes:"Jan/26",nivel:"Empreendedor",     resellers:50,   pedidos:938,  ativos:202,  tpv_m0:3138861,  tpv_m1:null,      tpv_total:3138861,   pedidos_pro:755,  pedidos_smart:183, ativos_pro:147,  ativos_smart:55},
   {mes:"Jan/26",nivel:"Top Empreendedor", resellers:38,   pedidos:1739, ativos:418,  tpv_m0:6646997,  tpv_m1:null,      tpv_total:6646997,   pedidos_pro:1264, pedidos_smart:475, ativos_pro:304,  ativos_smart:114},
@@ -623,10 +580,10 @@ const RAW = [
   {mes:"Abr/26",nivel:"Especialista",     resellers:84,   pedidos:654,  ativos:113,  tpv_m0:3018150,  tpv_m1:4928603,  tpv_total:15786386,  pedidos_pro:536,  pedidos_smart:118, ativos_pro:96,   ativos_smart:17},
   {mes:"Abr/26",nivel:"Empreendedor",     resellers:39,   pedidos:632,  ativos:199,  tpv_m0:2605479,  tpv_m1:6136579,  tpv_total:17093142,  pedidos_pro:460,  pedidos_smart:172, ativos_pro:165,  ativos_smart:34},
   {mes:"Abr/26",nivel:"Top Empreendedor", resellers:44,   pedidos:2379, ativos:483,  tpv_m0:7409872,  tpv_m1:15294971, tpv_total:44996865,  pedidos_pro:1893, pedidos_smart:486, ativos_pro:349,  ativos_smart:134},
-  {mes:"Mai/26",nivel:"Aprendiz",        resellers:297,  pedidos:647,  ativos:1691, tpv_m0:107529,   tpv_m1:287731,   tpv_total:68128738,  pedidos_pro:532,  pedidos_smart:112, ativos_pro:1353, ativos_smart:338},
-  {mes:"Mai/26",nivel:"Especialista",     resellers:35,   pedidos:178,  ativos:36,   tpv_m0:62194,    tpv_m1:445128,   tpv_total:2100251,   pedidos_pro:156,  pedidos_smart:22,  ativos_pro:30,   ativos_smart:6},
-  {mes:"Mai/26",nivel:"Empreendedor",     resellers:32,   pedidos:320,  ativos:80,   tpv_m0:271183,   tpv_m1:854013,   tpv_total:4605771,   pedidos_pro:165,  pedidos_smart:155, ativos_pro:62,   ativos_smart:18},
-  {mes:"Mai/26",nivel:"Top Empreendedor", resellers:18,   pedidos:318,  ativos:91,   tpv_m0:400343,   tpv_m1:1959143,  tpv_total:11116858,  pedidos_pro:265,  pedidos_smart:53,  ativos_pro:67,   ativos_smart:24},
+  {mes:"Mai/26",nivel:"Aprendiz",        resellers:361,  pedidos:812,  ativos:2244, tpv_m0:107529,   tpv_m1:287731,   tpv_total:68128738,  pedidos_pro:532,  pedidos_smart:112, ativos_pro:1795, ativos_smart:449},
+  {mes:"Mai/26",nivel:"Especialista",     resellers:41,   pedidos:256,  ativos:52,   tpv_m0:62194,    tpv_m1:445128,   tpv_total:2100251,   pedidos_pro:156,  pedidos_smart:22,  ativos_pro:45,   ativos_smart:7},
+  {mes:"Mai/26",nivel:"Empreendedor",     resellers:35,   pedidos:341,  ativos:100,  tpv_m0:271183,   tpv_m1:854013,   tpv_total:4605771,   pedidos_pro:165,  pedidos_smart:155, ativos_pro:75,   ativos_smart:25},
+  {mes:"Mai/26",nivel:"Top Empreendedor", resellers:19,   pedidos:357,  ativos:120,  tpv_m0:400343,   tpv_m1:1959143,  tpv_total:11116858,  pedidos_pro:265,  pedidos_smart:53,  ativos_pro:88,   ativos_smart:32},
 ];
 
 const DAILY = """ + daily_json + """;
