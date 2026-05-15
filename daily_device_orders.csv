@@ -262,7 +262,7 @@ data,nivel,devices
 2026-03-08,Empreendedor,14
 2026-03-08,Especialista,15
 2026-03-08,Top Empreendedor,17
-2026-03-09,Aprendiz,110
+2026-03-09,Aprendiz,108
 2026-03-09,Empreendedor,39
 2026-03-09,Especialista,40
 2026-03-09,Top Empreendedor,82
@@ -475,14 +475,14 @@ data,nivel,devices
 2026-05-01,Empreendedor,165
 2026-05-01,Especialista,4
 2026-05-01,Top Empreendedor,60
-2026-05-02,Aprendiz,31
+2026-05-02,Aprendiz,33
 2026-05-02,Empreendedor,1
 2026-05-02,Especialista,18
 2026-05-02,Top Empreendedor,32
 2026-05-03,Aprendiz,25
 2026-05-03,Empreendedor,3
 2026-05-03,Top Empreendedor,4
-2026-05-04,Aprendiz,85
+2026-05-04,Aprendiz,86
 2026-05-04,Empreendedor,83
 2026-05-04,Especialista,32
 2026-05-04,Top Empreendedor,7
@@ -510,15 +510,19 @@ data,nivel,devices
 2026-05-10,Empreendedor,6
 2026-05-10,Especialista,32
 2026-05-10,Top Empreendedor,15
-2026-05-11,Aprendiz,109
+2026-05-11,Aprendiz,112
 2026-05-11,Empreendedor,20
 2026-05-11,Especialista,19
 2026-05-11,Top Empreendedor,15
-2026-05-12,Aprendiz,52
-2026-05-12,Empreendedor,18
-2026-05-12,Especialista,17
-2026-05-12,Top Empreendedor,58
-2026-05-13,Aprendiz,21
-2026-05-13,Empreendedor,6
-2026-05-13,Especialista,12
-2026-05-13,Top Empreendedor,11
+2026-05-12,Aprendiz,69
+2026-05-12,Empreendedor,22
+2026-05-12,Especialista,26
+2026-05-12,Top Empreendedor,78
+2026-05-13,Aprendiz,30
+2026-05-13,Empreendedor,15
+2026-05-13,Especialista,16
+2026-05-13,Top Empreendedor,12
+2026-05-14,Aprendiz,32
+2026-05-14,Empreendedor,11
+2026-05-14,Especialista,8
+2026-05-14,Top Empreendedor,8
