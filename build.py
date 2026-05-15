@@ -670,8 +670,18 @@ function renderTabela(){
     const prevRes=getMoM(r.nivel,r.mes,'resellers');
     const prevPed=getMoM(r.nivel,r.mes,'pedidos');
     const prevAtiv=getMoM(r.nivel,r.mes,'ativos');
-    const prevTpvM0=getMoM(r.nivel,r.mes,'tpv_m0');
     const isMTD=(r.mes===MES_ORDER[MES_ORDER.length-1]);
+    // TPV M0 MTD: usa dados reais do DAILY para o mesmo período do mês anterior
+    let prevTpvM0;
+    if(isMTD){
+      const dayMTD=new Date().getDate();
+      const prevMesPref=MES_PREFIX[MES_ORDER[MES_ORDER.length-2]]||'';
+      const pad=d=>String(d).padStart(2,'0');
+      const dtIni=`${prevMesPref}-01`, dtFim=`${prevMesPref}-${pad(dayMTD)}`;
+      prevTpvM0=DAILY.filter(d=>d.data>=dtIni&&d.data<=dtFim&&d.nivel===r.nivel).reduce((s,d)=>s+(d.tpv_m0||0),0);
+    } else {
+      prevTpvM0=getMoM(r.nivel,r.mes,'tpv_m0');
+    }
     const mesBg=['#ffffff','#f2f2f2','#ffffff','#f2f2f2','#ffffff'][MES_ORDER.indexOf(r.mes)%5]||'#fff';
     const isFirst=i===0||data[i-1].mes!==r.mes;
     html+=`<tr style="background:${mesBg}">
