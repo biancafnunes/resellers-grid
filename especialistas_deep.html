@@ -11,28 +11,29 @@
   .subtitle { font-size: 12px; color: #888; margin-bottom: 28px; }
   .section-title { font-size: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em;
     border-left: 5px solid #FFE600; padding-left: 12px; margin: 28px 0 14px; color: #1A1F6B; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
-  .card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.06); overflow: hidden; }
+  .card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    overflow: hidden; margin-bottom: 24px; }
   .card-title { background: #1A1F6B; color: #FFE600; font-weight: 900; font-size: 13px;
     padding: 12px 16px; text-transform: uppercase; letter-spacing: .05em; }
+  .card-narrow { max-width: 580px; }
   table { width: 100%; border-collapse: collapse; }
   th { background: #1A1F6B; color: #FFE600; padding: 10px 14px; font-size: 11px;
     text-transform: uppercase; text-align: right; white-space: nowrap; }
   th:first-child { text-align: left; }
   td { padding: 10px 14px; font-size: 13px; border-bottom: 1px solid #f0f0f0; text-align: right; }
   td:first-child { text-align: left; font-weight: 600; color: #1A1F6B; background: #f9f9ff; }
-  tr:last-child td { border-bottom: none; font-weight: 900; background: #f0f0f0; }
   .green { color: #16a34a; font-weight: 700; }
   .red   { color: #dc2626; font-weight: 700; }
-  .badge { font-size: 10px; margin-left: 4px; }
-  .top10-table td:first-child { font-weight: 400; color: #555; background: #fff; }
-  .top10-table tr.demais td { background: #fff9e6; font-style: italic; color: #888; }
-  .top10-table tr.total-row td { background: #1A1F6B; color: #FFE600; font-weight: 900; border-bottom: none; }
-  .top10-table tr.total-row td:first-child { background: #1A1F6B; color: #FFE600; }
+  .top-table td:first-child { font-weight: 400; color: #333; background: #fff; width: 32px; text-align: center; }
+  .top-table td:nth-child(2) { text-align: left; font-weight: 500; color: #333; background: #fff; font-family: monospace; }
+  .top-table tr.demais td { background: #fffde7; color: #888; font-style: italic; }
+  .top-table tr.demais td:first-child, .top-table tr.demais td:nth-child(2) { background: #fffde7; }
+  .top-table tr.total-row td { background: #1A1F6B; color: #FFE600; font-weight: 900; border-bottom: none; }
+  .top-table tr.total-row td:first-child, .top-table tr.total-row td:nth-child(2) { background: #1A1F6B; color: #FFE600; }
   .level-badge { display: inline-block; padding: 2px 10px; border-radius: 20px;
     font-size: 11px; font-weight: 700; background: #FFE600; color: #1A1F6B; }
   .note { font-size: 11px; color: #aaa; padding: 8px 16px 12px; }
-  @media(max-width:768px){ .grid-2 { grid-template-columns: 1fr; } }
+  .tpv-zero { color: #ccc; }
 </style>
 </head>
 <body>
@@ -40,95 +41,85 @@
 <h1>Deep Dive — Especialistas</h1>
 <div class="subtitle">Programa Renda na Mão · Pro 3 + Smart 2 · Canal Resellers · MTD 1-18 de cada mês</div>
 
-<!-- ── BLOCO 1: MTD Q1 vs Maio ── -->
-<div class="section-title">MTD 1-18 | Análise MoM</div>
-<div class="grid-2">
-
-  <!-- Tabela 1: Q1 vs Mai -->
-  <div class="card">
-    <div class="card-title">Média Q1 × Maio/26</div>
-    <table>
-      <thead><tr>
-        <th>Métrica</th><th>Média Q1</th><th>Mai MTD</th><th>Variação</th>
-      </tr></thead>
-      <tbody>
-        <tr><td>Resellers</td><td>78</td><td>57</td><td><span class="red">🔴 -26,9%</span></td></tr>
-        <tr><td>Devices</td><td>699</td><td>400</td><td><span class="red">🔴 -42,8%</span></td></tr>
-        <tr><td>Ativos</td><td>136</td><td>342</td><td><span class="green">🟢 +151,5%</span></td></tr>
-        <tr><td>TPV M0</td><td>R$ 150.088</td><td>R$ 198.586</td><td><span class="green">🟢 +32,3%</span></td></tr>
-        <tr><td>TPV Médio M0</td><td>R$ 1.104</td><td>R$ 581</td><td><span class="red">🔴 -47,4%</span></td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Tabela 2: Abr vs Mai -->
-  <div class="card">
-    <div class="card-title">Abril × Maio/26</div>
-    <table>
-      <thead><tr>
-        <th>Métrica</th><th>Abr MTD</th><th>Mai MTD</th><th>Variação</th>
-      </tr></thead>
-      <tbody>
-        <tr><td>Resellers</td><td>69</td><td>57</td><td><span class="red">🔴 -17,4%</span></td></tr>
-        <tr><td>Devices</td><td>482</td><td>400</td><td><span class="red">🔴 -17,0%</span></td></tr>
-        <tr><td>Ativos</td><td>283</td><td>342</td><td><span class="green">🟢 +20,8%</span></td></tr>
-        <tr><td>TPV M0</td><td>R$ 253.378</td><td>R$ 198.586</td><td><span class="red">🔴 -21,6%</span></td></tr>
-        <tr><td>TPV Médio M0</td><td>R$ 895</td><td>R$ 581</td><td><span class="red">🔴 -35,1%</span></td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- ── BLOCO 2: Top 10 Abril ── -->
-<div class="section-title">Top 10 Especialistas — Abril/26 | TPV M0</div>
-<div class="card">
-  <table class="top10-table">
+<!-- ── MoM Q1 vs Mai ── -->
+<div class="section-title">MTD 1-18 | Média Q1 × Maio/26</div>
+<div class="card card-narrow">
+  <table>
     <thead><tr>
-      <th>#</th><th style="text-align:left">Reseller ID</th>
-      <th>Sellers Ativos</th><th>TPV M0</th><th>TPN M0</th><th>Nível Mai</th>
+      <th>Métrica</th><th>Média Q1</th><th>Mai MTD</th><th>Variação</th>
     </tr></thead>
     <tbody>
-      <tr><td>1</td><td>246343377</td><td>6</td><td>R$ 154.080</td><td>3.025</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>2</td><td>203850521</td><td>1</td><td>R$ 45.275</td><td>2.520</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>3</td><td>130855841</td><td>4</td><td>R$ 41.162</td><td>651</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>4</td><td>588770389</td><td>1</td><td>R$ 39.521</td><td>56</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>5</td><td>131665663</td><td>9</td><td>R$ 33.972</td><td>566</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>6</td><td>1279777635</td><td>3</td><td>R$ 31.086</td><td>132</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>7</td><td>2130389125</td><td>8</td><td>R$ 22.739</td><td>406</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>8</td><td>624974985</td><td>1</td><td>R$ 20.792</td><td>548</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>9</td><td>617876582</td><td>10</td><td>R$ 15.214</td><td>468</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>10</td><td>81397558</td><td>6</td><td>R$ 14.233</td><td>80</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr class="demais"><td colspan="2">Demais Especialistas</td><td>—</td><td>R$ 162.570</td><td>4.474</td><td>—</td></tr>
-      <tr class="total-row"><td colspan="2">TOTAL ESPECIALISTAS</td><td>328</td><td>R$ 580.644</td><td>12.926</td><td>—</td></tr>
+      <tr><td>Resellers</td><td>78</td><td>57</td><td><span class="red">🔴 -26,9%</span></td></tr>
+      <tr><td>Devices</td><td>699</td><td>400</td><td><span class="red">🔴 -42,8%</span></td></tr>
+      <tr><td>Ativos</td><td>136</td><td>342</td><td><span class="green">🟢 +151,5%</span></td></tr>
+      <tr><td>TPV M0</td><td>R$ 150.088</td><td>R$ 198.586</td><td><span class="green">🟢 +32,3%</span></td></tr>
+      <tr><td>TPV Médio M0</td><td>R$ 1.104</td><td>R$ 581</td><td><span class="red">🔴 -47,4%</span></td></tr>
     </tbody>
   </table>
-  <div class="note">Top 10 = 72% do TPV M0 total | #1 (246343377) = 37% do top 10 sozinho · Mês completo Abril/26</div>
 </div>
 
-<!-- ── BLOCO 3: Top 10 Maio ── -->
-<div class="section-title">Top 10 Especialistas — Maio/26 MTD (até 18/05) | TPV M0</div>
+<!-- ── Top 20 Abril com TPV Mai ── -->
+<div class="section-title">Top 20 Especialistas — Abril/26 | TPV M0 + resultado em Maio</div>
 <div class="card">
-  <table class="top10-table">
+  <table class="top-table">
     <thead><tr>
       <th>#</th><th style="text-align:left">Reseller ID</th>
-      <th>Sellers Ativos</th><th>TPV M0</th><th>TPN M0</th><th>Nível Mai</th>
+      <th>Ativos Abr</th><th>TPV M0 Abr</th><th>TPV M0 Mai</th><th>Nível Mai</th>
     </tr></thead>
     <tbody>
-      <tr><td>1</td><td>20970977</td><td>8</td><td>R$ 41.270</td><td>195</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>2</td><td>452387421</td><td>9</td><td>R$ 23.115</td><td>912</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>3</td><td>1578054593</td><td>4</td><td>R$ 21.249</td><td>1.057</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>4</td><td>1767434152</td><td>6</td><td>R$ 17.102</td><td>993</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>5</td><td>324154304</td><td>7</td><td>R$ 17.100</td><td>579</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>6</td><td>249216814</td><td>2</td><td>R$ 12.399</td><td>114</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>7</td><td>81397558</td><td>7</td><td>R$ 9.552</td><td>345</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>8</td><td>1364193022</td><td>12</td><td>R$ 9.117</td><td>10</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>9</td><td>1425305619</td><td>7</td><td>R$ 6.643</td><td>355</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr><td>10</td><td>131665663</td><td>10</td><td>R$ 6.014</td><td>26</td><td><span class="level-badge">Especialista</span></td></tr>
-      <tr class="demais"><td colspan="2">Demais Especialistas</td><td>—</td><td>R$ 35.025</td><td>1.429</td><td>—</td></tr>
-      <tr class="total-row"><td colspan="2">TOTAL ESPECIALISTAS</td><td>342</td><td>R$ 198.586</td><td>6.015</td><td>—</td></tr>
+      <tr><td>1</td><td>246343377</td><td>6</td><td>R$ 154.080</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>2</td><td>203850521</td><td>1</td><td>R$ 45.275</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>3</td><td>130855841</td><td>4</td><td>R$ 41.162</td><td>R$ 3.661</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>4</td><td>588770389</td><td>1</td><td>R$ 39.521</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>5</td><td>131665663</td><td>9</td><td>R$ 33.972</td><td>R$ 6.014</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>6</td><td>1279777635</td><td>3</td><td>R$ 31.086</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>7</td><td>2130389125</td><td>8</td><td>R$ 22.739</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>8</td><td>624974985</td><td>1</td><td>R$ 20.792</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>9</td><td>617876582</td><td>10</td><td>R$ 15.214</td><td>R$ 376</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>10</td><td>81397558</td><td>6</td><td>R$ 14.233</td><td>R$ 9.552</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>11</td><td>536409124</td><td>2</td><td>R$ 13.570</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>12</td><td>1767434152</td><td>5</td><td>R$ 11.552</td><td>R$ 17.102</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>13</td><td>235186192</td><td>1</td><td>R$ 10.910</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>14</td><td>180152505</td><td>2</td><td>R$ 10.033</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>15</td><td>177153580</td><td>3</td><td>R$ 9.817</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>16</td><td>324154304</td><td>2</td><td>R$ 8.676</td><td>R$ 17.100</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>17</td><td>2002630728</td><td>7</td><td>R$ 8.316</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>18</td><td>1068570330</td><td>2</td><td>R$ 8.310</td><td>R$ 3.715</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>19</td><td>1425305619</td><td>4</td><td>R$ 7.641</td><td>R$ 6.643</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>20</td><td>173528185</td><td>2</td><td>R$ 7.434</td><td class="tpv-zero">—</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr class="demais"><td colspan="2">Demais Especialistas</td><td>—</td><td>R$ 66.311</td><td>—</td><td>—</td></tr>
+      <tr class="total-row"><td colspan="2">TOTAL ESPECIALISTAS</td><td>328</td><td>R$ 580.644</td><td>—</td><td>—</td></tr>
     </tbody>
   </table>
-  <div class="note">#1 de Abr (246343377 — R$154K) não aparece no top 10 de Mai · Todo o top 10 permanece como Especialista</div>
+  <div class="note">— = sem TPV M0 registrado em Maio até 18/05 · Top 20 = 89% do TPV M0 total de Abril</div>
+</div>
+
+<!-- ── Top 20 Maio ── -->
+<div class="section-title">Top 20 Especialistas — Maio/26 MTD (até 18/05) | TPV M0</div>
+<div class="card">
+  <table class="top-table">
+    <thead><tr>
+      <th>#</th><th style="text-align:left">Reseller ID</th>
+      <th>Ativos</th><th>TPV M0</th><th>Nível Mai</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>1</td><td>20970977</td><td>8</td><td>R$ 41.270</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>2</td><td>452387421</td><td>9</td><td>R$ 23.115</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>3</td><td>1578054593</td><td>4</td><td>R$ 21.249</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>4</td><td>1767434152</td><td>6</td><td>R$ 17.102</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>5</td><td>324154304</td><td>7</td><td>R$ 17.100</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>6</td><td>249216814</td><td>2</td><td>R$ 12.399</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>7</td><td>81397558</td><td>7</td><td>R$ 9.552</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>8</td><td>1364193022</td><td>12</td><td>R$ 9.117</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>9</td><td>1425305619</td><td>7</td><td>R$ 6.643</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>10</td><td>131665663</td><td>10</td><td>R$ 6.014</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>11</td><td>1068570330</td><td>2</td><td>R$ 3.715</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr><td>12</td><td>617876582</td><td>5</td><td>R$ 3.661</td><td><span class="level-badge">Especialista</span></td></tr>
+      <tr class="demais"><td colspan="2">Demais Especialistas</td><td>—</td><td>R$ 35.025</td><td>—</td></tr>
+      <tr class="total-row"><td colspan="2">TOTAL ESPECIALISTAS</td><td>342</td><td>R$ 198.586</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <div class="note">Maio MTD parcial (até 18/05) · #1 de Abr (246343377 — R$154K) sem atividade em Maio · Todos permanecem Especialista</div>
 </div>
 
 </body>
