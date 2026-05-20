@@ -489,6 +489,9 @@ canvas{max-height:320px}
   <!-- SUBIDAS -->
   <div id="view-subidas">
     <div class="cards" id="cards-niveis"></div>
+    <!-- Tabela resumo de contagem -->
+    <div class="grid-wrapper" style="margin-bottom:20px" id="resumo-subidas"></div>
+
     <div class="controls" style="margin-bottom:16px">
       <div id="mes-filter-niveis" style="display:flex;gap:6px;flex-wrap:wrap"></div>
       <div id="trans-filter-niveis" style="display:flex;gap:6px;flex-wrap:wrap"></div>
@@ -1447,6 +1450,43 @@ function renderNiveis(){
       <div class="card-label" style="font-size:9px">${t.replace(' -> ',' → ')}</div>
       <div class="card-value" style="color:${TRANS_COLOR[t]}">${totByTrans[t]}</div>
       <div class="card-sub">Fev–Mai/26</div></div>`).join('')}`;
+
+  // Tabela resumo de contagem por mês × transição
+  const thS='background:#1A1F6B;color:#FFE600;padding:10px 14px;font-size:11px;text-transform:uppercase;text-align:right;white-space:nowrap';
+  const thSL=thS+';text-align:left';
+  const tdS='padding:10px 14px;font-size:13px;text-align:right;border-bottom:1px solid #f0f0f0';
+  let resumoHtml=`<table style="width:100%;border-collapse:collapse">
+    <thead><tr>
+      <th style="${thSL}">Transição</th>
+      ${MESES_NIVEIS.map(m=>`<th style="${thS}">${MES_LABEL_N[m]}</th>`).join('')}
+      <th style="${thS};background:#FFE600;color:#1A1F6B">Total</th>
+    </tr></thead><tbody>`;
+  const totaisMes=MESES_NIVEIS.map(m=>0);
+  TRANS_ORDER.forEach(t=>{
+    const cor=TRANS_COLOR[t];
+    const counts=MESES_NIVEIS.map((m,i)=>{
+      const n=SUBIDAS_DETAIL.filter(r=>r.transicao===t&&r.dt.startsWith(m)).length;
+      totaisMes[i]+=n; return n;
+    });
+    const rowTotal=counts.reduce((s,v)=>s+v,0);
+    resumoHtml+=`<tr>
+      <td style="${tdS.replace('text-align:right','text-align:left')};font-weight:600;background:#f9f9ff">
+        <span style="display:inline-flex;align-items:center;gap:6px">
+          <span style="width:8px;height:8px;border-radius:50%;background:${cor};flex-shrink:0"></span>
+          ${t.replace(' -> ',' → ')}
+        </span>
+      </td>
+      ${counts.map(n=>`<td style="${tdS}">${n||'—'}</td>`).join('')}
+      <td style="${tdS};font-weight:900;color:${cor};background:${cor}11">${rowTotal}</td>
+    </tr>`;
+  });
+  const grandTotal=totaisMes.reduce((s,v)=>s+v,0);
+  resumoHtml+=`<tr style="background:#1A1F6B">
+    <td style="padding:10px 14px;font-size:12px;font-weight:900;color:#FFE600;text-align:left">TOTAL</td>
+    ${totaisMes.map(n=>`<td style="padding:10px 14px;font-size:13px;font-weight:900;color:#FFE600;text-align:right">${n}</td>`).join('')}
+    <td style="padding:10px 14px;font-size:14px;font-weight:900;color:#FFE600;text-align:right">${grandTotal}</td>
+  </tr></tbody></table>`;
+  document.getElementById('resumo-subidas').innerHTML=resumoHtml;
 
   // Tabela filtrada
   let html='';
