@@ -1155,7 +1155,7 @@ function renderDiarizado(){
     tpvDiaRow('TPV Total', 'tpv_total'),
   ].join('');
 
-  document.getElementById('mes-filter-tpv-dia').innerHTML=MES_ORDER.map(m=>
+  document.getElementById('mes-filter-tpv-dia').innerHTML=MES_ORDER.filter(m=>m!=='Mai/26').map(m=>
     `<button class="filter-btn${tpvDiaMes===m?' active':''}" onclick="tpvDiaMes='${m}';renderDiarizado()">${m}</button>`).join('');
   document.getElementById('nivel-filter-tpv-dia').innerHTML=['Todos',...NIV_ORDER].map(n=>
     `<button class="filter-btn${tpvDiaNivel===n?' active':''}" onclick="tpvDiaNivel='${n}';renderDiarizado()">${n}</button>`).join('');
