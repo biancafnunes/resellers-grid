@@ -349,7 +349,7 @@
 
     <div class="section-header">
       <span class="section-badge">LEADS_TAN</span>
-      <span class="section-title">Visitas × Cadastros × 1ª Compra — Funil Direto · Jan–Mai 2026</span>
+      <span class="section-title">Cadastros × 1ª Compra · Jan–Mai 2026</span>
     </div>
 
     <div class="table-wrap">
@@ -357,14 +357,11 @@
         <thead>
           <tr>
             <th>Mês</th>
-            <th class="right">Visitas LP</th>
-            <th class="right">Cadastros</th>
-            <th class="center">% Vis → Cad</th>
+            <th class="right">Cadastrados</th>
             <th class="right">1ª Compra (mesmo mês)</th>
             <th class="center">% Cad → Compra</th>
-            <th class="right">1ª Compra (acumulado)</th>
-            <th class="center">% Cad → Compra acum</th>
-            <th class="right">Pendentes</th>
+            <th class="right" style="border-left:2px solid #555">1ª Compra no mês (indep. cadastro)</th>
+            <th class="center">% sobre cadastros</th>
           </tr>
         </thead>
         <tbody id="fd-tbody"></tbody>
@@ -372,7 +369,9 @@
     </div>
 
     <div class="note">
-      ℹ️ <strong>Fonte: RESELLERS_LEADS_TAN</strong> — sem filtro de visita à landing. <strong>Mesmo mês:</strong> cadastro e 1ª compra no mesmo mês calendário. <strong>Acumulado:</strong> 1ª compra em qualquer mês (inclui conversões tardias). <strong>Pendentes:</strong> cadastrados que ainda não compraram.
+      ℹ️ <strong>Fonte: RESELLERS_LEADS_TAN.</strong>
+      <strong>1ª Compra mesmo mês:</strong> cadastrou E fez 1ª compra no mesmo mês calendário.
+      <strong>1ª Compra no mês (indep.):</strong> fez 1ª compra naquele mês, independente de quando se cadastrou — inclui conversões de safras anteriores.
     </div>
 
   </div><!-- /tab funil-direto -->
@@ -706,19 +705,17 @@
 
   /* ══ FUNIL DIRETO ══ */
   const FD = [
-    {mes:'Jan/26', vis:198463, cad:15670, cMes:78,  cAcum:143},
-    {mes:'Fev/26', vis:240918, cad:20877, cMes:120, cAcum:201},
-    {mes:'Mar/26', vis:242645, cad:17214, cMes:156, cAcum:217},
-    {mes:'Abr/26', vis:195133, cad:10972, cMes:105, cAcum:132},
-    {mes:'Mai/26', vis:48978,  cad:2310,  cMes:42,  cAcum:52 },
+    {mes:'Jan/26', cad:15670, cMes:78,  cIndep:224},
+    {mes:'Fev/26', cad:20877, cMes:120, cIndep:273},
+    {mes:'Mar/26', cad:17214, cMes:156, cIndep:306},
+    {mes:'Abr/26', cad:10972, cMes:105, cIndep:223},
+    {mes:'Mai/26', cad:2310,  cMes:42,  cIndep:187},
   ];
 
   function renderFunilDireto() {
-    const totVis  = FD.reduce((s,r)=>s+r.vis,  0);
-    const totCad  = FD.reduce((s,r)=>s+r.cad,  0);
-    const totMes  = FD.reduce((s,r)=>s+r.cMes,  0);
-    const totAcum = FD.reduce((s,r)=>s+r.cAcum, 0);
-    const totPend = totCad - totAcum;
+    const totCad   = FD.reduce((s,r)=>s+r.cad,    0);
+    const totMes   = FD.reduce((s,r)=>s+r.cMes,   0);
+    const totIndep = FD.reduce((s,r)=>s+r.cIndep,  0);
 
     function kCard(title, val, sub, dark='') {
       return `<div class="kpi-card ${dark}">
@@ -728,49 +725,39 @@
       </div>`;
     }
     document.getElementById('fd-kpis').innerHTML =
-      kCard('Visitas LP', totVis, 'Jan–Mai 2026') +
-      kCard('Cadastros', totCad, (totCad/totVis*100).toFixed(2).replace('.',',')+'% das visitas') +
-      kCard('1ª Compra mesmo mês', totMes,  (totMes/totCad*100).toFixed(2).replace('.',',')+'% dos cadastros') +
-      kCard('1ª Compra acumulado', totAcum, (totAcum/totCad*100).toFixed(2).replace('.',',')+'% dos cadastros', 'dark') +
-      kCard('Pendentes', totPend, 'ainda não compraram');
+      kCard('Cadastrados', totCad, 'Jan–Mai 2026') +
+      kCard('1ª Compra (mesmo mês)', totMes,  (totMes/totCad*100).toFixed(2).replace('.',',')+'% dos cadastros') +
+      kCard('1ª Compra no mês (indep.)', totIndep, 'qualquer safra', 'dark');
 
     function bPct(v, hi, mid) {
       const cls = v>=hi?'badge-green':v>=mid?'badge-amber':'badge-red';
       return `<span class="badge ${cls}">${v.toFixed(2).replace('.',',')}%</span>`;
     }
 
+    const bl = 'border-left:2px solid #E8E8E8';
     let html = '';
     FD.forEach(r => {
-      const pVC  = r.vis > 0 ? r.cad  / r.vis  * 100 : 0;
-      const pCM  = r.cad > 0 ? r.cMes / r.cad  * 100 : 0;
-      const pCA  = r.cad > 0 ? r.cAcum/ r.cad  * 100 : 0;
-      const pend = r.cad - r.cAcum;
+      const pCM    = r.cad > 0 ? r.cMes   / r.cad * 100 : 0;
+      const pIndep = r.cad > 0 ? r.cIndep / r.cad * 100 : 0;
       html += `<tr>
         <td style="font-weight:700">${r.mes}</td>
-        <td class="number">${r.vis.toLocaleString('pt-BR')}</td>
         <td class="number">${r.cad.toLocaleString('pt-BR')}</td>
-        <td class="center">${bPct(pVC, 10, 5)}</td>
         <td class="number">${r.cMes.toLocaleString('pt-BR')}</td>
         <td class="center">${bPct(pCM, 1, 0.5)}</td>
-        <td class="number">${r.cAcum.toLocaleString('pt-BR')}</td>
-        <td class="center">${bPct(pCA, 1, 0.5)}</td>
-        <td class="number" style="color:var(--muted)">${pend.toLocaleString('pt-BR')}</td>
+        <td class="number" style="${bl}">${r.cIndep.toLocaleString('pt-BR')}</td>
+        <td class="center">${bPct(pIndep, 1, 0.5)}</td>
       </tr>`;
     });
 
-    const pVC = (totCad/totVis*100).toFixed(2).replace('.',',')+'%';
-    const pCM = (totMes/totCad*100).toFixed(2).replace('.',',')+'%';
-    const pCA = (totAcum/totCad*100).toFixed(2).replace('.',',')+'%';
+    const pCMt    = (totMes/totCad*100).toFixed(2).replace('.',',')+'%';
+    const pIndept = (totIndep/totCad*100).toFixed(2).replace('.',',')+'%';
     html += `<tr style="font-weight:800;background:#F7F7F7;border-top:2px solid var(--black)">
       <td>TOTAL</td>
-      <td class="number">${totVis.toLocaleString('pt-BR')}</td>
       <td class="number">${totCad.toLocaleString('pt-BR')}</td>
-      <td class="center"><span class="badge badge-amber">${pVC}</span></td>
       <td class="number">${totMes.toLocaleString('pt-BR')}</td>
-      <td class="center"><span class="badge badge-red">${pCM}</span></td>
-      <td class="number">${totAcum.toLocaleString('pt-BR')}</td>
-      <td class="center"><span class="badge badge-red">${pCA}</span></td>
-      <td class="number" style="color:var(--muted)">${totPend.toLocaleString('pt-BR')}</td>
+      <td class="center"><span class="badge badge-red">${pCMt}</span></td>
+      <td class="number" style="${bl}">${totIndep.toLocaleString('pt-BR')}</td>
+      <td class="center"><span class="badge badge-amber">${pIndept}</span></td>
     </tr>`;
     document.getElementById('fd-tbody').innerHTML = html;
   }
