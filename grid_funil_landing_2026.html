@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Funil Landing · Resellers 2026</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
       --yellow: #FFE600;
@@ -184,6 +185,31 @@
       background: #F9F9F9; border-left: 3px solid var(--border);
       padding: 8px 14px; border-radius: 0 6px 6px 0; margin-top: 8px;
     }
+
+    /* ── CHART ── */
+    .chart-card {
+      background: var(--white); border-radius: 10px;
+      padding: 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      margin-bottom: 24px;
+    }
+    .chart-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+    .chart-subtitle { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 16px; }
+    .chart-wrap { position: relative; height: 320px; }
+
+    /* ── LP DIÁRIO ── */
+    .lp-wrap { padding: 28px 40px 48px; }
+    .lp-filter { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 22px; margin-bottom: 20px; display: flex; align-items: center; gap: 16px; }
+    .lp-filter label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; }
+    .lp-filter select { border: 1px solid var(--border); border-radius: 6px; padding: 6px 28px 6px 10px; font-size: 12px; font-family: inherit; background: var(--white); appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; min-width: 140px; cursor: pointer; }
+    .lp-matrix-wrap { background: var(--white); border-radius: 10px; overflow-x: auto; box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 12px; }
+    .lp-matrix { border-collapse: collapse; min-width: 100%; font-size: 11px; }
+    .lp-matrix th { background: #2D2D2D; color: #fff; padding: 9px 10px; text-align: center; white-space: nowrap; font-size: 10px; font-weight: 600; letter-spacing: 0.4px; position: sticky; top: 0; }
+    .lp-matrix th.lp-canal-h { text-align: left; min-width: 140px; position: sticky; left: 0; background: #2D2D2D; z-index: 2; }
+    .lp-matrix td { padding: 9px 10px; border-bottom: 1px solid #F2F2F2; text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .lp-matrix td.lp-canal { text-align: left; font-weight: 600; font-size: 11px; background: var(--white); position: sticky; left: 0; border-right: 1px solid #E8E8E8; }
+    .lp-matrix tr:last-child td { font-weight: 800; background: #F7F7F7; border-top: 2px solid var(--black); }
+    .lp-matrix tr:last-child td.lp-canal { background: #F7F7F7; }
+    .lp-matrix td.lp-total { font-weight: 700; background: #F5F5F5; border-left: 1px solid #E0E0E0; }
   </style>
 </head>
 <body>
@@ -216,6 +242,7 @@
   <div class="tab active" onclick="showTab('historico', this)">Histórico Mensal</div>
   <div class="tab" onclick="showTab('mtd', this)">MTD Abr × Mai</div>
   <div class="tab" onclick="showTab('funil-direto', this)">Funil Direto (LEADS_TAN)</div>
+  <div class="tab" onclick="showTab('lp-diario', this)">LP por Dia × Canal</div>
 </div>
 
 <!-- CONTENT -->
@@ -287,10 +314,17 @@
     </div>
   </div>
 
+  <!-- CHART -->
+  <div class="chart-card">
+    <div class="chart-title">Visão Visual</div>
+    <div class="chart-subtitle" id="chart-subtitle">Visitas por Canal · Todos os meses</div>
+    <div class="chart-wrap"><canvas id="chartFunil"></canvas></div>
+  </div>
+
   <!-- TABLE -->
   <div class="section-header">
     <span class="section-badge">Funil</span>
-    <span class="section-title">Visitas · Leads · Compras por Canal</span>
+    <span class="section-title">Visitas · Leads · Compras por Canal · Detalhe</span>
   </div>
 
   <div class="table-wrap">
@@ -437,6 +471,36 @@
 
   </div><!-- /tab funil-direto -->
 
+
+  <!-- ══ TAB LP POR DIA ══ -->
+  <div id="lp-diario" class="tab-pane">
+  <div class="lp-wrap">
+
+    <div class="lp-filter">
+      <label>Mês</label>
+      <select id="lp-mes-sel" onchange="renderLPDiario()">
+        <option value="2026-04">Abril 2026</option>
+        <option value="2026-05" selected>Maio 2026</option>
+      </select>
+      <span style="font-size:11px;color:var(--muted);margin-left:8px;">Visitas únicas à Landing Page por dia · por canal de origem</span>
+    </div>
+
+    <div class="section-header">
+      <span class="section-badge">LP</span>
+      <span class="section-title" id="lp-diario-title">Visitas LP por Dia × Canal · Maio 2026</span>
+    </div>
+
+    <div class="lp-matrix-wrap">
+      <table class="lp-matrix" id="lp-matrix-table"></table>
+    </div>
+
+    <div class="note">
+      ℹ️ Fonte: MELIDATA.TRACKS · path /merchant_acquisition/flows/resellers/landing/home · Atribuição por UTM source/medium · Abr–Mai 2026.
+    </div>
+
+  </div>
+  </div><!-- /tab lp-diario -->
+
 </div>
 
 <script>
@@ -485,6 +549,81 @@
     {mes:'2026-05',canal:'whatsapp',            v:1,     l:0,    c:0,   pLV:0,    pLC:null, pVC:0},
     {mes:'2026-05',canal:'placement / row_mgm', v:1,     l:0,    c:0,   pLV:0,    pLC:null, pVC:0},
   ];
+
+  /* ══ CHART ══ */
+  let funiChart = null;
+
+  function buildChart(rows) {
+    const mes    = document.getElementById('fl-mes').value;
+    const canais = [...new Set(rows.map(r => r.canal))].sort((a,b) => {
+      const va = rows.filter(r=>r.canal===a).reduce((s,r)=>s+r.v,0);
+      const vb = rows.filter(r=>r.canal===b).reduce((s,r)=>s+r.v,0);
+      return vb - va;
+    });
+
+    const subtitle = mes === 'all'
+      ? 'Visitas por Canal · Todos os meses'
+      : `Visitas, Leads e Compras por Canal · ${MES[mes]}`;
+    document.getElementById('chart-subtitle').textContent = subtitle;
+
+    const ctx = document.getElementById('chartFunil').getContext('2d');
+    if (funiChart) funiChart.destroy();
+
+    if (mes === 'all') {
+      // agrupado por mês — barras empilhadas de visitas por canal
+      const meses = Object.keys(MES);
+      const datasets = canais.map(cn => ({
+        label: cn,
+        data: meses.map(m => rows.filter(r=>r.mes===m&&r.canal===cn).reduce((s,r)=>s+r.v,0)),
+        backgroundColor: COLORS[cn] || '#888',
+        borderRadius: 3,
+        borderSkipped: false,
+      }));
+      funiChart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: meses.map(m=>MES[m]), datasets },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { font: { family:'Inter', size:11 }, boxWidth:10, padding:10 } },
+            tooltip: { callbacks: { footer: items => 'Total: ' + items.reduce((s,i)=>s+i.parsed.y,0).toLocaleString('pt-BR') } },
+            datalabels: { display: false }
+          },
+          scales: {
+            x: { stacked: true, grid: { display: false }, ticks: { font: { family:'Inter', size:11 }, color:'#888' } },
+            y: { stacked: true, grid: { color:'#F0F0F0' }, ticks: { font: { family:'Inter', size:11 }, color:'#888', callback: v => v.toLocaleString('pt-BR') } }
+          }
+        }
+      });
+    } else {
+      // mês específico — grouped bars: Visitas / Leads / Compras por canal
+      const vis  = canais.map(cn => rows.filter(r=>r.canal===cn).reduce((s,r)=>s+r.v,0));
+      const leads= canais.map(cn => rows.filter(r=>r.canal===cn).reduce((s,r)=>s+r.l,0));
+      const comp = canais.map(cn => rows.filter(r=>r.canal===cn).reduce((s,r)=>s+r.c,0));
+      funiChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: canais,
+          datasets: [
+            { label: 'Visitas', data: vis,   backgroundColor: canais.map(cn=>COLORS[cn]||'#888'), borderRadius: 3, borderSkipped: false },
+            { label: 'Leads',   data: leads, backgroundColor: '#1A1A1A', borderRadius: 3, borderSkipped: false },
+            { label: 'Compras', data: comp,  backgroundColor: '#FFE600', borderRadius: 3, borderSkipped: false },
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { font: { family:'Inter', size:11 }, boxWidth:10, padding:10 } },
+            datalabels: { display: false }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { font: { family:'Inter', size:10 }, color:'#888' } },
+            y: { grid: { color:'#F0F0F0' }, ticks: { font: { family:'Inter', size:11 }, color:'#888', callback: v => v.toLocaleString('pt-BR') } }
+          }
+        }
+      });
+    }
+  }
 
   function badge(v, hi, mid) {
     if (v === null || v === undefined) return '<span class="badge badge-muted">—</span>';
@@ -557,6 +696,8 @@
 
     if (!html) html = `<tr><td colspan="8" style="text-align:center;padding:24px;color:#aaa">Nenhum dado para os filtros selecionados.</td></tr>`;
     document.getElementById('fl-tbody').innerHTML = html;
+
+    buildChart(rows);
 
     const totV = rows.reduce((s,r)=>s+r.v,0);
     const totL = rows.reduce((s,r)=>s+r.l,0);
@@ -862,6 +1003,104 @@
   }
 
   renderFunilDireto();
+
+  /* ══ LP DIÁRIO POR CANAL ══ */
+  // dados: dia x canal → visitas (Abr e Mai/26)
+  // MELIDATA.TRACKS · aguardando query
+  const LP_DIARIO = {
+    '2026-04': {
+      // placeholder — query em andamento
+    },
+    '2026-05': {
+      // placeholder — query em andamento
+    }
+  };
+
+  const CANAIS_LP = ['app / push','micrositio','direct','valueprop / canva','outros','whatsapp','placement / row_mgm'];
+
+  function cellColor(v, max) {
+    if (!v || v === 0) return 'background:#FAFAFA;color:#CCC;';
+    const pct = v / max;
+    if (pct > 0.6) return 'background:#1A1A1A;color:#FFE600;font-weight:700;';
+    if (pct > 0.3) return 'background:#FFE600;color:#1A1A1A;font-weight:700;';
+    if (pct > 0.1) return 'background:#FFF9CC;color:#1A1A1A;';
+    return 'background:#F4F4F4;color:#888;';
+  }
+
+  function renderLPDiario() {
+    const mes = document.getElementById('lp-mes-sel').value;
+    const mesLabel = {'2026-04':'Abril 2026','2026-05':'Maio 2026'}[mes] || mes;
+    document.getElementById('lp-diario-title').textContent = `Visitas LP por Dia x Canal · ${mesLabel}`;
+
+    const data = LP_DIARIO[mes] || {};
+    const dias = Object.keys(data).sort();
+
+    if (dias.length === 0) {
+      document.getElementById('lp-matrix-table').innerHTML =
+        `<tr><td colspan="5" style="padding:40px;text-align:center;color:#aaa;font-size:13px;">
+          ⏳ Dados sendo carregados... (query MELIDATA em andamento)
+        </td></tr>`;
+      return;
+    }
+
+    // cabeçalho
+    const diasHeader = dias.map(d => {
+      const dt = new Date(d + 'T12:00:00');
+      const dd = String(dt.getDate()).padStart(2,'0');
+      const dias_sem = ['DOM','SEG','TER','QUA','QUI','SEX','SAB'];
+      return `<th>${dias_sem[dt.getDay()]}<br>${dd}</th>`;
+    }).join('');
+    let html = `<thead><tr>
+      <th class="lp-canal-h">Canal</th>
+      ${diasHeader}
+      <th style="background:#222;border-left:2px solid #555">Total</th>
+      <th style="background:#222">Média/dia</th>
+    </tr></thead><tbody>`;
+
+    // max por canal para escala de cor
+    const maxPorCanal = {};
+    CANAIS_LP.forEach(cn => {
+      maxPorCanal[cn] = Math.max(...dias.map(d => (data[d]?.[cn] || 0)));
+    });
+
+    CANAIS_LP.forEach(cn => {
+      const vals = dias.map(d => data[d]?.[cn] || 0);
+      const total = vals.reduce((s,v)=>s+v,0);
+      const media = total > 0 ? (total / vals.filter(v=>v>0).length) : 0;
+      const max = maxPorCanal[cn];
+      const dot = `<span class="canal-dot" style="background:${COLORS[cn]||'#888'}"></span>`;
+      const cells = vals.map(v => {
+        const style = cellColor(v, max);
+        return `<td style="${style}">${v > 0 ? v.toLocaleString('pt-BR') : '—'}</td>`;
+      }).join('');
+      html += `<tr>
+        <td class="lp-canal">${dot}${cn}</td>
+        ${cells}
+        <td class="lp-total">${total.toLocaleString('pt-BR')}</td>
+        <td class="lp-total">${media > 0 ? Math.round(media).toLocaleString('pt-BR') : '—'}</td>
+      </tr>`;
+    });
+
+    // linha total
+    const totais = dias.map(d => CANAIS_LP.reduce((s,cn) => s + (data[d]?.[cn]||0), 0));
+    const grandTotal = totais.reduce((s,v)=>s+v,0);
+    const grandMedia = grandTotal > 0 ? Math.round(grandTotal / totais.filter(v=>v>0).length) : 0;
+    const maxTotal = Math.max(...totais);
+    const totCells = totais.map(v => {
+      const style = cellColor(v, maxTotal);
+      return `<td style="${style}">${v > 0 ? v.toLocaleString('pt-BR') : '—'}</td>`;
+    }).join('');
+    html += `<tr>
+      <td class="lp-canal">TOTAL</td>
+      ${totCells}
+      <td class="lp-total">${grandTotal.toLocaleString('pt-BR')}</td>
+      <td class="lp-total">${grandMedia.toLocaleString('pt-BR')}</td>
+    </tr></tbody>`;
+
+    document.getElementById('lp-matrix-table').innerHTML = html;
+  }
+
+  renderLPDiario();
 </script>
 </body>
 </html>
