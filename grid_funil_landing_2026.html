@@ -6,6 +6,7 @@
   <title>Funil Landing · Resellers 2026</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
   <style>
     :root {
       --yellow: #FFE600;
@@ -551,6 +552,7 @@
   ];
 
   /* ══ CHART ══ */
+  Chart.register(ChartDataLabels);
   let funiChart = null;
 
   function buildChart(rows) {
@@ -569,56 +571,104 @@
     const ctx = document.getElementById('chartFunil').getContext('2d');
     if (funiChart) funiChart.destroy();
 
+    const fmt = n => n > 999 ? (n/1000).toFixed(1).replace('.',',')+'k' : n.toLocaleString('pt-BR');
+    const interFont = (sz, w) => ({ family: 'Inter', size: sz, weight: w || '600' });
+
     if (mes === 'all') {
-      // agrupado por mês — barras empilhadas de visitas por canal
       const meses = Object.keys(MES);
-      const datasets = canais.map(cn => ({
-        label: cn,
-        data: meses.map(m => rows.filter(r=>r.mes===m&&r.canal===cn).reduce((s,r)=>s+r.v,0)),
-        backgroundColor: COLORS[cn] || '#888',
-        borderRadius: 3,
-        borderSkipped: false,
-      }));
+      // pré-calcular totais e conversão por mês
+      const monthTotals = meses.map(m => rows.filter(r=>r.mes===m).reduce((s,r)=>s+r.v,0));
+      const monthLeads  = meses.map(m => rows.filter(r=>r.mes===m).reduce((s,r)=>s+r.l,0));
+      const monthConv   = meses.map((m,i) => monthTotals[i]>0 ? (monthLeads[i]/monthTotals[i]*100).toFixed(1)+'%' : '');
+
+      const datasets = canais.map((cn, idx) => {
+        const isLast = idx === canais.length - 1;
+        return {
+          label: cn,
+          data: meses.map(m => rows.filter(r=>r.mes===m&&r.canal===cn).reduce((s,r)=>s+r.v,0)),
+          backgroundColor: COLORS[cn] || '#888',
+          borderRadius: 3, borderSkipped: false,
+          datalabels: isLast ? {
+            labels: {
+              total: {
+                anchor: 'end', align: 'end', offset: 4,
+                formatter: (v, ctx) => fmt(monthTotals[ctx.dataIndex]),
+                font: interFont(10, '700'), color: '#1A1A1A'
+              },
+              conv: {
+                anchor: 'end', align: 'start', offset: 2,
+                formatter: (v, ctx) => monthConv[ctx.dataIndex],
+                font: interFont(9), color: '#555'
+              }
+            }
+          } : { display: false }
+        };
+      });
+
       funiChart = new Chart(ctx, {
         type: 'bar',
         data: { labels: meses.map(m=>MES[m]), datasets },
         options: {
           responsive: true, maintainAspectRatio: false,
+          layout: { padding: { top: 36 } },
           plugins: {
-            legend: { position: 'bottom', labels: { font: { family:'Inter', size:11 }, boxWidth:10, padding:10 } },
+            legend: { position: 'bottom', labels: { font: interFont(11), boxWidth: 10, padding: 10 } },
             tooltip: { callbacks: { footer: items => 'Total: ' + items.reduce((s,i)=>s+i.parsed.y,0).toLocaleString('pt-BR') } },
-            datalabels: { display: false }
           },
           scales: {
-            x: { stacked: true, grid: { display: false }, ticks: { font: { family:'Inter', size:11 }, color:'#888' } },
-            y: { stacked: true, grid: { color:'#F0F0F0' }, ticks: { font: { family:'Inter', size:11 }, color:'#888', callback: v => v.toLocaleString('pt-BR') } }
+            x: { stacked: true, grid: { display: false }, ticks: { font: interFont(11), color: '#888' } },
+            y: { stacked: true, grid: { color: '#F0F0F0' }, ticks: { font: interFont(11), color: '#888', callback: v => v.toLocaleString('pt-BR') } }
           }
         }
       });
     } else {
-      // mês específico — grouped bars: Visitas / Leads / Compras por canal
-      const vis  = canais.map(cn => rows.filter(r=>r.canal===cn).reduce((s,r)=>s+r.v,0));
-      const leads= canais.map(cn => rows.filter(r=>r.canal===cn).reduce((s,r)=>s+r.l,0));
-      const comp = canais.map(cn => rows.filter(r=>r.canal===cn).reduce((s,r)=>s+r.c,0));
+      const vis   = canais.map(cn => rows.filter(r=>r.canal===cn).reduce((s,r)=>s+r.v,0));
+      const leads = canais.map(cn => rows.filter(r=>r.canal===cn).reduce((s,r)=>s+r.l,0));
+      const comp  = canais.map(cn => rows.filter(r=>r.canal===cn).reduce((s,r)=>s+r.c,0));
+
       funiChart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: canais,
           datasets: [
-            { label: 'Visitas', data: vis,   backgroundColor: canais.map(cn=>COLORS[cn]||'#888'), borderRadius: 3, borderSkipped: false },
-            { label: 'Leads',   data: leads, backgroundColor: '#1A1A1A', borderRadius: 3, borderSkipped: false },
-            { label: 'Compras', data: comp,  backgroundColor: '#FFE600', borderRadius: 3, borderSkipped: false },
+            {
+              label: 'Visitas', data: vis,
+              backgroundColor: canais.map(cn => COLORS[cn]||'#888'),
+              borderRadius: 3, borderSkipped: false,
+              datalabels: {
+                labels: {
+                  value: { anchor:'end', align:'end', offset:4, formatter:(v)=>fmt(v), font:interFont(10,'700'), color:'#1A1A1A' },
+                  conv:  { anchor:'center', align:'center',
+                    formatter:(v,ctx) => {
+                      const l = leads[ctx.dataIndex];
+                      return v>0 ? (l/v*100).toFixed(1)+'%' : '';
+                    },
+                    font: interFont(9,'700'), color:'#fff'
+                  }
+                }
+              }
+            },
+            {
+              label: 'Leads', data: leads,
+              backgroundColor: '#1A1A1A', borderRadius: 3, borderSkipped: false,
+              datalabels: { anchor:'end', align:'end', offset:4, formatter:v=>fmt(v), font:interFont(10,'700'), color:'#1A1A1A' }
+            },
+            {
+              label: 'Compras', data: comp,
+              backgroundColor: '#FFE600', borderRadius: 3, borderSkipped: false,
+              datalabels: { anchor:'end', align:'end', offset:4, formatter:v=>fmt(v), font:interFont(10,'700'), color:'#1A1A1A' }
+            },
           ]
         },
         options: {
           responsive: true, maintainAspectRatio: false,
+          layout: { padding: { top: 28 } },
           plugins: {
-            legend: { position: 'bottom', labels: { font: { family:'Inter', size:11 }, boxWidth:10, padding:10 } },
-            datalabels: { display: false }
+            legend: { position: 'bottom', labels: { font: interFont(11), boxWidth: 10, padding: 10 } },
           },
           scales: {
-            x: { grid: { display: false }, ticks: { font: { family:'Inter', size:10 }, color:'#888' } },
-            y: { grid: { color:'#F0F0F0' }, ticks: { font: { family:'Inter', size:11 }, color:'#888', callback: v => v.toLocaleString('pt-BR') } }
+            x: { grid: { display: false }, ticks: { font: interFont(10), color: '#888' } },
+            y: { grid: { color: '#F0F0F0' }, ticks: { font: interFont(11), color: '#888', callback: v => v.toLocaleString('pt-BR') } }
           }
         }
       });
@@ -1013,10 +1063,9 @@
   function cellColor(v, max) {
     if (!v || v === 0) return 'background:#FAFAFA;color:#CCC;';
     const pct = v / max;
-    if (pct > 0.6) return 'background:#1A1A1A;color:#FFE600;font-weight:700;';
-    if (pct > 0.3) return 'background:#FFE600;color:#1A1A1A;font-weight:700;';
-    if (pct > 0.1) return 'background:#FFF9CC;color:#1A1A1A;';
-    return 'background:#F4F4F4;color:#888;';
+    if (pct >= 0.5) return 'background:#D1FAE5;color:#065F46;font-weight:700;';   // verde claro — bom
+    if (pct >= 0.15) return 'background:#FEF3C7;color:#92400E;font-weight:600;';  // amarelo claro — médio
+    return 'background:#FEE2E2;color:#991B1B;';                                    // vermelho claro — ruim
   }
 
   function renderLPDiario() {
