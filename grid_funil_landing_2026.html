@@ -712,10 +712,13 @@
     {mes:'Mai/26', cad:2310,  cMes:42,  cIndep:187},
   ];
 
+  // Referência MTD Abril 1-22 para comparar com Maio MTD
+  const ABR_MTD = { cad: 10972, cMes: 100, cIndep: 223 };
+
   function renderFunilDireto() {
-    const totCad   = FD.reduce((s,r)=>s+r.cad,    0);
-    const totMes   = FD.reduce((s,r)=>s+r.cMes,   0);
-    const totIndep = FD.reduce((s,r)=>s+r.cIndep,  0);
+    const totCad   = FD.reduce((s,r)=>s+r.cad,   0);
+    const totMes   = FD.reduce((s,r)=>s+r.cMes,  0);
+    const totIndep = FD.reduce((s,r)=>s+r.cIndep, 0);
 
     function kCard(title, val, sub, dark='') {
       return `<div class="kpi-card ${dark}">
@@ -734,17 +737,39 @@
       return `<span class="badge ${cls}">${v.toFixed(2).replace('.',',')}%</span>`;
     }
 
+    // seta MoM / MTD
+    function arrow(curr, prev, isMTD=false) {
+      if (!prev || prev === 0) return '';
+      const pct = (curr - prev) / prev * 100;
+      const abs = Math.abs(pct).toFixed(0);
+      const up  = pct >= 0;
+      const color = up ? '#1A9E5C' : '#C0392B';
+      const sym   = up ? '▲' : '▼';
+      const label = isMTD ? `<span style="font-size:8px;font-weight:600;color:#888;margin-left:2px">MTD</span>` : '';
+      return `<div style="font-size:10px;font-weight:700;color:${color};margin-top:2px">${sym} ${abs}%${label}</div>`;
+    }
+
     const bl = 'border-left:2px solid #E8E8E8';
     let html = '';
-    FD.forEach(r => {
+    FD.forEach((r, i) => {
+      const prev    = i === 0 ? null : FD[i-1];
+      const isMTD   = r.mes === 'Mai/26';
+      const refCad   = isMTD ? ABR_MTD.cad   : (prev ? prev.cad   : null);
+      const refMes   = isMTD ? ABR_MTD.cMes  : (prev ? prev.cMes  : null);
+      const refIndep = isMTD ? ABR_MTD.cIndep: (prev ? prev.cIndep: null);
+
       const pCM    = r.cad > 0 ? r.cMes   / r.cad * 100 : 0;
       const pIndep = r.cad > 0 ? r.cIndep / r.cad * 100 : 0;
+
       html += `<tr>
-        <td style="font-weight:700">${r.mes}</td>
-        <td class="number">${r.cad.toLocaleString('pt-BR')}</td>
-        <td class="number">${r.cMes.toLocaleString('pt-BR')}</td>
+        <td style="font-weight:700;white-space:nowrap">
+          ${r.mes}
+          ${isMTD ? '<span style="font-size:9px;background:#FEF3C7;color:#92400E;padding:1px 6px;border-radius:10px;margin-left:4px;font-weight:700">MTD</span>' : ''}
+        </td>
+        <td class="number">${r.cad.toLocaleString('pt-BR')}${arrow(r.cad, refCad, isMTD)}</td>
+        <td class="number">${r.cMes.toLocaleString('pt-BR')}${arrow(r.cMes, refMes, isMTD)}</td>
         <td class="center">${bPct(pCM, 1, 0.5)}</td>
-        <td class="number" style="${bl}">${r.cIndep.toLocaleString('pt-BR')}</td>
+        <td class="number" style="${bl}">${r.cIndep.toLocaleString('pt-BR')}${arrow(r.cIndep, refIndep, isMTD)}</td>
         <td class="center">${bPct(pIndep, 1, 0.5)}</td>
       </tr>`;
     });
