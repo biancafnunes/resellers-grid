@@ -241,9 +241,8 @@
 <!-- TABS -->
 <div class="tabs-bar">
   <div class="tab active" onclick="showTab('historico', this)">Histórico Mensal</div>
-  <div class="tab" onclick="showTab('mtd', this)">MTD Abr × Mai</div>
-  <div class="tab" onclick="showTab('funil-direto', this)">Funil Direto (LEADS_TAN)</div>
   <div class="tab" onclick="showTab('lp-diario', this)">LP por Dia × Canal</div>
+  <div class="tab" onclick="showTab('funil-direto', this)">Funil Direto (LEADS_TAN)</div>
 </div>
 
 <!-- CONTENT -->
@@ -351,90 +350,6 @@
   </div>
 
   </div><!-- /tab historico -->
-
-
-  <!-- ══ TAB MTD ABR × MAI ══ -->
-  <div id="mtd" class="tab-pane">
-
-    <div class="kpi-row" id="mtd-kpis"></div>
-
-    <div class="section-header">
-      <span class="section-badge">MTD 1–17</span>
-      <span class="section-title">Comparativo por Canal — Abr/26 × Mai/26</span>
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th rowspan="2">Canal</th>
-            <th class="right" colspan="3" style="border-left:1px solid #444;text-align:center">Visitas</th>
-            <th class="right" colspan="3" style="border-left:1px solid #444;text-align:center">Leads</th>
-            <th class="right" colspan="3" style="border-left:1px solid #444;text-align:center">Compras</th>
-            <th class="center" colspan="2" style="border-left:1px solid #444;text-align:center">% Vis→Lead</th>
-            <th class="center" colspan="2" style="border-left:1px solid #444;text-align:center">% Lead→Compra</th>
-            <th class="center" colspan="2" style="border-left:1px solid #444;text-align:center">% Vis→Compra</th>
-          </tr>
-          <tr>
-            <th class="right"  style="border-left:1px solid #444">Abr</th>
-            <th class="right">Mai</th>
-            <th class="center">Δ</th>
-            <th class="right"  style="border-left:1px solid #444">Abr</th>
-            <th class="right">Mai</th>
-            <th class="center">Δ</th>
-            <th class="right"  style="border-left:1px solid #444">Abr</th>
-            <th class="right">Mai</th>
-            <th class="center">Δ</th>
-            <th class="center" style="border-left:1px solid #444">Abr</th>
-            <th class="center">Mai</th>
-            <th class="center" style="border-left:1px solid #444">Abr</th>
-            <th class="center">Mai</th>
-            <th class="center" style="border-left:1px solid #444">Abr</th>
-            <th class="center">Mai</th>
-          </tr>
-        </thead>
-        <tbody id="mtd-tbody"></tbody>
-      </table>
-    </div>
-
-    <div class="note">
-      ⚠️ <strong>MTD 1–17:</strong> dados filtrados do dia 1 ao dia 17 de cada mês para garantir comparabilidade. Leads e compras com restrição de dia ≤ 17 dentro do mês de referência.
-    </div>
-
-    <!-- TABELA DIÁRIA APP/PUSH -->
-    <div class="section-header" style="margin-top:32px">
-      <span class="section-badge">📲 app / push</span>
-      <span class="section-title">Visão Diária — Acessos × Leads × Compras · Abr/26 vs Mai/26</span>
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th rowspan="2">Dia</th>
-            <th class="right" colspan="4" style="text-align:center;border-left:1px solid #444">Abril/26</th>
-            <th class="right" colspan="4" style="text-align:center;border-left:1px solid #444">Maio/26</th>
-          </tr>
-          <tr>
-            <th class="right"  style="border-left:1px solid #444">Visitas</th>
-            <th class="right">Leads</th>
-            <th class="right">Compras</th>
-            <th class="center">% Vis→Lead</th>
-            <th class="right"  style="border-left:1px solid #444">Visitas</th>
-            <th class="right">Leads</th>
-            <th class="right">Compras</th>
-            <th class="center">% Vis→Lead</th>
-          </tr>
-        </thead>
-        <tbody id="diario-tbody"></tbody>
-      </table>
-    </div>
-
-    <div class="note">
-      ⚠️ A partir do dia 06/Mai o canal app/push registra <strong>zero acessos</strong> — indicativo de que a campanha de push foi pausada ou encerrada após 05/Mai/26.
-    </div>
-
-  </div><!-- /tab mtd -->
 
 
   <!-- ══ TAB FUNIL DIRETO ══ -->
