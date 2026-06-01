@@ -611,15 +611,19 @@ const RAW = [
   {mes:"Abr/26",nivel:"Especialista",     resellers:84,   pedidos:654,  ativos:113,  tpv_m0:3018150,  tpv_m1:4928603,  tpv_total:15786386,  pedidos_pro:536,  pedidos_smart:118, ativos_pro:96,   ativos_smart:17},
   {mes:"Abr/26",nivel:"Empreendedor",     resellers:39,   pedidos:632,  ativos:199,  tpv_m0:2605479,  tpv_m1:6136579,  tpv_total:17093142,  pedidos_pro:460,  pedidos_smart:172, ativos_pro:165,  ativos_smart:34},
   {mes:"Abr/26",nivel:"Top Empreendedor", resellers:44,   pedidos:2379, ativos:483,  tpv_m0:7409872,  tpv_m1:15294971, tpv_total:44996865,  pedidos_pro:1893, pedidos_smart:486, ativos_pro:349,  ativos_smart:134},
-  {mes:"Mai/26",nivel:"Aprendiz",        resellers:952,  pedidos:2152, ativos:4143, tpv_m0:4459116,  tpv_m1:8265801,  tpv_total:31999521,  pedidos_pro:1963,  pedidos_smart:189, ativos_pro:3314,   ativos_smart:829},
-  {mes:"Mai/26",nivel:"Especialista",        resellers:61,  pedidos:496, ativos:108, tpv_m0:1627304,  tpv_m1:4134640,  tpv_total:15361383,  pedidos_pro:437,  pedidos_smart:59, ativos_pro:95,   ativos_smart:13},
-  {mes:"Mai/26",nivel:"Empreendedor",        resellers:43,  pedidos:682, ativos:156, tpv_m0:3200256,  tpv_m1:4770115,  tpv_total:21295276,  pedidos_pro:539,  pedidos_smart:143, ativos_pro:81,   ativos_smart:75},
-  {mes:"Mai/26",nivel:"Top Empreendedor",        resellers:35,  pedidos:1028, ativos:279, tpv_m0:4186946,  tpv_m1:11703112,  tpv_total:46687634,  pedidos_pro:831,  pedidos_smart:197, ativos_pro:232,   ativos_smart:47},
+  {mes:"Mai/26",nivel:"Aprendiz",        resellers:1033, pedidos:2372, ativos:4143, tpv_m0:5578635,  tpv_m1:9021238,  tpv_total:36236971,  pedidos_pro:2158, pedidos_smart:214, ativos_pro:3314, ativos_smart:829},
+  {mes:"Mai/26",nivel:"Especialista",    resellers:63,   pedidos:560,  ativos:108,  tpv_m0:2098419,  tpv_m1:4649704,  tpv_total:17605917,  pedidos_pro:498,  pedidos_smart:62,  ativos_pro:95,   ativos_smart:13},
+  {mes:"Mai/26",nivel:"Empreendedor",    resellers:45,   pedidos:745,  ativos:156,  tpv_m0:3862445,  tpv_m1:5560670,  tpv_total:24301846,  pedidos_pro:588,  pedidos_smart:157, ativos_pro:81,   ativos_smart:75},
+  {mes:"Mai/26",nivel:"Top Empreendedor",resellers:36,   pedidos:1218, ativos:279,  tpv_m0:5235329,  tpv_m1:13139882, tpv_total:52755517,  pedidos_pro:987,  pedidos_smart:231, ativos_pro:232,  ativos_smart:47},
+  {mes:"Jun/26",nivel:"Aprendiz",        resellers:0,  pedidos:0, ativos:0, tpv_m0:0,  tpv_m1:0,  tpv_total:0,  pedidos_pro:0,  pedidos_smart:0, ativos_pro:0,   ativos_smart:0},
+  {mes:"Jun/26",nivel:"Especialista",        resellers:0,  pedidos:0, ativos:0, tpv_m0:0,  tpv_m1:0,  tpv_total:0,  pedidos_pro:0,  pedidos_smart:0, ativos_pro:0,   ativos_smart:0},
+  {mes:"Jun/26",nivel:"Empreendedor",        resellers:0,  pedidos:0, ativos:0, tpv_m0:0,  tpv_m1:0,  tpv_total:0,  pedidos_pro:0,  pedidos_smart:0, ativos_pro:0,   ativos_smart:0},
+  {mes:"Jun/26",nivel:"Top Empreendedor",        resellers:0,  pedidos:0, ativos:0, tpv_m0:0,  tpv_m1:0,  tpv_total:0,  pedidos_pro:0,  pedidos_smart:0, ativos_pro:0,   ativos_smart:0},
 ];
 
 const DAILY = """ + daily_json + """;
 
-const MES_ORDER=["Jan/26","Fev/26","Mar/26","Abr/26","Mai/26"];
+const MES_ORDER=["Jan/26","Fev/26","Mar/26","Abr/26","Mai/26","Jun/26"];
 const NIV_ORDER=["Aprendiz","Especialista","Empreendedor","Top Empreendedor"];
 const NIV_CLASS={"Aprendiz":"nivel-aprendiz","Especialista":"nivel-especialista","Empreendedor":"nivel-empreendedor","Top Empreendedor":"nivel-top"};
 const NIV_COLOR={"Aprendiz":"#9ca3af","Especialista":"#3b82f6","Empreendedor":"#f59e0b","Top Empreendedor":"#1A1F6B"};
@@ -783,8 +787,8 @@ document.querySelector('thead').addEventListener('click',e=>{const th=e.target.c
 
 
 // ── HELPERS ──
-const MES_TO_YYYYMM={"Jan/26":"2026-01","Fev/26":"2026-02","Mar/26":"2026-03","Abr/26":"2026-04","Mai/26":"2026-05"};
-const MES_LABEL={"2026-01":"Jan/26","2026-02":"Fev/26","2026-03":"Mar/26","2026-04":"Abr/26","2026-05":"Mai/26"};
+const MES_TO_YYYYMM={"Jan/26":"2026-01","Fev/26":"2026-02","Mar/26":"2026-03","Abr/26":"2026-04","Mai/26":"2026-05","Jun/26":"2026-06"};
+const MES_LABEL={"2026-01":"Jan/26","2026-02":"Fev/26","2026-03":"Mar/26","2026-04":"Abr/26","2026-05":"Mai/26","2026-06":"Jun/26"};
 
 const tooltipTotal=(items,yFmt)=>'TOTAL: '+yFmt(items.reduce((s,i)=>s+(i.raw||0),0));
 
@@ -1060,7 +1064,7 @@ function renderChartDevices(){
 
   // ── Tabela resumo mensal: Resellers × Pedidos × Devices por nível ───────
   const SUMMARY = """ + orders_summary_json + """;
-  const MESES_SUMM  = ['2026-01','2026-02','2026-03','2026-04','2026-05'];
+  const MESES_SUMM  = ['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06'];
   const MES_LABEL   = {'2026-01':'Jan/26','2026-02':'Fev/26','2026-03':'Mar/26','2026-04':'Abr/26','2026-05':'Mai/26'};
   const NIV_SUMM    = ['Aprendiz','Especialista','Empreendedor','Top Empreendedor'];
   const NIV_COLOR_S = {'Aprendiz':'#1A1F6B','Especialista':'#f59e0b','Empreendedor':'#9ca3af','Top Empreendedor':'#009EE3'};
@@ -1112,7 +1116,7 @@ function renderChartDevices(){
 // ── DIARIZADO ──
 const LEADS = """ + leads_json + """;
 const LP_DAILY = """ + lp_json + """;
-const MES_PREFIX={"Jan/26":"2026-01","Fev/26":"2026-02","Mar/26":"2026-03","Abr/26":"2026-04","Mai/26":"2026-05"};
+const MES_PREFIX={"Jan/26":"2026-01","Fev/26":"2026-02","Mar/26":"2026-03","Abr/26":"2026-04","Mai/26":"2026-05","Jun/26":"2026-06"};
 const PRIMEIRA_COMPRA={"2026-01-02":14,"2026-01-03":3,"2026-01-04":6,"2026-01-05":11,"2026-01-06":11,"2026-01-07":8,"2026-01-08":8,"2026-01-09":5,"2026-01-10":5,"2026-01-11":5,"2026-01-12":10,"2026-01-13":8,"2026-01-14":6,"2026-01-15":12,"2026-01-16":7,"2026-01-17":4,"2026-01-18":4,"2026-01-19":8,"2026-01-20":7,"2026-01-21":6,"2026-01-22":7,"2026-01-23":9,"2026-01-24":3,"2026-01-25":4,"2026-01-26":11,"2026-01-27":8,"2026-01-28":12,"2026-01-29":7,"2026-01-30":7,"2026-01-31":10,"2026-02-01":3,"2026-02-02":9,"2026-02-03":19,"2026-02-04":17,"2026-02-05":15,"2026-02-06":17,"2026-02-07":13,"2026-02-08":1,"2026-02-09":12,"2026-02-10":14,"2026-02-11":11,"2026-02-12":8,"2026-02-13":6,"2026-02-14":6,"2026-02-15":4,"2026-02-16":3,"2026-02-17":2,"2026-02-18":12,"2026-02-19":14,"2026-02-20":18,"2026-02-21":7,"2026-02-22":3,"2026-02-23":11,"2026-02-24":16,"2026-02-25":13,"2026-02-26":14,"2026-02-27":8,"2026-02-28":5,"2026-03-01":7,"2026-03-02":13,"2026-03-03":12,"2026-03-04":6,"2026-03-05":10,"2026-03-06":8,"2026-03-07":16,"2026-03-08":5,"2026-03-09":10,"2026-03-10":14,"2026-03-11":11,"2026-03-12":12,"2026-03-13":12,"2026-03-14":8,"2026-03-15":4,"2026-03-16":15,"2026-03-17":10,"2026-03-18":6,"2026-03-19":12,"2026-03-20":8,"2026-03-21":8,"2026-03-22":3,"2026-03-23":17,"2026-03-24":10,"2026-03-25":15,"2026-03-26":12,"2026-03-27":12,"2026-03-28":13,"2026-03-29":2,"2026-03-30":9,"2026-03-31":15,"2026-04-01":20,"2026-04-02":7,"2026-04-03":8,"2026-04-04":3,"2026-04-05":4,"2026-04-06":9,"2026-04-07":14,"2026-04-08":9,"2026-04-09":8,"2026-04-10":6,"2026-04-11":3,"2026-04-12":5,"2026-04-13":12,"2026-04-14":7,"2026-04-15":10,"2026-04-16":6,"2026-04-17":9,"2026-04-18":8,"2026-04-19":5,"2026-04-20":7,"2026-04-21":3,"2026-04-22":6,"2026-04-23":8,"2026-04-24":9,"2026-04-25":5,"2026-04-26":4,"2026-04-27":11,"2026-04-28":3,"2026-05-01":2,"2026-05-02":1,"2026-05-04":3,"2026-05-05":1,"2026-05-06":8,"2026-05-07":2,"2026-05-08":2};
 
 let activeMesDiar='Abr/26',activeNivelDiar='Todos',searchDiar='',sortColD=null,sortDirD=1,funilDiarMes='Abr/26',tpvDiaMes='Abr/26',tpvDiaNivel='Todos';
@@ -1354,7 +1358,7 @@ const TRANS_ORDER_Q = ["Especialista -> Aprendiz","Empreendedor -> Especialista"
 const TRANS_COLOR_Q = {"Especialista -> Aprendiz":"#ef4444","Empreendedor -> Especialista":"#f97316","Top Empreendedor -> Empreendedor":"#b45309"};
 const TRANS_LABEL_Q = {"Especialista -> Aprendiz":"Esp. → Aprendiz","Empreendedor -> Especialista":"Empreendedor → Esp.","Top Empreendedor -> Empreendedor":"Top → Empreendedor"};
 const MESES_NIVEIS = ["2026-02","2026-03","2026-04","2026-05"];
-const MES_LABEL_N  = {"2026-01":"Jan/26","2026-02":"Fev/26","2026-03":"Mar/26","2026-04":"Abr/26","2026-05":"Mai/26"};
+const MES_LABEL_N  = {"2026-01":"Jan/26","2026-02":"Fev/26","2026-03":"Mar/26","2026-04":"Abr/26","2026-05":"Mai/26","2026-06":"Jun/26"};
 const NIV_COLOR_MAP = {"Aprendiz":"#9ca3af","Especialista":"#3b82f6","Empreendedor":"#f59e0b","Top Empreendedor":"#1A1F6B","—":"#ddd"};
 
 let activeMesNiv=null, activeTransNiv=null, searchNiv='', sortColN='dt', sortDirN=-1, chartNiveis=null;
