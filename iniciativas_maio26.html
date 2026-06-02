@@ -350,15 +350,15 @@
           <div class="funil-arrow">▼</div>
           <div class="funil-step">
             <div><div class="funil-step-num">Passo 2</div><div class="funil-step-name">Resellers com compra em Maio</div></div>
-            <div><div class="funil-step-val">580</div><div class="funil-step-pct">0,39% dos impactados</div></div>
+            <div><div class="funil-step-val">692</div><div class="funil-step-pct">0,47% dos impactados</div></div>
           </div>
           <div class="funil-arrow">▼</div>
           <div class="funil-step">
             <div><div class="funil-step-num">Passo 3</div><div class="funil-step-name">Devices vendidos</div></div>
-            <div><div class="funil-step-val">1.772</div><div class="funil-step-pct">3,06 devices / reseller</div></div>
+            <div><div class="funil-step-val">2.192</div><div class="funil-step-pct">3,17 devices / reseller</div></div>
           </div>
         </div>
-        <div class="funil-note">Fonte: BT_PRODUCT_ORDERS · ORDER_GATEWAY='1' · Mai/26 (01–26)</div>
+        <div class="funil-note">Fonte: BT_PRODUCT_ORDERS · ORDER_GATEWAY='1' · Mai/26 (fechamento)</div>
       </div>
 
       <div class="funil-card" style="border: 2.5px solid var(--yellow); position: relative;">
@@ -373,15 +373,15 @@
           <div class="funil-arrow">▼</div>
           <div class="funil-step">
             <div><div class="funil-step-num">Passo 2</div><div class="funil-step-name">Resellers só Maio (sem Abr)</div></div>
-            <div><div class="funil-step-val">482</div><div class="funil-step-pct">83,1% dos compradores de Maio</div></div>
+            <div><div class="funil-step-val">583</div><div class="funil-step-pct">84,2% dos compradores de Maio</div></div>
           </div>
           <div class="funil-arrow">▼</div>
           <div class="funil-step">
             <div><div class="funil-step-num">Passo 3</div><div class="funil-step-name">Devices vendidos</div></div>
-            <div><div class="funil-step-val">1.348</div><div class="funil-step-pct">2,80 devices / reseller</div></div>
+            <div><div class="funil-step-val">1.694</div><div class="funil-step-pct">2,91 devices / reseller</div></div>
           </div>
         </div>
-        <div class="funil-note">Exclui os 98 resellers que também compraram em Abril/26. Filtro: nível Aprendiz.</div>
+        <div class="funil-note">Exclui os 109 resellers que também compraram em Abril/26.</div>
       </div>
 
     </div>
@@ -413,34 +413,34 @@
         <tbody>
           <tr>
             <td><span class="dot" style="background:#FFE600"></span>Aprendiz</td>
-            <td class="right">2.351</td>
-            <td class="right">50,1%</td>
+            <td class="right">2.815</td>
+            <td class="right">50,5%</td>
           </tr>
           <tr>
             <td><span class="dot" style="background:#555555"></span>Especialista</td>
-            <td class="right">540</td>
-            <td class="right">11,5%</td>
+            <td class="right">518</td>
+            <td class="right">9,3%</td>
           </tr>
           <tr>
             <td><span class="dot" style="background:#999999"></span>Empreendedor</td>
-            <td class="right">726</td>
-            <td class="right">15,5%</td>
+            <td class="right">956</td>
+            <td class="right">17,2%</td>
           </tr>
           <tr>
             <td><span class="dot" style="background:#1A1A1A"></span>Top Empreendedor</td>
-            <td class="right">1.073</td>
-            <td class="right">22,9%</td>
+            <td class="right">1.285</td>
+            <td class="right">23,1%</td>
           </tr>
           <tr>
             <td><strong>Total</strong></td>
-            <td class="right">4.690</td>
+            <td class="right">5.574</td>
             <td class="right">100%</td>
           </tr>
         </tbody>
       </table>
 
       <div style="font-size:10px;color:#BBBBBB;margin-top:12px;line-height:1.5;">
-        Fonte: BT_PRODUCT_ORDERS × BT_PRODUCT_ORDER_ITEM × BD_CUST_RESELLER_INFO · Pro 3 + Smart 2 · Mai/26 (dias 01–26) · sem grupo = Aprendiz
+        Fonte: BT_PRODUCT_ORDERS × BT_PRODUCT_ORDER_ITEM × BD_CUST_RESELLER_INFO · Pro 3 + Smart 2 · Mai/26 (fechamento) · sem grupo = Aprendiz
       </div>
     </div>
   </div>
@@ -448,13 +448,13 @@
 </div>
 
 <script>
-  const labels = ['01/05','02/05','03/05','04/05','05/05','06/05','07/05','08/05','09/05','10/05','11/05','12/05','13/05','14/05','15/05','16/05','17/05','18/05','19/05','20/05','21/05','22/05','23/05','24/05','25/05','26/05'];
+  const labels = ['01/05','02/05','03/05','04/05','05/05','06/05','07/05','08/05','09/05','10/05','11/05','12/05','13/05','14/05','15/05','16/05','17/05','18/05','19/05','20/05','21/05','22/05','23/05','24/05','25/05','26/05','27/05','28/05','29/05','30/05','31/05'];
 
   const data = {
-    aprendiz:       [32, 24, 28, 86, 98, 134, 127, 123, 56, 52, 145, 123, 82, 111, 73, 44, 43, 120, 122,  99, 127, 125, 58, 50, 118, 151],
-    especialista:   [ 6, 20,  0, 26, 22,  15,  77,   8, 70, 34,  13,  22, 19,  13, 14, 18, 17,   8,  12,  14,  28,  26,  0, 12,  12,  34],
-    empreendedor:   [15,  1,  2, 83, 38,  45, 101,  30,  9,  2,  10,  20, 19,  30, 58, 25, 15,  20,  38,  25,  38,  24, 11, 26,   3,  38],
-    top:            [60, 32,  4,  7, 16,  20, 144,  65,  8, 19,  19,  78, 49,  22, 63, 49, 22,  53,  41, 110,  46,  41,  7, 22,  34,  42]
+    aprendiz:       [32, 24, 28, 81, 94, 134, 127, 123, 56, 52, 139, 123, 82, 111, 73, 44, 43, 119, 122,  99, 127, 119, 58, 50, 116, 151,  99, 108, 129, 42, 110],
+    especialista:   [ 6, 10,  0, 31, 26,  15,  61,   8, 50, 14,  19,  10, 19,   9,  4, 18,  7,   9,  12,   2,  26,  22,  0, 12,  12,  34,  20,  18,   6, 14,  24],
+    empreendedor:   [15, 11,  2, 83, 38,  45, 117,  30, 29, 22,  10,  32, 19,  34, 68, 25, 25,  20,  38,  37,  40,  34, 11, 26,   5,  38,  13,  12,  55,  8,  14],
+    top:            [60, 32,  4,  7, 16,  20, 144,  65,  8, 19,  19,  78, 49,  22, 63, 49, 22,  53,  41, 110,  46,  41,  7, 22,  34,  42,  17, 133,  10, 24,  28]
   };
 
   Chart.register(ChartDataLabels);
@@ -621,7 +621,7 @@
         },
         y: {
           stacked: true,
-          max: 520,
+          max: 499,
           grid: { color: '#F0F0F0' },
           ticks: { font: { family: 'Inter', size: 10 }, color: '#888' }
         }
