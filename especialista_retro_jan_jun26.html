@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Especialista · Retrospectiva Jan–Jun 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <style>
+    :root {
+      --yellow: #FFE600;
+      --black:  #1A1A1A;
+      --navy:   #1A1F6B;
+      --amber:  #EF4444;
+      --gray-bg:#F4F4F4;
+      --white:  #FFFFFF;
+      --border: #E0E0E0;
+      --muted:  #888888;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',-apple-system,sans-serif; background:var(--gray-bg); color:var(--black); font-size:13px; }
+
+    .topbar { background:var(--black); padding:13px 32px; display:flex; align-items:center; gap:10px; position:sticky; top:0; z-index:100; }
+    .topbar-brand { color:var(--yellow); font-weight:800; font-size:14px; }
+    .topbar-sep   { color:#444; }
+    .topbar-title { color:#AAAAAA; font-size:12px; }
+
+    .hero { background:var(--yellow); padding:32px 40px 28px; }
+    .hero-badge { display:inline-block; background:var(--black); color:var(--yellow); font-size:10px; font-weight:700; letter-spacing:1.2px; padding:4px 14px; border-radius:20px; text-transform:uppercase; margin-bottom:14px; }
+    .hero-title { font-size:38px; font-weight:900; color:var(--black); line-height:1.1; margin-bottom:10px; letter-spacing:-1px; }
+    .hero-subtitle { font-size:12px; color:#3A3A3A; line-height:1.6; }
+
+    .content { padding:32px 40px 48px; }
+    .section-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted); margin-bottom:20px; }
+
+    .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+
+    .chart-card { background:var(--white); border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.06); overflow:hidden; }
+    .chart-card-header { background:var(--black); padding:14px 20px; }
+    .chart-card-title { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--yellow); }
+    .chart-card-sub { font-size:11px; color:#888; margin-top:3px; }
+    .chart-card-body { padding:20px 20px 12px; height:290px; }
+
+    .footer { padding:16px 40px 32px; }
+    .footer span { font-size:11px; color:#AAAAAA; }
+
+    /* SUMMARY */
+    .summary-section { padding:28px 40px 0; }
+    .summary-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+    .sum-card { background:var(--white); border-radius:10px; padding:18px 20px; box-shadow:0 2px 8px rgba(0,0,0,.06); }
+    .sum-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:10px; }
+    .sum-vals { font-size:15px; font-weight:800; color:var(--black); margin-bottom:8px; }
+    .sum-vals .arrow { color:#CCC; font-weight:400; margin:0 4px; }
+    .sum-vals .mai { color:var(--black); }
+    .sum-badge { display:inline-block; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; margin-bottom:6px; }
+    .sum-badge.green { background:#DCFCE7; color:#16A34A; }
+    .sum-badge.red   { background:#FEE2E2; color:#DC2626; }
+    .sum-period { font-size:10px; color:#CCC; }
+    .sum-insight { background:var(--black); border-radius:10px; padding:20px 24px; margin-bottom:8px; }
+    .sum-insight p { color:#AAAAAA; font-size:13px; line-height:1.8; }
+    .sum-insight strong { color:var(--yellow); font-weight:700; }
+    .mom-wrap { background:var(--white); border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.06); overflow:hidden; margin-bottom:16px; }
+    .mom-title { background:var(--black); color:var(--yellow); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:10px 16px; }
+    .mom-table { width:100%; border-collapse:collapse; font-size:12px; }
+    .mom-table th { background:#F7F7F7; padding:9px 14px; text-align:right; font-size:10px; text-transform:uppercase; color:#888; font-weight:700; border-bottom:1px solid #EEEEEE; }
+    .mom-table th:first-child { text-align:left; width:38%; }
+    .mom-table td { padding:9px 14px; text-align:right; border-bottom:1px solid #F4F4F4; font-weight:700; font-size:12px; }
+    .mom-table tr:last-child td { border-bottom:none; }
+    .mom-label { text-align:left !important; font-weight:600; color:#1A1A1A; font-size:12px; }
+    .mom-green { color:#16A34A; }
+    .mom-red   { color:#DC2626; }
+    .mom-na    { color:#CCC; font-weight:400; }
+
+    /* TABS */
+    .tabs-bar { background:var(--white); border-bottom:2px solid var(--border); padding:0 40px; display:flex; gap:4px; }
+    .tab { padding:13px 20px; font-size:13px; font-weight:500; color:var(--muted); cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:color .15s; user-select:none; }
+    .tab:hover { color:var(--black); }
+    .tab.active { color:var(--black); font-weight:700; border-bottom:3px solid var(--black); }
+    .tab-pane { display:none; }
+    .tab-pane.active { display:block; }
+
+    /* IMPL CARDS */
+    .impl-content { padding:32px 40px 56px; }
+    .impl-grid { display:flex; flex-direction:column; gap:16px; }
+    .impl-card { background:var(--black); border-radius:12px; padding:28px; cursor:pointer; transition:box-shadow .2s; }
+    .impl-card:hover { box-shadow:0 4px 16px rgba(0,0,0,.3); }
+    .impl-card-header { display:flex; gap:20px; align-items:flex-start; }
+    .impl-icon { font-size:44px; line-height:1; flex-shrink:0; }
+    .impl-body { flex:1; }
+    .impl-date { color:var(--yellow); font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; margin-bottom:10px; }
+    .impl-title { color:#FFFFFF; font-size:20px; font-weight:900; letter-spacing:-.3px; margin-bottom:8px; }
+    .impl-badge { display:inline-block; background:#2A2A2A; color:#888; font-size:10px; font-weight:600; padding:3px 10px; border-radius:20px; text-transform:uppercase; letter-spacing:.8px; }
+    .impl-badge.aprovado { background:#16A34A; color:#FFFFFF; }
+    .impl-badge.nao-iniciado { background:#FFE600; color:#1A1A1A; }
+    .impl-num { background:var(--yellow); color:var(--black); font-size:11px; font-weight:900; min-width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+    .impl-chevron { color:#555; font-size:20px; transition:transform .3s; margin-left:auto; padding-top:2px; flex-shrink:0; }
+    .impl-card.open .impl-chevron { transform:rotate(180deg); }
+    .impl-expand { max-height:0; overflow:hidden; transition:max-height .35s ease, padding .35s ease; }
+    .impl-card.open .impl-expand { max-height:400px; padding-top:20px; }
+    .impl-expand-inner { border-top:1px solid #2A2A2A; padding-top:16px; color:#AAAAAA; font-size:13px; line-height:1.7; }
+
+    @media(max-width:768px){ .chart-grid{ grid-template-columns:1fr; } .impl-grid{ grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-brand">MERCADO PAGO</span>
+  <span class="topbar-sep">·</span>
+  <span class="topbar-title">Canal Resellers · Especialista</span>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">Especialista</div>
+  <div class="hero-title">Retrospectiva<br>Jan–Mai 2026</div>
+  <div class="hero-subtitle">Programa Renda na Mão · Atualizado em 03/06/2026</div>
+</div>
+
+<div class="tabs-bar">
+  <div class="tab active" onclick="showTab('tab1', this)">Retrospectiva</div>
+  <div class="tab" onclick="showTab('tab2', this)">Implementações</div>
+</div>
+
+<div id="tab1" class="tab-pane active">
+<div class="content">
+  <div class="section-label">Desempenho Mensal — Jan a Mai/26</div>
+  <div class="chart-grid">
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="chart-card-title">Pedidos de Devices</div>
+        <div class="chart-card-sub">Total devices pedidos (eixo esq.) · Resellers com compra (eixo dir.)</div>
+      </div>
+      <div class="chart-card-body"><canvas id="chart1"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="chart-card-title">Ativações no Mês</div>
+        <div class="chart-card-sub">Devices ativados (eixo esq.) · Resellers com ativação (eixo dir.)</div>
+      </div>
+      <div class="chart-card-body"><canvas id="chart2"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="chart-card-title">TPV M0 vs TPV M1</div>
+        <div class="chart-card-sub">Volume total R$ · M1 = safra do mês anterior</div>
+      </div>
+      <div class="chart-card-body"><canvas id="chart3"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div class="chart-card-title">TPV Médio por Device</div>
+        <div class="chart-card-sub">M0 vs M1 · R$ por device ativado no mês</div>
+      </div>
+      <div class="chart-card-body"><canvas id="chart4"></canvas></div>
+    </div>
+
+  </div>
+</div>
+
+  <div class="summary-section">
+    <div class="summary-row">
+      <div class="sum-card">
+        <div class="sum-label">Resellers c/ Compra</div>
+        <div class="sum-vals">97 <span class="arrow">→</span> <span class="mai">69</span></div>
+        <div class="sum-badge red">▼  28.9%</div>
+        <div class="sum-period">Jan → Mai/26</div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-label">Devices Ativados</div>
+        <div class="sum-vals">1.218 <span class="arrow">→</span> <span class="mai">203</span></div>
+        <div class="sum-badge red">▼  83.3%</div>
+        <div class="sum-period">Jan → Mai/26</div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-label">TPV Médio M0 / Device</div>
+        <div class="sum-vals">R$2.505 <span class="arrow">→</span> <span class="mai">R$6.453</span></div>
+        <div class="sum-badge green">▲ + 157.6%</div>
+        <div class="sum-period">Jan → Abr/26</div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-label">Pedidos de Devices</div>
+        <div class="sum-vals">1.014 <span class="arrow">→</span> <span class="mai">540</span></div>
+        <div class="sum-badge red">▼  46.7%</div>
+        <div class="sum-period">Jan → Mai/26</div>
+      </div>
+    </div>
+    <div class="mom-wrap">
+      <div class="mom-title">MoM — Variação Mês a Mês</div>
+      <table class="mom-table">
+        <thead><tr>
+          <th>Métrica</th><th>Jan→Fev</th><th>Fev→Mar</th><th>Mar→Abr</th><th>Abr→Mai</th>
+        </tr></thead>
+        <tbody><tr><td class="mom-label">Resellers c/ Compra</td><td class="mom-green">▲ 24.7%</td><td class="mom-red">▼ 16.5%</td><td class="mom-red">▼ 5.0%</td><td class="mom-red">▼ 28.1%</td></tr><tr><td class="mom-label">Devices Ativados</td><td class="mom-red">▼ 1.1%</td><td class="mom-red">▼ 42.3%</td><td class="mom-red">▼ 33.1%</td><td class="mom-red">▼ 56.3%</td></tr><tr><td class="mom-label">TPV Médio M0</td><td class="mom-green">▲ 21.6%</td><td class="mom-green">▲ 60.5%</td><td class="mom-green">▲ 32.0%</td><td class="mom-na">—</td></tr><tr><td class="mom-label">Pedidos de Devices</td><td class="mom-green">▲ 29.1%</td><td class="mom-red">▼ 33.6%</td><td class="mom-red">▼ 22.1%</td><td class="mom-red">▼ 20.2%</td></tr></tbody>
+      </table>
+    </div>
+    <div class="sum-insight">
+      <p>De janeiro a maio de 2026, o nível <strong>Especialista</strong> registrou queda no número de <strong>resellers com compra</strong> e de <strong>ativações</strong> — reflexo de uma base que se tornou mais seletiva após o pico inicial de janeiro. Em contrapartida, o <strong>TPV médio por device</strong> cresceu de forma expressiva ao longo dos meses, indicando que os resellers que permanecem ativos são progressivamente mais produtivos. O <strong>TPV M1 supera consistentemente o M0</strong> em todos os meses, confirmando a maturação da carteira.</p>
+    </div>
+  </div>
+
+<div class="footer">
+  <span>Fontes: meli-bi-data.WHOWNER.BT_PRODUCT_ORDERS + BT_PRODUCT_ORDER_ITEM (pedidos) · meli-bi-data.SBOX_WHMPBR.BD_CUST_RESELLER_INFO (ativações, TPV) · Filtro: Point Pro 3 + Smart 2, Nível Especialista, Jan–Mai/26.</span>
+</div>
+</div><!-- /tab1 -->
+
+<div id="tab2" class="tab-pane">
+  <div class="impl-content">
+    <div class="impl-grid">
+
+      <div class="impl-card" onclick="toggleImpl(this)">
+        <div class="impl-card-header">
+          <div class="impl-num">1</div>
+          <div class="impl-icon">📈</div>
+          <div class="impl-body">
+            <div class="impl-date">Prazo: 01/06/2026</div>
+            <div class="impl-title">Subida de Nível</div>
+            <div class="impl-badge aprovado">Aprovado</div>
+          </div>
+          <div class="impl-chevron">▾</div>
+        </div>
+        <div class="impl-expand">
+          <div class="impl-expand-inner">O critério para alcançar o nível Especialista foi flexibilizado: a exigência foi reduzida de 6 para 4 new MAS.</div>
+        </div>
+      </div>
+
+      <div class="impl-card" onclick="toggleImpl(this)">
+        <div class="impl-card-header">
+          <div class="impl-num">2</div>
+          <div class="impl-icon">💰</div>
+          <div class="impl-body">
+            <div class="impl-date">Prazo: 01/07/2026</div>
+            <div class="impl-title">Novos Incentivos</div>
+            <div class="impl-badge aprovado">Aprovado</div>
+          </div>
+          <div class="impl-chevron">▾</div>
+        </div>
+        <div class="impl-expand">
+          <div class="impl-expand-inner">Publicado e oficializado o novo modelo de incentivos no dia 01/06 com a mudança prevista para 01/07.</div>
+        </div>
+      </div>
+
+      <div class="impl-card" onclick="toggleImpl(this)">
+        <div class="impl-card-header">
+          <div class="impl-num">3</div>
+          <div class="impl-icon">🎁</div>
+          <div class="impl-body">
+            <div class="impl-date">Prazo: 01/07/2026</div>
+            <div class="impl-title">Kit Revendedor</div>
+            <div class="impl-badge nao-iniciado">Não iniciado</div>
+          </div>
+          <div class="impl-chevron">▾</div>
+        </div>
+        <div class="impl-expand">
+          <div class="impl-expand-inner">Criação de uma seasonal fixa para que com 12 new MAS o revendedor Especialista já receba seu kit.</div>
+        </div>
+      </div>
+
+      <div class="impl-card" onclick="toggleImpl(this)">
+        <div class="impl-card-header">
+          <div class="impl-num">4</div>
+          <div class="impl-icon">📦</div>
+          <div class="impl-body">
+            <div class="impl-date">Prazo: 01/07/2026</div>
+            <div class="impl-title">Bundle Unitário</div>
+            <div class="impl-badge nao-iniciado">Não iniciado</div>
+          </div>
+          <div class="impl-chevron">▾</div>
+        </div>
+        <div class="impl-expand">
+          <div class="impl-expand-inner">Possibilidade da compra de apenas 1 máquina por revendedor.</div>
+        </div>
+      </div>
+
+      <div class="impl-card" onclick="toggleImpl(this)">
+        <div class="impl-card-header">
+          <div class="impl-num">5</div>
+          <div class="impl-icon">⭐</div>
+          <div class="impl-body">
+            <div class="impl-date">Prazo: 01/07/2026</div>
+            <div class="impl-title">Desconto Device</div>
+            <div class="impl-badge nao-iniciado">Não iniciado</div>
+          </div>
+          <div class="impl-chevron">▾</div>
+        </div>
+        <div class="impl-expand">
+          <div class="impl-expand-inner">Desconto de device em estrela de benefícios no Point Pro 3.</div>
+        </div>
+      </div>
+
+      <div class="impl-card" onclick="toggleImpl(this)">
+        <div class="impl-card-header">
+          <div class="impl-num">6</div>
+          <div class="impl-icon">🚀</div>
+          <div class="impl-body">
+            <div class="impl-date">Prazo: 01/07/2026</div>
+            <div class="impl-title">Subida de Nível Empreendedor</div>
+            <div class="impl-badge nao-iniciado">Não iniciado</div>
+          </div>
+          <div class="impl-chevron">▾</div>
+        </div>
+        <div class="impl-expand">
+          <div class="impl-expand-inner">Flexibilização para alcançar o nível Empreendedor: de 21 para 18 new MAS.</div>
+        </div>
+      </div>
+
+      <div class="impl-card" onclick="toggleImpl(this)">
+        <div class="impl-card-header">
+          <div class="impl-num">7</div>
+          <div class="impl-icon">🤝</div>
+          <div class="impl-body">
+            <div class="impl-date">Prazo: 01/07/2026</div>
+            <div class="impl-title">Reseller Indica Reseller</div>
+            <div class="impl-badge nao-iniciado">Não iniciado</div>
+          </div>
+          <div class="impl-chevron">▾</div>
+        </div>
+        <div class="impl-expand">
+          <div class="impl-expand-inner">Programa de MGM em resellers, com pagamento de até XX% sobre os ganhos do parceiro nos seus primeiros meses.</div>
+        </div>
+      </div>
+
+      <div class="impl-card" onclick="toggleImpl(this)">
+        <div class="impl-card-header">
+          <div class="impl-num">8</div>
+          <div class="impl-icon">💳</div>
+          <div class="impl-body">
+            <div class="impl-date">Prazo: 01/07/2026</div>
+            <div class="impl-title">Envio de Cartões</div>
+            <div class="impl-badge nao-iniciado">Não iniciado</div>
+          </div>
+          <div class="impl-chevron">▾</div>
+        </div>
+        <div class="impl-expand">
+          <div class="impl-expand-inner">Envio de cartões para Especialistas & Up que fizeram acima de XX clientes ao mês.</div>
+        </div>
+      </div>
+
+      <div class="impl-card" onclick="toggleImpl(this)">
+        <div class="impl-card-header">
+          <div class="impl-num">9</div>
+          <div class="impl-icon">💡</div>
+          <div class="impl-body">
+            <div class="impl-date">Prazo: 01/07/2026</div>
+            <div class="impl-title">Pílula de Conhecimento</div>
+            <div class="impl-badge nao-iniciado">Não iniciado</div>
+          </div>
+          <div class="impl-chevron">▾</div>
+        </div>
+        <div class="impl-expand">
+          <div class="impl-expand-inner">Agendas mensais conjuntas com SOC para trazer dicas de vendas aos resellers.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /tab2 -->
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+function toggleImpl(card) {
+  card.classList.toggle('open');
+}
+
+Chart.register(ChartDataLabels);
+
+const LABELS     = ["Jan/26", "Fev/26", "Mar/26", "Abr/26", "Mai/26"];
+const C1_DEV     = [1014, 1309, 869, 677, 540];
+const C1_RSL     = [97, 121, 101, 96, 69];
+const C1_PED_RSL = [10.5, 10.8, 8.6, 7.1, 7.8];
+const C2_ATV     = [1218, 1205, 695, 465, 203];
+const C2_RSL     = [113, 117, 80, 79, 49];
+const C2_ATV_RSL = [10.8, 10.3, 8.7, 5.9, 4.1];
+const C3_M0      = [3051297.06, 3669804.67, 3397537.93, 3000910.87, 2155825.55];
+const C3_M1      = [null, 4548886.91, 4842892.38, 4928603.04, 4765080.25];
+const C4_M0      = [2505.17, 3045.48, 4888.54, 6453.57, null];
+const C4_M1      = [null, 3775.01, 6968.19, 10599.15, null];
+
+const BASE = {
+  responsive: true,
+  maintainAspectRatio: false,
+  interaction: { mode: 'index', intersect: false },
+  layout: { padding: { top: 24 } },
+  plugins: {
+    legend: { position: 'top', labels: { font: { family: 'Inter', size: 11 }, boxWidth: 12, padding: 10 } },
+    datalabels: { display: false }
+  }
+};
+
+const XSCALE = { grid: { display: false }, ticks: { font: { family: 'Inter', size: 11 } } };
+const YSCALE = { grid: { display: false }, ticks: { display: false } };
+
+const DL     = (color, fmt) => ({ display: true, anchor: 'end', align: 'end',    offset: 2, font: { family: 'Inter', size: 9, weight: '700' }, color, formatter: fmt });
+const DL_BOT = (color, fmt) => ({ display: true, anchor: 'end', align: 'bottom', offset: 2, font: { family: 'Inter', size: 9, weight: '600' }, color, formatter: fmt });
+
+function ds(label, data, color, dashed, yId, dl) {
+  return {
+    label, data,
+    borderColor: color,
+    backgroundColor: dashed ? 'transparent' : color + '18',
+    borderWidth: 2.5,
+    borderDash: dashed ? [6, 3] : [],
+    pointRadius: 4, pointHoverRadius: 6,
+    tension: 0.3, fill: !dashed,
+    yAxisID: yId || 'y',
+    datalabels: dl || { display: false }
+  };
+}
+
+function makeBarLine(id, l1, d1, l2, d2, dRatio, ratioLabel) {
+  const datasets = [
+    { type: 'bar',  label: l1, data: d1, backgroundColor: '#1A1A1A', borderRadius: 4, yAxisID: 'y',
+      datalabels: { display: true, anchor: 'center', align: 'center',
+        font: { family: 'Inter', size: 9, weight: '700' }, color: '#FFFFFF',
+        formatter: v => v.toLocaleString('pt-BR') } },
+    { type: 'line', label: l2, data: d2, borderColor: '#1A1F6B', backgroundColor: 'transparent',
+      borderWidth: 2, borderDash: [6, 3], pointRadius: 4, pointHoverRadius: 6,
+      tension: 0.3, fill: false, yAxisID: 'y1', datalabels: DL_BOT('#1A1F6B', v => v.toLocaleString('pt-BR')) }
+  ];
+  if (dRatio) datasets.push(
+    { type: 'line', label: ratioLabel || 'Ratio', data: dRatio, borderColor: '#EF4444',
+      backgroundColor: 'transparent', borderWidth: 2, borderDash: [4, 2],
+      pointRadius: 4, pointHoverRadius: 6, tension: 0.3, fill: false, yAxisID: 'y2',
+      datalabels: DL('#EF4444', v => v.toFixed(1) + 'x') }
+  );
+  const scales = {
+    x:  XSCALE,
+    y:  { ...YSCALE, position: 'left', title: { display: true, text: 'Devices', font: { family:'Inter', size:10 }, color:'#888' } },
+    y1: { position: 'right', grid: { display: false }, ticks: { display: false },
+          title: { display: true, text: 'Resellers', font: { family:'Inter', size:10 }, color:'#1A1F6B' } }
+  };
+  if (dRatio) scales.y2 = { position: 'right', display: false, grid: { display: false } };
+  new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: { labels: LABELS, datasets },
+    options: { ...BASE, scales }
+  });
+}
+
+function makeDual(id, l1, d1, l2, d2) {
+  new Chart(document.getElementById(id), {
+    type: 'line',
+    data: { labels: LABELS, datasets: [
+      ds(l1, d1, '#1A1A1A', false, 'y',  DL('#1A1A1A', v => v.toLocaleString('pt-BR'))),
+      ds(l2, d2, '#1A1F6B', true,  'y1', { display: false })
+    ]},
+    options: { ...BASE, scales: {
+      x:  XSCALE,
+      y:  { ...YSCALE, position: 'left', title: { display: true, text: 'Devices',   font: { family:'Inter', size:10 }, color:'#888' } },
+      y1: { position: 'right', grid: { display: false }, ticks: { display: false },
+            title: { display: true, text: 'Resellers', font: { family:'Inter', size:10 }, color:'#1A1F6B' } }
+    }}
+  });
+}
+
+function makeGroupedBar(id, m0, m1, medio) {
+  const fmt = medio
+    ? v => v != null ? 'R$ ' + Math.round(v).toLocaleString('pt-BR') : ''
+    : v => v != null ? 'R$ ' + (v / 1e6).toFixed(2) + 'M' : '';
+  const yFmt = medio
+    ? v => 'R$ ' + Math.round(v).toLocaleString('pt-BR')
+    : v => 'R$ ' + (v / 1e6).toFixed(1) + 'M';
+  new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: { labels: LABELS, datasets: [
+      { label: medio ? 'TPV Médio M0' : 'TPV M0', data: m0, backgroundColor: '#1A1A1A', borderRadius: 3,
+        datalabels: DL('#1A1A1A', fmt) },
+      { label: medio ? 'TPV Médio M1' : 'TPV M1', data: m1, backgroundColor: '#3B82F6', borderRadius: 3,
+        datalabels: DL('#3B82F6', fmt) }
+    ]},
+    options: { ...BASE, scales: {
+      x: XSCALE,
+      y: { ...YSCALE }
+    }}
+  });
+}
+
+function makeTpv(id, m0, m1, medio) {
+  const fmt = medio
+    ? v => 'R$ ' + Math.round(v).toLocaleString('pt-BR')
+    : v => 'R$ ' + (v / 1e6).toFixed(2) + 'M';
+  new Chart(document.getElementById(id), {
+    type: 'line',
+    data: { labels: LABELS, datasets: [
+      ds('M0', m0, '#1A1A1A', false, 'y', DL('#1A1A1A', fmt)),
+      ds('M1', m1, '#3B82F6', true,  'y', { display: false })
+    ]},
+    options: { ...BASE, scales: {
+      x: XSCALE,
+      y: { ...YSCALE, ticks: { font: { family:'Inter', size:11 }, callback: fmt } }
+    }}
+  });
+}
+
+makeBarLine('chart1', 'Devices pedidos',  C1_DEV, 'Resellers c/ compra',    C1_RSL, C1_PED_RSL, 'Pedidos/Reseller');
+makeBarLine('chart2', 'Devices ativados', C2_ATV, 'Resellers c/ ativação', C2_RSL, C2_ATV_RSL, 'Ativos/Reseller');
+makeGroupedBar('chart3', C3_M0, C3_M1);
+makeGroupedBar('chart4', C4_M0, C4_M1, true);
+</script>
+</body>
+</html>
