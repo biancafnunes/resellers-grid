@@ -211,6 +211,78 @@
     .lp-matrix tr:last-child td { font-weight: 800; background: #F7F7F7; border-top: 2px solid var(--black); }
     .lp-matrix tr:last-child td.lp-canal { background: #F7F7F7; }
     .lp-matrix td.lp-total { font-weight: 700; background: #F5F5F5; border-left: 1px solid #E0E0E0; }
+
+    /* ── FONTES & QUERIES ── */
+    .fq-wrap { padding: 28px 40px 48px; }
+    .fq-sources-card {
+      background: var(--white); border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07); overflow: hidden; margin-bottom: 28px;
+    }
+    .fq-sources-card table { width: 100%; border-collapse: collapse; }
+    .fq-sources-card thead th {
+      background: #2D2D2D; color: #fff; padding: 10px 16px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.4px; text-align: left;
+    }
+    .fq-sources-card tbody td { padding: 12px 16px; border-bottom: 1px solid #F2F2F2; font-size: 12px; vertical-align: middle; }
+    .fq-sources-card tbody tr:last-child td { border-bottom: none; }
+    .fq-sources-card tbody tr:hover td { background: #FAFAFA; }
+    .fq-mono { font-family: 'Consolas','Monaco',monospace; font-size: 11px; background: #F0F0F0; padding: 2px 7px; border-radius: 4px; color: #333; }
+    .fq-query-card {
+      background: var(--white); border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07); margin-bottom: 24px; overflow: hidden;
+    }
+    .fq-query-header {
+      display: flex; align-items: center; gap: 12px; padding: 16px 20px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .fq-query-badge {
+      background: var(--yellow); color: var(--black);
+      font-size: 10px; font-weight: 700; padding: 4px 11px;
+      border-radius: 5px; letter-spacing: 0.6px; text-transform: uppercase; white-space: nowrap;
+    }
+    .fq-query-title { font-size: 14px; font-weight: 700; color: var(--black); }
+    .fq-query-desc  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .fq-query-meta  { display: flex; gap: 8px; flex-wrap: wrap; padding: 10px 20px 0; }
+    .fq-meta-chip {
+      font-size: 10px; font-weight: 600; padding: 3px 11px; border-radius: 20px;
+      background: #F0F0F0; color: #555;
+    }
+    .fq-meta-chip.yellow { background: #FFF9CC; color: #7A6000; }
+    .fq-meta-chip.dark   { background: #2D2D2D; color: #fff; }
+    .fq-sub-label {
+      padding: 12px 20px 4px;
+      font-size: 10px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.8px;
+    }
+    .fq-code-wrap { position: relative; margin: 0 20px 20px; }
+    .fq-code-wrap:first-of-type { margin-top: 12px; }
+    pre.fq-code {
+      background: #1A1A1A; color: #D4D4D4;
+      border-radius: 8px; padding: 16px 20px;
+      font-family: 'Consolas','Monaco','Courier New',monospace;
+      font-size: 11.5px; line-height: 1.65;
+      overflow-x: auto; white-space: pre; margin: 0;
+      border: 1px solid #333;
+    }
+    .fq-copy-btn {
+      position: absolute; top: 8px; right: 8px;
+      background: #333; color: #ccc; border: none; border-radius: 5px;
+      padding: 4px 12px; font-size: 10px; font-weight: 700; cursor: pointer;
+      font-family: inherit; letter-spacing: 0.3px;
+    }
+    .fq-copy-btn:hover { background: var(--yellow); color: var(--black); }
+    .fq-copy-btn.copied { background: #1A9E5C; color: #fff; }
+    .fq-note {
+      margin: 0 20px 20px;
+      font-size: 11px; color: var(--muted);
+      background: #F9F9F9; border-left: 3px solid var(--border);
+      padding: 8px 14px; border-radius: 0 6px 6px 0;
+    }
+    .kw { color: #569CD6; }
+    .fn { color: #DCDCAA; }
+    .st { color: #CE9178; }
+    .cm { color: #6A9955; font-style: italic; }
+    .tbl { color: #4EC9B0; }
   </style>
 </head>
 <body>
@@ -233,6 +305,7 @@
   <div class="tab active" onclick="showTab('historico', this)">Histórico Mensal</div>
   <div class="tab" onclick="showTab('lp-diario', this)">LP por Dia × Canal</div>
   <div class="tab" onclick="showTab('funil-direto', this)">Funil Direto (LEADS_TAN)</div>
+  <div class="tab" onclick="showTab('fontes', this)">Fontes & Queries</div>
 </div>
 
 <!-- CONTENT -->
@@ -409,6 +482,318 @@
     </div>
 
   </div>
+  </div><!-- /tab lp-diario -->
+
+
+  <!-- ══ TAB FONTES & QUERIES ══ -->
+  <div id="fontes" class="tab-pane">
+  <div class="fq-wrap">
+
+    <!-- FONTES -->
+    <div class="section-header">
+      <span class="section-badge">Fontes</span>
+      <span class="section-title">Tabelas utilizadas</span>
+    </div>
+    <div class="fq-sources-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Tabela</th>
+            <th>Schema</th>
+            <th>Descrição</th>
+            <th>Partição</th>
+            <th>Usado em</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="fq-mono">MELIDATA.TRACKS</span></td>
+            <td><span class="fq-mono">meli-bi-data.MELIDATA</span></td>
+            <td>Eventos de navegação dos usuários. Cada linha = 1 pageview com metadados de UTM, path, user_id, site.</td>
+            <td><span class="fq-mono">ds</span> (DATE)</td>
+            <td><span class="badge badge-muted" style="margin-right:4px">Aba 1</span><span class="badge badge-muted">Aba 2</span></td>
+          </tr>
+          <tr>
+            <td><span class="fq-mono">RESELLERS_LEADS_TAN</span></td>
+            <td><span class="fq-mono">meli-bi-data.SBOX_WHMPBR</span></td>
+            <td>Cadastros e conversões do programa Resellers. Campos-chave: <span class="fq-mono">CUST</span> (user_id), <span class="fq-mono">completo_cadastro</span> (data do cadastro), <span class="fq-mono">Completo_Venda</span> (data da 1ª compra).</td>
+            <td><span class="fq-mono">completo_cadastro</span></td>
+            <td><span class="badge badge-muted" style="margin-right:4px">Aba 1</span><span class="badge badge-muted">Aba 3</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LÓGICA DE ATRIBUIÇÃO -->
+    <div class="note" style="margin-bottom:28px;">
+      <strong>Atribuição same-month:</strong> um usuário é contado como lead/compra de um canal <em>apenas</em> se o evento (cadastro ou venda) ocorreu no mesmo mês calendário que a visita à LP. Conversões com ciclo maior (visita em M, compra em M+1) não são capturadas. Um mesmo usuário pode aparecer em mais de um canal caso tenha visitado via origens diferentes no mesmo mês.
+    </div>
+
+    <!-- QUERY 1 -->
+    <div class="section-header">
+      <span class="section-badge">Queries</span>
+      <span class="section-title">SQLs de atualização</span>
+    </div>
+
+    <div class="fq-query-card">
+      <div class="fq-query-header">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+            <span class="fq-query-badge">Query 1</span>
+            <span class="fq-query-title">Funil Mensal por Canal</span>
+          </div>
+          <div class="fq-query-desc">Visitas · Leads · Compras mensais por canal de origem → alimenta o array <strong>DATA[]</strong> (Aba Histórico Mensal)</div>
+        </div>
+      </div>
+      <div class="fq-query-meta">
+        <span class="fq-meta-chip dark">meli-bi-data.MELIDATA.TRACKS</span>
+        <span class="fq-meta-chip dark">SBOX_WHMPBR.RESELLERS_LEADS_TAN</span>
+        <span class="fq-meta-chip yellow">~4-5 min · MELIDATA</span>
+        <span class="fq-meta-chip">Atualizar: filtro ds BETWEEN</span>
+      </div>
+      <div class="fq-code-wrap" style="margin-top:14px;">
+        <button class="fq-copy-btn" onclick="copySQL('q1')">Copiar</button>
+        <pre class="fq-code" id="q1"><span class="kw">WITH</span> landing_raw <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    <span class="fn">FORMAT_DATE</span>(<span class="st">'%Y-%m'</span>, t.ds)                                                    <span class="kw">AS</span> mes,
+    t.usr.user_id                                                                   <span class="kw">AS</span> user_id,
+    <span class="fn">COALESCE</span>(<span class="fn">NULLIF</span>(<span class="fn">TRIM</span>((<span class="kw">SELECT</span> v.value <span class="kw">FROM</span> <span class="fn">UNNEST</span>(t.platform.http.utm.map) <span class="kw">AS</span> v
+                           <span class="kw">WHERE</span> v.key = <span class="st">'utm_source'</span> <span class="kw">LIMIT</span> 1)), <span class="st">''</span>), <span class="st">''</span>)  <span class="kw">AS</span> src,
+    <span class="fn">COALESCE</span>(<span class="fn">NULLIF</span>(<span class="fn">TRIM</span>((<span class="kw">SELECT</span> v.value <span class="kw">FROM</span> <span class="fn">UNNEST</span>(t.platform.http.utm.map) <span class="kw">AS</span> v
+                           <span class="kw">WHERE</span> v.key = <span class="st">'utm_medium'</span> <span class="kw">LIMIT</span> 1)), <span class="st">''</span>), <span class="st">''</span>)  <span class="kw">AS</span> med
+  <span class="kw">FROM</span> <span class="tbl">`meli-bi-data.MELIDATA.TRACKS`</span> t
+  <span class="kw">WHERE</span> t.ds <span class="kw">BETWEEN</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="fn">CURRENT_DATE</span>()   <span class="cm">-- ajustar intervalo ao atualizar</span>
+    <span class="kw">AND</span> t.bu = <span class="st">'mercadopago'</span>
+    <span class="kw">AND</span> t.application.site_id = <span class="st">'MLB'</span>
+    <span class="kw">AND</span> t.path = <span class="st">'/merchant_acquisition/flows/resellers/landing/home'</span>
+),
+landing_origin <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> mes, user_id,
+    <span class="kw">CASE</span>
+      <span class="kw">WHEN</span> src = <span class="st">'app'</span> <span class="kw">AND</span> med = <span class="st">'push'</span>   <span class="kw">THEN</span> <span class="st">'app / push'</span>
+      <span class="kw">WHEN</span> src = <span class="st">'placement'</span>              <span class="kw">THEN</span> <span class="st">'placement / row_mgm'</span>
+      <span class="kw">WHEN</span> src = <span class="st">'micrositio'</span>             <span class="kw">THEN</span> <span class="st">'micrositio'</span>
+      <span class="kw">WHEN</span> src = <span class="st">''</span> <span class="kw">OR</span> src = <span class="st">'direct'</span>     <span class="kw">THEN</span> <span class="st">'direct'</span>
+      <span class="kw">WHEN</span> src = <span class="st">'valueprop'</span>              <span class="kw">THEN</span> <span class="st">'valueprop / canva'</span>
+      <span class="kw">WHEN</span> <span class="fn">LOWER</span>(src) <span class="kw">LIKE</span> <span class="st">'%whatsapp%'</span>   <span class="kw">THEN</span> <span class="st">'whatsapp'</span>
+      <span class="kw">ELSE</span> <span class="st">'outros'</span>
+    <span class="kw">END</span> <span class="kw">AS</span> canal
+  <span class="kw">FROM</span> landing_raw
+),
+visitas <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> mes, canal, <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> user_id) <span class="kw">AS</span> visitas
+  <span class="kw">FROM</span> landing_origin <span class="kw">GROUP BY</span> 1, 2
+),
+leads <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> lo.mes, lo.canal, <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> lo.user_id) <span class="kw">AS</span> leads
+  <span class="kw">FROM</span> landing_origin lo
+  <span class="kw">INNER JOIN</span> <span class="tbl">`meli-bi-data.SBOX_WHMPBR.RESELLERS_LEADS_TAN`</span> l
+    <span class="kw">ON</span> <span class="fn">CAST</span>(l.CUST <span class="kw">AS</span> STRING) = <span class="fn">CAST</span>(lo.user_id <span class="kw">AS</span> STRING)
+    <span class="kw">AND</span> l.completo_cadastro <span class="kw">IS NOT NULL</span>
+    <span class="kw">AND</span> <span class="fn">FORMAT_DATE</span>(<span class="st">'%Y-%m'</span>, l.completo_cadastro) = lo.mes
+  <span class="kw">GROUP BY</span> 1, 2
+),
+compras <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> lo.mes, lo.canal, <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> lo.user_id) <span class="kw">AS</span> compras
+  <span class="kw">FROM</span> landing_origin lo
+  <span class="kw">INNER JOIN</span> <span class="tbl">`meli-bi-data.SBOX_WHMPBR.RESELLERS_LEADS_TAN`</span> l
+    <span class="kw">ON</span> <span class="fn">CAST</span>(l.CUST <span class="kw">AS</span> STRING) = <span class="fn">CAST</span>(lo.user_id <span class="kw">AS</span> STRING)
+    <span class="kw">AND</span> l.Completo_Venda <span class="kw">IS NOT NULL</span>
+    <span class="kw">AND</span> <span class="fn">FORMAT_DATE</span>(<span class="st">'%Y-%m'</span>, l.Completo_Venda) = lo.mes
+  <span class="kw">GROUP BY</span> 1, 2
+)
+<span class="kw">SELECT</span>
+  v.mes,
+  v.canal,
+  v.visitas,
+  <span class="fn">COALESCE</span>(l.leads,   0) <span class="kw">AS</span> leads,
+  <span class="fn">COALESCE</span>(c.compras, 0) <span class="kw">AS</span> compras,
+  <span class="fn">ROUND</span>(<span class="fn">SAFE_DIVIDE</span>(<span class="fn">COALESCE</span>(l.leads,   0), v.visitas)                    * 100, 2) <span class="kw">AS</span> pct_leads_visitas,
+  <span class="fn">ROUND</span>(<span class="fn">SAFE_DIVIDE</span>(<span class="fn">COALESCE</span>(c.compras, 0), <span class="fn">COALESCE</span>(l.leads, 0))       * 100, 2) <span class="kw">AS</span> pct_compras_leads,
+  <span class="fn">ROUND</span>(<span class="fn">SAFE_DIVIDE</span>(<span class="fn">COALESCE</span>(c.compras, 0), v.visitas)                    * 100, 2) <span class="kw">AS</span> pct_compras_visitas
+<span class="kw">FROM</span> visitas v
+<span class="kw">LEFT JOIN</span> leads   l <span class="kw">USING</span>(mes, canal)
+<span class="kw">LEFT JOIN</span> compras c <span class="kw">USING</span>(mes, canal)
+<span class="kw">ORDER BY</span> v.mes, v.visitas <span class="kw">DESC</span></pre>
+      </div>
+      <div class="fq-note">Script Python: <span class="fq-mono">q_funil_mai_jun26.py</span> · Para atualizar, ajustar o filtro <span class="fq-mono">t.ds BETWEEN '...' AND '...'</span> e colar os resultados no array <span class="fq-mono">DATA[]</span> do HTML.</div>
+    </div>
+
+    <!-- QUERY 2 -->
+    <div class="fq-query-card">
+      <div class="fq-query-header">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+            <span class="fq-query-badge">Query 2</span>
+            <span class="fq-query-title">LP Diário por Canal</span>
+          </div>
+          <div class="fq-query-desc">Visitas únicas à landing page por dia e por canal de origem → alimenta <strong>LP_DIARIO</strong> (Aba LP por Dia × Canal)</div>
+        </div>
+      </div>
+      <div class="fq-query-meta">
+        <span class="fq-meta-chip dark">meli-bi-data.MELIDATA.TRACKS</span>
+        <span class="fq-meta-chip yellow">~6-10 min · MELIDATA</span>
+        <span class="fq-meta-chip">Atualizar: filtro ds BETWEEN</span>
+      </div>
+      <div class="fq-code-wrap" style="margin-top:14px;">
+        <button class="fq-copy-btn" onclick="copySQL('q2')">Copiar</button>
+        <pre class="fq-code" id="q2"><span class="kw">WITH</span> raw <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    <span class="fn">CAST</span>(t.ds <span class="kw">AS</span> STRING)                                                           <span class="kw">AS</span> dia,
+    t.usr.user_id                                                                   <span class="kw">AS</span> user_id,
+    <span class="fn">COALESCE</span>(<span class="fn">NULLIF</span>(<span class="fn">TRIM</span>((<span class="kw">SELECT</span> v.value <span class="kw">FROM</span> <span class="fn">UNNEST</span>(t.platform.http.utm.map) <span class="kw">AS</span> v
+                           <span class="kw">WHERE</span> v.key = <span class="st">'utm_source'</span> <span class="kw">LIMIT</span> 1)), <span class="st">''</span>), <span class="st">''</span>)  <span class="kw">AS</span> src,
+    <span class="fn">COALESCE</span>(<span class="fn">NULLIF</span>(<span class="fn">TRIM</span>((<span class="kw">SELECT</span> v.value <span class="kw">FROM</span> <span class="fn">UNNEST</span>(t.platform.http.utm.map) <span class="kw">AS</span> v
+                           <span class="kw">WHERE</span> v.key = <span class="st">'utm_medium'</span> <span class="kw">LIMIT</span> 1)), <span class="st">''</span>), <span class="st">''</span>)  <span class="kw">AS</span> med
+  <span class="kw">FROM</span> <span class="tbl">`meli-bi-data.MELIDATA.TRACKS`</span> t
+  <span class="kw">WHERE</span> t.ds <span class="kw">BETWEEN</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="fn">CURRENT_DATE</span>()   <span class="cm">-- ajustar intervalo ao atualizar</span>
+    <span class="kw">AND</span> t.bu = <span class="st">'mercadopago'</span>
+    <span class="kw">AND</span> t.application.site_id = <span class="st">'MLB'</span>
+    <span class="kw">AND</span> t.path = <span class="st">'/merchant_acquisition/flows/resellers/landing/home'</span>
+)
+<span class="kw">SELECT</span>
+  dia,
+  <span class="kw">CASE</span>
+    <span class="kw">WHEN</span> src = <span class="st">'app'</span> <span class="kw">AND</span> med = <span class="st">'push'</span>   <span class="kw">THEN</span> <span class="st">'app / push'</span>
+    <span class="kw">WHEN</span> src = <span class="st">'placement'</span>              <span class="kw">THEN</span> <span class="st">'placement / row_mgm'</span>
+    <span class="kw">WHEN</span> src = <span class="st">'micrositio'</span>             <span class="kw">THEN</span> <span class="st">'micrositio'</span>
+    <span class="kw">WHEN</span> src = <span class="st">''</span> <span class="kw">OR</span> src = <span class="st">'direct'</span>     <span class="kw">THEN</span> <span class="st">'direct'</span>
+    <span class="kw">WHEN</span> src = <span class="st">'valueprop'</span>              <span class="kw">THEN</span> <span class="st">'valueprop / canva'</span>
+    <span class="kw">WHEN</span> <span class="fn">LOWER</span>(src) <span class="kw">LIKE</span> <span class="st">'%whatsapp%'</span>   <span class="kw">THEN</span> <span class="st">'whatsapp'</span>
+    <span class="kw">ELSE</span> <span class="st">'outros'</span>
+  <span class="kw">END</span> <span class="kw">AS</span> canal,
+  <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> user_id) <span class="kw">AS</span> visitas
+<span class="kw">FROM</span> raw
+<span class="kw">GROUP BY</span> 1, 2
+<span class="kw">ORDER BY</span> 1, 3 <span class="kw">DESC</span></pre>
+      </div>
+      <div class="fq-note">Script Python: <span class="fq-mono">q_lp_diario_mai_jun26.py</span> · Resultado é um objeto aninhado <span class="fq-mono">{dia: {canal: visitas}}</span> que é inserido em <span class="fq-mono">LP_DIARIO</span> no HTML.</div>
+    </div>
+
+    <!-- QUERY 3 -->
+    <div class="fq-query-card">
+      <div class="fq-query-header">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+            <span class="fq-query-badge">Query 3</span>
+            <span class="fq-query-title">Funil Direto LEADS_TAN</span>
+          </div>
+          <div class="fq-query-desc">Cadastros × 1ª compra por mês (3 sub-queries) → alimenta <strong>FD[]</strong> (Aba Funil Direto)</div>
+        </div>
+      </div>
+      <div class="fq-query-meta">
+        <span class="fq-meta-chip dark">SBOX_WHMPBR.RESELLERS_LEADS_TAN</span>
+        <span class="fq-meta-chip yellow">~5-10 seg · sandbox</span>
+        <span class="fq-meta-chip">3 queries independentes</span>
+      </div>
+
+      <div class="fq-sub-label">3a — Cadastrados por mês</div>
+      <div class="fq-code-wrap">
+        <button class="fq-copy-btn" onclick="copySQL('q3a')">Copiar</button>
+        <pre class="fq-code" id="q3a"><span class="kw">SELECT</span>
+  <span class="fn">FORMAT_DATE</span>(<span class="st">'%Y-%m'</span>, completo_cadastro) <span class="kw">AS</span> mes,
+  <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> CUST)                    <span class="kw">AS</span> cadastrados
+<span class="kw">FROM</span> <span class="tbl">`meli-bi-data.SBOX_WHMPBR.RESELLERS_LEADS_TAN`</span>
+<span class="kw">WHERE</span> completo_cadastro <span class="kw">BETWEEN</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="fn">CURRENT_DATE</span>()
+<span class="kw">GROUP BY</span> 1
+<span class="kw">ORDER BY</span> 1</pre>
+      </div>
+
+      <div class="fq-sub-label">3b — 1ª Compra no mesmo mês do cadastro</div>
+      <div class="fq-code-wrap">
+        <button class="fq-copy-btn" onclick="copySQL('q3b')">Copiar</button>
+        <pre class="fq-code" id="q3b"><span class="kw">SELECT</span>
+  <span class="fn">FORMAT_DATE</span>(<span class="st">'%Y-%m'</span>, completo_cadastro) <span class="kw">AS</span> mes,
+  <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> CUST)                    <span class="kw">AS</span> compra_mesmo_mes
+<span class="kw">FROM</span> <span class="tbl">`meli-bi-data.SBOX_WHMPBR.RESELLERS_LEADS_TAN`</span>
+<span class="kw">WHERE</span> completo_cadastro <span class="kw">BETWEEN</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="fn">CURRENT_DATE</span>()
+  <span class="kw">AND</span> Completo_Venda <span class="kw">IS NOT NULL</span>
+  <span class="kw">AND</span> <span class="fn">FORMAT_DATE</span>(<span class="st">'%Y-%m'</span>, Completo_Venda) = <span class="fn">FORMAT_DATE</span>(<span class="st">'%Y-%m'</span>, completo_cadastro)
+<span class="kw">GROUP BY</span> 1
+<span class="kw">ORDER BY</span> 1</pre>
+      </div>
+
+      <div class="fq-sub-label">3c — 1ª Compra realizada no mês (qualquer safra)</div>
+      <div class="fq-code-wrap">
+        <button class="fq-copy-btn" onclick="copySQL('q3c')">Copiar</button>
+        <pre class="fq-code" id="q3c"><span class="kw">SELECT</span>
+  <span class="fn">FORMAT_DATE</span>(<span class="st">'%Y-%m'</span>, Completo_Venda) <span class="kw">AS</span> mes,
+  <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> CUST)                 <span class="kw">AS</span> compra_indep
+<span class="kw">FROM</span> <span class="tbl">`meli-bi-data.SBOX_WHMPBR.RESELLERS_LEADS_TAN`</span>
+<span class="kw">WHERE</span> Completo_Venda <span class="kw">BETWEEN</span> <span class="st">'2026-01-01'</span> <span class="kw">AND</span> <span class="fn">CURRENT_DATE</span>()
+<span class="kw">GROUP BY</span> 1
+<span class="kw">ORDER BY</span> 1</pre>
+      </div>
+      <div class="fq-note">Script Python: <span class="fq-mono">q_leads_tan_mai_jun26.py</span> · Roda as 3 queries e imprime o snippet JS para colar em <span class="fq-mono">FD[]</span>.</div>
+    </div>
+
+    <!-- GUIA DE ATUALIZAÇÃO -->
+    <div class="section-header" style="margin-top:4px;">
+      <span class="section-badge">Guia</span>
+      <span class="section-title">Como atualizar o grid</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:40px">#</th>
+            <th>Passo</th>
+            <th>Script</th>
+            <th>Onde colar o resultado</th>
+            <th>Tempo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:700;text-align:center">1</td>
+            <td>Renovar token BigQuery</td>
+            <td><span class="fq-mono">gcloud auth print-access-token &gt; bq_token.txt</span></td>
+            <td>—</td>
+            <td>&lt; 5s</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;text-align:center">2</td>
+            <td>Funil mensal (visitas · leads · compras por canal)</td>
+            <td><span class="fq-mono">q_funil_mai_jun26.py</span></td>
+            <td>Array <span class="fq-mono">DATA[]</span> — substituir entradas do mês</td>
+            <td>~4-5 min</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;text-align:center">3</td>
+            <td>LP diário por canal (novos dias do mês)</td>
+            <td><span class="fq-mono">q_lp_diario_mai_jun26.py</span></td>
+            <td>Objeto <span class="fq-mono">LP_DIARIO</span> — adicionar dias e/ou novo bloco de mês</td>
+            <td>~6-10 min</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;text-align:center">4</td>
+            <td>Leads e conversões LEADS_TAN</td>
+            <td><span class="fq-mono">q_leads_tan_mai_jun26.py</span></td>
+            <td>Array <span class="fq-mono">FD[]</span> — substituir/adicionar meses</td>
+            <td>~15s</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;text-align:center">5</td>
+            <td>Virada de mês — adicionar opção nos filtros</td>
+            <td>Editar HTML diretamente</td>
+            <td><span class="fq-mono">&lt;select id="fl-mes"&gt;</span> e <span class="fq-mono">&lt;select id="lp-mes-sel"&gt;</span> + dict <span class="fq-mono">MES{}</span></td>
+            <td>Manual</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;text-align:center">6</td>
+            <td>Publicar</td>
+            <td><span class="fq-mono">git add grid_funil_landing_2026.html &amp;&amp; git commit -m "data: update ..." &amp;&amp; git push</span></td>
+            <td>—</td>
+            <td>~10s</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  </div><!-- /tab fontes -->
+
+
   </div><!-- /tab lp-diario -->
 
 </div>
@@ -884,6 +1269,18 @@
   }
 
   renderLPDiario();
+
+  /* ══ COPY SQL ══ */
+  function copySQL(id) {
+    const el = document.getElementById(id);
+    const text = el.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = el.parentElement.querySelector('.fq-copy-btn');
+      btn.textContent = 'Copiado!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
 </script>
 
 <div style="padding:24px 40px 32px;border-top:1px solid var(--border);margin-top:8px;">
