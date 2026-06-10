@@ -196,7 +196,7 @@ canvas{max-height:320px}
         <th data-col="resellers">Resellers <span title="Resellers com pelo menos 1 pedido de device no mês" style="cursor:help;opacity:.6">?</span></th>
         <th data-col="pedidos">Dev. Pedidos <span title="Total de devices pedidos no mês" style="cursor:help;opacity:.6">?</span></th>
         <th data-col="media_ped">Média Ped/Res <span title="Pedidos de devices ÷ Resellers com compra" style="cursor:help;opacity:.6">?</span></th>
-        <th data-col="ativos">Dev. Ativos <span title="Devices ativados (com transação) no mês" style="cursor:help;opacity:.6">?</span></th>
+        <th data-col="ativos">Sellers Ativos <span title="Devices ativados (com transação) no mês" style="cursor:help;opacity:.6">?</span></th>
         <th data-col="tpv_m0">TPV M0 <span title="TPV dos sellers captados no mês (M0 = mês de entrada)" style="cursor:help;opacity:.6">?</span></th>
         <th data-col="tpv_m1">TPV M1 <span title="TPV desses mesmos sellers no mês seguinte" style="cursor:help;opacity:.6">?</span></th>
         <th data-col="tpv_medio_m0">TPV Médio M0 <span title="TPV M0 ÷ Resellers — ticket médio do seller captado" style="cursor:help;opacity:.6">?</span></th>
@@ -204,7 +204,7 @@ canvas{max-height:320px}
         <th data-col="mom_tpv_m0">MoM TPV M0 <span title="Variação % do TPV M0 vs mês anterior (mês atual = MTD)" style="cursor:help;opacity:.6">?</span></th>
         <th data-col="mom_resellers">MoM Resellers <span title="Variação % vs mês anterior" style="cursor:help;opacity:.6">?</span></th>
         <th data-col="mom_pedidos">MoM Pedidos <span title="Variação % de pedidos de devices vs mês anterior" style="cursor:help;opacity:.6">?</span></th>
-        <th data-col="mom_ativos">MoM Dev. Ativos <span title="Variação % de devices ativos vs mês anterior" style="cursor:help;opacity:.6">?</span></th>
+        <th data-col="mom_ativos">MoM Sellers Ativos <span title="Variação % de devices ativos vs mês anterior" style="cursor:help;opacity:.6">?</span></th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
@@ -661,7 +661,7 @@ function renderCardTabela(){
   const tt=RAW.reduce((s,r)=>s+r.tpv_total,0);
   document.getElementById('cards-tabela').innerHTML=`
     <div class="card"><div class="card-label">Devices Pedidos</div><div class="card-value">${fmtN(tp)}</div><div class="card-sub">Jan-Abr/26</div></div>
-    <div class="card"><div class="card-label">Devices Ativos</div><div class="card-value">${fmtN(ta)}</div><div class="card-sub">Jan-Abr/26</div></div>
+    <div class="card"><div class="card-label">Sellers Ativos</div><div class="card-value">${fmtN(ta)}</div><div class="card-sub">Jan-Abr/26</div></div>
     <div class="card"><div class="card-label">TPV M0</div><div class="card-value">R$ ${(tm/1e6).toFixed(1).replace('.',',')}M</div><div class="card-sub">Jan-Abr/26</div></div>
     <div class="card"><div class="card-label">TPV M1</div><div class="card-value">R$ ${(tm1/1e6).toFixed(1).replace('.',',')}M</div><div class="card-sub">Fev-Abr/26</div></div>
     <div class="card"><div class="card-label">TPV Total Portfolio</div><div class="card-value">R$ ${(tt/1e6).toFixed(1).replace('.',',')}M</div><div class="card-sub">Jan-Abr/26</div></div>`;
@@ -669,7 +669,7 @@ function renderCardTabela(){
 
 function exportCSV(){
   const data=getData();
-  const header=['Mes','Nivel','Resellers','Dev.Pedidos','Dev.Ativos','TPV_M0','TPV_M1','TPV_Total','Ticket_Medio'];
+  const header=['Mes','Nivel','Resellers','Dev.Pedidos','Sellers Ativos','TPV_M0','TPV_M1','TPV_Total','Ticket_Medio'];
   const rows=data.map(r=>[r.mes,r.nivel,r.resellers,r.pedidos,r.ativos,r.tpv_m0,r.tpv_m1||0,r.tpv_total,r.resellers?Math.round(r.tpv_m0/r.resellers):0].join(';'));
   const csv=[header.join(';'),...rows].join('\n');
   const a=document.createElement('a');
@@ -1568,7 +1568,7 @@ function renderFunilTab(){
   document.getElementById('funil-visual').innerHTML =
     `<div style="width:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column;align-items:center">` +
     funnelStage(100, '#1A1F6B', '#ffffff', 'Devices Pedidos', fmtN(pedidos),  funilMesTab==='Todos'?'Jan–Mai/26':funilMesTab, `${pctAtiv}% foram ativados ▼`) +
-    funnelStage(78,  '#FFE600', '#1A1F6B', 'Devices Ativos',  fmtN(ativos),  `${pctAtiv}% dos pedidos`, `TPV dos sellers M0 ▼`) +
+    funnelStage(78,  '#FFE600', '#1A1F6B', 'Sellers Ativos',  fmtN(ativos),  `${pctAtiv}% dos pedidos`, `TPV dos sellers M0 ▼`) +
     funnelStage(58,  '#009EE3', '#ffffff', 'TPV M0',          tpvFmt(tpvM0), 'sellers captados no mês', '') +
     `</div>`;
 
