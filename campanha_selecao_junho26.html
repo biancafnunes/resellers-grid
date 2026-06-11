@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ranking Campanha Seleção Brasileira — Junho/2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde:       #005C20;
+    --verde-med:   #007A2F;
+    --verde-light: #E8F5E9;
+    --amarelo:     #FFE600;
+    --amarelo-dark:#C9B400;
+    --azul:        #002776;
+    --azul-med:    #003A99;
+    --branco:      #FFFFFF;
+    --cinza-bg:    #F4F4F4;
+    --cinza-borda: #E0E0E0;
+    --texto-dark:  #1A1A1A;
+    --muted:       #666666;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--cinza-bg); color: var(--texto-dark); }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--verde);
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--amarelo);
+  }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .logo-mp {
+    background: var(--amarelo);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--verde);
+    letter-spacing: -0.3px;
+  }
+  .topbar-title { color: var(--branco); font-size: 13px; font-weight: 600; opacity: 0.9; }
+  .badge-renda {
+    background: var(--azul);
+    color: var(--branco);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .badge-renda span { background: var(--amarelo); color: var(--azul); border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 900; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--verde);
+    padding: 40px 40px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -60px; bottom: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,230,0,0.08);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: 80px; top: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,230,0,0.05);
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--azul); color: var(--branco);
+    border-radius: 20px; padding: 5px 16px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .hero-sub { color: rgba(255,255,255,0.85); font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+  .hero-title { color: var(--amarelo); font-size: 44px; font-weight: 900; line-height: 1.05; margin-bottom: 20px; }
+  .hero-info {
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .hero-chip {
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px; padding: 6px 16px;
+    color: var(--branco); font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .hero-chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amarelo); }
+
+  /* ── PRÊMIOS RESUMO ── */
+  .premios-bar {
+    background: var(--azul);
+    padding: 16px 40px;
+    display: flex; gap: 32px; align-items: center; flex-wrap: wrap;
+  }
+  .premios-bar .label { color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .premios-bar .item { display: flex; align-items: center; gap: 10px; }
+  .premios-bar .icon { font-size: 22px; }
+  .premios-bar .item-text .rank { color: var(--amarelo); font-size: 14px; font-weight: 800; }
+  .premios-bar .item-text .desc { color: var(--branco); font-size: 12px; font-weight: 500; opacity: 0.85; }
+  .premios-bar .sep { width: 1px; height: 36px; background: rgba(255,255,255,0.2); }
+
+  /* ── TABS ── */
+  .tabs-container { background: var(--branco); border-bottom: 2px solid var(--cinza-borda); padding: 0 40px; }
+  .tabs { display: flex; gap: 0; }
+  .tab {
+    padding: 14px 24px; cursor: pointer;
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s; white-space: nowrap;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tab:hover { color: var(--verde); }
+  .tab.active { color: var(--verde); border-bottom-color: var(--verde); }
+  .tab .tab-count {
+    background: var(--cinza-bg); border-radius: 10px;
+    padding: 1px 7px; font-size: 11px; font-weight: 700; color: var(--muted);
+  }
+  .tab.active .tab-count { background: var(--verde-light); color: var(--verde); }
+
+  /* ── CONTENT ── */
+  .content { padding: 32px 40px 48px; max-width: 1100px; margin: 0 auto; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── RANKING TABLE ── */
+  .ranking-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .ranking-title { font-size: 20px; font-weight: 800; color: var(--texto-dark); }
+  .ranking-subtitle { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .update-badge {
+    background: var(--verde-light); color: var(--verde);
+    border-radius: 20px; padding: 5px 14px;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .update-badge::before { content: '●'; font-size: 8px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .table-wrap { background: var(--branco); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: var(--verde); }
+  thead th {
+    padding: 14px 20px; text-align: left;
+    font-size: 11px; font-weight: 700;
+    color: rgba(255,255,255,0.85); text-transform: uppercase; letter-spacing: 0.8px;
+  }
+  thead th.num { text-align: center; }
+  thead th.right { text-align: right; }
+
+  tbody tr { border-bottom: 1px solid var(--cinza-borda); transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #FAFAFA; }
+
+  /* posição ouro/prata/bronze */
+  tbody tr.pos-1 { background: linear-gradient(90deg, #FFFBDD 0%, #FFFFFF 40%); }
+  tbody tr.pos-2 { background: linear-gradient(90deg, #F5F5F5 0%, #FFFFFF 40%); }
+  tbody tr.pos-3 { background: linear-gradient(90deg, #FFF4EC 0%, #FFFFFF 40%); }
+
+  td { padding: 14px 20px; font-size: 14px; }
+  td.rank-cell { text-align: center; font-weight: 800; }
+  td.tpv-cell { text-align: right; font-weight: 600; color: var(--verde); font-size: 13px; }
+  td.novos-cell { text-align: center; }
+
+  .rank-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 50%;
+    font-size: 13px; font-weight: 900;
+  }
+  .rank-1 { background: var(--amarelo); color: var(--verde); }
+  .rank-2 { background: #E8E8E8; color: #555; }
+  .rank-3 { background: #FFE0CC; color: #B85C00; }
+  .rank-other { background: transparent; color: var(--muted); font-size: 13px; }
+
+  .novos-count {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--verde-light); color: var(--verde);
+    border-radius: 20px; padding: 3px 12px;
+    font-size: 13px; font-weight: 700;
+  }
+
+  .premio-cell { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
+  .premio-camisa { color: var(--verde); }
+  .premio-brinde { color: #888; }
+  .premio-icon { font-size: 16px; }
+
+  .reseller-id { font-size: 13px; font-weight: 600; color: var(--texto-dark); }
+  .reseller-id-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+  .empty-state {
+    text-align: center; padding: 48px 20px; color: var(--muted);
+  }
+  .empty-state .emoji { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  /* ── LEGENDA ── */
+  .legenda {
+    margin-top: 16px; display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  .legenda-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+
+  /* ── FOOTER ── */
+  .footer { padding: 20px 40px 32px; }
+  .footer-text { font-size: 11px; color: #AAAAAA; }
+
+  /* ── FONTES ── */
+  .fontes-section { margin-bottom: 32px; }
+  .fontes-section h3 { font-size: 15px; font-weight: 700; color: var(--texto-dark); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .fonte-card {
+    background: var(--branco); border-radius: 10px; border: 1px solid var(--cinza-borda);
+    padding: 20px 24px; margin-bottom: 16px;
+  }
+  .fonte-card .fc-title { font-size: 13px; font-weight: 700; color: var(--verde); margin-bottom: 4px; }
+  .fonte-card .fc-desc  { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+  .fonte-card .fc-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .fc-chip {
+    background: var(--verde-light); color: var(--verde);
+    border-radius: 20px; padding: 3px 12px; font-size: 11px; font-weight: 600;
+  }
+  .fc-chip.azul { background: #E8EEF8; color: var(--azul); }
+  pre.query-block {
+    background: #1A1A1A; color: #E8E8E8;
+    border-radius: 8px; padding: 20px; font-size: 12px;
+    font-family: 'Courier New', monospace; line-height: 1.6;
+    overflow-x: auto; white-space: pre; margin: 0;
+  }
+  .kw  { color: #569CD6; font-weight: 700; }
+  .fn  { color: #DCDCAA; }
+  .str { color: #CE9178; }
+  .cmt { color: #6A9955; font-style: italic; }
+  .num-lit { color: #B5CEA8; }
+  .toggle-query {
+    background: none; border: 1px solid var(--cinza-borda);
+    border-radius: 6px; padding: 5px 14px;
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    cursor: pointer; margin-top: 12px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .toggle-query:hover { border-color: var(--verde); color: var(--verde); }
+  .query-wrap { display: none; margin-top: 12px; }
+  .query-wrap.open { display: block; }
+
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .info-item { background: var(--cinza-bg); border-radius: 8px; padding: 12px 16px; }
+  .info-item .label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .info-item .value { font-size: 13px; font-weight: 600; color: var(--texto-dark); }
+
+  /* ── AVISO MTD ── */
+  .aviso-mtd {
+    background: #FFF8E1; border: 1px solid #FFE082; border-radius: 8px;
+    padding: 10px 16px; margin-bottom: 24px;
+    font-size: 12px; color: #856A00;
+    display: flex; align-items: center; gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo-mp">mercado pago</div>
+    <span class="topbar-title">Programa de Revenda</span>
+  </div>
+  <div class="badge-renda">
+    <span>R$</span>
+    RENDA NA MÃO
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">⚽ Campanha Especial · Junho/2026</div>
+  <div class="hero-sub">Ganhe uma camisa da</div>
+  <div class="hero-title">Seleção Brasileira</div>
+  <div class="hero-info">
+    <div class="hero-chip"><span class="dot"></span>01/06 a 30/06/2026</div>
+    <div class="hero-chip"><span class="dot"></span>Top 10 por nível</div>
+    <div class="hero-chip"><span class="dot"></span>Faturamento mín. R$ 3.000</div>
+    <div class="hero-chip"><span class="dot"></span>Novos clientes no mês</div>
+  </div>
+</div>
+
+<!-- PRÊMIOS -->
+<div class="premios-bar">
+  <div class="label">Prêmios</div>
+  <div class="item">
+    <div class="icon">👕</div>
+    <div class="item-text">
+      <div class="rank">Top 1 ao 3</div>
+      <div class="desc">Camisa Oficial da Seleção</div>
+    </div>
+  </div>
+  <div class="sep"></div>
+  <div class="item">
+    <div class="icon">🎁</div>
+    <div class="item-text">
+      <div class="rank">4º ao 10º</div>
+      <div class="desc">Brinde Exclusivo</div>
+    </div>
+  </div>
+  <div class="sep"></div>
+  <div class="item">
+    <div class="icon">⬆️</div>
+    <div class="item-text">
+      <div class="rank">Top 3 garantidos</div>
+      <div class="desc">Subida de nível em Julho</div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-container">
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('aprendiz', this)">
+      Aprendiz <span class="tab-count" id="cnt-aprendiz">5</span>
+    </div>
+    <div class="tab" onclick="showTab('especialista', this)">
+      Especialista <span class="tab-count" id="cnt-especialista">7</span>
+    </div>
+    <div class="tab" onclick="showTab('empreendedor', this)">
+      Empreendedor <span class="tab-count" id="cnt-empreendedor">10</span>
+    </div>
+    <div class="tab" onclick="showTab('top', this)">
+      Top Empreendedor <span class="tab-count" id="cnt-top">13</span>
+    </div>
+    <div class="tab" onclick="showTab('fontes', this)">
+      Fontes &amp; Queries
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- AVISO MTD -->
+  <div class="aviso-mtd">
+    ⏱️ <strong>Dados parciais:</strong> ranking atualizado com 11 dias de junho (01/06 a 11/06/2026). A campanha vai até 30/06 — posições ainda podem mudar.
+  </div>
+
+  <!-- ── APRENDIZ ── -->
+  <div class="tab-panel active" id="panel-aprendiz">
+    <div class="ranking-header">
+      <div>
+        <div class="ranking-title">🟡 Aprendiz</div>
+        <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
+      </div>
+      <div class="update-badge">Atualizado 11/06/2026</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="num" style="width:60px">Pos.</th>
+            <th>Reseller</th>
+            <th class="num">Novos Clientes</th>
+            <th class="right">TPV Total</th>
+            <th>Prêmio</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-aprendiz"></tbody>
+      </table>
+    </div>
+    <div class="legenda">
+      <div class="legenda-item">👕 <span>Camisa Oficial — Top 1 ao 3</span></div>
+      <div class="legenda-item">🎁 <span>Brinde Exclusivo — 4º ao 10º</span></div>
+      <div class="legenda-item">⚖️ <span>Empate em novos clientes: desempate pelo maior TPV M0 acumulado</span></div>
+    </div>
+  </div>
+
+  <!-- ── ESPECIALISTA ── -->
+  <div class="tab-panel" id="panel-especialista">
+    <div class="ranking-header">
+      <div>
+        <div class="ranking-title">🔵 Especialista</div>
+        <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
+      </div>
+      <div class="update-badge">Atualizado 11/06/2026</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="num" style="width:60px">Pos.</th>
+            <th>Reseller</th>
+            <th class="num">Novos Clientes</th>
+            <th class="right">TPV Total</th>
+            <th>Prêmio</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-especialista"></tbody>
+      </table>
+    </div>
+    <div class="legenda">
+      <div class="legenda-item">👕 <span>Camisa Oficial — Top 1 ao 3</span></div>
+      <div class="legenda-item">🎁 <span>Brinde Exclusivo — 4º ao 10º</span></div>
+      <div class="legenda-item">⚖️ <span>Empate em novos clientes: desempate pelo maior TPV M0 acumulado</span></div>
+    </div>
+  </div>
+
+  <!-- ── EMPREENDEDOR ── -->
+  <div class="tab-panel" id="panel-empreendedor">
+    <div class="ranking-header">
+      <div>
+        <div class="ranking-title">🟠 Empreendedor</div>
+        <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
+      </div>
+      <div class="update-badge">Atualizado 11/06/2026</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="num" style="width:60px">Pos.</th>
+            <th>Reseller</th>
+            <th class="num">Novos Clientes</th>
+            <th class="right">TPV Total</th>
+            <th>Prêmio</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-empreendedor"></tbody>
+      </table>
+    </div>
+    <div class="legenda">
+      <div class="legenda-item">👕 <span>Camisa Oficial — Top 1 ao 3</span></div>
+      <div class="legenda-item">🎁 <span>Brinde Exclusivo — 4º ao 10º</span></div>
+      <div class="legenda-item">⚖️ <span>Empate em novos clientes: desempate pelo maior TPV M0 acumulado</span></div>
+    </div>
+  </div>
+
+  <!-- ── TOP EMPREENDEDOR ── -->
+  <div class="tab-panel" id="panel-top">
+    <div class="ranking-header">
+      <div>
+        <div class="ranking-title">🏆 Top Empreendedor</div>
+        <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
+      </div>
+      <div class="update-badge">Atualizado 11/06/2026</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="num" style="width:60px">Pos.</th>
+            <th>Reseller</th>
+            <th class="num">Novos Clientes</th>
+            <th class="right">TPV Total</th>
+            <th>Prêmio</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-top"></tbody>
+      </table>
+    </div>
+    <div class="legenda">
+      <div class="legenda-item">👕 <span>Camisa Oficial — Top 1 ao 3</span></div>
+      <div class="legenda-item">🎁 <span>Brinde Exclusivo — 4º ao 10º</span></div>
+      <div class="legenda-item">⚖️ <span>Empate em novos clientes: desempate pelo maior TPV M0 acumulado</span></div>
+    </div>
+  </div>
+
+  <!-- ── FONTES & QUERIES ── -->
+  <div class="tab-panel" id="panel-fontes">
+
+    <!-- Validação de níveis -->
+    <div class="fontes-section">
+      <h3>✅ Validação de Níveis</h3>
+      <div class="fonte-card">
+        <div class="fc-title">Todos os resellers possuem nível identificado</div>
+        <div class="fc-desc">Verificado em 11/06/2026 — nenhum RESELLER_ID retornou NIVEL_RESELLER nulo ou vazio na base de junho.</div>
+        <div class="info-grid">
+          <div class="info-item"><div class="label">Top Empreendedor</div><div class="value">17 resellers qualificados</div></div>
+          <div class="info-item"><div class="label">Empreendedor</div><div class="value">11 resellers qualificados</div></div>
+          <div class="info-item"><div class="label">Especialista</div><div class="value">7 resellers qualificados</div></div>
+          <div class="info-item"><div class="label">Aprendiz</div><div class="value">5 resellers qualificados</div></div>
+        </div>
+        <div class="fc-chips">
+          <span class="fc-chip">NIVEL_RESELLER sem nulos</span>
+          <span class="fc-chip">Dados de 01/06 a 11/06/2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fonte principal -->
+    <div class="fontes-section">
+      <h3>📦 Fonte de Dados</h3>
+      <div class="fonte-card">
+        <div class="fc-title">meli-bi-data.WHOWNER.BT_MP_IC_CUBO_RSL</div>
+        <div class="fc-desc">Tabela transacional diária do canal Resellers. Contém TPV por seller, reseller e nível, com flag de meses desde aquisição para identificar sellers M0 (novos).</div>
+        <div class="fc-chips">
+          <span class="fc-chip">Partição: TIM_DAY</span>
+          <span class="fc-chip">Filtro: MESES_DESDE_AQUISICAO = 0</span>
+          <span class="fc-chip">Filtro: TPV ≥ R$ 3.000</span>
+          <span class="fc-chip">Período: 01/06 a 11/06/2026</span>
+          <span class="fc-chip azul">Billing: meli-bi-data</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Queries -->
+    <div class="fontes-section">
+      <h3>🔍 Queries Utilizadas</h3>
+
+      <!-- Query 1: Schema -->
+      <div class="fonte-card">
+        <div class="fc-title">1. Levantamento de campos — LK_MP_IC_SELLERS_PROFILE_RSL</div>
+        <div class="fc-desc">Usada para descobrir os campos disponíveis na tabela de perfil de resellers antes de montar a análise.</div>
+        <button class="toggle-query" onclick="toggleQuery('q1')">▶ Ver query</button>
+        <div class="query-wrap" id="q1">
+<pre class="query-block"><span class="kw">SELECT</span>
+  column_name,
+  data_type
+<span class="kw">FROM</span> <span class="str">`meli-bi-data.WHOWNER.INFORMATION_SCHEMA.COLUMNS`</span>
+<span class="kw">WHERE</span> table_name = <span class="str">'LK_MP_IC_SELLERS_PROFILE_RSL'</span>
+<span class="kw">ORDER BY</span> ordinal_position</pre>
+        </div>
+      </div>
+
+      <!-- Query 2: Validação de níveis -->
+      <div class="fonte-card">
+        <div class="fc-title">2. Validação de níveis — todos os resellers têm nível?</div>
+        <div class="fc-desc">Verificação de integridade: confirma se há resellers sem NIVEL_RESELLER identificado entre os que se qualificam para a campanha.</div>
+        <button class="toggle-query" onclick="toggleQuery('q2')">▶ Ver query</button>
+        <div class="query-wrap" id="q2">
+<pre class="query-block"><span class="cmt">-- Agrupa por nível (nulos viram 'SEM NIVEL') para verificar integridade</span>
+<span class="kw">WITH</span> sellers_m0_junho <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    NIVEL_RESELLER,
+    RESELLER_ID,
+    CUS_CUST_ID,
+    <span class="fn">SUM</span>(TPV) <span class="kw">AS</span> tpv_junho
+  <span class="kw">FROM</span> <span class="str">`meli-bi-data.WHOWNER.BT_MP_IC_CUBO_RSL`</span>
+  <span class="kw">WHERE</span> TIM_DAY &gt;= <span class="str">'2026-06-01'</span>
+    <span class="kw">AND</span> TIM_DAY &lt; <span class="str">'2026-07-01'</span>
+    <span class="kw">AND</span> MESES_DESDE_AQUISICAO = <span class="num-lit">0</span>
+  <span class="kw">GROUP BY</span> <span class="num-lit">1</span>,<span class="num-lit">2</span>,<span class="num-lit">3</span>
+),
+filtro_tpv <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> * <span class="kw">FROM</span> sellers_m0_junho <span class="kw">WHERE</span> tpv_junho &gt;= <span class="num-lit">3000</span>
+),
+por_reseller <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    <span class="fn">COALESCE</span>(<span class="fn">NULLIF</span>(<span class="fn">TRIM</span>(NIVEL_RESELLER), <span class="str">''</span>), <span class="str">'SEM NIVEL'</span>) <span class="kw">AS</span> nivel,
+    RESELLER_ID,
+    <span class="fn">COUNT</span>(CUS_CUST_ID)  <span class="kw">AS</span> novos_clientes,
+    <span class="fn">SUM</span>(tpv_junho)      <span class="kw">AS</span> tpv_total
+  <span class="kw">FROM</span> filtro_tpv
+  <span class="kw">GROUP BY</span> <span class="num-lit">1</span>,<span class="num-lit">2</span>
+)
+<span class="kw">SELECT</span>
+  nivel,
+  <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> RESELLER_ID) <span class="kw">AS</span> qtd_resellers,
+  <span class="fn">SUM</span>(novos_clientes)         <span class="kw">AS</span> total_novos,
+  <span class="fn">SUM</span>(tpv_total)              <span class="kw">AS</span> tpv_agregado
+<span class="kw">FROM</span> por_reseller
+<span class="kw">GROUP BY</span> <span class="num-lit">1</span>
+<span class="kw">ORDER BY</span> qtd_resellers <span class="kw">DESC</span></pre>
+        </div>
+      </div>
+
+      <!-- Query 3: Ranking final -->
+      <div class="fonte-card">
+        <div class="fc-title">3. Ranking final — Top 10 por nível com desempate por TPV</div>
+        <div class="fc-desc">Query principal que gera o ranking. Critério primário: maior número de novos clientes M0 com TPV ≥ R$3.000. Desempate: maior TPV M0 acumulado no mês.</div>
+        <button class="toggle-query" onclick="toggleQuery('q3')">▶ Ver query</button>
+        <div class="query-wrap" id="q3">
+<pre class="query-block"><span class="cmt">-- Sellers M0 em junho com TPV >= 3k, rankeados por reseller</span>
+<span class="cmt">-- Desempate: maior TPV acumulado M0 vence</span>
+<span class="kw">WITH</span> sellers_m0_junho <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    NIVEL_RESELLER,
+    RESELLER_ID,
+    CUS_CUST_ID,
+    <span class="fn">SUM</span>(TPV) <span class="kw">AS</span> tpv_junho
+  <span class="kw">FROM</span> <span class="str">`meli-bi-data.WHOWNER.BT_MP_IC_CUBO_RSL`</span>
+  <span class="kw">WHERE</span> TIM_DAY &gt;= <span class="str">'2026-06-01'</span>
+    <span class="kw">AND</span> TIM_DAY &lt; <span class="str">'2026-07-01'</span>
+    <span class="kw">AND</span> MESES_DESDE_AQUISICAO = <span class="num-lit">0</span>  <span class="cmt">-- somente sellers novos (M0)</span>
+  <span class="kw">GROUP BY</span> <span class="num-lit">1</span>,<span class="num-lit">2</span>,<span class="num-lit">3</span>
+),
+filtro_tpv <span class="kw">AS</span> (
+  <span class="cmt">-- Aplica corte mínimo de faturamento por seller</span>
+  <span class="kw">SELECT</span> * <span class="kw">FROM</span> sellers_m0_junho <span class="kw">WHERE</span> tpv_junho &gt;= <span class="num-lit">3000</span>
+),
+por_reseller <span class="kw">AS</span> (
+  <span class="cmt">-- Agrega por reseller: quantos novos clientes e TPV total</span>
+  <span class="kw">SELECT</span>
+    NIVEL_RESELLER,
+    RESELLER_ID,
+    <span class="fn">COUNT</span>(CUS_CUST_ID)  <span class="kw">AS</span> novos_clientes,
+    <span class="fn">SUM</span>(tpv_junho)      <span class="kw">AS</span> tpv_total
+  <span class="kw">FROM</span> filtro_tpv
+  <span class="kw">GROUP BY</span> <span class="num-lit">1</span>,<span class="num-lit">2</span>
+),
+ranking <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    *,
+    <span class="fn">RANK</span>() <span class="kw">OVER</span> (
+      <span class="kw">PARTITION BY</span> NIVEL_RESELLER
+      <span class="kw">ORDER BY</span> novos_clientes <span class="kw">DESC</span>, tpv_total <span class="kw">DESC</span>
+      <span class="cmt">-- desempate: maior TPV acumulado M0 vence</span>
+    ) <span class="kw">AS</span> rank_nivel
+  <span class="kw">FROM</span> por_reseller
+)
+<span class="kw">SELECT</span> *
+<span class="kw">FROM</span> ranking
+<span class="kw">WHERE</span> rank_nivel &lt;= <span class="num-lit">10</span>
+<span class="kw">ORDER BY</span> NIVEL_RESELLER, rank_nivel</pre>
+        </div>
+      </div>
+
+    </div><!-- /fontes-section queries -->
+
+    <!-- Regras da campanha -->
+    <div class="fontes-section">
+      <h3>📋 Regras da Campanha</h3>
+      <div class="fonte-card">
+        <div class="fc-chips">
+          <span class="fc-chip">Período: 01/06 a 30/06/2026</span>
+          <span class="fc-chip">Faturamento mín. por seller: R$ 3.000</span>
+          <span class="fc-chip">Sellers novos (M0) no mês</span>
+          <span class="fc-chip">Top 10 por nível</span>
+        </div>
+        <div style="font-size:12px; color: var(--muted); line-height:1.7;">
+          <strong style="color:var(--texto-dark)">Critério:</strong> maior quantidade de novos clientes com faturamento mínimo de R$3.000 no mês de junho/2026.<br>
+          <strong style="color:var(--texto-dark)">Desempate:</strong> em caso de empate no número de novos clientes, vence quem tiver maior TPV M0 acumulado no mês.<br>
+          <strong style="color:var(--texto-dark)">Premiação:</strong> Top 1 ao 3 → Camisa Oficial da Seleção Brasileira + subida de nível em julho · 4º ao 10º → Brinde Exclusivo.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /panel-fontes -->
+
+</div><!-- /content -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-text">
+    Fonte: meli-bi-data.WHOWNER.BT_MP_IC_CUBO_RSL · Sellers M0 (MESES_DESDE_AQUISICAO = 0) com TPV ≥ R$ 3.000 em Jun/2026 · Atualizado em 11/06/2026
+  </div>
+</div>
+
+<script>
+// ── DADOS ──────────────────────────────────────────────────────────────────
+const dados = {
+  aprendiz: [
+    { rank: 1,  id: '301712775',  cidade: '',                              uf: 'BA', novos: 2, tpv: 7935.83 },
+    { rank: 2,  id: '444273049',  cidade: '',                              uf: '',   novos: 1, tpv: 20900.00 },
+    { rank: 3,  id: '136147781',  cidade: 'São Raimundo das Mangabeiras',  uf: 'MA', novos: 1, tpv: 18811.49 },
+    { rank: 4,  id: '1980208400', cidade: '',                              uf: '',   novos: 1, tpv: 10898.19 },
+    { rank: 5,  id: '266229889',  cidade: 'Goiânia',                       uf: 'GO', novos: 1, tpv: 6699.99 },
+  ],
+  especialista: [
+    { rank: 1,  id: '246343377',  cidade: '',             uf: '',   novos: 3, tpv: 37534.43 },
+    { rank: 2,  id: '167012870',  cidade: 'Rondonópolis', uf: 'MT', novos: 1, tpv: 15237.00 },
+    { rank: 3,  id: '545579977',  cidade: '',             uf: '',   novos: 1, tpv: 9652.00 },
+    { rank: 4,  id: '452387421',  cidade: '',             uf: '',   novos: 1, tpv: 8390.15 },
+    { rank: 5,  id: '332188136',  cidade: '',             uf: '',   novos: 1, tpv: 7500.00 },
+    { rank: 6,  id: '708105104',  cidade: '',             uf: '',   novos: 1, tpv: 7115.75 },
+    { rank: 7,  id: '47472337',   cidade: 'Maracanaú',   uf: 'CE', novos: 1, tpv: 3956.00 },
+  ],
+  empreendedor: [
+    { rank: 1,  id: '699129892',  cidade: 'Guarapari',   uf: 'ES', novos: 4, tpv: 16741.14 },
+    { rank: 2,  id: '143182969',  cidade: 'Ananindeua',  uf: 'PA', novos: 2, tpv: 18749.92 },
+    { rank: 3,  id: '2155784259', cidade: '',            uf: '',   novos: 2, tpv: 16871.17 },
+    { rank: 4,  id: '440374085',  cidade: 'São Paulo',   uf: 'SP', novos: 2, tpv: 9596.60 },
+    { rank: 5,  id: '272079697',  cidade: '',            uf: '',   novos: 2, tpv: 7831.00 },
+    { rank: 6,  id: '290610770',  cidade: 'Rio Branco',  uf: 'AC', novos: 1, tpv: 17590.00 },
+    { rank: 7,  id: '157278761',  cidade: 'Peruíbe',     uf: 'SP', novos: 1, tpv: 7526.09 },
+    { rank: 8,  id: '483722227',  cidade: '',            uf: '',   novos: 1, tpv: 5796.00 },
+    { rank: 9,  id: '218399870',  cidade: 'Macapá',      uf: 'AP', novos: 1, tpv: 4878.76 },
+    { rank: 10, id: '296824220',  cidade: 'Salvador',    uf: 'BA', novos: 1, tpv: 3231.50 },
+  ],
+  top: [
+    { rank: 1,  id: '488278422',  cidade: 'Recife',        uf: 'PE', novos: 5, tpv: 32425.61 },
+    { rank: 2,  id: '632559284',  cidade: 'Goiânia',       uf: 'GO', novos: 3, tpv: 19194.71 },
+    { rank: 3,  id: '2206298813', cidade: '',              uf: '',   novos: 3, tpv: 16295.75 },
+    { rank: 4,  id: '82907272',   cidade: 'São Luís',      uf: 'MA', novos: 3, tpv: 11576.59 },
+    { rank: 5,  id: '222359885',  cidade: 'Parauapebas',   uf: 'PA', novos: 2, tpv: 31890.72 },
+    { rank: 6,  id: '2413208649', cidade: '',              uf: '',   novos: 2, tpv: 17726.45 },
+    { rank: 7,  id: '258370603',  cidade: 'Recife',        uf: 'PE', novos: 2, tpv: 16828.81 },
+    { rank: 8,  id: '38008063',   cidade: 'Cuiabá',        uf: 'MT', novos: 2, tpv: 7558.15 },
+    { rank: 9,  id: '438097380',  cidade: '',              uf: '',   novos: 2, tpv: 7112.10 },
+    { rank: 10, id: '1403050163', cidade: 'Gurupi',        uf: 'TO', novos: 1, tpv: 16744.41 },
+  ],
+};
+
+// ── RENDER ──────────────────────────────────────────────────────────────────
+function fmtBRL(v) {
+  return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function rankBadge(r) {
+  if (r === 1) return `<span class="rank-badge rank-1">1</span>`;
+  if (r === 2) return `<span class="rank-badge rank-2">2</span>`;
+  if (r === 3) return `<span class="rank-badge rank-3">3</span>`;
+  return `<span class="rank-badge rank-other">${r}º</span>`;
+}
+
+function premio(r) {
+  if (r <= 3) return `<div class="premio-cell premio-camisa"><span class="premio-icon">👕</span> Camisa Oficial</div>`;
+  return `<div class="premio-cell premio-brinde"><span class="premio-icon">🎁</span> Brinde Exclusivo</div>`;
+}
+
+function rowClass(r) {
+  if (r === 1) return 'pos-1';
+  if (r === 2) return 'pos-2';
+  if (r === 3) return 'pos-3';
+  return '';
+}
+
+function render(nivel, tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  const rows = dados[nivel];
+  if (!rows || rows.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="emoji">📊</div><p>Sem dados disponíveis para este nível.</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map(r => {
+    const loc = r.cidade && r.uf ? `${r.cidade} · ${r.uf}`
+              : r.uf             ? r.uf
+              : r.cidade         ? r.cidade
+              : '—';
+    return `
+    <tr class="${rowClass(r.rank)}">
+      <td class="rank-cell">${rankBadge(r.rank)}</td>
+      <td>
+        <div class="reseller-id">${r.id}</div>
+        <div class="reseller-id-sub">📍 ${loc}</div>
+      </td>
+      <td class="novos-cell"><span class="novos-count">${r.novos}</span></td>
+      <td class="tpv-cell">${fmtBRL(r.tpv)}</td>
+      <td>${premio(r.rank)}</td>
+    </tr>`;
+  }).join('');
+}
+
+render('aprendiz', 'tbody-aprendiz');
+render('especialista', 'tbody-especialista');
+render('empreendedor', 'tbody-empreendedor');
+render('top', 'tbody-top');
+
+// ── TABS ──────────────────────────────────────────────────────────────────
+function showTab(id, el) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── TOGGLE QUERY ──────────────────────────────────────────────────────────
+function toggleQuery(id) {
+  const wrap = document.getElementById(id);
+  const btn  = wrap.previousElementSibling;
+  const open = wrap.classList.toggle('open');
+  btn.textContent = (open ? '▼ Ocultar query' : '▶ Ver query');
+}
+</script>
+</body>
+</html>
