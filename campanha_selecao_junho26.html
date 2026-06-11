@@ -352,7 +352,7 @@
 
   <!-- AVISO MTD -->
   <div class="aviso-mtd">
-    ⏱️ <strong>Dados parciais:</strong> ranking atualizado com 11 dias de junho (01/06 a 11/06/2026). A campanha vai até 30/06 — posições ainda podem mudar.
+    ⏱️ <strong>Dados parciais:</strong> ranking atualizado com 11 dias de junho (01/06 a 11/06/2026). A campanha vai até 30/06 — posições ainda podem mudar. · <strong>Produto:</strong> Point apenas (CICLO_VIDA M0 · TPV ≥ R$ 3.000)
   </div>
 
   <!-- ── APRENDIZ ── -->
@@ -505,8 +505,9 @@
         <div class="fc-desc">Tabela transacional diária do canal Resellers. Contém TPV por seller, reseller e nível, com flag de meses desde aquisição para identificar sellers M0 (novos).</div>
         <div class="fc-chips">
           <span class="fc-chip">Partição: TIM_DAY</span>
-          <span class="fc-chip">Filtro: MESES_DESDE_AQUISICAO = 0</span>
-          <span class="fc-chip">Filtro: TPV ≥ R$ 3.000</span>
+          <span class="fc-chip">Filtro: CICLO_VIDA_M0_TRIANGULO = 'M0'</span>
+          <span class="fc-chip">Filtro: PRODUTO = 'POINT'</span>
+          <span class="fc-chip">Filtro: TPV ≥ R$ 3.000 por seller</span>
           <span class="fc-chip">Período: 01/06 a 11/06/2026</span>
           <span class="fc-chip azul">Billing: meli-bi-data</span>
         </div>
@@ -577,12 +578,12 @@ por_reseller <span class="kw">AS</span> (
       <!-- Query 3: Ranking final -->
       <div class="fonte-card">
         <div class="fc-title">3. Ranking final — Top 10 por nível com desempate por TPV</div>
-        <div class="fc-desc">Query principal que gera o ranking. Critério primário: maior número de novos clientes M0 com TPV ≥ R$3.000. Desempate: maior TPV M0 acumulado no mês.</div>
+        <div class="fc-desc">Query principal que gera o ranking. Sellers M0 de Point com TPV ≥ R$3.000. Critério primário: maior número de novos clientes. Desempate: maior TPV M0 acumulado no mês.</div>
         <button class="toggle-query" onclick="toggleQuery('q3')">▶ Ver query</button>
         <div class="query-wrap" id="q3">
-<pre class="query-block"><span class="cmt">-- Sellers M0 em junho com TPV >= 3k, rankeados por reseller</span>
+<pre class="query-block"><span class="cmt">-- Sellers M0 de Point em junho com TPV >= 3k, rankeados por reseller</span>
 <span class="cmt">-- Desempate: maior TPV acumulado M0 vence</span>
-<span class="kw">WITH</span> sellers_m0_junho <span class="kw">AS</span> (
+<span class="kw">WITH</span> sellers_m0 <span class="kw">AS</span> (
   <span class="kw">SELECT</span>
     NIVEL_RESELLER,
     RESELLER_ID,
@@ -591,20 +592,20 @@ por_reseller <span class="kw">AS</span> (
   <span class="kw">FROM</span> <span class="str">`meli-bi-data.WHOWNER.BT_MP_IC_CUBO_RSL`</span>
   <span class="kw">WHERE</span> TIM_DAY &gt;= <span class="str">'2026-06-01'</span>
     <span class="kw">AND</span> TIM_DAY &lt; <span class="str">'2026-07-01'</span>
-    <span class="kw">AND</span> MESES_DESDE_AQUISICAO = <span class="num-lit">0</span>  <span class="cmt">-- somente sellers novos (M0)</span>
+    <span class="kw">AND</span> CICLO_VIDA_M0_TRIANGULO = <span class="str">'M0'</span>  <span class="cmt">-- primeiro mês de transação do seller</span>
+    <span class="kw">AND</span> PRODUTO = <span class="str">'POINT'</span>              <span class="cmt">-- somente Point (maquininha)</span>
   <span class="kw">GROUP BY</span> <span class="num-lit">1</span>,<span class="num-lit">2</span>,<span class="num-lit">3</span>
 ),
 filtro_tpv <span class="kw">AS</span> (
-  <span class="cmt">-- Aplica corte mínimo de faturamento por seller</span>
-  <span class="kw">SELECT</span> * <span class="kw">FROM</span> sellers_m0_junho <span class="kw">WHERE</span> tpv_junho &gt;= <span class="num-lit">3000</span>
+  <span class="cmt">-- Corte mínimo de R$ 3.000 de faturamento Point por seller no mês</span>
+  <span class="kw">SELECT</span> * <span class="kw">FROM</span> sellers_m0 <span class="kw">WHERE</span> tpv_junho &gt;= <span class="num-lit">3000</span>
 ),
 por_reseller <span class="kw">AS</span> (
-  <span class="cmt">-- Agrega por reseller: quantos novos clientes e TPV total</span>
   <span class="kw">SELECT</span>
     NIVEL_RESELLER,
     RESELLER_ID,
-    <span class="fn">COUNT</span>(CUS_CUST_ID)  <span class="kw">AS</span> novos_clientes,
-    <span class="fn">SUM</span>(tpv_junho)      <span class="kw">AS</span> tpv_total
+    <span class="fn">COUNT</span>(CUS_CUST_ID) <span class="kw">AS</span> novos_clientes,
+    <span class="fn">SUM</span>(tpv_junho)     <span class="kw">AS</span> tpv_total
   <span class="kw">FROM</span> filtro_tpv
   <span class="kw">GROUP BY</span> <span class="num-lit">1</span>,<span class="num-lit">2</span>
 ),
@@ -614,13 +615,17 @@ ranking <span class="kw">AS</span> (
     <span class="fn">RANK</span>() <span class="kw">OVER</span> (
       <span class="kw">PARTITION BY</span> NIVEL_RESELLER
       <span class="kw">ORDER BY</span> novos_clientes <span class="kw">DESC</span>, tpv_total <span class="kw">DESC</span>
-      <span class="cmt">-- desempate: maior TPV acumulado M0 vence</span>
     ) <span class="kw">AS</span> rank_nivel
   <span class="kw">FROM</span> por_reseller
 )
-<span class="kw">SELECT</span> *
-<span class="kw">FROM</span> ranking
-<span class="kw">WHERE</span> rank_nivel &lt;= <span class="num-lit">10</span>
+<span class="kw">SELECT</span>
+  t.*,
+  c.CUS_CITY  <span class="kw">AS</span> cidade,
+  c.CUS_STATE <span class="kw">AS</span> uf
+<span class="kw">FROM</span> ranking t
+<span class="kw">LEFT JOIN</span> <span class="str">`meli-bi-data.WHOWNER.LK_CUS_CUSTOMERS_DATA`</span> c
+  <span class="kw">ON</span> t.RESELLER_ID = c.CUS_CUST_ID
+<span class="kw">WHERE</span> t.rank_nivel &lt;= <span class="num-lit">10</span>
 <span class="kw">ORDER BY</span> NIVEL_RESELLER, rank_nivel</pre>
         </div>
       </div>
@@ -660,44 +665,47 @@ ranking <span class="kw">AS</span> (
 // ── DADOS ──────────────────────────────────────────────────────────────────
 const dados = {
   aprendiz: [
-    { rank: 1,  id: '301712775',  cidade: '',                              uf: 'BA', novos: 2, tpv: 7935.83 },
-    { rank: 2,  id: '444273049',  cidade: '',                              uf: '',   novos: 1, tpv: 20900.00 },
-    { rank: 3,  id: '136147781',  cidade: 'São Raimundo das Mangabeiras',  uf: 'MA', novos: 1, tpv: 18811.49 },
-    { rank: 4,  id: '1980208400', cidade: '',                              uf: '',   novos: 1, tpv: 10898.19 },
-    { rank: 5,  id: '266229889',  cidade: 'Goiânia',                       uf: 'GO', novos: 1, tpv: 6699.99 },
+    { rank: 1,  id: '507780494',  cidade: 'Goiânia',              uf: 'GO', novos: 2, tpv: 19826.95 },
+    { rank: 2,  id: '444273049',  cidade: '',                      uf: '',   novos: 1, tpv: 20600.00 },
+    { rank: 3,  id: '416719565',  cidade: 'São Luís',              uf: 'MA', novos: 1, tpv: 13441.98 },
+    { rank: 4,  id: '2483105242', cidade: '',                      uf: '',   novos: 1, tpv: 11325.00 },
+    { rank: 5,  id: '154349745',  cidade: 'Santana de Parnaíba',   uf: 'SP', novos: 1, tpv: 3921.00 },
+    { rank: 6,  id: '494713329',  cidade: '',                      uf: '',   novos: 1, tpv: 3652.00 },
+    { rank: 7,  id: '40374016',   cidade: 'Araguaína',             uf: 'TO', novos: 1, tpv: 3643.76 },
+    { rank: 8,  id: '413070797',  cidade: '',                      uf: '',   novos: 1, tpv: 3314.00 },
+    { rank: 9,  id: '1980208400', cidade: '',                      uf: '',   novos: 1, tpv: 3125.30 },
+    { rank: 10, id: '84327074',   cidade: 'Gravataí',              uf: 'RS', novos: 1, tpv: 3100.00 },
   ],
   especialista: [
-    { rank: 1,  id: '246343377',  cidade: '',             uf: '',   novos: 3, tpv: 37534.43 },
+    { rank: 1,  id: '246343377',  cidade: '',             uf: '',   novos: 1, tpv: 27498.18 },
     { rank: 2,  id: '167012870',  cidade: 'Rondonópolis', uf: 'MT', novos: 1, tpv: 15237.00 },
     { rank: 3,  id: '545579977',  cidade: '',             uf: '',   novos: 1, tpv: 9652.00 },
-    { rank: 4,  id: '452387421',  cidade: '',             uf: '',   novos: 1, tpv: 8390.15 },
-    { rank: 5,  id: '332188136',  cidade: '',             uf: '',   novos: 1, tpv: 7500.00 },
-    { rank: 6,  id: '708105104',  cidade: '',             uf: '',   novos: 1, tpv: 7115.75 },
-    { rank: 7,  id: '47472337',   cidade: 'Maracanaú',   uf: 'CE', novos: 1, tpv: 3956.00 },
+    { rank: 4,  id: '20970977',   cidade: '',             uf: '',   novos: 1, tpv: 7441.00 },
+    { rank: 5,  id: '47472337',   cidade: 'Maracanaú',   uf: 'CE', novos: 1, tpv: 3321.00 },
   ],
   empreendedor: [
-    { rank: 1,  id: '699129892',  cidade: 'Guarapari',   uf: 'ES', novos: 4, tpv: 16741.14 },
-    { rank: 2,  id: '143182969',  cidade: 'Ananindeua',  uf: 'PA', novos: 2, tpv: 18749.92 },
-    { rank: 3,  id: '2155784259', cidade: '',            uf: '',   novos: 2, tpv: 16871.17 },
-    { rank: 4,  id: '440374085',  cidade: 'São Paulo',   uf: 'SP', novos: 2, tpv: 9596.60 },
-    { rank: 5,  id: '272079697',  cidade: '',            uf: '',   novos: 2, tpv: 7831.00 },
-    { rank: 6,  id: '290610770',  cidade: 'Rio Branco',  uf: 'AC', novos: 1, tpv: 17590.00 },
-    { rank: 7,  id: '157278761',  cidade: 'Peruíbe',     uf: 'SP', novos: 1, tpv: 7526.09 },
-    { rank: 8,  id: '483722227',  cidade: '',            uf: '',   novos: 1, tpv: 5796.00 },
-    { rank: 9,  id: '218399870',  cidade: 'Macapá',      uf: 'AP', novos: 1, tpv: 4878.76 },
+    { rank: 1,  id: '699129892',  cidade: 'Guarapari',   uf: 'ES', novos: 3, tpv: 12268.76 },
+    { rank: 2,  id: '225494908',  cidade: 'Ananindeua',  uf: 'PA', novos: 2, tpv: 155439.14 },
+    { rank: 3,  id: '2155784259', cidade: '',            uf: '',   novos: 2, tpv: 16154.30 },
+    { rank: 4,  id: '143182969',  cidade: 'Ananindeua',  uf: 'PA', novos: 1, tpv: 13947.54 },
+    { rank: 5,  id: '157278761',  cidade: 'Peruíbe',     uf: 'SP', novos: 1, tpv: 7062.09 },
+    { rank: 6,  id: '1006808701', cidade: '',            uf: '',   novos: 1, tpv: 6834.00 },
+    { rank: 7,  id: '272079697',  cidade: '',            uf: '',   novos: 1, tpv: 4391.00 },
+    { rank: 8,  id: '483722227',  cidade: '',            uf: '',   novos: 1, tpv: 4045.00 },
+    { rank: 9,  id: '218399870',  cidade: 'Macapá',      uf: 'AP', novos: 1, tpv: 3705.95 },
     { rank: 10, id: '296824220',  cidade: 'Salvador',    uf: 'BA', novos: 1, tpv: 3231.50 },
   ],
   top: [
-    { rank: 1,  id: '488278422',  cidade: 'Recife',        uf: 'PE', novos: 5, tpv: 32425.61 },
-    { rank: 2,  id: '632559284',  cidade: 'Goiânia',       uf: 'GO', novos: 3, tpv: 19194.71 },
-    { rank: 3,  id: '2206298813', cidade: '',              uf: '',   novos: 3, tpv: 16295.75 },
-    { rank: 4,  id: '82907272',   cidade: 'São Luís',      uf: 'MA', novos: 3, tpv: 11576.59 },
-    { rank: 5,  id: '222359885',  cidade: 'Parauapebas',   uf: 'PA', novos: 2, tpv: 31890.72 },
-    { rank: 6,  id: '2413208649', cidade: '',              uf: '',   novos: 2, tpv: 17726.45 },
-    { rank: 7,  id: '258370603',  cidade: 'Recife',        uf: 'PE', novos: 2, tpv: 16828.81 },
-    { rank: 8,  id: '38008063',   cidade: 'Cuiabá',        uf: 'MT', novos: 2, tpv: 7558.15 },
-    { rank: 9,  id: '438097380',  cidade: '',              uf: '',   novos: 2, tpv: 7112.10 },
-    { rank: 10, id: '1403050163', cidade: 'Gurupi',        uf: 'TO', novos: 1, tpv: 16744.41 },
+    { rank: 1,  id: '258370603',  cidade: 'Recife',               uf: 'PE', novos: 3, tpv: 33766.54 },
+    { rank: 2,  id: '222359885',  cidade: 'Parauapebas',           uf: 'PA', novos: 2, tpv: 16596.77 },
+    { rank: 3,  id: '614384375',  cidade: 'Parauapebas',           uf: 'PA', novos: 2, tpv: 13728.19 },
+    { rank: 4,  id: '632559284',  cidade: 'Goiânia',               uf: 'GO', novos: 2, tpv: 9727.95 },
+    { rank: 5,  id: '38008063',   cidade: 'Cuiabá',                uf: 'MT', novos: 2, tpv: 9244.88 },
+    { rank: 6,  id: '82907272',   cidade: 'São Luís',              uf: 'MA', novos: 2, tpv: 7424.60 },
+    { rank: 7,  id: '1379037457', cidade: 'Itanhaém',              uf: 'SP', novos: 1, tpv: 23361.01 },
+    { rank: 8,  id: '281399578',  cidade: 'Ribeirão Preto',        uf: 'SP', novos: 1, tpv: 21771.00 },
+    { rank: 9,  id: '164368290',  cidade: 'São Bernardo do Campo', uf: 'SP', novos: 1, tpv: 8684.26 },
+    { rank: 10, id: '381728218',  cidade: '',                      uf: '',   novos: 1, tpv: 7696.15 },
   ],
 };
 
