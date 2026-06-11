@@ -330,16 +330,16 @@
 <div class="tabs-container">
   <div class="tabs">
     <div class="tab active" onclick="showTab('aprendiz', this)">
-      Aprendiz <span class="tab-count" id="cnt-aprendiz">5</span>
+      Aprendiz <span class="tab-count" id="cnt-aprendiz"></span>
     </div>
     <div class="tab" onclick="showTab('especialista', this)">
-      Especialista <span class="tab-count" id="cnt-especialista">7</span>
+      Especialista <span class="tab-count" id="cnt-especialista"></span>
     </div>
     <div class="tab" onclick="showTab('empreendedor', this)">
-      Empreendedor <span class="tab-count" id="cnt-empreendedor">10</span>
+      Empreendedor <span class="tab-count" id="cnt-empreendedor"></span>
     </div>
     <div class="tab" onclick="showTab('top', this)">
-      Top Empreendedor <span class="tab-count" id="cnt-top">13</span>
+      Top Empreendedor <span class="tab-count" id="cnt-top"></span>
     </div>
     <div class="tab" onclick="showTab('fontes', this)">
       Fontes &amp; Queries
@@ -751,10 +751,16 @@ function render(nivel, tbodyId) {
   }).join('');
 }
 
-render('aprendiz', 'tbody-aprendiz');
+render('aprendiz',    'tbody-aprendiz');
 render('especialista', 'tbody-especialista');
 render('empreendedor', 'tbody-empreendedor');
-render('top', 'tbody-top');
+render('top',          'tbody-top');
+
+// Contagens dinâmicas nas tabs
+document.getElementById('cnt-aprendiz').textContent    = dados.aprendiz.length;
+document.getElementById('cnt-especialista').textContent = dados.especialista.length;
+document.getElementById('cnt-empreendedor').textContent = dados.empreendedor.length;
+document.getElementById('cnt-top').textContent          = dados.top.length;
 
 // ── TABS ──────────────────────────────────────────────────────────────────
 function showTab(id, el) {
