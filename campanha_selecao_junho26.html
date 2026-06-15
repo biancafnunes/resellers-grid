@@ -352,7 +352,7 @@
 
   <!-- AVISO MTD -->
   <div class="aviso-mtd">
-    ⏱️ <strong>Dados parciais:</strong> ranking atualizado com 11 dias de junho (01/06 a 11/06/2026). A campanha vai até 30/06 — posições ainda podem mudar. · <strong>Produto:</strong> Point apenas (CICLO_VIDA M0 · TPV ≥ R$ 3.000)
+    ⏱️ <strong>Dados parciais:</strong> ranking atualizado com 11 dias de junho (01/06 a 15/06/2026). A campanha vai até 30/06 — posições ainda podem mudar. · <strong>Produto:</strong> Point apenas (CICLO_VIDA M0 · TPV ≥ R$ 3.000)
   </div>
 
   <!-- ── APRENDIZ ── -->
@@ -362,7 +362,7 @@
         <div class="ranking-title">🟡 Aprendiz</div>
         <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
       </div>
-      <div class="update-badge">Atualizado 11/06/2026</div>
+      <div class="update-badge">Atualizado 15/06/2026</div>
     </div>
     <div class="table-wrap">
       <table>
@@ -392,7 +392,7 @@
         <div class="ranking-title">🔵 Especialista</div>
         <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
       </div>
-      <div class="update-badge">Atualizado 11/06/2026</div>
+      <div class="update-badge">Atualizado 15/06/2026</div>
     </div>
     <div class="table-wrap">
       <table>
@@ -422,7 +422,7 @@
         <div class="ranking-title">🟠 Empreendedor</div>
         <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
       </div>
-      <div class="update-badge">Atualizado 11/06/2026</div>
+      <div class="update-badge">Atualizado 15/06/2026</div>
     </div>
     <div class="table-wrap">
       <table>
@@ -452,7 +452,7 @@
         <div class="ranking-title">🏆 Top Empreendedor</div>
         <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
       </div>
-      <div class="update-badge">Atualizado 11/06/2026</div>
+      <div class="update-badge">Atualizado 15/06/2026</div>
     </div>
     <div class="table-wrap">
       <table>
@@ -482,7 +482,7 @@
     <div class="fontes-section">
       <h3>✅ Validação de Níveis</h3>
       <div class="fonte-card">
-        <div class="fc-title">Qualificados por nível — Point M0, TPV ≥ R$ 3.000 (01/06 a 11/06/2026)</div>
+        <div class="fc-title">Qualificados por nível — Point M0, TPV ≥ R$ 3.000 (01/06 a 15/06/2026)</div>
         <div class="fc-desc">Resellers que atingiram o critério mínimo até 11/06. "No ranking" = top 10 de cada nível. Todos possuem NIVEL_RESELLER identificado.</div>
         <div class="info-grid">
           <div class="info-item"><div class="label">Top Empreendedor</div><div class="value">10 no ranking (25 resellers com M0 Point)</div></div>
@@ -492,7 +492,7 @@
         </div>
         <div class="fc-chips">
           <span class="fc-chip">NIVEL_RESELLER sem nulos</span>
-          <span class="fc-chip">Dados de 01/06 a 11/06/2026</span>
+          <span class="fc-chip">Dados de 01/06 a 15/06/2026</span>
         </div>
       </div>
     </div>
@@ -508,7 +508,7 @@
           <span class="fc-chip">Filtro: CICLO_VIDA_M0_TRIANGULO = 'M0'</span>
           <span class="fc-chip">Filtro: PRODUTO = 'POINT'</span>
           <span class="fc-chip">Filtro: TPV ≥ R$ 3.000 por seller</span>
-          <span class="fc-chip">Período: 01/06 a 11/06/2026</span>
+          <span class="fc-chip">Período: 01/06 a 15/06/2026</span>
           <span class="fc-chip azul">Billing: meli-bi-data</span>
         </div>
       </div>
@@ -658,7 +658,7 @@ ranking <span class="kw">AS</span> (
 <!-- FOOTER -->
 <div class="footer">
   <div class="footer-text">
-    Fonte: meli-bi-data.WHOWNER.BT_MP_IC_CUBO_RSL · Sellers M0 (MESES_DESDE_AQUISICAO = 0) com TPV ≥ R$ 3.000 em Jun/2026 · Atualizado em 11/06/2026
+    Fonte: meli-bi-data.WHOWNER.BT_MP_IC_CUBO_RSL · Sellers M0 (MESES_DESDE_AQUISICAO = 0) com TPV ≥ R$ 3.000 em Jun/2026 · Atualizado em 15/06/2026
   </div>
 </div>
 
@@ -666,47 +666,52 @@ ranking <span class="kw">AS</span> (
 // ── DADOS ──────────────────────────────────────────────────────────────────
 const dados = {
   aprendiz: [
-    { rank: 1,  id: '507780494',  cidade: 'Goiânia',              uf: 'GO', novos: 2, tpv: 19826.95 },
-    { rank: 2,  id: '444273049',  cidade: '',                      uf: '',   novos: 1, tpv: 20600.00 },
-    { rank: 3,  id: '416719565',  cidade: 'São Luís',              uf: 'MA', novos: 1, tpv: 13441.98 },
-    { rank: 4,  id: '2483105242', cidade: '',                      uf: '',   novos: 1, tpv: 11325.00 },
-    { rank: 5,  id: '154349745',  cidade: 'Santana de Parnaíba',   uf: 'SP', novos: 1, tpv: 3921.00 },
-    { rank: 6,  id: '494713329',  cidade: '',                      uf: '',   novos: 1, tpv: 3652.00 },
-    { rank: 7,  id: '40374016',   cidade: 'Araguaína',             uf: 'TO', novos: 1, tpv: 3643.76 },
-    { rank: 8,  id: '413070797',  cidade: '',                      uf: '',   novos: 1, tpv: 3314.00 },
-    { rank: 9,  id: '1980208400', cidade: '',                      uf: '',   novos: 1, tpv: 3125.30 },
-    { rank: 10, id: '84327074',   cidade: 'Gravataí',              uf: 'RS', novos: 1, tpv: 3100.00 },
+    { rank: 1,  id: '507780494',  cidade: 'Goiânia',      uf: 'GO', novos: 2, tpv: 29006.20 },
+    { rank: 2,  id: '444273049',  cidade: '',              uf: '',   novos: 1, tpv: 22300.00 },
+    { rank: 3,  id: '3200696549', cidade: '',              uf: '',   novos: 1, tpv: 18602.99 },
+    { rank: 4,  id: '416719565',  cidade: 'São Luís',      uf: 'MA', novos: 1, tpv: 18308.97 },
+    { rank: 5,  id: '2483105242', cidade: '',              uf: '',   novos: 1, tpv: 13845.00 },
+    { rank: 6,  id: '301712775',  cidade: '',              uf: 'BA', novos: 1, tpv: 12329.27 },
+    { rank: 7,  id: '240613214',  cidade: 'São Paulo',     uf: 'SP', novos: 1, tpv: 11554.50 },
+    { rank: 8,  id: '494713329',  cidade: '',              uf: '',   novos: 1, tpv: 10879.00 },
+    { rank: 9,  id: '381283869',  cidade: 'São Paulo',     uf: 'SP', novos: 1, tpv: 6533.11 },
+    { rank: 10, id: '413070797',  cidade: '',              uf: '',   novos: 1, tpv: 5513.00 },
   ],
   especialista: [
-    { rank: 1,  id: '246343377',  cidade: '',             uf: '',   novos: 1, tpv: 27498.18 },
-    { rank: 2,  id: '167012870',  cidade: 'Rondonópolis', uf: 'MT', novos: 1, tpv: 15237.00 },
-    { rank: 3,  id: '545579977',  cidade: '',             uf: '',   novos: 1, tpv: 9652.00 },
-    { rank: 4,  id: '20970977',   cidade: '',             uf: '',   novos: 1, tpv: 7441.00 },
-    { rank: 5,  id: '47472337',   cidade: 'Maracanaú',   uf: 'CE', novos: 1, tpv: 3321.00 },
+    { rank: 1,  id: '246343377',  cidade: '',                  uf: '',   novos: 2, tpv: 53378.02 },
+    { rank: 2,  id: '20970977',   cidade: '',                  uf: '',   novos: 2, tpv: 19742.80 },
+    { rank: 3,  id: '47472337',   cidade: 'Maracanaú',         uf: 'CE', novos: 2, tpv: 12585.80 },
+    { rank: 4,  id: '545579977',  cidade: '',                  uf: '',   novos: 1, tpv: 19952.00 },
+    { rank: 5,  id: '167012870',  cidade: 'Rondonópolis',      uf: 'MT', novos: 1, tpv: 15237.00 },
+    { rank: 6,  id: '1425305619', cidade: '',                  uf: '',   novos: 1, tpv: 9020.00 },
+    { rank: 7,  id: '130855841',  cidade: 'São Luís',          uf: 'MA', novos: 1, tpv: 7001.05 },
+    { rank: 8,  id: '78964639',   cidade: 'Rondonópolis',      uf: 'MT', novos: 1, tpv: 6551.91 },
+    { rank: 9,  id: '45939578',   cidade: 'São João de Meriti', uf: 'RJ', novos: 1, tpv: 3671.50 },
+    { rank: 10, id: '337796934',  cidade: 'Jandira',           uf: 'SP', novos: 1, tpv: 3512.00 },
   ],
   empreendedor: [
-    { rank: 1,  id: '699129892',  cidade: 'Guarapari',   uf: 'ES', novos: 3, tpv: 12268.76 },
-    { rank: 2,  id: '225494908',  cidade: 'Ananindeua',  uf: 'PA', novos: 2, tpv: 155439.14 },
-    { rank: 3,  id: '2155784259', cidade: '',            uf: '',   novos: 2, tpv: 16154.30 },
-    { rank: 4,  id: '143182969',  cidade: 'Ananindeua',  uf: 'PA', novos: 1, tpv: 13947.54 },
-    { rank: 5,  id: '157278761',  cidade: 'Peruíbe',     uf: 'SP', novos: 1, tpv: 7062.09 },
-    { rank: 6,  id: '1006808701', cidade: '',            uf: '',   novos: 1, tpv: 6834.00 },
-    { rank: 7,  id: '272079697',  cidade: '',            uf: '',   novos: 1, tpv: 4391.00 },
-    { rank: 8,  id: '483722227',  cidade: '',            uf: '',   novos: 1, tpv: 4045.00 },
-    { rank: 9,  id: '218399870',  cidade: 'Macapá',      uf: 'AP', novos: 1, tpv: 3705.95 },
-    { rank: 10, id: '296824220',  cidade: 'Salvador',    uf: 'BA', novos: 1, tpv: 3231.50 },
+    { rank: 1,  id: '2155784259', cidade: '',             uf: '',   novos: 4, tpv: 31462.35 },
+    { rank: 2,  id: '699129892',  cidade: 'Guarapari',    uf: 'ES', novos: 4, tpv: 26451.07 },
+    { rank: 3,  id: '225494908',  cidade: 'Ananindeua',   uf: 'PA', novos: 2, tpv: 235760.49 },
+    { rank: 4,  id: '143182969',  cidade: 'Ananindeua',   uf: 'PA', novos: 2, tpv: 29030.59 },
+    { rank: 5,  id: '1226761249', cidade: 'Goiânia',      uf: 'GO', novos: 2, tpv: 20690.33 },
+    { rank: 6,  id: '272079697',  cidade: '',             uf: '',   novos: 2, tpv: 14777.86 },
+    { rank: 7,  id: '157278761',  cidade: 'Peruíbe',      uf: 'SP', novos: 2, tpv: 11598.14 },
+    { rank: 8,  id: '440374085',  cidade: 'São Paulo',    uf: 'SP', novos: 2, tpv: 11412.20 },
+    { rank: 9,  id: '387319387',  cidade: 'Saquarema',    uf: 'RJ', novos: 2, tpv: 8158.62 },
+    { rank: 10, id: '483722227',  cidade: '',             uf: '',   novos: 2, tpv: 7666.00 },
   ],
   top: [
-    { rank: 1,  id: '258370603',  cidade: 'Recife',               uf: 'PE', novos: 3, tpv: 33766.54 },
-    { rank: 2,  id: '222359885',  cidade: 'Parauapebas',           uf: 'PA', novos: 2, tpv: 16596.77 },
-    { rank: 3,  id: '614384375',  cidade: 'Parauapebas',           uf: 'PA', novos: 2, tpv: 13728.19 },
-    { rank: 4,  id: '632559284',  cidade: 'Goiânia',               uf: 'GO', novos: 2, tpv: 9727.95 },
-    { rank: 5,  id: '38008063',   cidade: 'Cuiabá',                uf: 'MT', novos: 2, tpv: 9244.88 },
-    { rank: 6,  id: '82907272',   cidade: 'São Luís',              uf: 'MA', novos: 2, tpv: 7424.60 },
-    { rank: 7,  id: '1379037457', cidade: 'Itanhaém',              uf: 'SP', novos: 1, tpv: 23361.01 },
-    { rank: 8,  id: '281399578',  cidade: 'Ribeirão Preto',        uf: 'SP', novos: 1, tpv: 21771.00 },
-    { rank: 9,  id: '164368290',  cidade: 'São Bernardo do Campo', uf: 'SP', novos: 1, tpv: 8684.26 },
-    { rank: 10, id: '381728218',  cidade: '',                      uf: '',   novos: 1, tpv: 7696.15 },
+    { rank: 1,  id: '632559284',  cidade: 'Goiânia',               uf: 'GO', novos: 5, tpv: 30728.07 },
+    { rank: 2,  id: '258370603',  cidade: 'Recife',                 uf: 'PE', novos: 4, tpv: 65344.72 },
+    { rank: 3,  id: '222359885',  cidade: 'Parauapebas',            uf: 'PA', novos: 4, tpv: 49152.32 },
+    { rank: 4,  id: '1379037457', cidade: 'Itanhaém',               uf: 'SP', novos: 3, tpv: 58086.85 },
+    { rank: 5,  id: '164368290',  cidade: 'São Bernardo do Campo',  uf: 'SP', novos: 3, tpv: 22066.02 },
+    { rank: 6,  id: '241222977',  cidade: 'Goiânia',                uf: 'GO', novos: 3, tpv: 17266.14 },
+    { rank: 7,  id: '38008063',   cidade: 'Cuiabá',                 uf: 'MT', novos: 3, tpv: 16266.18 },
+    { rank: 8,  id: '2206298813', cidade: '',                       uf: '',   novos: 3, tpv: 11875.85 },
+    { rank: 9,  id: '2265747191', cidade: '',                       uf: '',   novos: 2, tpv: 43374.40 },
+    { rank: 10, id: '614384375',  cidade: 'Parauapebas',            uf: 'PA', novos: 2, tpv: 31048.37 },
   ],
 };
 
