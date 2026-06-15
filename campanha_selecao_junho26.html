@@ -174,10 +174,17 @@
   tbody tr.pos-2 { background: linear-gradient(90deg, #F5F5F5 0%, #FFFFFF 40%); }
   tbody tr.pos-3 { background: linear-gradient(90deg, #FFF4EC 0%, #FFFFFF 40%); }
 
-  td { padding: 14px 20px; font-size: 14px; }
+  td { padding: 12px 16px; font-size: 14px; }
   td.rank-cell { text-align: center; font-weight: 800; }
   td.tpv-cell { text-align: right; font-weight: 600; color: var(--verde); font-size: 13px; }
   td.novos-cell { text-align: center; }
+
+  /* comparativo mai */
+  .mai-line { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .delta { font-size: 11px; font-weight: 700; margin-left: 4px; }
+  .delta.up   { color: #1B8B4B; }
+  .delta.down { color: #CC2929; }
+  .delta.new  { color: #888; font-weight: 500; }
 
   .rank-badge {
     display: inline-flex; align-items: center; justify-content: center;
@@ -368,10 +375,12 @@
       <table>
         <thead>
           <tr>
-            <th class="num" style="width:60px">Pos.</th>
+            <th class="num" style="width:52px">Pos.</th>
             <th>Reseller</th>
-            <th class="num">Novos Clientes</th>
-            <th class="right">TPV Total</th>
+            <th class="num">Novos Jun/26</th>
+            <th class="right">TPV Jun/26</th>
+            <th class="num">Novos Mai/26</th>
+            <th class="right">TPV Mai/26</th>
             <th>Prêmio</th>
           </tr>
         </thead>
@@ -398,10 +407,12 @@
       <table>
         <thead>
           <tr>
-            <th class="num" style="width:60px">Pos.</th>
+            <th class="num" style="width:52px">Pos.</th>
             <th>Reseller</th>
-            <th class="num">Novos Clientes</th>
-            <th class="right">TPV Total</th>
+            <th class="num">Novos Jun/26</th>
+            <th class="right">TPV Jun/26</th>
+            <th class="num">Novos Mai/26</th>
+            <th class="right">TPV Mai/26</th>
             <th>Prêmio</th>
           </tr>
         </thead>
@@ -428,10 +439,12 @@
       <table>
         <thead>
           <tr>
-            <th class="num" style="width:60px">Pos.</th>
+            <th class="num" style="width:52px">Pos.</th>
             <th>Reseller</th>
-            <th class="num">Novos Clientes</th>
-            <th class="right">TPV Total</th>
+            <th class="num">Novos Jun/26</th>
+            <th class="right">TPV Jun/26</th>
+            <th class="num">Novos Mai/26</th>
+            <th class="right">TPV Mai/26</th>
             <th>Prêmio</th>
           </tr>
         </thead>
@@ -458,10 +471,12 @@
       <table>
         <thead>
           <tr>
-            <th class="num" style="width:60px">Pos.</th>
+            <th class="num" style="width:52px">Pos.</th>
             <th>Reseller</th>
-            <th class="num">Novos Clientes</th>
-            <th class="right">TPV Total</th>
+            <th class="num">Novos Jun/26</th>
+            <th class="right">TPV Jun/26</th>
+            <th class="num">Novos Mai/26</th>
+            <th class="right">TPV Mai/26</th>
             <th>Prêmio</th>
           </tr>
         </thead>
@@ -666,52 +681,52 @@ ranking <span class="kw">AS</span> (
 // ── DADOS ──────────────────────────────────────────────────────────────────
 const dados = {
   aprendiz: [
-    { rank: 1,  id: '507780494',  cidade: 'Goiânia',      uf: 'GO', novos: 2, tpv: 29006.20 },
-    { rank: 2,  id: '444273049',  cidade: '',              uf: '',   novos: 1, tpv: 22300.00 },
-    { rank: 3,  id: '3200696549', cidade: '',              uf: '',   novos: 1, tpv: 18602.99 },
-    { rank: 4,  id: '416719565',  cidade: 'São Luís',      uf: 'MA', novos: 1, tpv: 18308.97 },
-    { rank: 5,  id: '2483105242', cidade: '',              uf: '',   novos: 1, tpv: 13845.00 },
-    { rank: 6,  id: '301712775',  cidade: '',              uf: 'BA', novos: 1, tpv: 12329.27 },
-    { rank: 7,  id: '240613214',  cidade: 'São Paulo',     uf: 'SP', novos: 1, tpv: 11554.50 },
-    { rank: 8,  id: '494713329',  cidade: '',              uf: '',   novos: 1, tpv: 10879.00 },
-    { rank: 9,  id: '381283869',  cidade: 'São Paulo',     uf: 'SP', novos: 1, tpv: 6533.11 },
-    { rank: 10, id: '413070797',  cidade: '',              uf: '',   novos: 1, tpv: 5513.00 },
+    { rank:1,  id:'301712775',  cidade:'',              uf:'BA', novos:3, tpv:17824.73,  novos_mai:0, tpv_mai:0 },
+    { rank:2,  id:'507780494',  cidade:'Goiânia',       uf:'GO', novos:2, tpv:29006.20,  novos_mai:0, tpv_mai:0 },
+    { rank:3,  id:'3200696549', cidade:'',              uf:'',   novos:2, tpv:18996.99,  novos_mai:0, tpv_mai:0 },
+    { rank:4,  id:'1980208400', cidade:'',              uf:'',   novos:2, tpv:5841.00,   novos_mai:0, tpv_mai:0 },
+    { rank:5,  id:'657609751',  cidade:'',              uf:'',   novos:2, tpv:3408.28,   novos_mai:0, tpv_mai:0 },
+    { rank:6,  id:'200405532',  cidade:'',              uf:'',   novos:2, tpv:2005.94,   novos_mai:0, tpv_mai:0 },
+    { rank:7,  id:'238460046',  cidade:'',              uf:'',   novos:2, tpv:1273.50,   novos_mai:0, tpv_mai:0 },
+    { rank:8,  id:'442137405',  cidade:'',              uf:'',   novos:2, tpv:339.22,    novos_mai:0, tpv_mai:0 },
+    { rank:9,  id:'240579795',  cidade:'',              uf:'',   novos:2, tpv:139.60,    novos_mai:0, tpv_mai:0 },
+    { rank:10, id:'444273049',  cidade:'',              uf:'',   novos:1, tpv:22300.00,  novos_mai:0, tpv_mai:0 },
   ],
   especialista: [
-    { rank: 1,  id: '246343377',  cidade: '',                  uf: '',   novos: 2, tpv: 53378.02 },
-    { rank: 2,  id: '20970977',   cidade: '',                  uf: '',   novos: 2, tpv: 19742.80 },
-    { rank: 3,  id: '47472337',   cidade: 'Maracanaú',         uf: 'CE', novos: 2, tpv: 12585.80 },
-    { rank: 4,  id: '545579977',  cidade: '',                  uf: '',   novos: 1, tpv: 19952.00 },
-    { rank: 5,  id: '167012870',  cidade: 'Rondonópolis',      uf: 'MT', novos: 1, tpv: 15237.00 },
-    { rank: 6,  id: '1425305619', cidade: '',                  uf: '',   novos: 1, tpv: 9020.00 },
-    { rank: 7,  id: '130855841',  cidade: 'São Luís',          uf: 'MA', novos: 1, tpv: 7001.05 },
-    { rank: 8,  id: '78964639',   cidade: 'Rondonópolis',      uf: 'MT', novos: 1, tpv: 6551.91 },
-    { rank: 9,  id: '45939578',   cidade: 'São João de Meriti', uf: 'RJ', novos: 1, tpv: 3671.50 },
-    { rank: 10, id: '337796934',  cidade: 'Jandira',           uf: 'SP', novos: 1, tpv: 3512.00 },
+    { rank:1,  id:'1208406875', cidade:'',              uf:'',   novos:7, tpv:1611.62,   novos_mai:15, tpv_mai:18810.24 },
+    { rank:2,  id:'20970977',   cidade:'',              uf:'',   novos:4, tpv:21445.80,  novos_mai:3,  tpv_mai:17419.42 },
+    { rank:3,  id:'349576623',  cidade:'',              uf:'',   novos:4, tpv:3253.48,   novos_mai:7,  tpv_mai:51134.18 },
+    { rank:4,  id:'47472337',   cidade:'Maracanaú',    uf:'CE', novos:3, tpv:12586.80,  novos_mai:1,  tpv_mai:2.00 },
+    { rank:5,  id:'605996723',  cidade:'',              uf:'',   novos:3, tpv:1629.00,   novos_mai:0,  tpv_mai:0 },
+    { rank:6,  id:'2130389125', cidade:'',              uf:'',   novos:3, tpv:1558.06,   novos_mai:1,  tpv_mai:617.50 },
+    { rank:7,  id:'128107890',  cidade:'',              uf:'',   novos:3, tpv:1061.60,   novos_mai:0,  tpv_mai:0 },
+    { rank:8,  id:'246343377',  cidade:'',              uf:'',   novos:2, tpv:53378.02,  novos_mai:0,  tpv_mai:0 },
+    { rank:9,  id:'167012870',  cidade:'Rondonópolis', uf:'MT', novos:2, tpv:16118.00,  novos_mai:0,  tpv_mai:0 },
+    { rank:10, id:'78964639',   cidade:'Rondonópolis', uf:'MT', novos:2, tpv:8866.96,   novos_mai:1,  tpv_mai:20798.86 },
   ],
   empreendedor: [
-    { rank: 1,  id: '2155784259', cidade: '',             uf: '',   novos: 4, tpv: 31462.35 },
-    { rank: 2,  id: '699129892',  cidade: 'Guarapari',    uf: 'ES', novos: 4, tpv: 26451.07 },
-    { rank: 3,  id: '225494908',  cidade: 'Ananindeua',   uf: 'PA', novos: 2, tpv: 235760.49 },
-    { rank: 4,  id: '143182969',  cidade: 'Ananindeua',   uf: 'PA', novos: 2, tpv: 29030.59 },
-    { rank: 5,  id: '1226761249', cidade: 'Goiânia',      uf: 'GO', novos: 2, tpv: 20690.33 },
-    { rank: 6,  id: '272079697',  cidade: '',             uf: '',   novos: 2, tpv: 14777.86 },
-    { rank: 7,  id: '157278761',  cidade: 'Peruíbe',      uf: 'SP', novos: 2, tpv: 11598.14 },
-    { rank: 8,  id: '440374085',  cidade: 'São Paulo',    uf: 'SP', novos: 2, tpv: 11412.20 },
-    { rank: 9,  id: '387319387',  cidade: 'Saquarema',    uf: 'RJ', novos: 2, tpv: 8158.62 },
-    { rank: 10, id: '483722227',  cidade: '',             uf: '',   novos: 2, tpv: 7666.00 },
+    { rank:1,  id:'2155784259', cidade:'',             uf:'',   novos:6, tpv:35242.05,  novos_mai:5,  tpv_mai:18368.91 },
+    { rank:2,  id:'699129892',  cidade:'Guarapari',    uf:'ES', novos:6, tpv:28607.53,  novos_mai:5,  tpv_mai:4547.87 },
+    { rank:3,  id:'495437190',  cidade:'',             uf:'',   novos:6, tpv:6481.14,   novos_mai:0,  tpv_mai:0 },
+    { rank:4,  id:'290610770',  cidade:'Rio Branco',   uf:'AC', novos:5, tpv:8610.28,   novos_mai:6,  tpv_mai:1331.00 },
+    { rank:5,  id:'225494908',  cidade:'Ananindeua',   uf:'PA', novos:4, tpv:239791.66, novos_mai:3,  tpv_mai:6928.60 },
+    { rank:6,  id:'1226761249', cidade:'Goiânia',      uf:'GO', novos:4, tpv:24977.53,  novos_mai:5,  tpv_mai:20640.25 },
+    { rank:7,  id:'218399870',  cidade:'Macapá',       uf:'AP', novos:4, tpv:9946.72,   novos_mai:12, tpv_mai:44875.87 },
+    { rank:8,  id:'387319387',  cidade:'Saquarema',    uf:'RJ', novos:4, tpv:8496.12,   novos_mai:3,  tpv_mai:801.70 },
+    { rank:9,  id:'143182969',  cidade:'Ananindeua',   uf:'PA', novos:3, tpv:29061.59,  novos_mai:6,  tpv_mai:31237.21 },
+    { rank:10, id:'272079697',  cidade:'',             uf:'',   novos:3, tpv:17307.86,  novos_mai:3,  tpv_mai:2527.00 },
   ],
   top: [
-    { rank: 1,  id: '632559284',  cidade: 'Goiânia',               uf: 'GO', novos: 5, tpv: 30728.07 },
-    { rank: 2,  id: '258370603',  cidade: 'Recife',                 uf: 'PE', novos: 4, tpv: 65344.72 },
-    { rank: 3,  id: '222359885',  cidade: 'Parauapebas',            uf: 'PA', novos: 4, tpv: 49152.32 },
-    { rank: 4,  id: '1379037457', cidade: 'Itanhaém',               uf: 'SP', novos: 3, tpv: 58086.85 },
-    { rank: 5,  id: '164368290',  cidade: 'São Bernardo do Campo',  uf: 'SP', novos: 3, tpv: 22066.02 },
-    { rank: 6,  id: '241222977',  cidade: 'Goiânia',                uf: 'GO', novos: 3, tpv: 17266.14 },
-    { rank: 7,  id: '38008063',   cidade: 'Cuiabá',                 uf: 'MT', novos: 3, tpv: 16266.18 },
-    { rank: 8,  id: '2206298813', cidade: '',                       uf: '',   novos: 3, tpv: 11875.85 },
-    { rank: 9,  id: '2265747191', cidade: '',                       uf: '',   novos: 2, tpv: 43374.40 },
-    { rank: 10, id: '614384375',  cidade: 'Parauapebas',            uf: 'PA', novos: 2, tpv: 31048.37 },
+    { rank:1,  id:'222359885',  cidade:'Parauapebas',           uf:'PA', novos:14, tpv:57209.03, novos_mai:6,  tpv_mai:8373.49 },
+    { rank:2,  id:'114125211',  cidade:'',                      uf:'',   novos:12, tpv:20408.35, novos_mai:8,  tpv_mai:42191.37 },
+    { rank:3,  id:'1168762991', cidade:'',                      uf:'',   novos:11, tpv:20232.04, novos_mai:10, tpv_mai:47689.74 },
+    { rank:4,  id:'632559284',  cidade:'Goiânia',               uf:'GO', novos:9,  tpv:39322.25, novos_mai:18, tpv_mai:50879.56 },
+    { rank:5,  id:'241222977',  cidade:'Goiânia',               uf:'GO', novos:9,  tpv:21363.52, novos_mai:0,  tpv_mai:0 },
+    { rank:6,  id:'82907272',   cidade:'São Luís',              uf:'MA', novos:8,  tpv:16320.40, novos_mai:6,  tpv_mai:8193.30 },
+    { rank:7,  id:'2413208649', cidade:'',                      uf:'',   novos:8,  tpv:14992.82, novos_mai:4,  tpv_mai:6692.84 },
+    { rank:8,  id:'488278422',  cidade:'Recife',                uf:'PE', novos:8,  tpv:14102.51, novos_mai:14, tpv_mai:24220.99 },
+    { rank:9,  id:'1379037457', cidade:'Itanhaém',              uf:'SP', novos:7,  tpv:61670.42, novos_mai:13, tpv_mai:12695.99 },
+    { rank:10, id:'258370603',  cidade:'Recife',                uf:'PE', novos:6,  tpv:67267.29, novos_mai:3,  tpv_mai:9424.78 },
   ],
 };
 
@@ -739,11 +754,19 @@ function rowClass(r) {
   return '';
 }
 
+function delta(jun, mai, tipo) {
+  if (mai === 0) return `<span class="delta new">Novo</span>`;
+  const pct = ((jun - mai) / mai * 100);
+  const seta = pct >= 0 ? '↑' : '↓';
+  const cls  = pct >= 0 ? 'up' : 'down';
+  return `<span class="delta ${cls}">${seta} ${Math.abs(pct).toFixed(0)}%</span>`;
+}
+
 function render(nivel, tbodyId) {
   const tbody = document.getElementById(tbodyId);
   const rows = dados[nivel];
   if (!rows || rows.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="emoji">📊</div><p>Sem dados disponíveis para este nível.</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="emoji">📊</div><p>Sem dados disponíveis para este nível.</p></div></td></tr>`;
     return;
   }
   tbody.innerHTML = rows.map(r => {
@@ -751,6 +774,8 @@ function render(nivel, tbodyId) {
               : r.uf             ? r.uf
               : r.cidade         ? r.cidade
               : '—';
+    const maiNovos = r.novos_mai > 0 ? r.novos_mai : '—';
+    const maiTpv   = r.tpv_mai   > 0 ? fmtBRL(r.tpv_mai) : '—';
     return `
     <tr class="${rowClass(r.rank)}">
       <td class="rank-cell">${rankBadge(r.rank)}</td>
@@ -758,8 +783,16 @@ function render(nivel, tbodyId) {
         <div class="reseller-id">${r.id}</div>
         <div class="reseller-id-sub">📍 ${loc}</div>
       </td>
-      <td class="novos-cell"><span class="novos-count">${r.novos}</span></td>
-      <td class="tpv-cell">${fmtBRL(r.tpv)}</td>
+      <td class="novos-cell">
+        <span class="novos-count">${r.novos}</span>
+        ${delta(r.novos, r.novos_mai, 'novos')}
+      </td>
+      <td class="tpv-cell">
+        ${fmtBRL(r.tpv)}
+        ${delta(r.tpv, r.tpv_mai, 'tpv')}
+      </td>
+      <td class="novos-cell" style="color:var(--muted);font-size:13px;">${maiNovos}</td>
+      <td class="tpv-cell" style="color:var(--muted);font-size:13px;">${maiTpv}</td>
       <td>${premio(r.rank)}</td>
     </tr>`;
   }).join('');
