@@ -688,52 +688,52 @@ ranking <span class="kw">AS</span> (
 // rank_ant = posição de ontem (15/06). null = entrou hoje no top 10.
 const dados = {
   aprendiz: [
-    { rank:1,  rank_ant:1,    id:'507780494',  cidade:'Goiânia',      uf:'GO', novos:2, tpv:30143.95,  novos_mai:0, tpv_mai:0 },
-    { rank:2,  rank_ant:2,    id:'444273049',  cidade:'',             uf:'',   novos:1, tpv:23900.00,  novos_mai:0, tpv_mai:0 },
-    { rank:3,  rank_ant:4,    id:'416719565',  cidade:'São Luís',     uf:'MA', novos:1, tpv:18989.97,  novos_mai:0, tpv_mai:0 },
-    { rank:4,  rank_ant:3,    id:'3200696549', cidade:'',             uf:'',   novos:1, tpv:18602.99,  novos_mai:0, tpv_mai:0 },
-    { rank:5,  rank_ant:5,    id:'2483105242', cidade:'',             uf:'',   novos:1, tpv:13845.00,  novos_mai:0, tpv_mai:0 },
-    { rank:6,  rank_ant:6,    id:'301712775',  cidade:'',             uf:'BA', novos:1, tpv:13714.39,  novos_mai:0, tpv_mai:0 },
-    { rank:7,  rank_ant:7,    id:'240613214',  cidade:'São Paulo',    uf:'SP', novos:1, tpv:11784.50,  novos_mai:0, tpv_mai:0 },
-    { rank:8,  rank_ant:8,    id:'494713329',  cidade:'',             uf:'',   novos:1, tpv:10879.00,  novos_mai:0, tpv_mai:0 },
-    { rank:9,  rank_ant:9,    id:'381283869',  cidade:'São Paulo',    uf:'SP', novos:1, tpv:9284.03,   novos_mai:0, tpv_mai:0 },
-    { rank:10, rank_ant:null, id:'2543691543', cidade:'',             uf:'',   novos:1, tpv:6217.86,   novos_mai:0, tpv_mai:0 },
+    { rank:1,  rank_ant:1,    id:'507780494',  nome:'Neuza',                      cidade:'Goiânia',      uf:'GO', novos:2, tpv:30143.95,  novos_mai:0, tpv_mai:0 },
+    { rank:2,  rank_ant:2,    id:'444273049',  nome:'Lex Soluções',               cidade:'',             uf:'',   novos:1, tpv:23900.00,  novos_mai:0, tpv_mai:0 },
+    { rank:3,  rank_ant:4,    id:'416719565',  nome:'Marcio Guilherme',           cidade:'São Luís',     uf:'MA', novos:1, tpv:18989.97,  novos_mai:0, tpv_mai:0 },
+    { rank:4,  rank_ant:3,    id:'3200696549', nome:'Juliana Cristina',           cidade:'',             uf:'',   novos:1, tpv:18602.99,  novos_mai:0, tpv_mai:0 },
+    { rank:5,  rank_ant:5,    id:'2483105242', nome:'Sant Anna William',          cidade:'',             uf:'',   novos:1, tpv:13845.00,  novos_mai:0, tpv_mai:0 },
+    { rank:6,  rank_ant:6,    id:'301712775',  nome:'Marcio Barbosa',             cidade:'',             uf:'BA', novos:1, tpv:13714.39,  novos_mai:0, tpv_mai:0 },
+    { rank:7,  rank_ant:7,    id:'240613214',  nome:'Perola Bastos',              cidade:'São Paulo',    uf:'SP', novos:1, tpv:11784.50,  novos_mai:0, tpv_mai:0 },
+    { rank:8,  rank_ant:8,    id:'494713329',  nome:'Jesiel Silva',               cidade:'',             uf:'',   novos:1, tpv:10879.00,  novos_mai:0, tpv_mai:0 },
+    { rank:9,  rank_ant:9,    id:'381283869',  nome:'Vitor Dias',                 cidade:'São Paulo',    uf:'SP', novos:1, tpv:9284.03,   novos_mai:0, tpv_mai:0 },
+    { rank:10, rank_ant:null, id:'2543691543', nome:'Nilton Faustino',            cidade:'',             uf:'',   novos:1, tpv:6217.86,   novos_mai:0, tpv_mai:0 },
   ],
   especialista: [
-    { rank:1,  rank_ant:1,    id:'246343377',  cidade:'',              uf:'',   novos:2, tpv:57937.40,  novos_mai:0,  tpv_mai:0 },
-    { rank:2,  rank_ant:5,    id:'167012870',  cidade:'Rondonópolis',  uf:'MT', novos:2, tpv:21278.00,  novos_mai:0,  tpv_mai:0 },
-    { rank:3,  rank_ant:2,    id:'20970977',   cidade:'',              uf:'',   novos:2, tpv:20615.30,  novos_mai:3,  tpv_mai:20630.92 },
-    { rank:4,  rank_ant:3,    id:'47472337',   cidade:'Maracanaú',    uf:'CE', novos:2, tpv:14535.80,  novos_mai:1,  tpv_mai:2.00 },
-    { rank:5,  rank_ant:4,    id:'545579977',  cidade:'',              uf:'',   novos:1, tpv:19952.00,  novos_mai:1,  tpv_mai:5125.00 },
-    { rank:6,  rank_ant:8,    id:'78964639',   cidade:'Rondonópolis',  uf:'MT', novos:1, tpv:10326.76,  novos_mai:1,  tpv_mai:24571.69 },
-    { rank:7,  rank_ant:6,    id:'1425305619', cidade:'',              uf:'',   novos:1, tpv:9020.00,   novos_mai:4,  tpv_mai:4912.44 },
-    { rank:8,  rank_ant:7,    id:'130855841',  cidade:'São Luís',      uf:'MA', novos:1, tpv:7001.05,   novos_mai:1,  tpv_mai:3339.00 },
-    { rank:9,  rank_ant:null, id:'34698621',   cidade:'Manaus',        uf:'AM', novos:1, tpv:4372.00,   novos_mai:0,  tpv_mai:0 },
-    { rank:10, rank_ant:9,    id:'45939578',   cidade:'São João de Meriti', uf:'RJ', novos:1, tpv:3671.50, novos_mai:0, tpv_mai:0 },
+    { rank:1,  rank_ant:1,    id:'246343377',  nome:'Tiago Marques',             cidade:'',              uf:'',   novos:2, tpv:57937.40,  novos_mai:0,  tpv_mai:0 },
+    { rank:2,  rank_ant:5,    id:'167012870',  nome:'Walisson Silva',            cidade:'Rondonópolis',  uf:'MT', novos:2, tpv:21278.00,  novos_mai:0,  tpv_mai:0 },
+    { rank:3,  rank_ant:2,    id:'20970977',   nome:'Rogerio Felipe',            cidade:'',              uf:'',   novos:2, tpv:20615.30,  novos_mai:3,  tpv_mai:20630.92 },
+    { rank:4,  rank_ant:3,    id:'47472337',   nome:'Francisco Ageu',            cidade:'Maracanaú',    uf:'CE', novos:2, tpv:14535.80,  novos_mai:1,  tpv_mai:2.00 },
+    { rank:5,  rank_ant:4,    id:'545579977',  nome:'Carlos César',              cidade:'',              uf:'',   novos:1, tpv:19952.00,  novos_mai:1,  tpv_mai:5125.00 },
+    { rank:6,  rank_ant:8,    id:'78964639',   nome:'Solange Ramos',             cidade:'Rondonópolis',  uf:'MT', novos:1, tpv:10326.76,  novos_mai:1,  tpv_mai:24571.69 },
+    { rank:7,  rank_ant:6,    id:'1425305619', nome:'Ademir Souza',              cidade:'',              uf:'',   novos:1, tpv:9020.00,   novos_mai:4,  tpv_mai:4912.44 },
+    { rank:8,  rank_ant:7,    id:'130855841',  nome:'Danilo Santos',             cidade:'São Luís',      uf:'MA', novos:1, tpv:7001.05,   novos_mai:1,  tpv_mai:3339.00 },
+    { rank:9,  rank_ant:null, id:'34698621',   nome:'Yuri Andrew',               cidade:'Manaus',        uf:'AM', novos:1, tpv:4372.00,   novos_mai:0,  tpv_mai:0 },
+    { rank:10, rank_ant:9,    id:'45939578',   nome:'Marcelo Magalhães',         cidade:'São João de Meriti', uf:'RJ', novos:1, tpv:3671.50, novos_mai:0, tpv_mai:0 },
   ],
   empreendedor: [
-    { rank:1,  rank_ant:1,    id:'2155784259', cidade:'',             uf:'',   novos:4, tpv:33246.89,  novos_mai:5,  tpv_mai:20321.91 },
-    { rank:2,  rank_ant:2,    id:'699129892',  cidade:'Guarapari',    uf:'ES', novos:4, tpv:28873.90,  novos_mai:5,  tpv_mai:4699.32 },
-    { rank:3,  rank_ant:5,    id:'1226761249', cidade:'Goiânia',      uf:'GO', novos:3, tpv:27153.08,  novos_mai:5,  tpv_mai:23708.25 },
-    { rank:4,  rank_ant:3,    id:'225494908',  cidade:'Ananindeua',   uf:'PA', novos:2, tpv:243091.77, novos_mai:3,  tpv_mai:7711.35 },
-    { rank:5,  rank_ant:4,    id:'143182969',  cidade:'Ananindeua',   uf:'PA', novos:2, tpv:31892.93,  novos_mai:6,  tpv_mai:34888.15 },
-    { rank:6,  rank_ant:6,    id:'272079697',  cidade:'',             uf:'',   novos:2, tpv:15567.86,  novos_mai:4,  tpv_mai:4584.97 },
-    { rank:7,  rank_ant:8,    id:'440374085',  cidade:'São Paulo',    uf:'SP', novos:2, tpv:12512.20,  novos_mai:5,  tpv_mai:44350.70 },
-    { rank:8,  rank_ant:7,    id:'157278761',  cidade:'Peruíbe',      uf:'SP', novos:2, tpv:11715.44,  novos_mai:0,  tpv_mai:0 },
-    { rank:9,  rank_ant:10,   id:'483722227',  cidade:'',             uf:'',   novos:2, tpv:8864.00,   novos_mai:1,  tpv_mai:3676.80 },
-    { rank:10, rank_ant:9,    id:'387319387',  cidade:'Saquarema',    uf:'RJ', novos:2, tpv:8158.62,   novos_mai:3,  tpv_mai:1234.60 },
+    { rank:1,  rank_ant:1,    id:'2155784259', nome:'Hilquias de Freitas',       cidade:'',             uf:'',   novos:4, tpv:33246.89,  novos_mai:5,  tpv_mai:20321.91 },
+    { rank:2,  rank_ant:2,    id:'699129892',  nome:'Vitoria Soluções',          cidade:'Guarapari',    uf:'ES', novos:4, tpv:28873.90,  novos_mai:5,  tpv_mai:4699.32 },
+    { rank:3,  rank_ant:5,    id:'1226761249', nome:'Alefe de Araujo',           cidade:'Goiânia',      uf:'GO', novos:3, tpv:27153.08,  novos_mai:5,  tpv_mai:23708.25 },
+    { rank:4,  rank_ant:3,    id:'225494908',  nome:'Gerson Junior',             cidade:'Ananindeua',   uf:'PA', novos:2, tpv:243091.77, novos_mai:3,  tpv_mai:7711.35 },
+    { rank:5,  rank_ant:4,    id:'143182969',  nome:'Gleison Almeida',           cidade:'Ananindeua',   uf:'PA', novos:2, tpv:31892.93,  novos_mai:6,  tpv_mai:34888.15 },
+    { rank:6,  rank_ant:6,    id:'272079697',  nome:'Sidelvane Tavares',         cidade:'',             uf:'',   novos:2, tpv:15567.86,  novos_mai:4,  tpv_mai:4584.97 },
+    { rank:7,  rank_ant:8,    id:'440374085',  nome:'Maria da Gloria',           cidade:'São Paulo',    uf:'SP', novos:2, tpv:12512.20,  novos_mai:5,  tpv_mai:44350.70 },
+    { rank:8,  rank_ant:7,    id:'157278761',  nome:'Anderson Ramos',            cidade:'Peruíbe',      uf:'SP', novos:2, tpv:11715.44,  novos_mai:0,  tpv_mai:0 },
+    { rank:9,  rank_ant:10,   id:'483722227',  nome:'Jose Lopes',                cidade:'',             uf:'',   novos:2, tpv:8864.00,   novos_mai:1,  tpv_mai:3676.80 },
+    { rank:10, rank_ant:9,    id:'387319387',  nome:'Marcelo Silva',             cidade:'Saquarema',    uf:'RJ', novos:2, tpv:8158.62,   novos_mai:3,  tpv_mai:1234.60 },
   ],
   top: [
-    { rank:1,  rank_ant:1,    id:'632559284',  cidade:'Goiânia',               uf:'GO', novos:5, tpv:32732.99, novos_mai:18, tpv_mai:56830.98 },
-    { rank:2,  rank_ant:2,    id:'258370603',  cidade:'Recife',                 uf:'PE', novos:4, tpv:68831.02, novos_mai:3,  tpv_mai:11739.48 },
-    { rank:3,  rank_ant:3,    id:'222359885',  cidade:'Parauapebas',            uf:'PA', novos:4, tpv:49777.07, novos_mai:6,  tpv_mai:12443.99 },
-    { rank:4,  rank_ant:6,    id:'241222977',  cidade:'Goiânia',                uf:'GO', novos:4, tpv:22361.27, novos_mai:0,  tpv_mai:0 },
-    { rank:5,  rank_ant:null, id:'1168762991', cidade:'Goianira',               uf:'GO', novos:4, tpv:14165.91, novos_mai:10, tpv_mai:62272.32 },
-    { rank:6,  rank_ant:4,    id:'1379037457', cidade:'Itanhaém',               uf:'SP', novos:3, tpv:59216.46, novos_mai:13, tpv_mai:15385.02 },
-    { rank:7,  rank_ant:5,    id:'164368290',  cidade:'São Bernardo do Campo',  uf:'SP', novos:3, tpv:23445.84, novos_mai:2,  tpv_mai:432.00 },
-    { rank:8,  rank_ant:7,    id:'38008063',   cidade:'Cuiabá',                 uf:'MT', novos:3, tpv:22015.08, novos_mai:3,  tpv_mai:4873.92 },
-    { rank:9,  rank_ant:null, id:'114125211',  cidade:'Goiânia',                uf:'GO', novos:3, tpv:15337.19, novos_mai:8,  tpv_mai:44794.37 },
-    { rank:10, rank_ant:8,    id:'2206298813', cidade:'',                       uf:'',   novos:3, tpv:12883.96, novos_mai:6,  tpv_mai:10370.82 },
+    { rank:1,  rank_ant:1,    id:'632559284',  nome:'Rafael Wellington',         cidade:'Goiânia',               uf:'GO', novos:5, tpv:32732.99, novos_mai:18, tpv_mai:56830.98 },
+    { rank:2,  rank_ant:2,    id:'258370603',  nome:'Wilson Camelo',             cidade:'Recife',                 uf:'PE', novos:4, tpv:68831.02, novos_mai:3,  tpv_mai:11739.48 },
+    { rank:3,  rank_ant:3,    id:'222359885',  nome:'Denilson da Silva',         cidade:'Parauapebas',            uf:'PA', novos:4, tpv:49777.07, novos_mai:6,  tpv_mai:12443.99 },
+    { rank:4,  rank_ant:6,    id:'241222977',  nome:'Rafael Silva',              cidade:'Goiânia',                uf:'GO', novos:4, tpv:22361.27, novos_mai:0,  tpv_mai:0 },
+    { rank:5,  rank_ant:null, id:'1168762991', nome:'4SPAY Consultoria',         cidade:'Goianira',               uf:'GO', novos:4, tpv:14165.91, novos_mai:10, tpv_mai:62272.32 },
+    { rank:6,  rank_ant:4,    id:'1379037457', nome:'NEXOR PDV',                 cidade:'Itanhaém',               uf:'SP', novos:3, tpv:59216.46, novos_mai:13, tpv_mai:15385.02 },
+    { rank:7,  rank_ant:5,    id:'164368290',  nome:'Josimeire Nascimento',      cidade:'São Bernardo do Campo',  uf:'SP', novos:3, tpv:23445.84, novos_mai:2,  tpv_mai:432.00 },
+    { rank:8,  rank_ant:7,    id:'38008063',   nome:'Rogerio Custodio',          cidade:'Cuiabá',                 uf:'MT', novos:3, tpv:22015.08, novos_mai:3,  tpv_mai:4873.92 },
+    { rank:9,  rank_ant:null, id:'114125211',  nome:'Viviane Rosa',              cidade:'Goiânia',                uf:'GO', novos:3, tpv:15337.19, novos_mai:8,  tpv_mai:44794.37 },
+    { rank:10, rank_ant:8,    id:'2206298813', nome:'Maria Jose',                cidade:'',                       uf:'',   novos:3, tpv:12883.96, novos_mai:6,  tpv_mai:10370.82 },
   ],
 };
 
@@ -793,15 +793,15 @@ function render(nivel, tbodyId) {
     const loc = r.cidade && r.uf ? `${r.cidade} · ${r.uf}`
               : r.uf             ? r.uf
               : r.cidade         ? r.cidade
-              : '—';
+              : '';
     const maiNovos = r.novos_mai > 0 ? r.novos_mai : '—';
     const maiTpv   = r.tpv_mai   > 0 ? fmtBRL(r.tpv_mai) : '—';
     return `
     <tr class="${rowClass(r.rank)}">
       <td class="rank-cell">${rankBadge(r.rank, r.rank_ant)}</td>
       <td>
-        <div class="reseller-id">${r.id}</div>
-        <div class="reseller-id-sub">📍 ${loc}</div>
+        <div class="reseller-id">${r.nome || r.id}</div>
+        <div class="reseller-id-sub">${r.id}${loc ? ' · 📍 ' + loc : ''}</div>
       </td>
       <td class="novos-cell">
         <span class="novos-count">${r.novos}</span>
