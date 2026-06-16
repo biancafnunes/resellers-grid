@@ -101,6 +101,8 @@
     .impl-expand-inner { border-top:1px solid #2A2A2A; padding-top:16px; color:#AAAAAA; font-size:13px; line-height:1.7; }
 
     @media(max-width:768px){ .chart-grid{ grid-template-columns:1fr; } .impl-grid{ grid-template-columns:1fr; } }
+    .filter-btn { padding:6px 16px; border-radius:20px; border:1.5px solid #E0E0E0; background:#FFF; font-size:12px; font-weight:600; cursor:pointer; font-family:Inter,sans-serif; color:#888; transition:all .15s; }
+    .filter-btn.active { background:#1A1A1A; color:#FFE600; border-color:#1A1A1A; }
   </style>
 </head>
 <body>
@@ -121,6 +123,7 @@
   <div class="tab active" onclick="showTab('tab1', this)">Retrospectiva</div>
   <div class="tab" onclick="showTab('tab2', this)">Implementações</div>
   <div class="tab" onclick="showTab('tab3', this)">↑ Subidas de Nível</div>
+  <div class="tab" onclick="showTab('tab4', this)">Comparativo Junho</div>
 </div>
 
 <div id="tab1" class="tab-pane active">
@@ -385,6 +388,21 @@
   </div>
 </div><!-- /tab3 -->
 
+<div id="tab4" class="tab-pane">
+  <div class="content">
+    <div class="section-label">Comparativo Junho — Resellers que Subiram de Nível</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px" id="comp-cards"></div>
+    <div style="display:flex;gap:8px;margin-bottom:16px" id="comp-filter"></div>
+    <div style="margin-bottom:12px">
+      <input type="text" id="search-comp" placeholder="Buscar por ID do reseller..."
+        oninput="renderComp()"
+        style="padding:8px 14px;border-radius:8px;border:1px solid #E0E0E0;font-size:13px;font-family:Inter,sans-serif;width:280px">
+    </div>
+    <div id="comp-tabela"></div>
+    <div style="padding:12px 0 0"><span style="font-size:11px;color:#AAAAAA">Jun/26 MTD (até 16/06/2026) vs Mai/26 — Pedidos: mesmo período (MTD×MTD) · Ativações e TPV: mês completo Mai vs MTD Jun</span></div>
+  </div>
+</div><!-- /tab4 -->
+
 <script>
 function showTab(id, el) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -623,6 +641,94 @@ function renderNiveisTabela(){
     </table>`;
 }
 renderNiveisTabela();
+
+// ── COMPARATIVO JUNHO ─────────────────────────────────────────────────────────
+const COMP_DATA = [{"reseller": "10716749", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716756", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716759", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716761", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716765", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716767", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716771", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716784", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716787", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716788", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716796", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716797", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716801", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716803", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716811", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716824", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716833", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716837", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716838", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716840", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "10716841", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "114376909", "tipo": "Natural", "jun_ativos": 1, "mai_ativos": 0, "jun_tpv": 576.0, "mai_tpv": 8.0, "jun_ped": 2, "mai_ped": 0}, {"reseller": "1203895", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "1217075886", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 30.0, "mai_tpv": 78817.16, "jun_ped": 4, "mai_ped": 0}, {"reseller": "1243247904", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 0.0, "jun_ped": 4, "mai_ped": 0}, {"reseller": "129611140", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 6334.85, "mai_tpv": 26350.09, "jun_ped": 2, "mai_ped": 0}, {"reseller": "144090312", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 5, "jun_tpv": 2.0, "mai_tpv": 15235.6, "jun_ped": 2, "mai_ped": 6}, {"reseller": "145209026", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 7485.09, "mai_tpv": 749.97, "jun_ped": 30, "mai_ped": 0}, {"reseller": "1563204368", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 207.0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "157627956", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 2286.0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "167012870", "tipo": "Natural", "jun_ativos": 2, "mai_ativos": 2, "jun_tpv": 21278.0, "mai_tpv": 12427.5, "jun_ped": 2, "mai_ped": 0}, {"reseller": "172116091", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 656.0, "mai_tpv": 443.59, "jun_ped": 0, "mai_ped": 0}, {"reseller": "1750530345", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 8, "jun_tpv": 30188.86, "mai_tpv": 8818.3, "jun_ped": 6, "mai_ped": 6}, {"reseller": "178741217", "tipo": "Natural", "jun_ativos": 1, "mai_ativos": 10, "jun_tpv": 9654.0, "mai_tpv": 19205.5, "jun_ped": 4, "mai_ped": 10}, {"reseller": "1918195093", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 1, "jun_tpv": 0.0, "mai_tpv": 1176.0, "jun_ped": 0, "mai_ped": 2}, {"reseller": "2016658", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 3154.39, "jun_ped": 0, "mai_ped": 0}, {"reseller": "2056753897", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 8, "jun_tpv": 6357.0, "mai_tpv": 3257.0, "jun_ped": 2, "mai_ped": 4}, {"reseller": "2057975464", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 3, "jun_tpv": 7959.65, "mai_tpv": 6216.92, "jun_ped": 2, "mai_ped": 2}, {"reseller": "209014134", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 4724.0, "mai_tpv": 6341.5, "jun_ped": 80, "mai_ped": 0}, {"reseller": "212643273", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 12, "jun_tpv": 41381.82, "mai_tpv": 117639.97, "jun_ped": 2, "mai_ped": 4}, {"reseller": "212727829", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 3, "jun_tpv": 2483.5, "mai_tpv": 17119.42, "jun_ped": 0, "mai_ped": 2}, {"reseller": "2213169506", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 295.0, "mai_tpv": 566.34, "jun_ped": 0, "mai_ped": 0}, {"reseller": "2240760897", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 0.0, "jun_ped": 6, "mai_ped": 0}, {"reseller": "2416527722", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 3251.0, "mai_tpv": 15214.16, "jun_ped": 0, "mai_ped": 0}, {"reseller": "246366776", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 0.0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "2506168525", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 0.0, "jun_ped": 30, "mai_ped": 0}, {"reseller": "251424565", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 0.0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "2588342404", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 833.22, "mai_tpv": 18526.55, "jun_ped": 0, "mai_ped": 0}, {"reseller": "271313562", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 7393.4, "mai_tpv": 161.0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "300694689", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 12, "jun_tpv": 0.0, "mai_tpv": 2373.51, "jun_ped": 10, "mai_ped": 12}, {"reseller": "300934483", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 2, "jun_tpv": 0.0, "mai_tpv": 342.3, "jun_ped": 0, "mai_ped": 2}, {"reseller": "31172518", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 3356.0, "jun_ped": 10, "mai_ped": 0}, {"reseller": "3171146952", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 1293.0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "3258736998", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 421.87, "mai_tpv": 963.0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "332188136", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 9, "jun_tpv": 67197.99, "mai_tpv": 34975.43, "jun_ped": 2, "mai_ped": 4}, {"reseller": "3329364534", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 7, "jun_tpv": 6637.68, "mai_tpv": 6610.27, "jun_ped": 0, "mai_ped": 2}, {"reseller": "337487749", "tipo": "Natural", "jun_ativos": 2, "mai_ativos": 0, "jun_tpv": 1029.0, "mai_tpv": 9116.92, "jun_ped": 12, "mai_ped": 0}, {"reseller": "351431066", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 1690.0, "mai_tpv": 7183.0, "jun_ped": 2, "mai_ped": 0}, {"reseller": "356974215", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 495.0, "mai_tpv": 27424.5, "jun_ped": 10, "mai_ped": 0}, {"reseller": "383338512", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 60826.97, "jun_ped": 50, "mai_ped": 0}, {"reseller": "38995629", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 0.0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "4081184", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "420814739", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 33381.56, "jun_ped": 0, "mai_ped": 0}, {"reseller": "4320130", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "442045626", "tipo": "Natural", "jun_ativos": 1, "mai_ativos": 4, "jun_tpv": 0.0, "mai_tpv": 43785.34, "jun_ped": 2, "mai_ped": 4}, {"reseller": "469317605", "tipo": "Natural", "jun_ativos": 1, "mai_ativos": 0, "jun_tpv": 52633.5, "mai_tpv": 1173.0, "jun_ped": 14, "mai_ped": 0}, {"reseller": "4825598", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "492255880", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 4, "jun_tpv": 3700.29, "mai_tpv": 4303.6, "jun_ped": 0, "mai_ped": 2}, {"reseller": "495504290", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 6, "jun_tpv": 3771.5, "mai_tpv": 15134.83, "jun_ped": 12, "mai_ped": 2}, {"reseller": "528067482", "tipo": "Natural", "jun_ativos": 3, "mai_ativos": 0, "jun_tpv": 934.4, "mai_tpv": 24491.01, "jun_ped": 4, "mai_ped": 0}, {"reseller": "592878216", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 2, "jun_tpv": 7290.5, "mai_tpv": 3989.32, "jun_ped": 28, "mai_ped": 2}, {"reseller": "593668568", "tipo": "Natural", "jun_ativos": 1, "mai_ativos": 0, "jun_tpv": 10.0, "mai_tpv": 5054.0, "jun_ped": 2, "mai_ped": 0}, {"reseller": "60147453", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 10.0, "mai_tpv": 0.0, "jun_ped": 2, "mai_ped": 0}, {"reseller": "605996723", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 1729.0, "mai_tpv": 7562.8, "jun_ped": 0, "mai_ped": 0}, {"reseller": "62485145", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 9157.92, "mai_tpv": 14055.77, "jun_ped": 170, "mai_ped": 0}, {"reseller": "638171240", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 502.0, "mai_tpv": 10463.72, "jun_ped": 0, "mai_ped": 0}, {"reseller": "646237773", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 1, "jun_tpv": 3005.0, "mai_tpv": 3096.76, "jun_ped": 0, "mai_ped": 2}, {"reseller": "6788165", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "6993070", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "710343234", "tipo": "Natural", "jun_ativos": 0, "mai_ativos": 2, "jun_tpv": 757.0, "mai_tpv": 98.74, "jun_ped": 12, "mai_ped": 2}, {"reseller": "73798340", "tipo": "Natural", "jun_ativos": 2, "mai_ativos": 0, "jun_tpv": 0.0, "mai_tpv": 4494.0, "jun_ped": 10, "mai_ped": 0}, {"reseller": "8280380", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "8407175", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "894834", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "898173", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "900836", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "901970", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "90502583", "tipo": "Natural", "jun_ativos": 3, "mai_ativos": 0, "jun_tpv": 3176.63, "mai_tpv": 0.0, "jun_ped": 34, "mai_ped": 0}, {"reseller": "906014", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}, {"reseller": "96400526", "tipo": "Natural", "jun_ativos": 1, "mai_ativos": 4, "jun_tpv": 10397.81, "mai_tpv": 72697.23, "jun_ped": 4, "mai_ped": 4}, {"reseller": "9907306", "tipo": "Autom\u00e1tica", "jun_ativos": 0, "mai_ativos": 0, "jun_tpv": 0, "mai_tpv": 0, "jun_ped": 0, "mai_ped": 0}];
+let activeComp = 'Todos';
+
+function buildCompCards(){
+  const tot  = COMP_DATA.length;
+  const auto = COMP_DATA.filter(r=>r.tipo==='Automática').length;
+  const nat  = COMP_DATA.filter(r=>r.tipo==='Natural').length;
+  document.getElementById('comp-cards').innerHTML = `
+    <div class="sum-card">
+      <div class="sum-label">Total Subidas Jun/26</div>
+      <div style="font-size:32px;font-weight:900;color:#1A1A1A;margin:6px 0">${tot}</div>
+      <div class="sum-period">Aprendiz → Especialista</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-label">Subida Automática</div>
+      <div style="font-size:32px;font-weight:900;color:#3B82F6;margin:6px 0">${auto}</div>
+      <div class="sum-period">Critério flexibilizado (4 MAS)</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-label">Subida Natural</div>
+      <div style="font-size:32px;font-weight:900;color:#16A34A;margin:6px 0">${nat}</div>
+      <div class="sum-period">Orgânico</div>
+    </div>`;
+  document.getElementById('comp-filter').innerHTML = ['Todos','Natural','Automática'].map(f=>
+    `<button class="filter-btn${f===activeComp?' active':''}" onclick="activeComp='${f}';buildCompFilter();renderComp()">${f}</button>`
+  ).join('');
+}
+
+function buildCompFilter(){
+  document.getElementById('comp-filter').innerHTML = ['Todos','Natural','Automática'].map(f=>
+    `<button class="filter-btn${f===activeComp?' active':''}" onclick="activeComp='${f}';buildCompFilter();renderComp()">${f}</button>`
+  ).join('');
+}
+
+function fmtTpv(v){ return v>=1e6?'R$ '+(v/1e6).toFixed(2).replace('.',',')+'M':v>0?'R$ '+Math.round(v).toLocaleString('pt-BR'):'—'; }
+function fmtN(v){ return v>0?v:'—'; }
+function delta(jun,mai){
+  if(!mai||mai===0) return '<span style="color:#CCC">—</span>';
+  const p=(jun-mai)/mai*100;
+  const c=p>=0?'#16A34A':'#DC2626', i=p>=0?'▲':'▼';
+  return `<span style="color:${c};font-weight:700;font-size:11px">${i} ${Math.abs(p).toFixed(1)}%</span>`;
+}
+
+function renderComp(){
+  const q=document.getElementById('search-comp').value.toLowerCase();
+  let data=COMP_DATA.filter(r=>(activeComp==='Todos'||r.tipo===activeComp)&&(!q||r.reseller.includes(q)));
+  data.sort((a,b)=>a.tipo.localeCompare(b.tipo)||(b.jun_tpv||0)-(a.jun_tpv||0));
+  const rows=data.map(r=>{
+    const tc=r.tipo==='Automática'?'#3B82F6':'#16A34A';
+    return `<tr style="border-bottom:1px solid #F4F4F4">
+      <td style="padding:9px 14px;font-family:monospace;font-size:12px;color:#555">${r.reseller}</td>
+      <td style="padding:9px 14px"><span style="padding:2px 10px;border-radius:10px;font-size:10px;font-weight:700;background:${tc}22;color:${tc};border:1px solid ${tc}44">${r.tipo}</span></td>
+      <td style="padding:9px 14px;text-align:right;font-weight:700">${fmtN(r.jun_ped)}</td>
+      <td style="padding:9px 14px;text-align:right;color:#888">${fmtN(r.mai_ped)}</td>
+      <td style="padding:9px 14px;text-align:center">${delta(r.jun_ped,r.mai_ped)}</td>
+      <td style="padding:9px 14px;text-align:right;font-weight:700">${fmtN(r.jun_ativos)}</td>
+      <td style="padding:9px 14px;text-align:right;color:#888">${fmtN(r.mai_ativos)}</td>
+      <td style="padding:9px 14px;text-align:center">${delta(r.jun_ativos,r.mai_ativos)}</td>
+      <td style="padding:9px 14px;text-align:right;font-weight:700">${fmtTpv(r.jun_tpv)}</td>
+      <td style="padding:9px 14px;text-align:right;color:#888">${fmtTpv(r.mai_tpv)}</td>
+      <td style="padding:9px 14px;text-align:center">${delta(r.jun_tpv,r.mai_tpv)}</td>
+    </tr>`;
+  }).join('');
+  const thStyle='padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#FFE600';
+  const thGray='padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#888';
+  document.getElementById('comp-tabela').innerHTML=`
+    <table style="width:100%;border-collapse:collapse;background:#FFF;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+      <thead><tr style="background:#1A1A1A">
+        <th style="${thStyle};text-align:left;width:14%">Reseller</th>
+        <th style="${thStyle};text-align:left;width:12%">Tipo</th>
+        <th style="${thStyle};text-align:right">Ped Jun</th>
+        <th style="${thGray};text-align:right">Ped Mai</th>
+        <th style="${thStyle};text-align:center">Δ</th>
+        <th style="${thStyle};text-align:right">Ativos Jun</th>
+        <th style="${thGray};text-align:right">Ativos Mai</th>
+        <th style="${thStyle};text-align:center">Δ</th>
+        <th style="${thStyle};text-align:right">TPV M0 Jun</th>
+        <th style="${thGray};text-align:right">TPV M0 Mai</th>
+        <th style="${thStyle};text-align:center">Δ</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+buildCompCards();
+renderComp();
 </script>
 </body>
 </html>
