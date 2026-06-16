@@ -737,10 +737,12 @@ function buildCompFilter(){
   ).join('');
 }
 
-function fmtTpv(v){ return v>=1e6?'R$ '+(v/1e6).toFixed(2).replace('.',',')+'M':v>0?'R$ '+Math.round(v).toLocaleString('pt-BR'):'—'; }
-function fmtN(v){ return v>0?v:'—'; }
+function fmtTpv(v){ return v>=1e6?'R$ '+(v/1e6).toFixed(2).replace('.',',')+'M':'R$ '+Math.round(v||0).toLocaleString('pt-BR'); }
+function fmtN(v){ return (v||0).toLocaleString('pt-BR'); }
 function delta(jun,mai){
-  if(!mai||mai===0) return '<span style="color:#CCC">—</span>';
+  jun=jun||0; mai=mai||0;
+  if(mai===0&&jun===0) return '<span style="color:#CCC">0%</span>';
+  if(mai===0&&jun>0)   return '<span style="color:#16A34A;font-weight:700;font-size:11px">Novo</span>';
   const p=(jun-mai)/mai*100;
   const c=p>=0?'#16A34A':'#DC2626', i=p>=0?'▲':'▼';
   return `<span style="color:${c};font-weight:700;font-size:11px">${i} ${Math.abs(p).toFixed(1)}%</span>`;
