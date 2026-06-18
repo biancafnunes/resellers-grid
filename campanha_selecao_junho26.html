@@ -734,6 +734,11 @@ const dados = {
     { rank:8,  rank_ant:8,    id:'164368290',  nome:'Josimeire Nascimento', cidade:'São Bernardo do Campo',  uf:'SP', novos:3, tpv:26169.04, novos_mai:2,  tpv_mai:432.00 },
     { rank:9,  rank_ant:9,    id:'38008063',   nome:'Rogerio Custodio',     cidade:'Cuiabá',                 uf:'MT', novos:3, tpv:22935.08, novos_mai:3,  tpv_mai:4873.92 },
     { rank:10, rank_ant:10,   id:'82907272',   nome:'Renato Pereira',       cidade:'São Luís',               uf:'MA', novos:3, tpv:19157.35, novos_mai:7,  tpv_mai:11688.60 },
+    { rank:11, rank_ant:null, id:'114125211',  nome:'Viviane Rosa',         cidade:'Goiânia',                uf:'GO', novos:3, tpv:18143.50, novos_mai:8,  tpv_mai:46705.71 },
+    { rank:12, rank_ant:null, id:'2206298813', nome:'Maria Jose',           cidade:'',                       uf:'',   novos:3, tpv:16246.77, novos_mai:6,  tpv_mai:12160.17 },
+    { rank:13, rank_ant:null, id:'614384375',  nome:'',                     cidade:'Parauapebas',            uf:'PA', novos:2, tpv:34111.75, novos_mai:5,  tpv_mai:50178.05 },
+    { rank:14, rank_ant:null, id:'281399578',  nome:'',                     cidade:'Ribeirão Preto',         uf:'SP', novos:2, tpv:25246.00, novos_mai:2,  tpv_mai:737.70 },
+    { rank:15, rank_ant:null, id:'381728218',  nome:'',                     cidade:'',                       uf:'',   novos:2, tpv:23406.59, novos_mai:2,  tpv_mai:3674.07 },
   ],
 };
 
@@ -764,7 +769,8 @@ function rankBadge(r, r_ant) {
 
 function premio(r) {
   if (r <= 3) return `<div class="premio-cell premio-camisa"><span class="premio-icon">👕</span> Camisa Oficial</div>`;
-  return `<div class="premio-cell premio-brinde"><span class="premio-icon">🎁</span> Brinde Exclusivo</div>`;
+  if (r <= 10) return `<div class="premio-cell premio-brinde"><span class="premio-icon">🎁</span> Brinde Exclusivo</div>`;
+  return `<div class="premio-cell" style="color:#BBBBBB;font-size:12px;">—</div>`;
 }
 
 function rowClass(r) {
