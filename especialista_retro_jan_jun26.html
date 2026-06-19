@@ -85,6 +85,8 @@
     .impl-grid { display:flex; flex-direction:column; gap:16px; }
     .impl-card { background:var(--black); border-radius:12px; padding:28px; cursor:pointer; transition:box-shadow .2s; }
     .impl-card:hover { box-shadow:0 4px 16px rgba(0,0,0,.3); }
+    .impl-card.priority { border-left:4px solid var(--yellow); }
+    .impl-card.secondary { opacity:0.28; filter:grayscale(1); pointer-events:none; }
     .impl-card-header { display:flex; gap:20px; align-items:flex-start; }
     .impl-icon { font-size:44px; line-height:1; flex-shrink:0; }
     .impl-body { flex:1; }
@@ -251,7 +253,7 @@
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:20px">Propostas de Implementação</div>
     <div class="impl-grid">
 
-      <div class="impl-card" onclick="toggleImpl(this)">
+      <div class="impl-card secondary" onclick="toggleImpl(this)">
         <div class="impl-card-header">
           <div class="impl-num">1</div>
           <div class="impl-icon">📈</div>
@@ -267,7 +269,7 @@
         </div>
       </div>
 
-      <div class="impl-card" onclick="toggleImpl(this)">
+      <div class="impl-card secondary" onclick="toggleImpl(this)">
         <div class="impl-card-header">
           <div class="impl-num">2</div>
           <div class="impl-icon">💰</div>
@@ -283,7 +285,7 @@
         </div>
       </div>
 
-      <div class="impl-card" onclick="toggleImpl(this)">
+      <div class="impl-card priority" onclick="toggleImpl(this)">
         <div class="impl-card-header">
           <div class="impl-num">3</div>
           <div class="impl-icon">🎁</div>
@@ -299,7 +301,7 @@
         </div>
       </div>
 
-      <div class="impl-card" onclick="toggleImpl(this)">
+      <div class="impl-card priority" onclick="toggleImpl(this)">
         <div class="impl-card-header">
           <div class="impl-num">4</div>
           <div class="impl-icon">📦</div>
@@ -315,7 +317,7 @@
         </div>
       </div>
 
-      <div class="impl-card" onclick="toggleImpl(this)">
+      <div class="impl-card priority" onclick="toggleImpl(this)">
         <div class="impl-card-header">
           <div class="impl-num">5</div>
           <div class="impl-icon">⭐</div>
@@ -331,7 +333,7 @@
         </div>
       </div>
 
-      <div class="impl-card" onclick="toggleImpl(this)">
+      <div class="impl-card secondary" onclick="toggleImpl(this)">
         <div class="impl-card-header">
           <div class="impl-num">6</div>
           <div class="impl-icon">🚀</div>
@@ -347,7 +349,7 @@
         </div>
       </div>
 
-      <div class="impl-card" onclick="toggleImpl(this)">
+      <div class="impl-card secondary" onclick="toggleImpl(this)">
         <div class="impl-card-header">
           <div class="impl-num">7</div>
           <div class="impl-icon">🤝</div>
@@ -363,7 +365,7 @@
         </div>
       </div>
 
-      <div class="impl-card" onclick="toggleImpl(this)">
+      <div class="impl-card secondary" onclick="toggleImpl(this)">
         <div class="impl-card-header">
           <div class="impl-num">8</div>
           <div class="impl-icon">💳</div>
@@ -379,7 +381,7 @@
         </div>
       </div>
 
-      <div class="impl-card" onclick="toggleImpl(this)">
+      <div class="impl-card priority" onclick="toggleImpl(this)">
         <div class="impl-card-header">
           <div class="impl-num">9</div>
           <div class="impl-icon">💡</div>
@@ -395,7 +397,7 @@
         </div>
       </div>
 
-      <div class="impl-card" onclick="toggleImpl(this)">
+      <div class="impl-card priority" onclick="toggleImpl(this)">
         <div class="impl-card-header">
           <div class="impl-num">10</div>
           <div class="impl-icon">🔓</div>
@@ -408,6 +410,22 @@
         </div>
         <div class="impl-expand">
           <div class="impl-expand-inner">Liberação de trava de compras, flexibilizando a % ou aumentando o limite.</div>
+        </div>
+      </div>
+
+      <div class="impl-card priority" onclick="toggleImpl(this)">
+        <div class="impl-card-header">
+          <div class="impl-num">11</div>
+          <div class="impl-icon">🎯</div>
+          <div class="impl-body">
+            <div class="impl-date">Prazo: 01/07/2026</div>
+            <div class="impl-title">Proposta Especial</div>
+            <div class="impl-badge nao-iniciado">Não iniciado</div>
+          </div>
+          <div class="impl-chevron">▾</div>
+        </div>
+        <div class="impl-expand">
+          <div class="impl-expand-inner">Oferta personalizada para Especialistas perfilados — proposta direcionada com base no perfil e histórico do revendedor.</div>
         </div>
       </div>
 
