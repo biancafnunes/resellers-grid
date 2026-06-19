@@ -580,6 +580,56 @@
       </div>
     </div>
 
+    <!-- Seção 1d: TPV médio com 3k -->
+    <div style="margin-top:32px;">
+      <div style="font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px;">
+        💰 TPV Médio por Seller M0 (com corte ≥ R$ 3.000) — Top Resellers
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nível</th>
+              <th class="num">Resellers</th>
+              <th class="right">TPV Médio Mai MTD</th>
+              <th class="right">TPV Médio Jun MTD</th>
+              <th class="right">Δ R$</th>
+              <th class="right">Δ %</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-tpvmedio-3k"></tbody>
+        </table>
+      </div>
+      <div class="aviso-mtd" style="margin-top:16px; margin-bottom:0">
+        ℹ️ TPV total M0 ÷ sellers M0 dos top resellers. Considera apenas sellers com TPV ≥ R$ 3.000.
+      </div>
+    </div>
+
+    <!-- Seção 1e: TPV médio sem 3k -->
+    <div style="margin-top:32px;">
+      <div style="font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px;">
+        💰 TPV Médio por Seller M0 (sem corte de TPV) — Top Resellers
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nível</th>
+              <th class="num">Resellers</th>
+              <th class="right">TPV Médio Mai MTD</th>
+              <th class="right">TPV Médio Jun MTD</th>
+              <th class="right">Δ R$</th>
+              <th class="right">Δ %</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-tpvmedio-all"></tbody>
+        </table>
+      </div>
+      <div class="aviso-mtd" style="margin-top:16px; margin-bottom:0">
+        ℹ️ TPV total M0 ÷ sellers M0 dos top resellers, sem nenhum corte de faturamento mínimo.
+      </div>
+    </div>
+
     <!-- Seção 2: Card M0 canal geral -->
     <div style="margin-top:32px;">
       <div style="font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px;">
@@ -885,10 +935,10 @@ const dados = {
 // ── TOTAL SELLERS M0 POR NÍVEL (sem filtro de 3k) ─────────────────────────
 // Atualizar diariamente: mesmo universo de resellers do ranking, sem corte de TPV
 const dadosTotalSellers = {
-  aprendiz:     { novos_jun: 15,  novos_mai: 1  },
-  especialista: { novos_jun: 18,  novos_mai: 8  },
-  empreendedor: { novos_jun: 46,  novos_mai: 50 },
-  top:          { novos_jun: 136, novos_mai: 97 },
+  aprendiz:     { novos_jun: 15,  novos_mai: 1,  tpv_jun: 193324.89, tpv_mai: 10.00      },
+  especialista: { novos_jun: 18,  novos_mai: 8,  tpv_jun: 137782.19, tpv_mai: 44348.10   },
+  empreendedor: { novos_jun: 46,  novos_mai: 50, tpv_jun: 624849.50, tpv_mai: 260705.08  },
+  top:          { novos_jun: 136, novos_mai: 97, tpv_jun: 629407.57, tpv_mai: 368175.64  },
 };
 
 // ── CANAL RESELLERS (FORECAST_SELLERS · FLAG_PROJ=0) ───────────────────────
@@ -1128,6 +1178,68 @@ function renderIncremento() {
     <td class="tpv-cell"><strong>${tpAll !== null ? `<span class="delta ${tcAll}">${tdAll >= 0 ? '▲' : '▼'} ${Math.abs(tpAll).toFixed(1)}%</span>` : '—'}</strong></td>
   </tr>`;
   document.getElementById('tbody-total-sellers').innerHTML = totalSellersRows + totalRowAll;
+
+  // Seção 1d/1e: TPV médio — função reutilizável
+  function renderTpvMedio(tbodyId, getJun, getMai, getNRes) {
+    const niveisM = [
+      { key:'aprendiz',     label:'🟡 Aprendiz' },
+      { key:'especialista', label:'🔵 Especialista' },
+      { key:'empreendedor', label:'🟠 Empreendedor' },
+      { key:'top',          label:'🏆 Top Empreendedor' },
+    ];
+    let totTpvJun = 0, totTpvMai = 0, totSellJun = 0, totSellMai = 0, totNRes = 0;
+    const rows = niveisM.map(n => {
+      const { tpvJun, tpvMai, sellJun, sellMai } = { tpvJun: getJun(n.key).tpv, tpvMai: getMai(n.key).tpv, sellJun: getJun(n.key).sell, sellMai: getMai(n.key).sell };
+      const nRes   = getNRes(n.key);
+      const medJun = sellJun > 0 ? tpvJun / sellJun : 0;
+      const medMai = sellMai > 0 ? tpvMai / sellMai : 0;
+      const d      = medJun - medMai;
+      const pct    = medMai > 0 ? (d / medMai * 100) : null;
+      totTpvJun += tpvJun; totTpvMai += tpvMai; totSellJun += sellJun; totSellMai += sellMai; totNRes += nRes;
+      const cls    = d >= 0 ? 'up' : 'down';
+      const seta   = d >= 0 ? '▲' : '▼';
+      const pctStr = pct !== null ? `<span class="delta ${cls}">${seta} ${Math.abs(pct).toFixed(1)}%</span>` : '—';
+      const dltStr = `<span class="delta ${cls}">${d >= 0 ? '+' : ''}${fmtBRL(d)}</span>`;
+      return `<tr>
+        <td><strong>${n.label}</strong></td>
+        <td class="novos-cell">${nRes}</td>
+        <td class="tpv-cell" style="color:var(--muted)">${medMai > 0 ? fmtBRL(medMai) : '—'}</td>
+        <td class="tpv-cell">${fmtBRL(medJun)}</td>
+        <td class="tpv-cell">${dltStr}</td>
+        <td class="tpv-cell">${pctStr}</td>
+      </tr>`;
+    }).join('');
+    const totMedJun = totSellJun > 0 ? totTpvJun / totSellJun : 0;
+    const totMedMai = totSellMai > 0 ? totTpvMai / totSellMai : 0;
+    const td  = totMedJun - totMedMai;
+    const tp  = totMedMai > 0 ? (td / totMedMai * 100) : null;
+    const tc  = td >= 0 ? 'up' : 'down';
+    const totalRow = `<tr style="background:var(--verde-light);border-top:2px solid var(--verde)">
+      <td><strong>Total</strong></td>
+      <td class="novos-cell"><strong>${totNRes}</strong></td>
+      <td class="tpv-cell" style="color:var(--muted)"><strong>${totMedMai > 0 ? fmtBRL(totMedMai) : '—'}</strong></td>
+      <td class="tpv-cell"><strong>${fmtBRL(totMedJun)}</strong></td>
+      <td class="tpv-cell"><strong><span class="delta ${tc}">${td >= 0 ? '+' : ''}${fmtBRL(td)}</span></strong></td>
+      <td class="tpv-cell"><strong>${tp !== null ? `<span class="delta ${tc}">${td >= 0 ? '▲' : '▼'} ${Math.abs(tp).toFixed(1)}%</span>` : '—'}</strong></td>
+    </tr>`;
+    document.getElementById(tbodyId).innerHTML = rows + totalRow;
+  }
+
+  // Com filtro 3k: TPV e sellers somados dos dados do ranking
+  renderTpvMedio(
+    'tbody-tpvmedio-3k',
+    key => ({ tpv: dados[key].slice(0,10).reduce((s,r) => s + r.tpv, 0),     sell: dados[key].slice(0,10).reduce((s,r) => s + r.novos, 0)     }),
+    key => ({ tpv: dados[key].slice(0,10).reduce((s,r) => s + r.tpv_mai, 0), sell: dados[key].slice(0,10).reduce((s,r) => s + r.novos_mai, 0) }),
+    key => dados[key].slice(0,10).length
+  );
+
+  // Sem filtro: TPV e sellers de dadosTotalSellers
+  renderTpvMedio(
+    'tbody-tpvmedio-all',
+    key => ({ tpv: dadosTotalSellers[key].tpv_jun, sell: dadosTotalSellers[key].novos_jun }),
+    key => ({ tpv: dadosTotalSellers[key].tpv_mai, sell: dadosTotalSellers[key].novos_mai }),
+    key => dados[key].slice(0,10).length
+  );
 
   // Seção 3: Canal Resellers — sellers M0 geral
   const m0s = dadosCanal.ciclos.find(x => x.ciclo === 'M0');
