@@ -889,7 +889,7 @@ function renderIncremento() {
   let totalJun = 0, totalMai = 0, totalN = 0;
 
   const rows = niveis.map(n => {
-    const entries = dados[n.key];
+    const entries = dados[n.key].slice(0, 10);
     const tpvJun  = entries.reduce((s, r) => s + r.tpv,     0);
     const tpvMai  = entries.reduce((s, r) => s + r.tpv_mai, 0);
     const delta   = tpvJun - tpvMai;
