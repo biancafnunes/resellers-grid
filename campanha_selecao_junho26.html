@@ -526,6 +526,17 @@
     <div class="aviso-mtd" style="margin-top:16px; margin-bottom:0">
       ℹ️ Considera apenas os resellers atualmente no top de cada nível (10 por nível, 15 no Top Empreendedor). O TPV de maio usa o mesmo período (01–18/05) para cada reseller presente no ranking de junho.
     </div>
+
+    <!-- Seção 2: Card M0 canal geral -->
+    <div style="margin-top:32px;">
+      <div style="font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px;">
+        🌐 Canal Resellers — M0 Point total <span style="font-weight:400; font-size:11px;">(FORECAST_SELLERS · FLAG_PROJ=0)</span>
+      </div>
+      <div id="card-canal-m0" style="display:flex; gap:16px; flex-wrap:wrap;"></div>
+      <div class="aviso-mtd" style="margin-top:16px; margin-bottom:0">
+        ℹ️ Todos os sellers M0 Point do canal Resellers no período, sem corte mínimo de TPV.
+      </div>
+    </div>
   </div>
 
     <!-- ── FONTES & QUERIES ── -->
@@ -774,6 +785,17 @@ const dados = {
   ],
 };
 
+// ── CANAL RESELLERS (FORECAST_SELLERS · FLAG_PROJ=0) ───────────────────────
+// Atualizar diariamente junto com a query de ranking
+const dadosCanal = {
+  periodo: { jun_ini:'01/06', jun_fim:'18/06', mai_ini:'01/05', mai_fim:'18/05' },
+  ciclos: [
+    { ciclo:'M0',       label:'M0 — Novos',      sellers_jun:3835,  tpv_jun:7987066,  sellers_mai:3505,  tpv_mai:6790055  },
+    { ciclo:'M1',       label:'M1',               sellers_jun:4113,  tpv_jun:17845434, sellers_mai:4286,  tpv_mai:20105532 },
+    { ciclo:'TRIANGLE', label:'Triângulo',         sellers_jun:14356, tpv_jun:65602288, sellers_mai:11347, tpv_mai:50871944 },
+  ],
+};
+
 // ── RENDER ──────────────────────────────────────────────────────────────────
 function fmtBRL(v) {
   return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -902,6 +924,27 @@ function renderIncremento() {
   </tr>`;
 
   document.getElementById('tbody-incremento').innerHTML = rows + totalRow;
+
+  // Seção 2: Card M0 geral do canal
+  const m0 = dadosCanal.ciclos.find(x => x.ciclo === 'M0');
+  if (m0) {
+    const d   = m0.tpv_jun - m0.tpv_mai;
+    const pct = m0.tpv_mai > 0 ? (d / m0.tpv_mai * 100) : null;
+    const cls = d >= 0 ? 'up' : 'down';
+    const p   = dadosCanal.periodo;
+    const cards = [
+      { label:`TPV M0 Jun (${p.jun_ini}–${p.jun_fim})`, valor: fmtBRL(m0.tpv_jun), sub: `${m0.sellers_jun.toLocaleString('pt-BR')} sellers`, destaque: true },
+      { label:`TPV M0 Mai (${p.mai_ini}–${p.mai_fim})`, valor: fmtBRL(m0.tpv_mai), sub: `${m0.sellers_mai.toLocaleString('pt-BR')} sellers`, destaque: false },
+      { label:'Incremento R$', valor: `<span class="delta ${cls}" style="font-size:18px">${d >= 0 ? '+' : ''}${fmtBRL(d)}</span>`, sub: '', destaque: false },
+      { label:'Incremento %',  valor: pct !== null ? `<span class="delta ${cls}" style="font-size:22px">${d >= 0 ? '▲' : '▼'} ${Math.abs(pct).toFixed(1)}%</span>` : '—', sub: '', destaque: false },
+    ];
+    document.getElementById('card-canal-m0').innerHTML = cards.map(card => `
+      <div style="background:${card.destaque ? 'var(--verde)' : 'var(--branco)'}; border:1px solid var(--cinza-borda); border-radius:12px; padding:20px 24px; min-width:180px; flex:1;">
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:${card.destaque ? 'rgba(255,255,255,0.7)' : 'var(--muted)'}; margin-bottom:8px;">${card.label}</div>
+        <div style="font-size:20px; font-weight:800; color:${card.destaque ? 'var(--amarelo)' : 'var(--texto-dark)'};">${card.valor}</div>
+        ${card.sub ? `<div style="font-size:12px; color:${card.destaque ? 'rgba(255,255,255,0.6)' : 'var(--muted)'}; margin-top:4px;">${card.sub}</div>` : ''}
+      </div>`).join('');
+  }
 }
 
 render('aprendiz',    'tbody-aprendiz');
