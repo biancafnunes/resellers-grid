@@ -354,6 +354,9 @@
     <div class="tab" onclick="showTab('top', this)">
       Top Empreendedor <span class="tab-count" id="cnt-top"></span>
     </div>
+    <div class="tab" onclick="showTab('incremento', this)">
+      Incremento
+    </div>
     <div class="tab" onclick="showTab('fontes', this)">
       Fontes &amp; Queries
     </div>
@@ -496,7 +499,36 @@
     </div>
   </div>
 
-  <!-- ── FONTES & QUERIES ── -->
+  <!-- ── INCREMENTO ── -->
+  <div class="tab-panel" id="panel-incremento">
+    <div class="ranking-header">
+      <div>
+        <div class="ranking-title">📈 Incremento MTD</div>
+        <div class="ranking-subtitle">TPV M0 Point dos top resellers — 01/05 a 18/05 vs 01/06 a 18/06/2026</div>
+      </div>
+      <div class="update-badge">Atualizado 19/06/2026</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nível</th>
+            <th class="num">Resellers</th>
+            <th class="right">TPV M0 Mai MTD</th>
+            <th class="right">TPV M0 Jun MTD</th>
+            <th class="right">Δ R$</th>
+            <th class="right">Δ %</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-incremento"></tbody>
+      </table>
+    </div>
+    <div class="aviso-mtd" style="margin-top:16px; margin-bottom:0">
+      ℹ️ Considera apenas os resellers atualmente no top de cada nível (10 por nível, 15 no Top Empreendedor). O TPV de maio usa o mesmo período (01–18/05) para cada reseller presente no ranking de junho.
+    </div>
+  </div>
+
+    <!-- ── FONTES & QUERIES ── -->
   <div class="tab-panel" id="panel-fontes">
 
     <!-- Validação de níveis -->
@@ -824,10 +856,59 @@ function render(nivel, tbodyId) {
   }).join('');
 }
 
+function renderIncremento() {
+  const niveis = [
+    { key:'aprendiz',     label:'🟡 Aprendiz' },
+    { key:'especialista', label:'🔵 Especialista' },
+    { key:'empreendedor', label:'🟠 Empreendedor' },
+    { key:'top',          label:'🏆 Top Empreendedor' },
+  ];
+
+  let totalJun = 0, totalMai = 0, totalN = 0;
+
+  const rows = niveis.map(n => {
+    const entries = dados[n.key];
+    const tpvJun  = entries.reduce((s, r) => s + r.tpv,     0);
+    const tpvMai  = entries.reduce((s, r) => s + r.tpv_mai, 0);
+    const delta   = tpvJun - tpvMai;
+    const pct     = tpvMai > 0 ? (delta / tpvMai * 100) : null;
+    totalJun += tpvJun; totalMai += tpvMai; totalN += entries.length;
+
+    const cls    = delta >= 0 ? 'up' : 'down';
+    const seta   = delta >= 0 ? '▲' : '▼';
+    const pctStr = pct !== null ? `<span class="delta ${cls}">${seta} ${Math.abs(pct).toFixed(1)}%</span>` : '—';
+    const dltStr = `<span class="delta ${cls}">${delta >= 0 ? '+' : ''}${fmtBRL(delta)}</span>`;
+
+    return `<tr>
+      <td><strong>${n.label}</strong></td>
+      <td class="novos-cell">${entries.length}</td>
+      <td class="tpv-cell" style="color:var(--muted)">${fmtBRL(tpvMai)}</td>
+      <td class="tpv-cell">${fmtBRL(tpvJun)}</td>
+      <td class="tpv-cell">${dltStr}</td>
+      <td class="tpv-cell">${pctStr}</td>
+    </tr>`;
+  }).join('');
+
+  const td = totalJun - totalMai;
+  const tp = totalMai > 0 ? (td / totalMai * 100) : null;
+  const tc = td >= 0 ? 'up' : 'down';
+  const totalRow = `<tr style="background:var(--verde-light);border-top:2px solid var(--verde)">
+    <td><strong>Total</strong></td>
+    <td class="novos-cell"><strong>${totalN}</strong></td>
+    <td class="tpv-cell" style="color:var(--muted)"><strong>${fmtBRL(totalMai)}</strong></td>
+    <td class="tpv-cell"><strong>${fmtBRL(totalJun)}</strong></td>
+    <td class="tpv-cell"><strong><span class="delta ${tc}">${td >= 0 ? '+' : ''}${fmtBRL(td)}</span></strong></td>
+    <td class="tpv-cell"><strong>${tp !== null ? `<span class="delta ${tc}">${td >= 0 ? '▲' : '▼'} ${Math.abs(tp).toFixed(1)}%</span>` : '—'}</strong></td>
+  </tr>`;
+
+  document.getElementById('tbody-incremento').innerHTML = rows + totalRow;
+}
+
 render('aprendiz',    'tbody-aprendiz');
 render('especialista', 'tbody-especialista');
 render('empreendedor', 'tbody-empreendedor');
 render('top',          'tbody-top');
+renderIncremento();
 
 // Contagens dinâmicas nas tabs
 document.getElementById('cnt-aprendiz').textContent    = dados.aprendiz.length;
