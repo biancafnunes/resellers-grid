@@ -530,12 +530,48 @@
       ℹ️ Considera apenas os resellers atualmente no top de cada nível (10 por nível, 15 no Top Empreendedor). O TPV de maio usa o mesmo período (01–18/05) para cada reseller presente no ranking de junho.
     </div>
 
+    <!-- Seção 1b: Sellers adquiridos -->
+    <div style="margin-top:32px;">
+      <div style="font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px;">
+        👤 Sellers Adquiridos (M0 Point · TPV ≥ R$ 3.000) — Top Resellers
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nível</th>
+              <th class="num">Resellers</th>
+              <th class="right">Sellers Mai MTD</th>
+              <th class="right">Sellers Jun MTD</th>
+              <th class="right">Δ</th>
+              <th class="right">Δ %</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-incremento-sellers"></tbody>
+        </table>
+      </div>
+      <div class="aviso-mtd" style="margin-top:16px; margin-bottom:0">
+        ℹ️ Soma dos sellers M0 adquiridos pelos top resellers de cada nível. Mesmo universo da tabela de TPV acima.
+      </div>
+    </div>
+
     <!-- Seção 2: Card M0 canal geral -->
     <div style="margin-top:32px;">
       <div style="font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px;">
         🌐 Canal Resellers — M0 Point total <span style="font-weight:400; font-size:11px;">(FORECAST_SELLERS · FLAG_PROJ=0)</span>
       </div>
       <div id="card-canal-m0" style="display:flex; gap:16px; flex-wrap:wrap;"></div>
+      <div class="aviso-mtd" style="margin-top:16px; margin-bottom:0">
+        ℹ️ Todos os sellers M0 Point do canal Resellers no período, sem corte mínimo de TPV.
+      </div>
+    </div>
+
+    <!-- Seção 3: Canal Resellers — sellers M0 -->
+    <div style="margin-top:32px;">
+      <div style="font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px;">
+        🌐 Canal Resellers — Sellers M0 adquiridos <span style="font-weight:400; font-size:11px;">(FORECAST_SELLERS · FLAG_PROJ=0)</span>
+      </div>
+      <div id="card-canal-sellers" style="display:flex; gap:16px; flex-wrap:wrap;"></div>
       <div class="aviso-mtd" style="margin-top:16px; margin-bottom:0">
         ℹ️ Todos os sellers M0 Point do canal Resellers no período, sem corte mínimo de TPV.
       </div>
@@ -975,6 +1011,64 @@ function renderIncremento() {
       { label:'Incremento %',  valor: pct !== null ? `<span class="delta ${cls}" style="font-size:22px">${d >= 0 ? '▲' : '▼'} ${Math.abs(pct).toFixed(1)}%</span>` : '—', sub: '', destaque: false },
     ];
     document.getElementById('card-canal-m0').innerHTML = cards.map(card => `
+      <div style="background:${card.destaque ? 'var(--verde)' : 'var(--branco)'}; border:1px solid var(--cinza-borda); border-radius:12px; padding:20px 24px; min-width:180px; flex:1;">
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:${card.destaque ? 'rgba(255,255,255,0.7)' : 'var(--muted)'}; margin-bottom:8px;">${card.label}</div>
+        <div style="font-size:20px; font-weight:800; color:${card.destaque ? 'var(--amarelo)' : 'var(--texto-dark)'};">${card.valor}</div>
+        ${card.sub ? `<div style="font-size:12px; color:${card.destaque ? 'rgba(255,255,255,0.6)' : 'var(--muted)'}; margin-top:4px;">${card.sub}</div>` : ''}
+      </div>`).join('');
+  }
+
+  // Seção 1b: sellers adquiridos por nível
+  let totalNovosJun = 0, totalNovosMai = 0;
+  const sellerRows = niveis.map(n => {
+    const entries  = dados[n.key].slice(0, 10);
+    const novosJun = entries.reduce((s, r) => s + r.novos,     0);
+    const novosMai = entries.reduce((s, r) => s + r.novos_mai, 0);
+    const d        = novosJun - novosMai;
+    const pct      = novosMai > 0 ? (d / novosMai * 100) : null;
+    totalNovosJun += novosJun; totalNovosMai += novosMai;
+    const cls    = d >= 0 ? 'up' : 'down';
+    const seta   = d >= 0 ? '▲' : '▼';
+    const pctStr = pct !== null ? `<span class="delta ${cls}">${seta} ${Math.abs(pct).toFixed(1)}%</span>` : '—';
+    const dltStr = `<span class="delta ${cls}">${d >= 0 ? '+' : ''}${d}</span>`;
+    return `<tr>
+      <td><strong>${n.label}</strong></td>
+      <td class="novos-cell">${entries.length}</td>
+      <td class="tpv-cell" style="color:var(--muted)">${novosMai}</td>
+      <td class="tpv-cell">${novosJun}</td>
+      <td class="tpv-cell">${dltStr}</td>
+      <td class="tpv-cell">${pctStr}</td>
+    </tr>`;
+  }).join('');
+
+  const tdS  = totalNovosJun - totalNovosMai;
+  const tpS  = totalNovosMai > 0 ? (tdS / totalNovosMai * 100) : null;
+  const tcS  = tdS >= 0 ? 'up' : 'down';
+  const totalNSellers = niveis.reduce((s, n) => s + dados[n.key].slice(0, 10).length, 0);
+  const totalRowSellers = `<tr style="background:var(--verde-light);border-top:2px solid var(--verde)">
+    <td><strong>Total</strong></td>
+    <td class="novos-cell"><strong>${totalNSellers}</strong></td>
+    <td class="tpv-cell" style="color:var(--muted)"><strong>${totalNovosMai}</strong></td>
+    <td class="tpv-cell"><strong>${totalNovosJun}</strong></td>
+    <td class="tpv-cell"><strong><span class="delta ${tcS}">${tdS >= 0 ? '+' : ''}${tdS}</span></strong></td>
+    <td class="tpv-cell"><strong>${tpS !== null ? `<span class="delta ${tcS}">${tdS >= 0 ? '▲' : '▼'} ${Math.abs(tpS).toFixed(1)}%</span>` : '—'}</strong></td>
+  </tr>`;
+  document.getElementById('tbody-incremento-sellers').innerHTML = sellerRows + totalRowSellers;
+
+  // Seção 3: Canal Resellers — sellers M0 geral
+  const m0s = dadosCanal.ciclos.find(x => x.ciclo === 'M0');
+  if (m0s) {
+    const ds   = m0s.sellers_jun - m0s.sellers_mai;
+    const pcts = m0s.sellers_mai > 0 ? (ds / m0s.sellers_mai * 100) : null;
+    const clss = ds >= 0 ? 'up' : 'down';
+    const p    = dadosCanal.periodo;
+    const cardsSellers = [
+      { label:`Sellers M0 Jun (${p.jun_ini}–${p.jun_fim})`, valor: m0s.sellers_jun.toLocaleString('pt-BR'), sub: `TPV: ${fmtBRL(m0s.tpv_jun)}`, destaque: true },
+      { label:`Sellers M0 Mai (${p.mai_ini}–${p.mai_fim})`, valor: m0s.sellers_mai.toLocaleString('pt-BR'), sub: `TPV: ${fmtBRL(m0s.tpv_mai)}`, destaque: false },
+      { label:'Incremento (sellers)', valor: `<span class="delta ${clss}" style="font-size:18px">${ds >= 0 ? '+' : ''}${ds.toLocaleString('pt-BR')}</span>`, sub: '', destaque: false },
+      { label:'Incremento %', valor: pcts !== null ? `<span class="delta ${clss}" style="font-size:22px">${ds >= 0 ? '▲' : '▼'} ${Math.abs(pcts).toFixed(1)}%</span>` : '—', sub: '', destaque: false },
+    ];
+    document.getElementById('card-canal-sellers').innerHTML = cardsSellers.map(card => `
       <div style="background:${card.destaque ? 'var(--verde)' : 'var(--branco)'}; border:1px solid var(--cinza-borda); border-radius:12px; padding:20px 24px; min-width:180px; flex:1;">
         <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:${card.destaque ? 'rgba(255,255,255,0.7)' : 'var(--muted)'}; margin-bottom:8px;">${card.label}</div>
         <div style="font-size:20px; font-weight:800; color:${card.destaque ? 'var(--amarelo)' : 'var(--texto-dark)'};">${card.valor}</div>
