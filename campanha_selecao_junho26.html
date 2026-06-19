@@ -651,6 +651,28 @@
         ℹ️ Todos os sellers M0 Point do canal Resellers no período, sem corte mínimo de TPV.
       </div>
     </div>
+
+    <!-- Card TPV M0 somente sellers ≥ 3k -->
+    <div style="margin-top:32px;">
+      <div style="font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px;">
+        🌐 Canal Resellers — TPV M0 (sellers ≥ R$ 3.000) <span style="font-weight:400; font-size:11px;">(BT_MP_IC_CUBO_RSL · todos os resellers)</span>
+      </div>
+      <div id="card-canal-tpv3k" style="display:flex; gap:16px; flex-wrap:wrap;"></div>
+      <div class="aviso-mtd" style="margin-top:16px; margin-bottom:0">
+        ℹ️ TPV M0 Point gerado somente pelos sellers que atingiram ≥ R$ 3.000 individualmente no período.
+      </div>
+    </div>
+
+    <!-- Card Sellers M0 somente ≥ 3k -->
+    <div style="margin-top:32px;">
+      <div style="font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px;">
+        🌐 Canal Resellers — Sellers M0 adquiridos (≥ R$ 3.000) <span style="font-weight:400; font-size:11px;">(BT_MP_IC_CUBO_RSL · todos os resellers)</span>
+      </div>
+      <div id="card-canal-sellers3k" style="display:flex; gap:16px; flex-wrap:wrap;"></div>
+      <div class="aviso-mtd" style="margin-top:16px; margin-bottom:0">
+        ℹ️ Sellers M0 Point que individualmente atingiram ≥ R$ 3.000 no período.
+      </div>
+    </div>
   </div>
 
     <!-- ── APRENDIZADOS ── -->
@@ -932,6 +954,19 @@ const dados = {
   ],
 };
 
+// ── CANAL COMPLETO — TPV M0 SOMENTE SELLERS ≥ 3K ─────────────────────────
+// Atualizar diariamente: todos os resellers do canal, apenas sellers com TPV ≥ 3k
+const dadosCanal3k = {
+  periodo: { jun_ini:'01/06', jun_fim:'18/06', mai_ini:'01/05', mai_fim:'18/05' },
+  niveis: [
+    { nivel:'Aprendiz',         emoji:'🟡', resellers:350, sellers_jun:32,  tpv_jun:281675.94,  sellers_mai:30,  tpv_mai:489217.81  },
+    { nivel:'Especialista',     emoji:'🔵', resellers:79,  sellers_jun:16,  tpv_jun:144982.91,  sellers_mai:34,  tpv_mai:349028.63  },
+    { nivel:'Empreendedor',     emoji:'🟠', resellers:49,  sellers_jun:46,  tpv_jun:711603.23,  sellers_mai:34,  tpv_mai:356793.62  },
+    { nivel:'Top Empreendedor', emoji:'🏆', resellers:43,  sellers_jun:64,  tpv_jun:613950.11,  sellers_mai:55,  tpv_mai:506134.73  },
+    { nivel:'Outros',           emoji:'—',  resellers:null, sellers_jun:479, tpv_jun:4389531.26, sellers_mai:407, tpv_mai:3458565.94 },
+  ],
+};
+
 // ── TOTAL SELLERS M0 POR NÍVEL (sem filtro de 3k) ─────────────────────────
 // Atualizar diariamente: mesmo universo de resellers do ranking, sem corte de TPV
 const dadosTotalSellers = {
@@ -1101,6 +1136,43 @@ function renderIncremento() {
         ${card.sub ? `<div style="font-size:12px; color:${card.destaque ? 'rgba(255,255,255,0.6)' : 'var(--muted)'}; margin-top:4px;">${card.sub}</div>` : ''}
       </div>`).join('');
   }
+
+  // Cards canal 3k — TPV e Sellers (fundo do Incremento)
+  let totalC3kJun = 0, totalC3kMai = 0, totalS3kJun = 0, totalS3kMai = 0;
+  dadosCanal3k.niveis.forEach(n => {
+    totalC3kJun += n.tpv_jun; totalC3kMai += n.tpv_mai;
+    totalS3kJun += n.sellers_jun; totalS3kMai += n.sellers_mai;
+  });
+  const p3k = dadosCanal3k.periodo;
+
+  function renderCard(containerId, cards) {
+    document.getElementById(containerId).innerHTML = cards.map(card => `
+      <div style="background:${card.destaque ? 'var(--verde)' : 'var(--branco)'}; border:1px solid var(--cinza-borda); border-radius:12px; padding:20px 24px; min-width:180px; flex:1;">
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:${card.destaque ? 'rgba(255,255,255,0.7)' : 'var(--muted)'}; margin-bottom:8px;">${card.label}</div>
+        <div style="font-size:20px; font-weight:800; color:${card.destaque ? 'var(--amarelo)' : 'var(--texto-dark)'};">${card.valor}</div>
+        ${card.sub ? `<div style="font-size:12px; color:${card.destaque ? 'rgba(255,255,255,0.6)' : 'var(--muted)'}; margin-top:4px;">${card.sub}</div>` : ''}
+      </div>`).join('');
+  }
+
+  const dCT = totalC3kJun - totalC3kMai;
+  const pCT = totalC3kMai > 0 ? (dCT / totalC3kMai * 100) : null;
+  const clCT = dCT >= 0 ? 'up' : 'down';
+  renderCard('card-canal-tpv3k', [
+    { label:`TPV M0 Jun (${p3k.jun_ini}–${p3k.jun_fim})`, valor: fmtBRL(totalC3kJun), sub: `${totalS3kJun.toLocaleString('pt-BR')} sellers`, destaque: true },
+    { label:`TPV M0 Mai (${p3k.mai_ini}–${p3k.mai_fim})`, valor: fmtBRL(totalC3kMai), sub: `${totalS3kMai.toLocaleString('pt-BR')} sellers`, destaque: false },
+    { label:'Incremento R$', valor: `<span class="delta ${clCT}" style="font-size:18px">${dCT >= 0 ? '+' : ''}${fmtBRL(dCT)}</span>`, sub: '', destaque: false },
+    { label:'Incremento %',  valor: pCT !== null ? `<span class="delta ${clCT}" style="font-size:22px">${dCT >= 0 ? '▲' : '▼'} ${Math.abs(pCT).toFixed(1)}%</span>` : '—', sub: '', destaque: false },
+  ]);
+
+  const dCS = totalS3kJun - totalS3kMai;
+  const pCS = totalS3kMai > 0 ? (dCS / totalS3kMai * 100) : null;
+  const clCS = dCS >= 0 ? 'up' : 'down';
+  renderCard('card-canal-sellers3k', [
+    { label:`Sellers M0 Jun (${p3k.jun_ini}–${p3k.jun_fim})`, valor: totalS3kJun.toLocaleString('pt-BR'), sub: `TPV: ${fmtBRL(totalC3kJun)}`, destaque: true },
+    { label:`Sellers M0 Mai (${p3k.mai_ini}–${p3k.mai_fim})`, valor: totalS3kMai.toLocaleString('pt-BR'), sub: `TPV: ${fmtBRL(totalC3kMai)}`, destaque: false },
+    { label:'Incremento (sellers)', valor: `<span class="delta ${clCS}" style="font-size:18px">${dCS >= 0 ? '+' : ''}${dCS.toLocaleString('pt-BR')}</span>`, sub: '', destaque: false },
+    { label:'Incremento %', valor: pCS !== null ? `<span class="delta ${clCS}" style="font-size:22px">${dCS >= 0 ? '▲' : '▼'} ${Math.abs(pCS).toFixed(1)}%</span>` : '—', sub: '', destaque: false },
+  ]);
 
   // Seção 1b: sellers adquiridos por nível
   let totalNovosJun = 0, totalNovosMai = 0;
