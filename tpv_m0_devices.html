@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TPV M0 + Devices Sold — Resellers</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #F4F4F4; color: #1A1A1A; }
+
+  /* TOPBAR */
+  .topbar { position: sticky; top: 0; z-index: 100; background: #1A1A1A;
+             padding: 0 40px; height: 52px; display: flex; align-items: center;
+             justify-content: space-between; }
+  .topbar-logo { color: #FFE600; font-weight: 800; font-size: 15px; letter-spacing: .5px; }
+  .topbar-sub  { color: #888; font-size: 12px; }
+
+  /* HERO */
+  .hero { background: #FFE600; padding: 32px 40px 28px; }
+  .hero-badge { display: inline-block; background: #1A1A1A; color: #FFE600;
+                 font-size: 11px; font-weight: 700; letter-spacing: 1px;
+                 padding: 4px 10px; border-radius: 4px; margin-bottom: 12px; }
+  .hero h1 { font-size: 26px; font-weight: 900; color: #1A1A1A; line-height: 1.2; }
+  .hero-sub { margin-top: 6px; font-size: 13px; color: #555; font-weight: 500; }
+
+  /* CONTAINER */
+  .container { max-width: 960px; margin: 0 auto; padding: 36px 24px 60px; }
+
+  /* SECTION */
+  .section { background: #fff; border-radius: 12px; padding: 28px 32px;
+              margin-bottom: 28px; border: 1px solid #E0E0E0; }
+  .section-title { font-size: 13px; font-weight: 700; letter-spacing: .8px;
+                    color: #888; text-transform: uppercase; margin-bottom: 20px;
+                    padding-bottom: 12px; border-bottom: 2px solid #FFE600; }
+
+  /* KPI ROW */
+  .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .kpi-card { background: #1A1A1A; border-radius: 10px; padding: 22px 20px;
+               position: relative; overflow: hidden; }
+  .kpi-card.highlight { background: #1A1A1A; outline: 2.5px solid #FFE600; }
+  .kpi-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+                       width: 4px; background: #FFE600; }
+  .kpi-card.highlight::before { width: 4px; background: #FFE600; }
+  .kpi-period { font-size: 11px; font-weight: 600; color: #888; letter-spacing: .6px;
+                 text-transform: uppercase; margin-bottom: 8px; }
+  .kpi-value  { font-size: 32px; font-weight: 900; color: #fff; line-height: 1; }
+  .kpi-label  { font-size: 11px; color: #666; margin-top: 4px; }
+  .kpi-badge  { position: absolute; top: 12px; right: 14px; background: #FFE600;
+                 color: #1A1A1A; font-size: 10px; font-weight: 800; padding: 2px 8px;
+                 border-radius: 20px; }
+
+  /* DELTA ROW */
+  .delta-row { display: flex; gap: 16px; }
+  .delta-card { flex: 1; background: #F7F7F7; border-radius: 8px; padding: 14px 18px;
+                 display: flex; align-items: center; gap: 12px; border: 1px solid #E0E0E0; }
+  .delta-val  { font-size: 22px; font-weight: 800; }
+  .delta-desc { font-size: 12px; color: #888; font-weight: 500; }
+
+  /* FOOTER */
+  .footer { text-align: left; padding: 0 24px; }
+  .footer span { font-size: 11px; color: #AAAAAA; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-logo">CANAL RESELLERS</span>
+  <span class="topbar-sub">Análise MTD — dias 1-18 · Jun/2026</span>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">CANAL RESELLERS · BRASIL</div>
+  <h1>TPV M0 + Devices Sold</h1>
+  <div class="hero-sub">Comparativo MTD dias 1-18 &nbsp;·&nbsp; Jun/26 vs Mai/26 vs Média Q1</div>
+</div>
+
+<div class="container">
+
+  <!-- Devices Sold -->
+  <div class="section">
+    <div class="section-title">Devices Sold · Pro3 + Smart2 · Canal Resellers</div>
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-period">Média Q1 · dias 1-18</div>
+        <div class="kpi-value">4.528</div>
+        <div class="kpi-label">Jan–Mar/26</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-period">Mai/26 · dias 1-18</div>
+        <div class="kpi-value">3.156</div>
+        <div class="kpi-label">BT_PRODUCT_ORDERS</div>
+      </div>
+      <div class="kpi-card highlight">
+        <div class="kpi-badge">JUN</div>
+        <div class="kpi-period">Jun/26 · dias 1-18</div>
+        <div class="kpi-value">4.903</div>
+        <div class="kpi-label">BT_PRODUCT_ORDERS</div>
+      </div>
+    </div>
+    <div class="delta-row">
+      <div class="delta-card">
+        <div class="delta-val" style="color:#00C853">▲ +55.4%</div>
+        <div class="delta-desc">Jun vs Mai/26</div>
+      </div>
+      <div class="delta-card">
+        <div class="delta-val" style="color:#00C853">▲ +8.3%</div>
+        <div class="delta-desc">Jun vs Média Q1</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TPV M0 -->
+  <div class="section">
+    <div class="section-title">TPV M0 · Point · Sellers em 1º mês de vida</div>
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-period">Média Q1 · dias 1-18</div>
+        <div class="kpi-value">R$8.4M</div>
+        <div class="kpi-label">Jan–Mar/26</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-period">Mai/26 · dias 1-18</div>
+        <div class="kpi-value">R$6.8M</div>
+        <div class="kpi-label">CUBO_RSL · M0 · Point</div>
+      </div>
+      <div class="kpi-card highlight">
+        <div class="kpi-badge">JUN</div>
+        <div class="kpi-period">Jun/26 · dias 1-18</div>
+        <div class="kpi-value">R$8.0M</div>
+        <div class="kpi-label">RESELLER_INFO · TPV_M0</div>
+      </div>
+    </div>
+    <div class="delta-row">
+      <div class="delta-card">
+        <div class="delta-val" style="color:#00C853">▲ +17.6%</div>
+        <div class="delta-desc">Jun vs Mai/26</div>
+      </div>
+      <div class="delta-card">
+        <div class="delta-val" style="color:#FF3B30">▼ -4.5%</div>
+        <div class="delta-desc">Jun vs Média Q1</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <span>Fontes: TPV M0 Jun → BD_CUST_RESELLER_INFO (TPV_M0) · TPV M0 Q1+Mai → BT_MP_IC_CUBO_RSL (M0, Point) · Devices → BT_PRODUCT_ORDERS (Pro3+Smart2) · dias 1-18 de cada mês · Jun/2026</span>
+</div>
+
+</body>
+</html>
