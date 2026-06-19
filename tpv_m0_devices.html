@@ -24,8 +24,19 @@
   .hero h1 { font-size: 26px; font-weight: 900; color: #1A1A1A; line-height: 1.2; }
   .hero-sub { margin-top: 6px; font-size: 13px; color: #555; font-weight: 500; }
 
+  /* TABS */
+  .tabs-bar { background: #fff; border-bottom: 2px solid #E0E0E0;
+              padding: 0 40px; display: flex; gap: 4px; }
+  .tab-btn { padding: 14px 20px; font-size: 13px; font-weight: 600; color: #888;
+             background: none; border: none; border-bottom: 3px solid transparent;
+             cursor: pointer; margin-bottom: -2px; transition: color .15s; }
+  .tab-btn:hover { color: #1A1A1A; }
+  .tab-btn.active { color: #1A1A1A; border-bottom-color: #FFE600; }
+
   /* CONTAINER */
   .container { max-width: 960px; margin: 0 auto; padding: 36px 24px 60px; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
 
   /* SECTION */
   .section { background: #fff; border-radius: 12px; padding: 28px 32px;
@@ -38,10 +49,9 @@
   .kpi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
   .kpi-card { background: #1A1A1A; border-radius: 10px; padding: 22px 20px;
                position: relative; overflow: hidden; }
-  .kpi-card.highlight { background: #1A1A1A; outline: 2.5px solid #FFE600; }
+  .kpi-card.highlight { outline: 2.5px solid #FFE600; }
   .kpi-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0;
                        width: 4px; background: #FFE600; }
-  .kpi-card.highlight::before { width: 4px; background: #FFE600; }
   .kpi-period { font-size: 11px; font-weight: 600; color: #888; letter-spacing: .6px;
                  text-transform: uppercase; margin-bottom: 8px; }
   .kpi-value  { font-size: 32px; font-weight: 900; color: #fff; line-height: 1; }
@@ -57,9 +67,39 @@
   .delta-val  { font-size: 22px; font-weight: 800; }
   .delta-desc { font-size: 12px; color: #888; font-weight: 500; }
 
+  /* MIX TABLE */
+  .mix-table { margin-top: 16px; width: 100%; border-collapse: collapse; }
+  .mix-table th { background: #1A1A1A; color: #FFE600; font-size: 11px; font-weight: 700;
+                  letter-spacing: .5px; padding: 8px 14px; text-align: center; }
+  .mix-table th:first-child { text-align: left; }
+  .mix-table td { padding: 9px 14px; font-size: 13px; font-weight: 600;
+                  border-bottom: 1px solid #E0E0E0; text-align: center; color: #1A1A1A; }
+  .mix-table td:first-child { text-align: left; color: #555; font-weight: 500; }
+  .mix-table tr:last-child td { border-bottom: none; }
+  .mix-table tr:nth-child(even) td { background: #F7F7F7; }
+  .mix-pct { font-size: 11px; color: #888; font-weight: 400; margin-left: 4px; }
+
   /* FOOTER */
-  .footer { text-align: left; padding: 0 24px; }
+  .footer { text-align: left; padding: 0 24px 40px; }
   .footer span { font-size: 11px; color: #AAAAAA; }
+
+  /* FONTES TAB */
+  .fonte-block { background: #fff; border-radius: 12px; padding: 28px 32px;
+                 margin-bottom: 24px; border: 1px solid #E0E0E0; }
+  .fonte-block h3 { font-size: 14px; font-weight: 700; color: #1A1A1A;
+                    margin-bottom: 6px; }
+  .fonte-block .fonte-meta { font-size: 12px; color: #888; margin-bottom: 16px; }
+  .fonte-block .fonte-meta span { background: #F4F4F4; border: 1px solid #E0E0E0;
+                                   border-radius: 4px; padding: 2px 8px;
+                                   font-family: monospace; font-size: 11px;
+                                   color: #1A1A1A; margin-right: 6px; }
+  .fonte-block pre { background: #1A1A1A; color: #E0E0E0; border-radius: 8px;
+                     padding: 20px 24px; font-size: 12px; line-height: 1.7;
+                     overflow-x: auto; font-family: 'Courier New', monospace; }
+  .fonte-block pre .kw  { color: #FFE600; font-weight: 700; }
+  .fonte-block pre .tbl { color: #88CCFF; }
+  .fonte-block pre .cmt { color: #666; font-style: italic; }
+  .fonte-block pre .val { color: #90EE90; }
 </style>
 </head>
 <body>
@@ -75,6 +115,13 @@
   <div class="hero-sub">Comparativo MTD dias 1-18 &nbsp;·&nbsp; Jun/26 vs Mai/26 vs Média Q1</div>
 </div>
 
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="showTab('dashboard', this)">Dashboard</button>
+  <button class="tab-btn" onclick="showTab('fontes', this)">Fontes &amp; Queries</button>
+</div>
+
+<!-- ── TAB: DASHBOARD ─────────────────────────────────────── -->
+<div id="tab-dashboard" class="tab-content active">
 <div class="container">
 
   <!-- Devices Sold -->
@@ -108,6 +155,30 @@
         <div class="delta-desc">Jun vs Média Q1</div>
       </div>
     </div>
+    <table class="mix-table">
+      <thead>
+        <tr>
+          <th>Mix de device</th>
+          <th>Q1 média (1-18)</th>
+          <th>Mai/26 (1-18)</th>
+          <th>Jun/26 (1-18)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Point Pro 3</td>
+          <td>3.768 <span class="mix-pct">83.2%</span></td>
+          <td>2.691 <span class="mix-pct">85.3%</span></td>
+          <td>4.327 <span class="mix-pct">88.3%</span></td>
+        </tr>
+        <tr>
+          <td>Point Smart 2</td>
+          <td>760 <span class="mix-pct">16.8%</span></td>
+          <td>465 <span class="mix-pct">14.7%</span></td>
+          <td>576 <span class="mix-pct">11.7%</span></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- TPV M0 -->
@@ -144,10 +215,105 @@
   </div>
 
 </div>
-
 <div class="footer">
   <span>Fontes: TPV M0 Jun → BD_CUST_RESELLER_INFO (TPV_M0) · TPV M0 Q1+Mai → BT_MP_IC_CUBO_RSL (M0, Point) · Devices → BT_PRODUCT_ORDERS (Pro3+Smart2) · dias 1-18 de cada mês · Jun/2026</span>
 </div>
+</div>
+
+<!-- ── TAB: FONTES & QUERIES ──────────────────────────────── -->
+<div id="tab-fontes" class="tab-content">
+<div class="container">
+
+  <!-- Devices Sold -->
+  <div class="fonte-block">
+    <h3>Devices Sold · Pro3 + Smart2 · Canal Resellers</h3>
+    <div class="fonte-meta">
+      <span>BT_PRODUCT_ORDERS</span>
+      <span>BT_PRODUCT_ORDER_ITEM</span>
+      <span>BT_MP_POINT_USERS_GROUPS</span>
+      <span>BT_MP_POINT_GROUP</span>
+    </div>
+    <pre><span class="cmt">-- Devices Sold por período (trocar datas para cada período)
+-- Q1: rodar para Jan/Fev/Mar 01–18 e dividir soma por 3</span>
+<span class="kw">SELECT</span>
+    oi.PI_NAME                     <span class="kw">AS</span> device,
+    <span class="kw">COUNT</span>(oi.PI_ORDER_ITEM_ID)    <span class="kw">AS</span> qtd
+<span class="kw">FROM</span> <span class="tbl">`meli-bi-data.WHOWNER.BT_PRODUCT_ORDERS`</span> o
+<span class="kw">JOIN</span> <span class="tbl">`meli-bi-data.WHOWNER.BT_PRODUCT_ORDER_ITEM`</span> oi
+    <span class="kw">ON</span> o.IDX_ID = oi.IDX_ID
+<span class="kw">LEFT JOIN</span> <span class="tbl">`meli-bi-data.WHOWNER.BT_MP_POINT_USERS_GROUPS`</span> ug
+    <span class="kw">ON</span> o.CUS_CUST_ID_BUY = ug.CUS_CUST_ID <span class="kw">AND</span> ug.ACTIVE = <span class="val">1</span>
+<span class="kw">LEFT JOIN</span> <span class="tbl">`meli-bi-data.WHOWNER.BT_MP_POINT_GROUP`</span> gr
+    <span class="kw">ON</span> ug.GROUP_ID = gr.ID_GROUP
+   <span class="kw">AND</span> gr.GROUP_TYPE = <span class="val">'RESELLER'</span> <span class="kw">AND</span> gr.ACTIVE = <span class="val">1</span>
+<span class="kw">WHERE</span> o.ORDER_GATEWAY  = <span class="val">'1'</span>
+  <span class="kw">AND</span> o.SIT_SITE_ID    = <span class="val">'MLB'</span>
+  <span class="kw">AND</span> o.OPERATION_TYPE = <span class="val">'1'</span>
+  <span class="kw">AND</span> <span class="kw">DATE</span>(o.PO_CREATED_AT) <span class="kw">BETWEEN</span> <span class="val">'2026-06-01'</span> <span class="kw">AND</span> <span class="val">'2026-06-18'</span>
+  <span class="kw">AND</span> oi.PI_NAME <span class="kw">IN</span> (<span class="val">'Point Pro 3'</span>, <span class="val">'Point Smart 2'</span>)
+<span class="kw">GROUP BY</span> <span class="val">1</span></pre>
+  </div>
+
+  <!-- TPV M0 Jun -->
+  <div class="fonte-block">
+    <h3>TPV M0 · Jun/26 · dias 1-18</h3>
+    <div class="fonte-meta">
+      <span>BD_CUST_RESELLER_INFO</span>
+      <span>Schema: SBOX_WHMPBR</span>
+    </div>
+    <pre><span class="cmt">-- Jun/26: fonte RESELLER_INFO pois CUBO_RSL não fecha correto no mês corrente.
+-- NIVEL NULL em junho → join com maio para classificação por nível (se necessário).
+-- MONTH_ é NUMERIC no formato YYYYMM.</span>
+
+<span class="kw">SELECT</span> <span class="kw">SUM</span>(TPV_M0) <span class="kw">AS</span> tpv_m0_jun
+<span class="kw">FROM</span> <span class="tbl">`meli-bi-data.SBOX_WHMPBR.BD_CUST_RESELLER_INFO`</span>
+<span class="kw">WHERE</span> MONTH_ = <span class="val">202606</span></pre>
+  </div>
+
+  <!-- TPV M0 Mai -->
+  <div class="fonte-block">
+    <h3>TPV M0 · Mai/26 · dias 1-18</h3>
+    <div class="fonte-meta">
+      <span>BT_MP_IC_CUBO_RSL</span>
+      <span>Schema: WHOWNER</span>
+    </div>
+    <pre><span class="kw">SELECT</span> <span class="kw">SUM</span>(TPV) <span class="kw">AS</span> tpv_m0_mai
+<span class="kw">FROM</span> <span class="tbl">`meli-bi-data.WHOWNER.BT_MP_IC_CUBO_RSL`</span>
+<span class="kw">WHERE</span> TIM_DAY <span class="kw">BETWEEN</span> <span class="val">'2026-05-01'</span> <span class="kw">AND</span> <span class="val">'2026-05-18'</span>
+  <span class="kw">AND</span> CICLO_VIDA_M0_TRIANGULO = <span class="val">'M0'</span>
+  <span class="kw">AND</span> PRODUTO_MACRO            = <span class="val">'POINT'</span></pre>
+  </div>
+
+  <!-- TPV M0 Q1 -->
+  <div class="fonte-block">
+    <h3>TPV M0 · Média Q1 (Jan–Mar) · dias 1-18</h3>
+    <div class="fonte-meta">
+      <span>BT_MP_IC_CUBO_RSL</span>
+      <span>Schema: WHOWNER</span>
+    </div>
+    <pre><span class="cmt">-- Soma os 3 meses e divide por 3 para obter a média mensal</span>
+<span class="kw">SELECT</span> <span class="kw">SUM</span>(TPV) / <span class="val">3</span> <span class="kw">AS</span> tpv_m0_q1_media
+<span class="kw">FROM</span> <span class="tbl">`meli-bi-data.WHOWNER.BT_MP_IC_CUBO_RSL`</span>
+<span class="kw">WHERE</span> (
+    TIM_DAY <span class="kw">BETWEEN</span> <span class="val">'2026-01-01'</span> <span class="kw">AND</span> <span class="val">'2026-01-18'</span> <span class="kw">OR</span>
+    TIM_DAY <span class="kw">BETWEEN</span> <span class="val">'2026-02-01'</span> <span class="kw">AND</span> <span class="val">'2026-02-18'</span> <span class="kw">OR</span>
+    TIM_DAY <span class="kw">BETWEEN</span> <span class="val">'2026-03-01'</span> <span class="kw">AND</span> <span class="val">'2026-03-18'</span>
+)
+  <span class="kw">AND</span> CICLO_VIDA_M0_TRIANGULO = <span class="val">'M0'</span>
+  <span class="kw">AND</span> PRODUTO_MACRO            = <span class="val">'POINT'</span></pre>
+  </div>
+
+</div>
+</div>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
 
 </body>
 </html>
