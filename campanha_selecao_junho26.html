@@ -371,7 +371,7 @@
 
   <!-- AVISO MTD -->
   <div class="aviso-mtd">
-    ⏱️ <strong>Dados parciais:</strong> ranking atualizado com 18 dias de junho (01/06 a 18/06/2026). A campanha vai até 30/06 — posições ainda podem mudar. · <strong>Produto:</strong> Point apenas (CICLO_VIDA M0 · TPV ≥ R$ 3.000)
+    ⏱️ <strong>Dados parciais:</strong> ranking atualizado com 21 dias de junho (01/06 a 21/06/2026). A campanha vai até 30/06 — posições ainda podem mudar. · <strong>Produto:</strong> Point apenas (CICLO_VIDA M0 · TPV ≥ R$ 3.000)
   </div>
 
   <!-- ── APRENDIZ ── -->
@@ -381,7 +381,7 @@
         <div class="ranking-title">🟡 Aprendiz</div>
         <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
       </div>
-      <div class="update-badge">Atualizado 19/06/2026</div>
+      <div class="update-badge">Atualizado 22/06/2026</div>
     </div>
     <div class="table-wrap">
       <table>
@@ -413,7 +413,7 @@
         <div class="ranking-title">🔵 Especialista</div>
         <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
       </div>
-      <div class="update-badge">Atualizado 19/06/2026</div>
+      <div class="update-badge">Atualizado 22/06/2026</div>
     </div>
     <div class="table-wrap">
       <table>
@@ -445,7 +445,7 @@
         <div class="ranking-title">🟠 Empreendedor</div>
         <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
       </div>
-      <div class="update-badge">Atualizado 19/06/2026</div>
+      <div class="update-badge">Atualizado 22/06/2026</div>
     </div>
     <div class="table-wrap">
       <table>
@@ -477,7 +477,7 @@
         <div class="ranking-title">🏆 Top Empreendedor</div>
         <div class="ranking-subtitle">Ranking por novos clientes com TPV ≥ R$ 3.000 em junho/2026</div>
       </div>
-      <div class="update-badge">Atualizado 19/06/2026</div>
+      <div class="update-badge">Atualizado 22/06/2026</div>
     </div>
     <div class="table-wrap">
       <table>
@@ -507,9 +507,9 @@
     <div class="ranking-header">
       <div>
         <div class="ranking-title">📈 Incremento MTD</div>
-        <div class="ranking-subtitle">TPV M0 Point dos top resellers — somente sellers com TPV ≥ R$ 3.000 · 01/05 a 18/05 vs 01/06 a 18/06/2026</div>
+        <div class="ranking-subtitle">TPV M0 Point dos top resellers — somente sellers com TPV ≥ R$ 3.000 · 01/05 a 21/05 vs 01/06 a 21/06/2026</div>
       </div>
-      <div class="update-badge">Atualizado 19/06/2026</div>
+      <div class="update-badge">Atualizado 22/06/2026</div>
     </div>
     <div class="table-wrap">
       <table>
@@ -712,8 +712,8 @@
     <div class="fontes-section">
       <h3>✅ Validação de Níveis</h3>
       <div class="fonte-card">
-        <div class="fc-title">Qualificados por nível — Point M0, TPV ≥ R$ 3.000 (01/06 a 18/06/2026)</div>
-        <div class="fc-desc">Resellers que atingiram o critério mínimo até 11/06. "No ranking" = top 10 de cada nível. Todos possuem NIVEL_RESELLER identificado.</div>
+        <div class="fc-title">Qualificados por nível — Point M0, TPV ≥ R$ 3.000 (01/06 a 21/06/2026)</div>
+        <div class="fc-desc">Resellers que atingiram o critério mínimo até 21/06. "No ranking" = top 10 de cada nível. Todos possuem NIVEL_RESELLER identificado.</div>
         <div class="info-grid">
           <div class="info-item"><div class="label">Top Empreendedor</div><div class="value">10 no ranking (25 resellers com M0 Point)</div></div>
           <div class="info-item"><div class="label">Empreendedor</div><div class="value">10 no ranking (31 resellers com M0 Point)</div></div>
@@ -722,7 +722,7 @@
         </div>
         <div class="fc-chips">
           <span class="fc-chip">NIVEL_RESELLER sem nulos</span>
-          <span class="fc-chip">Dados de 01/06 a 18/06/2026</span>
+          <span class="fc-chip">Dados de 01/06 a 21/06/2026</span>
         </div>
       </div>
     </div>
@@ -888,99 +888,99 @@ ranking <span class="kw">AS</span> (
 <!-- FOOTER -->
 <div class="footer">
   <div class="footer-text">
-    Fonte: meli-bi-data.WHOWNER.BT_MP_IC_CUBO_RSL · Sellers M0 (MESES_DESDE_AQUISICAO = 0) com TPV ≥ R$ 3.000 em Jun/2026 · Atualizado em 19/06/2026
+    Fonte: meli-bi-data.WHOWNER.BT_MP_IC_CUBO_RSL · Sellers M0 (CICLO_VIDA_M0_TRIANGULO = 'M0') com TPV ≥ R$ 3.000 em Jun/2026 · Atualizado em 22/06/2026
   </div>
 </div>
 
 <script>
 // ── DADOS ──────────────────────────────────────────────────────────────────
-// rank_ant = posição de ontem (18/06). null = entrou hoje no top 10.
+// rank_ant = posição em 19/06/2026. null = novo neste nível.
 const dados = {
   aprendiz: [
-    { rank:1,  rank_ant:2,    id:'301712775',  nome:'Marcio Barbosa',     cidade:'',          uf:'BA', novos:3, tpv:25955.68, novos_mai:0, tpv_mai:0 },
-    { rank:2,  rank_ant:1,    id:'507780494',  nome:'Neuza',              cidade:'Goiânia',   uf:'GO', novos:2, tpv:36375.70, novos_mai:0, tpv_mai:0 },
-    { rank:3,  rank_ant:3,    id:'444273049',  nome:'Lex Soluções',       cidade:'',          uf:'',   novos:1, tpv:26920.00, novos_mai:0, tpv_mai:0 },
-    { rank:4,  rank_ant:4,    id:'416719565',  nome:'Marcio Guilherme',   cidade:'São Luís',  uf:'MA', novos:1, tpv:20633.97, novos_mai:0, tpv_mai:0 },
-    { rank:5,  rank_ant:5,    id:'3200696549', nome:'Juliana Cristina',   cidade:'',          uf:'',   novos:1, tpv:18602.99, novos_mai:1, tpv_mai:10.00 },
-    { rank:6,  rank_ant:6,    id:'2483105242', nome:'Sant Anna William',  cidade:'',          uf:'',   novos:1, tpv:13845.00, novos_mai:0, tpv_mai:0 },
-    { rank:7,  rank_ant:7,    id:'381283869',  nome:'Vitor Dias',         cidade:'São Paulo', uf:'SP', novos:1, tpv:13673.25, novos_mai:0, tpv_mai:0 },
-    { rank:8,  rank_ant:8,    id:'240613214',  nome:'Perola Bastos',      cidade:'São Paulo', uf:'SP', novos:1, tpv:12734.50, novos_mai:0, tpv_mai:0 },
-    { rank:9,  rank_ant:9,    id:'494713329',  nome:'Jesiel Silva',       cidade:'',          uf:'',   novos:1, tpv:12028.00, novos_mai:0, tpv_mai:0 },
-    { rank:10, rank_ant:10,   id:'1980208400', nome:'Barbara Gabriela',   cidade:'',          uf:'',   novos:1, tpv:10864.30, novos_mai:0, tpv_mai:0 },
+    { rank:1,  rank_ant:2,    id:'507780494',  nome:'Neuza',              cidade:'Goiânia',   uf:'GO', novos:2, tpv:40518.00, novos_mai:0, tpv_mai:0 },
+    { rank:2,  rank_ant:null, id:'3448987383', nome:'',                   cidade:'',          uf:'',   novos:2, tpv:12001.00, novos_mai:0, tpv_mai:0 },
+    { rank:3,  rank_ant:null, id:'2021838718', nome:'',                   cidade:'',          uf:'',   novos:2, tpv:8348.00,  novos_mai:0, tpv_mai:0 },
+    { rank:4,  rank_ant:3,    id:'444273049',  nome:'Lex Soluções',       cidade:'',          uf:'',   novos:1, tpv:27771.00, novos_mai:0, tpv_mai:0 },
+    { rank:5,  rank_ant:4,    id:'416719565',  nome:'Marcio Guilherme',   cidade:'São Luís',  uf:'MA', novos:1, tpv:22785.00, novos_mai:0, tpv_mai:0 },
+    { rank:6,  rank_ant:7,    id:'381283869',  nome:'Vitor Dias',         cidade:'São Paulo', uf:'SP', novos:1, tpv:18804.00, novos_mai:0, tpv_mai:0 },
+    { rank:7,  rank_ant:5,    id:'3200696549', nome:'Juliana Cristina',   cidade:'',          uf:'',   novos:1, tpv:18603.00, novos_mai:1, tpv_mai:10.00 },
+    { rank:8,  rank_ant:6,    id:'2483105242', nome:'Sant Anna William',  cidade:'',          uf:'',   novos:1, tpv:17107.00, novos_mai:0, tpv_mai:0 },
+    { rank:9,  rank_ant:9,    id:'494713329',  nome:'Jesiel Silva',       cidade:'',          uf:'',   novos:1, tpv:13795.00, novos_mai:0, tpv_mai:0 },
+    { rank:10, rank_ant:8,    id:'240613214',  nome:'Perola Bastos',      cidade:'São Paulo', uf:'SP', novos:1, tpv:13774.00, novos_mai:0, tpv_mai:0 },
   ],
   especialista: [
-    { rank:1,  rank_ant:4,    id:'78964639',   nome:'Solange Ramos',     cidade:'Rondonópolis',             uf:'MT', novos:2, tpv:24074.55, novos_mai:1, tpv_mai:29959.16 },
-    { rank:2,  rank_ant:2,    id:'47472337',   nome:'Francisco Ageu',    cidade:'Maracanaú',                uf:'CE', novos:2, tpv:23072.78, novos_mai:1, tpv_mai:2.00 },
-    { rank:3,  rank_ant:3,    id:'167012870',  nome:'Walisson Silva',    cidade:'Rondonópolis',             uf:'MT', novos:2, tpv:21578.00, novos_mai:0, tpv_mai:0 },
-    { rank:4,  rank_ant:5,    id:'545579977',  nome:'Carlos César',      cidade:'',                         uf:'',   novos:1, tpv:21952.00, novos_mai:1, tpv_mai:5125.00 },
-    { rank:5,  rank_ant:null, id:'128107890',  nome:'',                  cidade:'Lorena',                   uf:'SP', novos:1, tpv:12001.00, novos_mai:0, tpv_mai:0 },
-    { rank:6,  rank_ant:6,    id:'1425305619', nome:'Ademir Souza',      cidade:'',                         uf:'',   novos:1, tpv:9020.00,  novos_mai:4, tpv_mai:5600.94 },
-    { rank:7,  rank_ant:7,    id:'130855841',  nome:'Danilo Santos',     cidade:'São Luís',                 uf:'MA', novos:1, tpv:7341.05,  novos_mai:1, tpv_mai:3661.00 },
-    { rank:8,  rank_ant:8,    id:'266229889',  nome:'Lara Rubia',        cidade:'Goiânia',                  uf:'GO', novos:1, tpv:5975.26,  novos_mai:0, tpv_mai:0 },
-    { rank:9,  rank_ant:10,   id:'1208501777', nome:'Ricardo Abel',      cidade:'Nossa Senhora do Socorro', uf:'SE', novos:1, tpv:4534.95,  novos_mai:0, tpv_mai:0 },
-    { rank:10, rank_ant:9,    id:'34698621',   nome:'Yuri Andrew',       cidade:'Manaus',                   uf:'AM', novos:1, tpv:4527.00,  novos_mai:0, tpv_mai:0 },
+    { rank:1,  rank_ant:null, id:'301712775',  nome:'Marcio Barbosa',    cidade:'',                         uf:'BA', novos:3, tpv:32231.00, novos_mai:0, tpv_mai:0 },
+    { rank:2,  rank_ant:1,    id:'78964639',   nome:'Solange Ramos',     cidade:'Rondonópolis',             uf:'MT', novos:2, tpv:30773.00, novos_mai:1, tpv_mai:33439.00 },
+    { rank:3,  rank_ant:2,    id:'47472337',   nome:'Francisco Ageu',    cidade:'Maracanaú',                uf:'CE', novos:2, tpv:29127.00, novos_mai:1, tpv_mai:2.00 },
+    { rank:4,  rank_ant:3,    id:'167012870',  nome:'Walisson Silva',    cidade:'Rondonópolis',             uf:'MT', novos:2, tpv:21578.00, novos_mai:0, tpv_mai:0 },
+    { rank:5,  rank_ant:4,    id:'545579977',  nome:'Carlos César',      cidade:'',                         uf:'',   novos:1, tpv:21952.00, novos_mai:1, tpv_mai:5125.00 },
+    { rank:6,  rank_ant:null, id:'818833450',  nome:'',                  cidade:'Petrolina',                uf:'PE', novos:1, tpv:21258.00, novos_mai:1, tpv_mai:905.00 },
+    { rank:7,  rank_ant:5,    id:'128107890',  nome:'',                  cidade:'Lorena',                   uf:'SP', novos:1, tpv:12001.00, novos_mai:0, tpv_mai:0 },
+    { rank:8,  rank_ant:7,    id:'130855841',  nome:'Danilo Santos',     cidade:'São Luís',                 uf:'MA', novos:1, tpv:9041.00,  novos_mai:2, tpv_mai:4767.00 },
+    { rank:9,  rank_ant:6,    id:'1425305619', nome:'Ademir Souza',      cidade:'',                         uf:'',   novos:1, tpv:9020.00,  novos_mai:4, tpv_mai:7734.00 },
+    { rank:10, rank_ant:8,    id:'266229889',  nome:'Lara Rubia',        cidade:'Goiânia',                  uf:'GO', novos:1, tpv:8641.00,  novos_mai:0, tpv_mai:0 },
   ],
   empreendedor: [
-    { rank:1,  rank_ant:1,    id:'2155784259', nome:'Hilquias de Freitas', cidade:'',           uf:'',   novos:6, tpv:50524.98,  novos_mai:5,  tpv_mai:21831.51 },
-    { rank:2,  rank_ant:2,    id:'699129892',  nome:'Vitoria Soluções',    cidade:'Guarapari',  uf:'ES', novos:4, tpv:36563.18,  novos_mai:5,  tpv_mai:5474.22 },
-    { rank:3,  rank_ant:3,    id:'225494908',  nome:'Gerson Junior',       cidade:'Ananindeua', uf:'PA', novos:3, tpv:292557.25, novos_mai:3,  tpv_mai:9360.95 },
-    { rank:4,  rank_ant:4,    id:'1226761249', nome:'Alefe de Araujo',     cidade:'Goiânia',    uf:'GO', novos:3, tpv:36715.31,  novos_mai:5,  tpv_mai:27704.75 },
-    { rank:5,  rank_ant:5,    id:'20970977',   nome:'Rogerio Felipe',      cidade:'',           uf:'',   novos:3, tpv:29825.65,  novos_mai:3,  tpv_mai:24191.34 },
-    { rank:6,  rank_ant:6,    id:'272079697',  nome:'Sidelvane Tavares',   cidade:'',           uf:'',   novos:3, tpv:26508.16,  novos_mai:5,  tpv_mai:11104.60 },
-    { rank:7,  rank_ant:null, id:'246343377',  nome:'Tiago Marques',       cidade:'',           uf:'',   novos:2, tpv:67393.85,  novos_mai:0,  tpv_mai:0 },
-    { rank:8,  rank_ant:7,    id:'143182969',  nome:'Gleison Almeida',     cidade:'Ananindeua', uf:'PA', novos:2, tpv:40838.73,  novos_mai:7,  tpv_mai:42622.12 },
-    { rank:9,  rank_ant:8,    id:'218399870',  nome:'Tiago Teles',         cidade:'Macapá',     uf:'AP', novos:2, tpv:17822.14,  novos_mai:12, tpv_mai:66642.74 },
-    { rank:10, rank_ant:10,   id:'440374085',  nome:'Maria da Gloria',     cidade:'São Paulo',  uf:'SP', novos:2, tpv:14214.20,  novos_mai:5,  tpv_mai:51772.85 },
+    { rank:1,  rank_ant:1,    id:'2155784259', nome:'Hilquias de Freitas', cidade:'',           uf:'',   novos:6, tpv:61001.00,  novos_mai:11, tpv_mai:32138.00 },
+    { rank:2,  rank_ant:null, id:'1128756788', nome:'',                    cidade:'',           uf:'',   novos:5, tpv:22832.00,  novos_mai:3,  tpv_mai:2245.00 },
+    { rank:3,  rank_ant:null, id:'2445794092', nome:'',                    cidade:'',           uf:'',   novos:4, tpv:19516.00,  novos_mai:4,  tpv_mai:6223.00 },
+    { rank:4,  rank_ant:3,    id:'225494908',  nome:'Gerson Junior',       cidade:'Ananindeua', uf:'PA', novos:3, tpv:356982.00, novos_mai:3,  tpv_mai:11401.00 },
+    { rank:5,  rank_ant:4,    id:'1226761249', nome:'Alefe de Araujo',     cidade:'Goiânia',    uf:'GO', novos:3, tpv:48295.00,  novos_mai:8,  tpv_mai:35569.00 },
+    { rank:6,  rank_ant:5,    id:'20970977',   nome:'Rogerio Felipe',      cidade:'',           uf:'',   novos:3, tpv:47759.00,  novos_mai:3,  tpv_mai:30599.00 },
+    { rank:7,  rank_ant:6,    id:'272079697',  nome:'Sidelvane Tavares',   cidade:'',           uf:'',   novos:3, tpv:36869.00,  novos_mai:8,  tpv_mai:15289.00 },
+    { rank:8,  rank_ant:null, id:'296824220',  nome:'',                    cidade:'Salvador',   uf:'BA', novos:3, tpv:16233.00,  novos_mai:4,  tpv_mai:2818.00 },
+    { rank:9,  rank_ant:7,    id:'246343377',  nome:'Tiago Marques',       cidade:'',           uf:'',   novos:2, tpv:88425.00,  novos_mai:0,  tpv_mai:0 },
+    { rank:10, rank_ant:8,    id:'143182969',  nome:'Gleison Almeida',     cidade:'Ananindeua', uf:'PA', novos:2, tpv:46394.00,  novos_mai:7,  tpv_mai:48509.00 },
   ],
   top: [
-    { rank:1,  rank_ant:1,    id:'632559284',  nome:'Rafael Wellington',    cidade:'Goiânia',               uf:'GO', novos:6, tpv:45402.61, novos_mai:21, tpv_mai:66058.23 },
-    { rank:2,  rank_ant:4,    id:'222359885',  nome:'Denilson da Silva',    cidade:'Parauapebas',            uf:'PA', novos:5, tpv:55625.17, novos_mai:6,  tpv_mai:18398.18 },
-    { rank:3,  rank_ant:2,    id:'1168762991', nome:'4SPAY Consultoria',    cidade:'Goianira',               uf:'GO', novos:5, tpv:22121.17, novos_mai:11, tpv_mai:90649.70 },
-    { rank:4,  rank_ant:3,    id:'258370603',  nome:'Wilson Camelo',        cidade:'Recife',                 uf:'PE', novos:4, tpv:75076.44, novos_mai:3,  tpv_mai:13012.88 },
-    { rank:5,  rank_ant:7,    id:'2265747191', nome:'EGB Comercio',         cidade:'',                       uf:'',   novos:4, tpv:55593.40, novos_mai:7,  tpv_mai:23739.45 },
-    { rank:6,  rank_ant:5,    id:'241222977',  nome:'Rafael Silva',         cidade:'Goiânia',                uf:'GO', novos:4, tpv:27908.31, novos_mai:0,  tpv_mai:0 },
-    { rank:7,  rank_ant:9,    id:'38008063',   nome:'Rogerio Custodio',     cidade:'Cuiabá',                 uf:'MT', novos:4, tpv:27505.11, novos_mai:3,  tpv_mai:4873.92 },
-    { rank:8,  rank_ant:6,    id:'1379037457', nome:'NEXOR PDV',            cidade:'Itanhaém',               uf:'SP', novos:3, tpv:67936.40, novos_mai:14, tpv_mai:18650.86 },
-    { rank:9,  rank_ant:8,    id:'164368290',  nome:'Josimeire Nascimento', cidade:'São Bernardo do Campo',  uf:'SP', novos:3, tpv:28299.78, novos_mai:2,  tpv_mai:632.00 },
-    { rank:10, rank_ant:10,   id:'82907272',   nome:'Renato Pereira',       cidade:'São Luís',               uf:'MA', novos:3, tpv:21682.95, novos_mai:7,  tpv_mai:12212.35 },
-    { rank:11, rank_ant:11,   id:'114125211',  nome:'Viviane Rosa',         cidade:'Goiânia',                uf:'GO', novos:3, tpv:19852.55, novos_mai:8,  tpv_mai:47966.94 },
-    { rank:12, rank_ant:12,   id:'2206298813', nome:'Maria Jose',           cidade:'',                       uf:'',   novos:3, tpv:17833.28, novos_mai:6,  tpv_mai:12713.86 },
-    { rank:13, rank_ant:13,   id:'614384375',  nome:'Valdeilton',           cidade:'Parauapebas',            uf:'PA', novos:2, tpv:35478.34, novos_mai:5,  tpv_mai:53266.21 },
-    { rank:14, rank_ant:14,   id:'281399578',  nome:'Máquinas Pay',         cidade:'Ribeirão Preto',         uf:'SP', novos:2, tpv:26197.00, novos_mai:2,  tpv_mai:737.70 },
-    { rank:15, rank_ant:15,   id:'381728218',  nome:'Ayrton Oliveira',      cidade:'',                       uf:'',   novos:2, tpv:24427.53, novos_mai:2,  tpv_mai:5263.36 },
+    { rank:1,  rank_ant:1,    id:'632559284',  nome:'Rafael Wellington',    cidade:'Goiânia',               uf:'GO', novos:8, tpv:61611.00,  novos_mai:33, tpv_mai:103087.00 },
+    { rank:2,  rank_ant:6,    id:'241222977',  nome:'Rafael Silva',         cidade:'Goiânia',               uf:'GO', novos:7, tpv:47646.00,  novos_mai:0,  tpv_mai:0 },
+    { rank:3,  rank_ant:2,    id:'222359885',  nome:'Denilson da Silva',    cidade:'Parauapebas',           uf:'PA', novos:6, tpv:63165.00,  novos_mai:9,  tpv_mai:28797.00 },
+    { rank:4,  rank_ant:null, id:'488278422',  nome:'',                    cidade:'Recife',                uf:'PE', novos:6, tpv:34690.00,  novos_mai:17, tpv_mai:49642.00 },
+    { rank:5,  rank_ant:3,    id:'1168762991', nome:'4SPAY Consultoria',   cidade:'Goianira',              uf:'GO', novos:6, tpv:31612.00,  novos_mai:12, tpv_mai:126247.00 },
+    { rank:6,  rank_ant:null, id:'699129892',  nome:'Vitoria Soluções',    cidade:'Guarapari',             uf:'ES', novos:5, tpv:50278.00,  novos_mai:9,  tpv_mai:8469.00 },
+    { rank:7,  rank_ant:4,    id:'258370603',  nome:'Wilson Camelo',       cidade:'Recife',                uf:'PE', novos:4, tpv:82914.00,  novos_mai:6,  tpv_mai:16001.00 },
+    { rank:8,  rank_ant:5,    id:'2265747191', nome:'EGB Comercio',        cidade:'',                      uf:'',   novos:4, tpv:72596.00,  novos_mai:7,  tpv_mai:25019.00 },
+    { rank:9,  rank_ant:13,   id:'614384375',  nome:'Valdeilton',          cidade:'Parauapebas',           uf:'PA', novos:4, tpv:61822.00,  novos_mai:6,  tpv_mai:64668.00 },
+    { rank:10, rank_ant:9,    id:'164368290',  nome:'Josimeire Nascimento',cidade:'São Bernardo do Campo', uf:'SP', novos:4, tpv:42637.00,  novos_mai:3,  tpv_mai:3097.00 },
+    { rank:11, rank_ant:7,    id:'38008063',   nome:'Rogerio Custodio',    cidade:'Cuiabá',                uf:'MT', novos:4, tpv:32829.00,  novos_mai:8,  tpv_mai:6302.00 },
+    { rank:12, rank_ant:11,   id:'114125211',  nome:'Viviane Rosa',        cidade:'Goiânia',               uf:'GO', novos:4, tpv:32145.00,  novos_mai:16, tpv_mai:60258.00 },
+    { rank:13, rank_ant:10,   id:'82907272',   nome:'Renato Pereira',      cidade:'São Luís',              uf:'MA', novos:4, tpv:29682.00,  novos_mai:9,  tpv_mai:16486.00 },
+    { rank:14, rank_ant:12,   id:'2206298813', nome:'Maria Jose',          cidade:'',                      uf:'',   novos:4, tpv:27316.00,  novos_mai:8,  tpv_mai:15887.00 },
+    { rank:15, rank_ant:8,    id:'1379037457', nome:'NEXOR PDV',           cidade:'Itanhaém',              uf:'SP', novos:3, tpv:76924.00,  novos_mai:22, tpv_mai:26456.00 },
   ],
 };
 
 // ── CANAL COMPLETO — TPV M0 SOMENTE SELLERS ≥ 3K ─────────────────────────
 // Atualizar diariamente: todos os resellers do canal, apenas sellers com TPV ≥ 3k
 const dadosCanal3k = {
-  periodo: { jun_ini:'01/06', jun_fim:'18/06', mai_ini:'01/05', mai_fim:'18/05' },
+  periodo: { jun_ini:'01/06', jun_fim:'21/06', mai_ini:'01/05', mai_fim:'21/05' },
   niveis: [
-    { nivel:'Aprendiz',         emoji:'🟡', resellers:350, sellers_jun:32,  tpv_jun:281675.94,  sellers_mai:30,  tpv_mai:489217.81  },
-    { nivel:'Especialista',     emoji:'🔵', resellers:79,  sellers_jun:16,  tpv_jun:144982.91,  sellers_mai:34,  tpv_mai:349028.63  },
-    { nivel:'Empreendedor',     emoji:'🟠', resellers:49,  sellers_jun:46,  tpv_jun:711603.23,  sellers_mai:34,  tpv_mai:356793.62  },
-    { nivel:'Top Empreendedor', emoji:'🏆', resellers:43,  sellers_jun:64,  tpv_jun:613950.11,  sellers_mai:55,  tpv_mai:506134.73  },
-    { nivel:'Outros',           emoji:'—',  resellers:null, sellers_jun:479, tpv_jun:4389531.26, sellers_mai:407, tpv_mai:3458565.94 },
+    { nivel:'Aprendiz',         emoji:'🟡', resellers:370, sellers_jun:37,  tpv_jun:335975,    sellers_mai:32,  tpv_mai:556618   },
+    { nivel:'Especialista',     emoji:'🔵', resellers:83,  sellers_jun:23,  tpv_jun:234810,    sellers_mai:39,  tpv_mai:450101   },
+    { nivel:'Empreendedor',     emoji:'🟠', resellers:48,  sellers_jun:53,  tpv_jun:918999,    sellers_mai:37,  tpv_mai:428429   },
+    { nivel:'Top Empreendedor', emoji:'🏆', resellers:45,  sellers_jun:97,  tpv_jun:925413,    sellers_mai:73,  tpv_mai:699072   },
+    { nivel:'Outros',           emoji:'—',  resellers:null, sellers_jun:653, tpv_jun:6200685,   sellers_mai:516, tpv_mai:4775589  },
   ],
 };
 
 // ── TOTAL SELLERS M0 POR NÍVEL (sem filtro de 3k) ─────────────────────────
 // Atualizar diariamente: mesmo universo de resellers do ranking, sem corte de TPV
 const dadosTotalSellers = {
-  aprendiz:     { novos_jun: 15,  novos_mai: 1,  tpv_jun: 193324.89, tpv_mai: 10.00      },
-  especialista: { novos_jun: 18,  novos_mai: 8,  tpv_jun: 137782.19, tpv_mai: 44348.10   },
-  empreendedor: { novos_jun: 46,  novos_mai: 50, tpv_jun: 624849.50, tpv_mai: 260705.08  },
-  top:          { novos_jun: 136, novos_mai: 97, tpv_jun: 629407.57, tpv_mai: 368175.64  },
+  aprendiz:     { novos_jun: 15,  novos_mai: 1,   tpv_jun: 194144.49, tpv_mai: 10.00      },
+  especialista: { novos_jun: 21,  novos_mai: 10,  tpv_jun: 199350.15, tpv_mai: 51971.97   },
+  empreendedor: { novos_jun: 47,  novos_mai: 51,  tpv_jun: 759114.84, tpv_mai: 184790.35  },
+  top:          { novos_jun: 155, novos_mai: 165, tpv_jun: 845895.76, tpv_mai: 550415.48  },
 };
 
 // ── CANAL RESELLERS (FORECAST_SELLERS · FLAG_PROJ=0) ───────────────────────
 // Atualizar diariamente junto com a query de ranking
 const dadosCanal = {
-  periodo: { jun_ini:'01/06', jun_fim:'18/06', mai_ini:'01/05', mai_fim:'18/05' },
+  periodo: { jun_ini:'01/06', jun_fim:'21/06', mai_ini:'01/05', mai_fim:'21/05' },
   ciclos: [
-    { ciclo:'M0',       label:'M0 — Novos',      sellers_jun:3835,  tpv_jun:7987066,  sellers_mai:3505,  tpv_mai:6790055  },
-    { ciclo:'M1',       label:'M1',               sellers_jun:4113,  tpv_jun:17845434, sellers_mai:4286,  tpv_mai:20105532 },
-    { ciclo:'TRIANGLE', label:'Triângulo',         sellers_jun:14356, tpv_jun:65602288, sellers_mai:11347, tpv_mai:50871944 },
+    { ciclo:'M0',       label:'M0 — Novos',      sellers_jun:4352,  tpv_jun:10879621, sellers_mai:4204,  tpv_mai:8852988  },
+    { ciclo:'M1',       label:'M1',               sellers_jun:4186,  tpv_jun:21022647, sellers_mai:4368,  tpv_mai:23067685 },
+    { ciclo:'TRIANGLE', label:'Triângulo',         sellers_jun:14665, tpv_jun:77024328, sellers_mai:11607, tpv_mai:58012478 },
   ],
 };
 
