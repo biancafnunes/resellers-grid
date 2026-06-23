@@ -95,7 +95,7 @@
 
 <div class="tabs-bar">
   <button class="tab-btn active" onclick="switchTab('kits', this)">Kits</button>
-  <button class="tab-btn" onclick="switchTab('custos', this)">Estoque & Custos</button>
+  <button class="tab-btn" onclick="switchTab('custos', this)">Estoque</button>
 </div>
 
 <!-- TAB KITS -->
@@ -864,21 +864,11 @@
       </div>
     </div>
 
-    <div class="cost-grid" style="grid-template-columns:1fr 1fr 1fr;">
+    <div class="cost-grid" style="grid-template-columns:1fr;">
       <div class="cost-card">
         <div class="title">Custo por Kit</div>
         <div class="value">R$ 90,00</div>
         <div class="sub">valor unitário do kit</div>
-      </div>
-      <div class="cost-card">
-        <div class="title">Custo Realizado</div>
-        <div class="value" id="custo-realizado">R$ 0</div>
-        <div class="sub" id="custo-realizado-sub">0 kits enviados</div>
-      </div>
-      <div class="cost-card">
-        <div class="title">Custo Pendente</div>
-        <div class="value" id="custo-pendente">R$ 6.120</div>
-        <div class="sub" id="custo-pendente-sub">68 kits pendentes</div>
       </div>
     </div>
 
