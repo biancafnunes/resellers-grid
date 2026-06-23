@@ -838,7 +838,7 @@
         <div class="sim-size"><label>GG</label><input type="number" id="sz-gg" min="0" value="0" oninput="updateEstoque()"></div>
         <div class="sim-size"><label>XGG</label><input type="number" id="sz-xgg" min="0" value="0" oninput="updateEstoque()"></div>
       </div>
-      <div class="sim-summary">
+      <div class="sim-summary" style="grid-template-columns:1fr 1fr;">
         <div class="sim-card dark">
           <div class="s-title">Total em Estoque</div>
           <div class="s-val" id="est-total">0</div>
@@ -846,14 +846,6 @@
         <div class="sim-card light">
           <div class="s-title">Valor do Estoque</div>
           <div class="s-val" id="est-valor">R$ 0</div>
-        </div>
-        <div class="sim-card light">
-          <div class="s-title">Kits Necessários</div>
-          <div class="s-val">68</div>
-        </div>
-        <div class="sim-card red" id="saldo-card">
-          <div class="s-title">Saldo</div>
-          <div class="s-val" id="est-saldo">-68</div>
         </div>
       </div>
     </div>
@@ -918,12 +910,8 @@
   function updateEstoque() {
     const ids = ['sz-p','sz-m','sz-g','sz-gg','sz-xgg'];
     const total = ids.reduce((s, id) => s + (parseInt(document.getElementById(id).value) || 0), 0);
-    const saldo = total - TOTAL;
     document.getElementById('est-total').textContent = total;
     document.getElementById('est-valor').textContent = fmt(total * VALOR_KIT);
-    document.getElementById('est-saldo').textContent = (saldo >= 0 ? '+' : '') + saldo;
-    const card = document.getElementById('saldo-card');
-    card.className = 'sim-card ' + (saldo > 0 ? 'green' : saldo < 0 ? 'red' : 'light');
   }
 
   function countEnviados() {
