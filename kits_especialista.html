@@ -8,25 +8,38 @@
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Inter',sans-serif;background:#F4F4F4;color:#1A1A1A}
-  /* topbar */
   .topbar{background:#1A1A1A;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-  .topbar-logo{color:#FFE600;font-size:15px;font-weight:800;letter-spacing:.5px}
+  .topbar-logo{color:#FFE600;font-size:15px;font-weight:800}
   .topbar-sub{color:#888;font-size:12px}
-  /* hero */
   .hero{background:#FFE600;padding:32px 40px 28px}
-  .hero-badge{display:inline-block;background:#1A1A1A;color:#FFE600;font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;letter-spacing:.5px;margin-bottom:10px;text-transform:uppercase}
-  .hero h1{font-size:26px;font-weight:900;color:#1A1A1A;line-height:1.2}
+  .hero-badge{display:inline-block;background:#1A1A1A;color:#FFE600;font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:10px;text-transform:uppercase}
+  .hero h1{font-size:26px;font-weight:900;color:#1A1A1A}
   .hero p{font-size:14px;color:#444;margin-top:6px}
+  /* tabs */
+  .tabs-bar{background:#fff;border-bottom:2px solid #E0E0E0;padding:0 40px;display:flex;gap:0}
+  .tab-btn{padding:16px 28px;font-size:14px;font-weight:600;color:#888;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;font-family:inherit}
+  .tab-btn.active{color:#1A1A1A;border-bottom-color:#FFE600}
+  .tab-content{display:none}.tab-content.active{display:block}
   /* content */
-  .content{max-width:900px;margin:32px auto;padding:0 24px}
-  /* card summary */
-  .card-summary{background:#1A1A1A;border-radius:16px;padding:28px 32px;display:flex;align-items:center;gap:32px;margin-bottom:28px}
-  .card-summary .num{font-size:52px;font-weight:900;color:#FFE600;line-height:1}
-  .card-summary .label{font-size:14px;color:#888;margin-top:4px}
-  .card-summary .divider{width:1px;height:60px;background:#333}
-  .card-summary .secondary{text-align:center}
-  .card-summary .secondary .num2{font-size:32px;font-weight:800;color:#fff}
-  .card-summary .secondary .label2{font-size:12px;color:#666}
+  .content{max-width:860px;margin:32px auto;padding:0 24px}
+  /* cards */
+  .cards-row{display:flex;gap:16px;margin-bottom:28px}
+  .card{background:#1A1A1A;border-radius:16px;padding:24px 28px;flex:1;text-align:center}
+  .card .num{font-size:44px;font-weight:900;color:#FFE600;line-height:1}
+  .card .label{font-size:12px;color:#888;margin-top:6px}
+  .card.yellow{background:#FFE600}
+  .card.yellow .num{color:#1A1A1A}
+  .card.yellow .label{color:#555}
+  /* cost cards */
+  .cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+  .cost-card{background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  .cost-card .title{font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+  .cost-card .value{font-size:32px;font-weight:900;color:#1A1A1A}
+  .cost-card .sub{font-size:12px;color:#AAAAAA;margin-top:4px}
+  .cost-card.highlight{background:#1A1A1A}
+  .cost-card.highlight .title{color:#666}
+  .cost-card.highlight .value{color:#FFE600}
+  .cost-card.highlight .sub{color:#555}
   /* table */
   .table-wrap{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
   .table-header{background:#1A1A1A;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
@@ -35,418 +48,76 @@
   table{width:100%;border-collapse:collapse}
   thead tr{background:#2D2D2D}
   thead th{padding:12px 16px;font-size:12px;font-weight:700;color:#fff;text-align:left;text-transform:uppercase;letter-spacing:.5px}
-  thead th:nth-child(2),thead th:nth-child(3),thead th:nth-child(4){text-align:center}
-  thead th:nth-child(3){text-align:right}
   tbody tr{border-bottom:1px solid #F0F0F0;transition:background .15s}
   tbody tr:hover{background:#FAFAFA}
   tbody td{padding:13px 16px;font-size:13px;color:#333}
   tbody tr:last-child{border-bottom:none}
-  /* kit button */
   .kit-btn{background:#F0F0F0;color:#888}
   .kit-btn.enviado{background:#D1FAE5;color:#065F46}
-  /* footer */
-  .footer{padding:16px 24px 40px;text-align:left;max-width:900px;margin:0 auto}
+  /* progress bar */
+  .progress-wrap{background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:28px}
+  .progress-label{display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px;font-weight:600}
+  .progress-bar{background:#F0F0F0;border-radius:99px;height:12px;overflow:hidden}
+  .progress-fill{background:#FFE600;height:100%;border-radius:99px;transition:width .4s}
+  .footer{padding:16px 24px 40px;text-align:left;max-width:860px;margin:0 auto}
   .footer span{font-size:11px;color:#AAAAAA}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="topbar-logo">Mercado Pago · Resellers</div>
   <div class="topbar-sub">Kits Especialistas — Jun/26</div>
 </div>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-badge">Envio de Kits</div>
-  <h1>Acompanhamento de Kits — Nível Especialista</h1>
-  <p>Critério: ≥ 12 clientes com TPV acumulado ≥ R$ 2.000 nos últimos 3 meses (Abr–Jun/26) · TPV M0 = mês atual (Jun/26 MTD)</p>
+  <h1>Kits — Novos Especialistas Jun/26</h1>
+  <p>Recebem o kit os parceiros que subiram para o nível Especialista em Junho/2026 · R$ 90,00 por kit</p>
 </div>
 
-<!-- CONTENT -->
-<div class="content">
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('kits', this)">Kits</button>
+  <button class="tab-btn" onclick="switchTab('custos', this)">Custos</button>
+</div>
 
-  <!-- CARD SUMMARY -->
-  <div class="card-summary">
-    <div style="text-align:center;">
-      <div class="num">0</div>
-      <div class="label">especialistas atingiram a meta</div>
+<!-- TAB KITS -->
+<div id="tab-kits" class="tab-content active">
+  <div class="content">
+    <div class="cards-row">
+      <div class="card yellow">
+        <div class="num">79</div>
+        <div class="label">novos especialistas em Jun/26</div>
+      </div>
+      <div class="card">
+        <div class="num" id="card-enviados">0</div>
+        <div class="label">kits enviados</div>
+      </div>
+      <div class="card">
+        <div class="num" id="card-pendentes">79</div>
+        <div class="label">kits pendentes</div>
+      </div>
     </div>
-    <div class="divider"></div>
-    <div class="secondary">
-      <div class="num2">205</div>
-      <div class="label2">total de especialistas</div>
-    </div>
-    <div class="divider"></div>
-    <div class="secondary">
-      <div class="num2">R$ 1.923.445</div>
-      <div class="label2">TPV M0 total Jun/26</div>
-    </div>
-  </div>
 
-  <!-- TABLE -->
-  <div class="table-wrap">
-    <div class="table-header">
-      <h2>Resellers Especialistas</h2>
-      <span>Atualizado em 23/06/2026</span>
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Reseller (CUS)</th>
-          <th style="text-align:center;">Clientes Sucesso (3m)</th>
-          <th style="text-align:right;">TPV M0 Jun/26</th>
-          <th style="text-align:center;">Kit Enviado</th>
-        </tr>
-      </thead>
-      <tbody>
-        
+    <div class="table-wrap">
+      <div class="table-header">
+        <h2>Novos Especialistas</h2>
+        <span>Atualizado em 23/06/2026</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Reseller (CUS)</th>
+            <th style="text-align:center;">Nível Anterior</th>
+            <th style="text-align:center;">Kit Enviado</th>
+          </tr>
+        </thead>
+        <tbody>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">617876582</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">10</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 6.690</td>
+        <td style="font-weight:600;color:#1A1A1A;">2016658</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="617876582"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">349576623</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">9</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 12.905</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="349576623"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">708105104</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">9</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.580</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="708105104"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">130855841</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">8</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 841</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="130855841"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">81397558</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">7</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 14.310</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="81397558"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">324154304</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">6</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 301</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="324154304"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1425305619</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">6</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 9.251</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1425305619"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1364193022</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">5</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 4.361</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1364193022"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2130389125</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">5</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 11.138</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2130389125"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">78964639</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">4</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 35.415</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="78964639"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">249216814</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">4</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 95.204</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="249216814"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1767434152</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">4</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1767434152"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2097554638</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">4</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 12.125</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2097554638"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">34698621</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 38.961</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="34698621"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">47472337</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 70.685</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="47472337"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">135731214</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.474</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="135731214"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">179359963</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 6.990</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="179359963"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">266229889</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 22.679</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="266229889"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">301712775</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 37.980</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="301712775"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">332188136</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 111.607</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="332188136"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">452387421</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.521</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="452387421"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">763730077</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.106</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="763730077"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1068570330</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 74.441</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1068570330"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1578054593</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.502</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1578054593"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1935378054</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">3</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 531</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1935378054"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2016658" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -454,895 +125,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">31172518</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="31172518"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">128107890</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 17.304</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="128107890"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">131665663</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="131665663"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">140888320</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="140888320"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">167012870</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 21.578</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="167012870"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">168541693</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 8.710</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="168541693"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">177153580</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.743</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="177153580"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">180152505</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 622</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="180152505"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">190822347</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.135</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="190822347"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">203675208</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.208</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="203675208"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">203850521</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="203850521"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">212643273</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 57.296</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="212643273"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">251424565</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="251424565"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">387096040</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 5.810</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="387096040"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">442045626</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="442045626"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">443614083</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 945</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="443614083"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">491152134</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 14.275</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="491152134"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">545579977</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 22.385</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="545579977"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">624974985</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 4.657</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="624974985"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">637335445</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 15.304</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="637335445"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">694479264</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.990</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="694479264"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1318674044</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 5.126</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1318674044"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2002630728</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2002630728"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2056753897</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 12.580</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2056753897"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2416527722</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 16.619</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2416527722"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2599471034</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2599471034"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">3118113625</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">2</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="3118113625"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">45939578</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 17.306</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="45939578"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">60147453</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 74</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="60147453"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">89625832</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 5.375</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="89625832"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">116422168</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 23.849</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="116422168"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">134179496</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="134179496"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">146718278</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 36.136</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="146718278"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">164546775</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="164546775"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">178741217</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 16.947</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="178741217"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">187019839</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="187019839"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">235186192</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="235186192"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">291274297</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 3.879</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="291274297"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">300594879</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 33.459</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="300594879"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">327251168</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 4.283</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="327251168"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">337796934</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 5.744</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="337796934"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">351431066</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.752</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="351431066"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">355310687</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 959</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="355310687"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">420814739</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="420814739"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">489075905</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 4.650</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="489075905"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">495504290</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 6.813</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="495504290"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">536409124</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 27.775</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="536409124"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">588770389</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 10.675</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="588770389"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">613876184</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 900</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="613876184"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">652701629</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 323</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="652701629"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1150985186</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 5.244</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1150985186"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1208501777</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 8.426</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1208501777"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1279777635</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1279777635"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1307323726</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 484</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1307323726"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1678271989</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.626</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1678271989"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1918195093</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1918195093"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1918354443</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.126</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1918354443"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2181758640</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 19.059</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2181758640"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2191289064</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 8.650</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2191289064"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2272438961</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2272438961"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">3171146952</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="3171146952"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">3324207640</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">1</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 3.552</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="3324207640"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2016658</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2016658"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">14817239</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 5.410</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="14817239"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="31172518" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1350,41 +135,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">38995629</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="38995629"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">44109558</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="44109558"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">47221809</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.268</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="47221809"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="38995629" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1392,13 +145,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">53830740</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.306</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="53830740"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="53830740" onclick="toggleKit(this)"
+            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
+            Pendente
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight:600;color:#1A1A1A;">60147453</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
+        <td style="text-align:center;">
+          <button class="kit-btn" data-id="60147453" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1406,27 +165,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">62485145</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 10.195</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="62485145"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">70122864</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.798</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="70122864"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="62485145" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1434,13 +175,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">73798340</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 30</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="73798340"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="73798340" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1448,13 +185,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">90502583</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 8.218</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="90502583"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="90502583" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1462,13 +195,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">93577727</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 48.786</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="93577727"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="93577727" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1476,13 +205,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">96400526</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 12.296</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="96400526"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="96400526" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1490,13 +215,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">114376909</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.908</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="114376909"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="114376909" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1504,13 +225,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">127692057</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 8.541</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="127692057"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="127692057" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1518,41 +235,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">129611140</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 13.117</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="129611140"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">130282637</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 21.861</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="130282637"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">133221394</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 4.986</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="133221394"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="129611140" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1560,13 +245,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">144090312</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="144090312"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="144090312" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1574,13 +255,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">145209026</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 10.793</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="145209026"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="145209026" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1588,13 +265,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">157627956</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="157627956"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="157627956" onclick="toggleKit(this)"
+            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
+            Pendente
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight:600;color:#1A1A1A;">167012870</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
+        <td style="text-align:center;">
+          <button class="kit-btn" data-id="167012870" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1602,27 +285,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">172116091</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 4.232</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="172116091"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="172116091" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">179755542</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 38.555</td>
+        <td style="font-weight:600;color:#1A1A1A;">178741217</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="179755542"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="178741217" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1630,55 +305,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">179783332</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="179783332"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">182562586</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 21.762</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="182562586"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">186371630</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="186371630"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">194830689</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="194830689"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="179783332" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1686,13 +315,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">209014134</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 5.037</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="209014134"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="209014134" onclick="toggleKit(this)"
+            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
+            Pendente
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight:600;color:#1A1A1A;">212643273</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
+        <td style="text-align:center;">
+          <button class="kit-btn" data-id="212643273" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1700,55 +335,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">212727829</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.634</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="212727829"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">213550906</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 4.976</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="213550906"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">220835338</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 21.816</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="220835338"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">232802020</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.130</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="232802020"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="212727829" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1756,27 +345,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">239087168</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="239087168"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">243817105</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="243817105"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="239087168" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1784,13 +355,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">246366776</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="246366776"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="246366776" onclick="toggleKit(this)"
+            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
+            Pendente
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight:600;color:#1A1A1A;">251424565</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
+        <td style="text-align:center;">
+          <button class="kit-btn" data-id="251424565" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1798,55 +375,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">252268133</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 5</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="252268133"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">256842528</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 11.101</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="256842528"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">261258174</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="261258174"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">266473468</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="266473468"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="252268133" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1854,13 +385,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">269862869</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="269862869"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="269862869" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1868,13 +395,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">271313562</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 13.955</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="271313562"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="271313562" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1882,13 +405,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">283462096</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.524</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="283462096"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="283462096" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1896,41 +415,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">292433008</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 5.470</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="292433008"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">294349647</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.010</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="294349647"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">296606875</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 20.257</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="296606875"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="292433008" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1938,13 +425,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">300583301</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 5.646</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="300583301"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="300583301" onclick="toggleKit(this)"
+            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
+            Pendente
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight:600;color:#1A1A1A;">300594879</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Empreendedor</span></td>
+        <td style="text-align:center;">
+          <button class="kit-btn" data-id="300594879" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1952,13 +445,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">300694689</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 45.346</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="300694689"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="300694689" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1966,27 +455,29 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">300934483</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="300934483"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="300934483" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">302312785</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 3.090</td>
+        <td style="font-weight:600;color:#1A1A1A;">301712775</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="302312785"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="301712775" onclick="toggleKit(this)"
+            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
+            Pendente
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight:600;color:#1A1A1A;">332188136</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
+        <td style="text-align:center;">
+          <button class="kit-btn" data-id="332188136" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -1994,41 +485,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">337487749</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.989</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="337487749"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="337487749" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">350840506</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="font-weight:600;color:#1A1A1A;">351431066</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="350840506"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">351121235</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 685</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="351121235"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="351431066" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2036,27 +505,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">356974215</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 3.770</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="356974215"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">378670921</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 4.605</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="378670921"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="356974215" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2064,69 +515,29 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">383338512</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="383338512"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="383338512" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">435478683</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="font-weight:600;color:#1A1A1A;">420814739</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="435478683"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="420814739" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">438247447</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="font-weight:600;color:#1A1A1A;">442045626</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="438247447"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">444098211</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="444098211"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">444233925</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 38.282</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="444233925"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="442045626" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2134,83 +545,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">452385077</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 580</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="452385077"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">453782221</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="453782221"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">456562778</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 6.126</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="456562778"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">458116506</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="458116506"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">461197707</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="461197707"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">463286021</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 726</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="463286021"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="452385077" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2218,27 +555,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">469317605</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 61</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="469317605"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">478848911</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 553</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="478848911"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="469317605" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2246,27 +565,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">492255880</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 6.834</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="492255880"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="492255880" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">497552313</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 143</td>
+        <td style="font-weight:600;color:#1A1A1A;">495504290</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="497552313"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="495504290" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2274,27 +585,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">528067482</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 9.145</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="528067482"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">530372985</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 8.700</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="530372985"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="528067482" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2302,13 +595,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">539388807</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 6.624</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="539388807"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="539388807" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2316,13 +605,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">575362025</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 56</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="575362025"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="575362025" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2330,13 +615,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">592878216</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 12.633</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="592878216"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="592878216" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2344,27 +625,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">593668568</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 10</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="593668568"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">603986736</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 47.981</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="603986736"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="593668568" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2372,27 +635,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">605996723</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.966</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="605996723"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">628653971</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="628653971"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="605996723" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2400,13 +645,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">638171240</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.846</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="638171240"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="638171240" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2414,69 +655,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">646237773</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 3.005</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="646237773"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="646237773" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">651614251</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="font-weight:600;color:#1A1A1A;">708105104</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Empreendedor</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="651614251"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">652551126</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="652551126"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">656772499</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 3.515</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="656772499"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">687143050</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.191</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="687143050"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="708105104" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2484,41 +675,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">710343234</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.396</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="710343234"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">717761934</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="717761934"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">730679045</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 901</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="730679045"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="710343234" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2526,139 +685,29 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">758141384</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 323</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="758141384"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="758141384" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">772910178</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="font-weight:600;color:#1A1A1A;">1150985186</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Empreendedor</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="772910178"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1150985186" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">782987704</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 3.568</td>
+        <td style="font-weight:600;color:#1A1A1A;">1208501777</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="782987704"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">819857003</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 7.463</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="819857003"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1009968348</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 627</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1009968348"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1091728029</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 4</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1091728029"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1095638489</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1095638489"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1152023243</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.072</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1152023243"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1158745056</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1158745056"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1208406875</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 198.761</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1208406875"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1208501777" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2666,13 +715,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">1217075886</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 30</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1217075886"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1217075886" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2680,13 +725,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">1243247904</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.745</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1243247904"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1243247904" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2694,13 +735,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">1380933992</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 154</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1380933992"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1380933992" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2708,55 +745,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">1382784672</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.350</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1382784672"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1388425394</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 16.176</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1388425394"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1457307909</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1457307909"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1482768258</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.513</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1482768258"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1382784672" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2764,13 +755,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">1563204368</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1563204368"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1563204368" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2778,41 +765,29 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">1750530345</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 42.127</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1750530345"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1750530345" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1852190593</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.707</td>
+        <td style="font-weight:600;color:#1A1A1A;">1918195093</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1852190593"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1918195093" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1957582242</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 11.838</td>
+        <td style="font-weight:600;color:#1A1A1A;">2056753897</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="1957582242"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2056753897" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2820,27 +795,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">2057975464</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 10.798</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2057975464"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2195196707</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2195196707"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2057975464" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2848,13 +805,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">2213169506</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 500</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2213169506"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2213169506" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2862,13 +815,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">2240760897</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 0</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2240760897"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2240760897" onclick="toggleKit(this)"
+            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
+            Pendente
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight:600;color:#1A1A1A;">2416527722</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
+        <td style="text-align:center;">
+          <button class="kit-btn" data-id="2416527722" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2876,13 +835,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">2506168525</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 19.109</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2506168525"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2506168525" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2890,41 +845,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">2588342404</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 1.901</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2588342404"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2588342404" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2619742737</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 671</td>
+        <td style="font-weight:600;color:#1A1A1A;">3171146952</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2619742737"
-            onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">2667263634</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 10.690</td>
-        <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="2667263634"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="3171146952" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2932,13 +865,19 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">3258736998</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 422</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="3258736998"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="3258736998" onclick="toggleKit(this)"
+            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
+            Pendente
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td style="font-weight:600;color:#1A1A1A;">3324207640</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
+        <td style="text-align:center;">
+          <button class="kit-btn" data-id="3324207640" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2946,13 +885,9 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">3329364534</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 21.018</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="3329364534"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="3329364534" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -2960,39 +895,100 @@
       </tr>
       <tr>
         <td style="font-weight:600;color:#1A1A1A;">3336447015</td>
-        <td style="text-align:center;"><span style="background:#1A1A1A;color:#FFE600;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:700;">0</span></td>
-        <td style="text-align:right;font-weight:600;">R$ 2.539</td>
+        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button
-            class="kit-btn"
-            data-id="3336447015"
-            onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="3336447015" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
-      </tr>
-      </tbody>
-    </table>
+      </tr></tbody>
+      </table>
+    </div>
   </div>
-
 </div>
 
-<!-- FOOTER -->
+<!-- TAB CUSTOS -->
+<div id="tab-custos" class="tab-content">
+  <div class="content">
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progresso de envio</span>
+        <span id="prog-label">0 de 79 kits enviados</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="cost-grid">
+      <div class="cost-card highlight">
+        <div class="title">Custo Total Previsto</div>
+        <div class="value">R$ 7.110</div>
+        <div class="sub">79 kits × R$ 90,00</div>
+      </div>
+      <div class="cost-card">
+        <div class="title">Custo por Kit</div>
+        <div class="value">R$ 90,00</div>
+        <div class="sub">valor unitário do kit</div>
+      </div>
+      <div class="cost-card">
+        <div class="title">Custo Realizado</div>
+        <div class="value" id="custo-realizado">R$ 0</div>
+        <div class="sub" id="custo-realizado-sub">0 kits enviados</div>
+      </div>
+      <div class="cost-card">
+        <div class="title">Custo Pendente</div>
+        <div class="value" id="custo-pendente">R$ 7.110</div>
+        <div class="sub" id="custo-pendente-sub">79 kits pendentes</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="footer">
-  <span>Fontes: SBOX_WHMPBR.BD_CUST_RESELLER_INFO (nível, TPV M0) · WHOWNER.BT_MP_IC_CUBO_RSL (clientes sucesso Abr–Jun/26) · Jun/2026</span>
+  <span>Fonte: SBOX_WHMPBR.BD_CUST_RESELLER_INFO — subida de nível Aprendiz→Especialista em Jun/2026</span>
 </div>
 
 <script>
-  // Restaura estado do localStorage ao carregar
-  document.querySelectorAll('.kit-btn').forEach(btn => {
-    const id = btn.getAttribute('data-id');
-    const saved = localStorage.getItem('kit_' + id);
-    if (saved === 'enviado') {
-      btn.textContent = 'Enviado ✓';
-      btn.classList.add('enviado');
-    }
-  });
+  const TOTAL = 79;
+  const VALOR_KIT = 90;
+
+  function fmt(v) {
+    return 'R$ ' + v.toLocaleString('pt-BR');
+  }
+
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+    updateCustos();
+  }
+
+  function countEnviados() {
+    return document.querySelectorAll('.kit-btn.enviado').length;
+  }
+
+  function updateAll() {
+    const env = countEnviados();
+    const pend = TOTAL - env;
+    document.getElementById('card-enviados').textContent = env;
+    document.getElementById('card-pendentes').textContent = pend;
+    updateCustos();
+  }
+
+  function updateCustos() {
+    const env = countEnviados();
+    const pend = TOTAL - env;
+    const pct = TOTAL > 0 ? (env / TOTAL * 100) : 0;
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('prog-label').textContent = env + ' de ' + TOTAL + ' kits enviados';
+    document.getElementById('custo-realizado').textContent = fmt(env * VALOR_KIT);
+    document.getElementById('custo-realizado-sub').textContent = env + ' kits enviados';
+    document.getElementById('custo-pendente').textContent = fmt(pend * VALOR_KIT);
+    document.getElementById('custo-pendente-sub').textContent = pend + ' kits pendentes';
+  }
 
   function toggleKit(btn) {
     const id = btn.getAttribute('data-id');
@@ -3005,7 +1001,18 @@
       btn.classList.add('enviado');
       localStorage.setItem('kit_' + id, 'enviado');
     }
+    updateAll();
   }
+
+  // Restaura estado do localStorage
+  document.querySelectorAll('.kit-btn').forEach(btn => {
+    const id = btn.getAttribute('data-id');
+    if (localStorage.getItem('kit_' + id) === 'enviado') {
+      btn.textContent = 'Enviado ✓';
+      btn.classList.add('enviado');
+    }
+  });
+  updateAll();
 </script>
 </body>
 </html>
