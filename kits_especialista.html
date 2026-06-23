@@ -63,7 +63,7 @@
   .footer span{font-size:11px;color:#AAAAAA}
   /* simulador estoque */
   .sim-section{background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:20px}
-  .sim-section h3{font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:18px;text-transform:uppercase;letter-spacing:.5px}
+  .sim-section h3{font-size:13px;font-weight:700;color:#1A1A1A;margin-bottom:18px;text-transform:uppercase;letter-spacing:.5px}
   .sim-sizes{display:flex;gap:12px;margin-bottom:20px}
   .sim-size{flex:1;text-align:center}
   .sim-size label{display:block;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
@@ -72,12 +72,11 @@
   .sim-summary{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
   .sim-card{border-radius:12px;padding:16px 18px;text-align:center}
   .sim-card .s-title{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
-  .sim-card .s-val{font-size:26px;font-weight:900;color:#1A1A1A}
+  .sim-card .s-val{font-size:24px;font-weight:900;color:#1A1A1A}
   .sim-card.dark{background:#1A1A1A}.sim-card.dark .s-title{color:#666}.sim-card.dark .s-val{color:#FFE600}
   .sim-card.light{background:#F4F4F4}
   .sim-card.green{background:#D1FAE5}.sim-card.green .s-val{color:#065F46}
   .sim-card.red{background:#FEE2E2}.sim-card.red .s-val{color:#991B1B}
-  /* divider */
   .divider-label{font-size:12px;font-weight:700;color:#AAAAAA;text-transform:uppercase;letter-spacing:.5px;margin:24px 0 16px;padding-left:2px}
 </style>
 </head>
@@ -104,7 +103,7 @@
   <div class="content">
     <div class="cards-row">
       <div class="card yellow">
-        <div class="num">79</div>
+        <div class="num">68</div>
         <div class="label">novos especialistas em Jun/26</div>
       </div>
       <div class="card">
@@ -112,7 +111,7 @@
         <div class="label">kits enviados</div>
       </div>
       <div class="card">
-        <div class="num" id="card-pendentes">79</div>
+        <div class="num" id="card-pendentes">68</div>
         <div class="label">kits pendentes</div>
       </div>
     </div>
@@ -322,16 +321,6 @@
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">179783332</td>
-        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
-        <td style="text-align:center;">
-          <button class="kit-btn" data-id="179783332" onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
         <td style="font-weight:600;color:#1A1A1A;">209014134</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
@@ -362,16 +351,6 @@
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">239087168</td>
-        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
-        <td style="text-align:center;">
-          <button class="kit-btn" data-id="239087168" onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
         <td style="font-weight:600;color:#1A1A1A;">246366776</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
@@ -386,26 +365,6 @@
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
           <button class="kit-btn" data-id="251424565" onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">252268133</td>
-        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
-        <td style="text-align:center;">
-          <button class="kit-btn" data-id="252268133" onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">269862869</td>
-        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
-        <td style="text-align:center;">
-          <button class="kit-btn" data-id="269862869" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -452,16 +411,6 @@
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">300594879</td>
-        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Empreendedor</span></td>
-        <td style="text-align:center;">
-          <button class="kit-btn" data-id="300594879" onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
         <td style="font-weight:600;color:#1A1A1A;">300694689</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
@@ -476,16 +425,6 @@
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
           <button class="kit-btn" data-id="300934483" onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">301712775</td>
-        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
-        <td style="text-align:center;">
-          <button class="kit-btn" data-id="301712775" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -562,16 +501,6 @@
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">452385077</td>
-        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
-        <td style="text-align:center;">
-          <button class="kit-btn" data-id="452385077" onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
         <td style="font-weight:600;color:#1A1A1A;">469317605</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
@@ -616,16 +545,6 @@
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
           <button class="kit-btn" data-id="539388807" onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">575362025</td>
-        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
-        <td style="text-align:center;">
-          <button class="kit-btn" data-id="575362025" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -682,40 +601,10 @@
         </td>
       </tr>
       <tr>
-        <td style="font-weight:600;color:#1A1A1A;">708105104</td>
-        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Empreendedor</span></td>
-        <td style="text-align:center;">
-          <button class="kit-btn" data-id="708105104" onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
         <td style="font-weight:600;color:#1A1A1A;">710343234</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
           <button class="kit-btn" data-id="710343234" onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">758141384</td>
-        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Novo</span></td>
-        <td style="text-align:center;">
-          <button class="kit-btn" data-id="758141384" onclick="toggleKit(this)"
-            style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
-            Pendente
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td style="font-weight:600;color:#1A1A1A;">1150985186</td>
-        <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Empreendedor</span></td>
-        <td style="text-align:center;">
-          <button class="kit-btn" data-id="1150985186" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -930,30 +819,14 @@
 <div id="tab-custos" class="tab-content">
   <div class="content">
 
-    <!-- SIMULADOR DE ESTOQUE -->
     <div class="sim-section">
       <h3>Simulador de Estoque</h3>
       <div class="sim-sizes">
-        <div class="sim-size">
-          <label>P</label>
-          <input type="number" id="sz-p" min="0" value="0" oninput="updateEstoque()">
-        </div>
-        <div class="sim-size">
-          <label>M</label>
-          <input type="number" id="sz-m" min="0" value="0" oninput="updateEstoque()">
-        </div>
-        <div class="sim-size">
-          <label>G</label>
-          <input type="number" id="sz-g" min="0" value="0" oninput="updateEstoque()">
-        </div>
-        <div class="sim-size">
-          <label>GG</label>
-          <input type="number" id="sz-gg" min="0" value="0" oninput="updateEstoque()">
-        </div>
-        <div class="sim-size">
-          <label>XGG</label>
-          <input type="number" id="sz-xgg" min="0" value="0" oninput="updateEstoque()">
-        </div>
+        <div class="sim-size"><label>P</label><input type="number" id="sz-p" min="0" value="0" oninput="updateEstoque()"></div>
+        <div class="sim-size"><label>M</label><input type="number" id="sz-m" min="0" value="0" oninput="updateEstoque()"></div>
+        <div class="sim-size"><label>G</label><input type="number" id="sz-g" min="0" value="0" oninput="updateEstoque()"></div>
+        <div class="sim-size"><label>GG</label><input type="number" id="sz-gg" min="0" value="0" oninput="updateEstoque()"></div>
+        <div class="sim-size"><label>XGG</label><input type="number" id="sz-xgg" min="0" value="0" oninput="updateEstoque()"></div>
       </div>
       <div class="sim-summary">
         <div class="sim-card dark">
@@ -966,22 +839,21 @@
         </div>
         <div class="sim-card light">
           <div class="s-title">Kits Necessários</div>
-          <div class="s-val">79</div>
+          <div class="s-val">68</div>
         </div>
-        <div class="sim-card light" id="saldo-card">
+        <div class="sim-card red" id="saldo-card">
           <div class="s-title">Saldo</div>
-          <div class="s-val" id="est-saldo">-79</div>
+          <div class="s-val" id="est-saldo">-68</div>
         </div>
       </div>
     </div>
 
-    <!-- CUSTOS DE ENVIO -->
     <div class="divider-label">Custos de Envio</div>
 
     <div class="progress-wrap">
       <div class="progress-label">
         <span>Progresso de envio</span>
-        <span id="prog-label">0 de 79 kits enviados</span>
+        <span id="prog-label">0 de 68 kits enviados</span>
       </div>
       <div class="progress-bar">
         <div class="progress-fill" id="prog-fill" style="width:0%"></div>
@@ -991,8 +863,8 @@
     <div class="cost-grid">
       <div class="cost-card highlight">
         <div class="title">Custo Total Previsto</div>
-        <div class="value">R$ 7.110</div>
-        <div class="sub">79 kits × R$ 90,00</div>
+        <div class="value">R$ 6.120</div>
+        <div class="sub">68 kits × R$ 90,00</div>
       </div>
       <div class="cost-card">
         <div class="title">Custo por Kit</div>
@@ -1006,8 +878,8 @@
       </div>
       <div class="cost-card">
         <div class="title">Custo Pendente</div>
-        <div class="value" id="custo-pendente">R$ 7.110</div>
-        <div class="sub" id="custo-pendente-sub">79 kits pendentes</div>
+        <div class="value" id="custo-pendente">R$ 6.120</div>
+        <div class="sub" id="custo-pendente-sub">68 kits pendentes</div>
       </div>
     </div>
 
@@ -1019,7 +891,7 @@
 </div>
 
 <script>
-  const TOTAL = 79;
+  const TOTAL = 68;
   const VALOR_KIT = 90;
 
   function fmt(v) {
@@ -1035,12 +907,11 @@
   }
 
   function updateEstoque() {
-    const sizes = ['sz-p','sz-m','sz-g','sz-gg','sz-xgg'];
-    const total = sizes.reduce((s, id) => s + (parseInt(document.getElementById(id).value) || 0), 0);
-    const valor = total * VALOR_KIT;
+    const ids = ['sz-p','sz-m','sz-g','sz-gg','sz-xgg'];
+    const total = ids.reduce((s, id) => s + (parseInt(document.getElementById(id).value) || 0), 0);
     const saldo = total - TOTAL;
     document.getElementById('est-total').textContent = total;
-    document.getElementById('est-valor').textContent = fmt(valor);
+    document.getElementById('est-valor').textContent = fmt(total * VALOR_KIT);
     document.getElementById('est-saldo').textContent = (saldo >= 0 ? '+' : '') + saldo;
     const card = document.getElementById('saldo-card');
     card.className = 'sim-card ' + (saldo > 0 ? 'green' : saldo < 0 ? 'red' : 'light');
