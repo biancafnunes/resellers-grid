@@ -78,6 +78,10 @@
   .sim-card.green{background:#D1FAE5}.sim-card.green .s-val{color:#065F46}
   .sim-card.red{background:#FEE2E2}.sim-card.red .s-val{color:#991B1B}
   .divider-label{font-size:12px;font-weight:700;color:#AAAAAA;text-transform:uppercase;letter-spacing:.5px;margin:24px 0 16px;padding-left:2px}
+  /* filtros de mês */
+  .mes-filtros{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+  .mes-btn{padding:7px 18px;font-size:13px;font-weight:600;font-family:inherit;border:2px solid #E0E0E0;border-radius:20px;background:#fff;color:#888;cursor:pointer;transition:all .15s}
+  .mes-btn.active{background:#1A1A1A;border-color:#1A1A1A;color:#FFE600}
 </style>
 </head>
 <body>
@@ -120,10 +124,12 @@
       </div>
     </div>
 
+    <div class="mes-filtros"><button class="mes-btn active" data-mes="202606" onclick="filtrarMes('202606', this)">Jun/26</button></div>
+
     <div class="table-wrap">
       <div class="table-header">
         <h2>Novos Especialistas</h2>
-        <span>Atualizado em 23/06/2026</span>
+        <span id="table-subtitle">Atualizado em 23/06/2026</span>
       </div>
       <table>
         <thead>
@@ -134,681 +140,681 @@
           </tr>
         </thead>
         <tbody>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">2016658</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="2016658" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2016658-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">31172518</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="31172518" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="31172518-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">38995629</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="38995629" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="38995629-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">53830740</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="53830740" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="53830740-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">60147453</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="60147453" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="60147453-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">62485145</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="62485145" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="62485145-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">73798340</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="73798340" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="73798340-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">90502583</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="90502583" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="90502583-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">93577727</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="93577727" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="93577727-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">96400526</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="96400526" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="96400526-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">114376909</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="114376909" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="114376909-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">127692057</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="127692057" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="127692057-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">129611140</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="129611140" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="129611140-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">144090312</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="144090312" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="144090312-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">145209026</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="145209026" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="145209026-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">157627956</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="157627956" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="157627956-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">167012870</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="167012870" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="167012870-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">172116091</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="172116091" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="172116091-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">178741217</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="178741217" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="178741217-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">209014134</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="209014134" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="209014134-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">212643273</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="212643273" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="212643273-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">212727829</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="212727829" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="212727829-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">246366776</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="246366776" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="246366776-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">251424565</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="251424565" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="251424565-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">271313562</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="271313562" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="271313562-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">283462096</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="283462096" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="283462096-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">292433008</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="292433008" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="292433008-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">300583301</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="300583301" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="300583301-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">300694689</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="300694689" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="300694689-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">300934483</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="300934483" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="300934483-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">332188136</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="332188136" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="332188136-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">337487749</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="337487749" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="337487749-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">351431066</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="351431066" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="351431066-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">356974215</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="356974215" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="356974215-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">383338512</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="383338512" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="383338512-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">420814739</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="420814739" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="420814739-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">442045626</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="442045626" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="442045626-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">469317605</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="469317605" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="469317605-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">492255880</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="492255880" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="492255880-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">495504290</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="495504290" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="495504290-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">528067482</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="528067482" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="528067482-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">539388807</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="539388807" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="539388807-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">592878216</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="592878216" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="592878216-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">593668568</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="593668568" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="593668568-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">605996723</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="605996723" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="605996723-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">638171240</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="638171240" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="638171240-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">646237773</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="646237773" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="646237773-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">710343234</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="710343234" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="710343234-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">1208501777</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="1208501777" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1208501777-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">1217075886</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="1217075886" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1217075886-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">1243247904</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="1243247904" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1243247904-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">1380933992</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="1380933992" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1380933992-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">1382784672</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="1382784672" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1382784672-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">1563204368</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="1563204368" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1563204368-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">1750530345</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="1750530345" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1750530345-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">1918195093</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="1918195093" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="1918195093-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">2056753897</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="2056753897" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2056753897-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">2057975464</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="2057975464" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2057975464-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">2213169506</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="2213169506" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2213169506-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">2240760897</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="2240760897" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2240760897-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">2416527722</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="2416527722" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2416527722-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">2506168525</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="2506168525" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2506168525-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">2588342404</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="2588342404" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="2588342404-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">3171146952</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="3171146952" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="3171146952-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">3258736998</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="3258736998" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="3258736998-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">3324207640</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="3324207640" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="3324207640-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">3329364534</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="3329364534" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="3329364534-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
         </td>
       </tr>
-      <tr>
+      <tr data-mes="202606">
         <td style="font-weight:600;color:#1A1A1A;">3336447015</td>
         <td style="text-align:center;"><span style="background:#F0F0F0;color:#666;padding:2px 10px;border-radius:12px;font-size:12px;">Aprendiz</span></td>
         <td style="text-align:center;">
-          <button class="kit-btn" data-id="3336447015" onclick="toggleKit(this)"
+          <button class="kit-btn" data-id="3336447015-202606" onclick="toggleKit(this)"
             style="cursor:pointer;border:none;border-radius:20px;padding:6px 18px;font-size:12px;font-weight:700;font-family:inherit;transition:all .2s;">
             Pendente
           </button>
@@ -880,8 +886,10 @@
 </div>
 
 <script>
-  const TOTAL = 68;
   const VALOR_KIT = 90;
+  const MESES_DATA = {"202606": 68};
+  let mesSelecionado = '202606';
+  let TOTAL = 68;
 
   function fmt(v) {
     return 'R$ ' + v.toLocaleString('pt-BR');
@@ -892,6 +900,18 @@
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + id).classList.add('active');
     btn.classList.add('active');
+    updateCustos();
+  }
+
+  function filtrarMes(mes, btn) {
+    mesSelecionado = mes;
+    TOTAL = MESES_DATA[mes] || 0;
+    document.querySelectorAll('.mes-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('tbody tr').forEach(tr => {
+      tr.style.display = tr.getAttribute('data-mes') === mes ? '' : 'none';
+    });
+    updateAll();
     updateCustos();
   }
 
@@ -907,7 +927,7 @@
   }
 
   function countEnviados() {
-    return document.querySelectorAll('.kit-btn.enviado').length;
+    return document.querySelectorAll('tbody tr:not([style*="display: none"]) .kit-btn.enviado').length;
   }
 
   function updateAll() {
@@ -944,7 +964,10 @@
     updateAll();
   }
 
-  // Restaura estado do localStorage
+  // Aplica filtro do mês ativo e restaura localStorage
+  document.querySelectorAll('tbody tr').forEach(tr => {
+    if (tr.getAttribute('data-mes') !== mesSelecionado) tr.style.display = 'none';
+  });
   document.querySelectorAll('.kit-btn').forEach(btn => {
     const id = btn.getAttribute('data-id');
     if (localStorage.getItem('kit_' + id) === 'enviado') {
