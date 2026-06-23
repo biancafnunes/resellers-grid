@@ -61,6 +61,24 @@
   .progress-fill{background:#FFE600;height:100%;border-radius:99px;transition:width .4s}
   .footer{padding:16px 24px 40px;text-align:left;max-width:860px;margin:0 auto}
   .footer span{font-size:11px;color:#AAAAAA}
+  /* simulador estoque */
+  .sim-section{background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:20px}
+  .sim-section h3{font-size:14px;font-weight:700;color:#1A1A1A;margin-bottom:18px;text-transform:uppercase;letter-spacing:.5px}
+  .sim-sizes{display:flex;gap:12px;margin-bottom:20px}
+  .sim-size{flex:1;text-align:center}
+  .sim-size label{display:block;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+  .sim-size input{width:100%;padding:12px 8px;font-size:20px;font-weight:800;font-family:inherit;text-align:center;border:2px solid #E0E0E0;border-radius:12px;color:#1A1A1A;outline:none;transition:border .15s}
+  .sim-size input:focus{border-color:#FFE600}
+  .sim-summary{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+  .sim-card{border-radius:12px;padding:16px 18px;text-align:center}
+  .sim-card .s-title{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+  .sim-card .s-val{font-size:26px;font-weight:900;color:#1A1A1A}
+  .sim-card.dark{background:#1A1A1A}.sim-card.dark .s-title{color:#666}.sim-card.dark .s-val{color:#FFE600}
+  .sim-card.light{background:#F4F4F4}
+  .sim-card.green{background:#D1FAE5}.sim-card.green .s-val{color:#065F46}
+  .sim-card.red{background:#FEE2E2}.sim-card.red .s-val{color:#991B1B}
+  /* divider */
+  .divider-label{font-size:12px;font-weight:700;color:#AAAAAA;text-transform:uppercase;letter-spacing:.5px;margin:24px 0 16px;padding-left:2px}
 </style>
 </head>
 <body>
@@ -78,7 +96,7 @@
 
 <div class="tabs-bar">
   <button class="tab-btn active" onclick="switchTab('kits', this)">Kits</button>
-  <button class="tab-btn" onclick="switchTab('custos', this)">Custos</button>
+  <button class="tab-btn" onclick="switchTab('custos', this)">Estoque & Custos</button>
 </div>
 
 <!-- TAB KITS -->
@@ -908,9 +926,58 @@
   </div>
 </div>
 
-<!-- TAB CUSTOS -->
+<!-- TAB ESTOQUE & CUSTOS -->
 <div id="tab-custos" class="tab-content">
   <div class="content">
+
+    <!-- SIMULADOR DE ESTOQUE -->
+    <div class="sim-section">
+      <h3>Simulador de Estoque</h3>
+      <div class="sim-sizes">
+        <div class="sim-size">
+          <label>P</label>
+          <input type="number" id="sz-p" min="0" value="0" oninput="updateEstoque()">
+        </div>
+        <div class="sim-size">
+          <label>M</label>
+          <input type="number" id="sz-m" min="0" value="0" oninput="updateEstoque()">
+        </div>
+        <div class="sim-size">
+          <label>G</label>
+          <input type="number" id="sz-g" min="0" value="0" oninput="updateEstoque()">
+        </div>
+        <div class="sim-size">
+          <label>GG</label>
+          <input type="number" id="sz-gg" min="0" value="0" oninput="updateEstoque()">
+        </div>
+        <div class="sim-size">
+          <label>XGG</label>
+          <input type="number" id="sz-xgg" min="0" value="0" oninput="updateEstoque()">
+        </div>
+      </div>
+      <div class="sim-summary">
+        <div class="sim-card dark">
+          <div class="s-title">Total em Estoque</div>
+          <div class="s-val" id="est-total">0</div>
+        </div>
+        <div class="sim-card light">
+          <div class="s-title">Valor do Estoque</div>
+          <div class="s-val" id="est-valor">R$ 0</div>
+        </div>
+        <div class="sim-card light">
+          <div class="s-title">Kits Necessários</div>
+          <div class="s-val">79</div>
+        </div>
+        <div class="sim-card light" id="saldo-card">
+          <div class="s-title">Saldo</div>
+          <div class="s-val" id="est-saldo">-79</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUSTOS DE ENVIO -->
+    <div class="divider-label">Custos de Envio</div>
+
     <div class="progress-wrap">
       <div class="progress-label">
         <span>Progresso de envio</span>
@@ -943,6 +1010,7 @@
         <div class="sub" id="custo-pendente-sub">79 kits pendentes</div>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -964,6 +1032,18 @@
     document.getElementById('tab-' + id).classList.add('active');
     btn.classList.add('active');
     updateCustos();
+  }
+
+  function updateEstoque() {
+    const sizes = ['sz-p','sz-m','sz-g','sz-gg','sz-xgg'];
+    const total = sizes.reduce((s, id) => s + (parseInt(document.getElementById(id).value) || 0), 0);
+    const valor = total * VALOR_KIT;
+    const saldo = total - TOTAL;
+    document.getElementById('est-total').textContent = total;
+    document.getElementById('est-valor').textContent = fmt(valor);
+    document.getElementById('est-saldo').textContent = (saldo >= 0 ? '+' : '') + saldo;
+    const card = document.getElementById('saldo-card');
+    card.className = 'sim-card ' + (saldo > 0 ? 'green' : saldo < 0 ? 'red' : 'light');
   }
 
   function countEnviados() {
