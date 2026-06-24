@@ -104,6 +104,7 @@
 <div class="tabs-bar">
   <button class="tab-btn active" onclick="switchTab('kits', this)">Kits</button>
   <button class="tab-btn" onclick="switchTab('custos', this)">Estoque</button>
+  <button class="tab-btn" onclick="switchTab('simulador', this)">Simulador</button>
 </div>
 
 <!-- TAB KITS -->
@@ -948,6 +949,108 @@
   </div>
 </div>
 
+
+<!-- TAB SIMULADOR -->
+<div id="tab-simulador" class="tab-content">
+  <div class="content">
+
+    <div class="cards-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;grid-template-rows:auto;">
+      <div class="card yellow" style="grid-column:auto;grid-row:auto;">
+        <div class="num">122</div>
+        <div class="label">Aprendiz → Especialista</div>
+        <div class="sub">Jan–Jun/26</div>
+      </div>
+      <div class="card" style="grid-column:auto;grid-row:auto;">
+        <div class="num">33</div>
+        <div class="label">Especialista → Empreendedor</div>
+        <div class="sub">Jan–Jun/26</div>
+      </div>
+      <div class="card small" style="grid-column:auto;grid-row:auto;">
+        <div class="num">155</div>
+        <div class="label">Total Kits</div>
+      </div>
+      <div class="card small" style="grid-column:auto;grid-row:auto;background:#1A1A1A;">
+        <div class="num" style="font-size:28px;">R$ 13.950</div>
+        <div class="label">Custo Total</div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:20px;">
+      <canvas id="sim-chart" height="100"></canvas>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-header">
+        <h2>Detalhamento Mensal</h2>
+        <span>Jan–Jun/26 · R$ 90,00 por kit</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th style="text-align:center;">Ap → Esp</th>
+            <th style="text-align:center;">Esp → Emp</th>
+            <th style="text-align:center;">Total Kits</th>
+            <th style="text-align:right;">Custo</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+      <tr>
+        <td style="font-weight:700;">Jan/26</td>
+        <td style="text-align:center;">10</td>
+        <td style="text-align:center;">3</td>
+        <td style="text-align:center;font-weight:700;">13</td>
+        <td style="text-align:right;font-weight:600;">R$ 1.170</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;">Fev/26</td>
+        <td style="text-align:center;">12</td>
+        <td style="text-align:center;">5</td>
+        <td style="text-align:center;font-weight:700;">17</td>
+        <td style="text-align:right;font-weight:600;">R$ 1.530</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;">Mar/26</td>
+        <td style="text-align:center;">12</td>
+        <td style="text-align:center;">7</td>
+        <td style="text-align:center;font-weight:700;">19</td>
+        <td style="text-align:right;font-weight:600;">R$ 1.710</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;">Abr/26</td>
+        <td style="text-align:center;">11</td>
+        <td style="text-align:center;">8</td>
+        <td style="text-align:center;font-weight:700;">19</td>
+        <td style="text-align:right;font-weight:600;">R$ 1.710</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;">Mai/26</td>
+        <td style="text-align:center;">9</td>
+        <td style="text-align:center;">7</td>
+        <td style="text-align:center;font-weight:700;">16</td>
+        <td style="text-align:right;font-weight:600;">R$ 1.440</td>
+      </tr>
+      <tr>
+        <td style="font-weight:700;">Jun/26</td>
+        <td style="text-align:center;">68</td>
+        <td style="text-align:center;">3</td>
+        <td style="text-align:center;font-weight:700;">71</td>
+        <td style="text-align:right;font-weight:600;">R$ 6.390</td>
+      </tr>
+          <tr style="background:#F7F7F7;font-weight:800;">
+            <td>Total</td>
+            <td style="text-align:center;">122</td>
+            <td style="text-align:center;">33</td>
+            <td style="text-align:center;">155</td>
+            <td style="text-align:right;">R$ 13.950</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
 <div class="footer">
   <span>Fonte: SBOX_WHMPBR.BD_CUST_RESELLER_INFO — subida de nível Aprendiz→Especialista em Jun/2026</span>
 </div>
@@ -1039,6 +1142,50 @@
     }
   });
   updateAll();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script>
+  Chart.register(ChartDataLabels);
+  const simCtx = document.getElementById('sim-chart').getContext('2d');
+  new Chart(simCtx, {
+    type: 'bar',
+    data: {
+      labels: ["Jan/26", "Fev/26", "Mar/26", "Abr/26", "Mai/26", "Jun/26"],
+      datasets: [
+        {
+          label: 'Aprendiz → Especialista',
+          data: [10, 12, 12, 11, 9, 68],
+          backgroundColor: '#FFE600',
+          borderRadius: 6,
+        },
+        {
+          label: 'Especialista → Empreendedor',
+          data: [3, 5, 7, 8, 7, 3],
+          backgroundColor: '#1A1A1A',
+          borderRadius: 6,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top', labels: { font: { family: 'Inter', weight: '600' }, boxWidth: 14 } },
+        datalabels: {
+          anchor: 'end', align: 'end',
+          font: { family: 'Inter', weight: '700', size: 11 },
+          color: '#1A1A1A',
+          formatter: v => v > 0 ? v : ''
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { family: 'Inter', weight: '600' } } },
+        y: { grid: { color: '#F0F0F0' }, ticks: { font: { family: 'Inter' } }, beginAtZero: true }
+      },
+      layout: { padding: { top: 20 } }
+    }
+  });
 </script>
 </body>
 </html>
