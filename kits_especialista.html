@@ -954,47 +954,51 @@
 <div id="tab-simulador" class="tab-content">
   <div class="content">
 
-    <div class="cards-grid" style="grid-template-columns:1fr 1fr 1fr 1fr;grid-template-rows:auto;">
-      <div class="card yellow" style="grid-column:auto;grid-row:auto;">
-        <div class="num">122</div>
-        <div class="label">Aprendiz → Especialista</div>
-        <div class="sub">Jan–Jun/26</div>
+    <!-- Filtros -->
+    <div class="mes-filtros" style="margin-bottom:24px;">
+      <button class="mes-btn active" id="sf-todos"   onclick="simFiltrar('todos',  this)">Todos</button>
+      <button class="mes-btn"        id="sf-ap-esp"  onclick="simFiltrar('ap_esp', this)">Aprendiz → Especialista</button>
+      <button class="mes-btn"        id="sf-esp-emp" onclick="simFiltrar('esp_emp',this)">Especialista → Empreendedor</button>
+    </div>
+
+    <!-- Cards dinâmicos -->
+    <div style="display:flex;gap:16px;margin-bottom:24px;">
+      <div class="card yellow" style="flex:1;grid-column:auto;grid-row:auto;">
+        <div class="num" id="sim-card-kits">155</div>
+        <div class="label" id="sim-card-label">Total Kits — Jan–Jun/26</div>
       </div>
-      <div class="card" style="grid-column:auto;grid-row:auto;">
-        <div class="num">33</div>
-        <div class="label">Especialista → Empreendedor</div>
-        <div class="sub">Jan–Jun/26</div>
-      </div>
-      <div class="card small" style="grid-column:auto;grid-row:auto;">
-        <div class="num">155</div>
-        <div class="label">Total Kits</div>
-      </div>
-      <div class="card small" style="grid-column:auto;grid-row:auto;background:#1A1A1A;">
-        <div class="num" style="font-size:28px;">R$ 13.950</div>
+      <div class="card" style="flex:1;grid-column:auto;grid-row:auto;">
+        <div class="num" id="sim-card-custo" style="font-size:32px;">R$ 13.950</div>
         <div class="label">Custo Total</div>
+      </div>
+      <div class="card small" style="flex:1;grid-column:auto;grid-row:auto;">
+        <div class="num">R$ 90,00</div>
+        <div class="label">Custo por Kit</div>
       </div>
     </div>
 
+    <!-- Gráfico -->
     <div style="background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:20px;">
       <canvas id="sim-chart" height="100"></canvas>
     </div>
 
+    <!-- Tabela -->
     <div class="table-wrap">
       <div class="table-header">
-        <h2>Detalhamento Mensal</h2>
+        <h2 id="sim-table-title">Detalhamento Mensal — Todos</h2>
         <span>Jan–Jun/26 · R$ 90,00 por kit</span>
       </div>
       <table>
         <thead>
           <tr>
             <th>Mês</th>
-            <th style="text-align:center;">Ap → Esp</th>
-            <th style="text-align:center;">Esp → Emp</th>
-            <th style="text-align:center;">Total Kits</th>
+            <th class="col-ap-esp" style="text-align:center;">Ap → Esp</th>
+            <th class="col-esp-emp" style="text-align:center;">Esp → Emp</th>
+            <th class="col-total" style="text-align:center;">Total Kits</th>
             <th style="text-align:right;">Custo</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="sim-tbody">
           
       <tr>
         <td style="font-weight:700;">Jan/26</td>
@@ -1038,12 +1042,12 @@
         <td style="text-align:center;font-weight:700;">71</td>
         <td style="text-align:right;font-weight:600;">R$ 6.390</td>
       </tr>
-          <tr style="background:#F7F7F7;font-weight:800;">
+          <tr style="background:#F7F7F7;font-weight:800;" class="total-row">
             <td>Total</td>
-            <td style="text-align:center;">122</td>
-            <td style="text-align:center;">33</td>
-            <td style="text-align:center;">155</td>
-            <td style="text-align:right;">R$ 13.950</td>
+            <td class="col-ap-esp" style="text-align:center;">122</td>
+            <td class="col-esp-emp" style="text-align:center;">33</td>
+            <td class="col-total" style="text-align:center;">155</td>
+            <td style="text-align:right;" id="sim-total-custo">R$ 13.950</td>
           </tr>
         </tbody>
       </table>
@@ -1148,24 +1152,20 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <script>
   Chart.register(ChartDataLabels);
-  const simCtx = document.getElementById('sim-chart').getContext('2d');
-  new Chart(simCtx, {
+
+  const SIM_LABELS  = ["Jan/26", "Fev/26", "Mar/26", "Abr/26", "Mai/26", "Jun/26"];
+  const SIM_AP_ESP  = [10, 12, 12, 11, 9, 68];
+  const SIM_ESP_EMP = [3, 5, 7, 8, 7, 3];
+  const SIM_TOTAL   = [13, 17, 19, 19, 16, 71];
+  const KIT_PRICE   = 90;
+
+  const chartCfg = {
     type: 'bar',
     data: {
-      labels: ["Jan/26", "Fev/26", "Mar/26", "Abr/26", "Mai/26", "Jun/26"],
+      labels: SIM_LABELS,
       datasets: [
-        {
-          label: 'Aprendiz → Especialista',
-          data: [10, 12, 12, 11, 9, 68],
-          backgroundColor: '#FFE600',
-          borderRadius: 6,
-        },
-        {
-          label: 'Especialista → Empreendedor',
-          data: [3, 5, 7, 8, 7, 3],
-          backgroundColor: '#1A1A1A',
-          borderRadius: 6,
-        }
+        { label: 'Aprendiz → Especialista',    data: SIM_AP_ESP,  backgroundColor: '#FFE600', borderRadius: 6 },
+        { label: 'Especialista → Empreendedor', data: SIM_ESP_EMP, backgroundColor: '#1A1A1A', borderRadius: 6 }
       ]
     },
     options: {
@@ -1185,7 +1185,59 @@
       },
       layout: { padding: { top: 20 } }
     }
-  });
+  };
+
+  const simChart = new Chart(document.getElementById('sim-chart').getContext('2d'), chartCfg);
+
+  function fmtBrl(v) {
+    return 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:0, maximumFractionDigits:0});
+  }
+
+  function simFiltrar(tipo, btn) {
+    document.querySelectorAll('#tab-simulador .mes-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    let dados, label, showApEsp, showEspEmp, showTotal;
+    if (tipo === 'ap_esp') {
+      dados = SIM_AP_ESP; label = 'Aprendiz → Especialista';
+      showApEsp = true; showEspEmp = false; showTotal = false;
+    } else if (tipo === 'esp_emp') {
+      dados = SIM_ESP_EMP; label = 'Especialista → Empreendedor';
+      showApEsp = false; showEspEmp = true; showTotal = false;
+    } else {
+      dados = SIM_TOTAL; label = 'Todos';
+      showApEsp = true; showEspEmp = true; showTotal = true;
+    }
+
+    // Atualiza chart
+    simChart.data.datasets[0].hidden = tipo === 'esp_emp';
+    simChart.data.datasets[1].hidden = tipo === 'ap_esp';
+    simChart.update();
+
+    // Atualiza cards
+    const total = dados.reduce((a, b) => a + b, 0);
+    document.getElementById('sim-card-kits').textContent  = total;
+    document.getElementById('sim-card-label').textContent = label + ' — Jan–Jun/26';
+    document.getElementById('sim-card-custo').textContent = fmtBrl(total * KIT_PRICE);
+
+    // Atualiza título tabela
+    document.getElementById('sim-table-title').textContent = 'Detalhamento Mensal — ' + label;
+
+    // Mostra/oculta colunas da tabela
+    document.querySelectorAll('.col-ap-esp').forEach(el  => el.style.display = showApEsp  ? '' : 'none');
+    document.querySelectorAll('.col-esp-emp').forEach(el => el.style.display = showEspEmp ? '' : 'none');
+    document.querySelectorAll('.col-total').forEach(el   => el.style.display = showTotal  ? '' : 'none');
+
+    // Atualiza custo por linha da tabela
+    const trs = document.querySelectorAll('#sim-tbody tr:not(.total-row)');
+    trs.forEach((tr, i) => {
+      const v = dados[i] || 0;
+      tr.querySelectorAll('td')[tipo === 'todos' ? 4 : 2].textContent = fmtBrl(v * KIT_PRICE);
+    });
+
+    // Atualiza total
+    document.getElementById('sim-total-custo').textContent = fmtBrl(total * KIT_PRICE);
+  }
 </script>
 </body>
 </html>
