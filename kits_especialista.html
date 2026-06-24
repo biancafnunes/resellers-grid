@@ -1082,7 +1082,7 @@
     TOTAL = MESES_DATA[mes] || 0;
     document.querySelectorAll('.mes-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    document.querySelectorAll('tbody tr').forEach(tr => {
+    document.querySelectorAll('#tab-kits tbody tr').forEach(tr => {
       tr.style.display = tr.getAttribute('data-mes') === mes ? '' : 'none';
     });
     updateAll();
@@ -1134,8 +1134,8 @@
     updateAll();
   }
 
-  // Aplica filtro do mês ativo e restaura localStorage
-  document.querySelectorAll('tbody tr').forEach(tr => {
+  // Aplica filtro do mês ativo e restaura localStorage (somente Tab Kits)
+  document.querySelectorAll('#tab-kits tbody tr').forEach(tr => {
     if (tr.getAttribute('data-mes') !== mesSelecionado) tr.style.display = 'none';
   });
   document.querySelectorAll('.kit-btn').forEach(btn => {
