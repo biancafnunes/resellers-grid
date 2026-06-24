@@ -994,59 +994,51 @@
             <th>Mês</th>
             <th class="col-ap-esp" style="text-align:center;">Ap → Esp</th>
             <th class="col-esp-emp" style="text-align:center;">Esp → Emp</th>
-            <th class="col-total" style="text-align:center;">Total Kits</th>
             <th style="text-align:right;">Custo</th>
           </tr>
         </thead>
         <tbody id="sim-tbody">
-          
+
       <tr>
         <td style="font-weight:700;">Jan/26</td>
-        <td style="text-align:center;">10</td>
-        <td style="text-align:center;">3</td>
-        <td style="text-align:center;font-weight:700;">13</td>
+        <td class="col-ap-esp" style="text-align:center;">10</td>
+        <td class="col-esp-emp" style="text-align:center;">3</td>
         <td style="text-align:right;font-weight:600;">R$ 1.170</td>
       </tr>
       <tr>
         <td style="font-weight:700;">Fev/26</td>
-        <td style="text-align:center;">12</td>
-        <td style="text-align:center;">5</td>
-        <td style="text-align:center;font-weight:700;">17</td>
+        <td class="col-ap-esp" style="text-align:center;">12</td>
+        <td class="col-esp-emp" style="text-align:center;">5</td>
         <td style="text-align:right;font-weight:600;">R$ 1.530</td>
       </tr>
       <tr>
         <td style="font-weight:700;">Mar/26</td>
-        <td style="text-align:center;">12</td>
-        <td style="text-align:center;">7</td>
-        <td style="text-align:center;font-weight:700;">19</td>
+        <td class="col-ap-esp" style="text-align:center;">12</td>
+        <td class="col-esp-emp" style="text-align:center;">7</td>
         <td style="text-align:right;font-weight:600;">R$ 1.710</td>
       </tr>
       <tr>
         <td style="font-weight:700;">Abr/26</td>
-        <td style="text-align:center;">11</td>
-        <td style="text-align:center;">8</td>
-        <td style="text-align:center;font-weight:700;">19</td>
+        <td class="col-ap-esp" style="text-align:center;">11</td>
+        <td class="col-esp-emp" style="text-align:center;">8</td>
         <td style="text-align:right;font-weight:600;">R$ 1.710</td>
       </tr>
       <tr>
         <td style="font-weight:700;">Mai/26</td>
-        <td style="text-align:center;">9</td>
-        <td style="text-align:center;">7</td>
-        <td style="text-align:center;font-weight:700;">16</td>
+        <td class="col-ap-esp" style="text-align:center;">9</td>
+        <td class="col-esp-emp" style="text-align:center;">7</td>
         <td style="text-align:right;font-weight:600;">R$ 1.440</td>
       </tr>
       <tr>
         <td style="font-weight:700;">Jun/26</td>
-        <td style="text-align:center;">68</td>
-        <td style="text-align:center;">3</td>
-        <td style="text-align:center;font-weight:700;">71</td>
+        <td class="col-ap-esp" style="text-align:center;">68</td>
+        <td class="col-esp-emp" style="text-align:center;">3</td>
         <td style="text-align:right;font-weight:600;">R$ 6.390</td>
       </tr>
           <tr style="background:#F7F7F7;font-weight:800;" class="total-row">
             <td>Total</td>
             <td class="col-ap-esp" style="text-align:center;">122</td>
             <td class="col-esp-emp" style="text-align:center;">33</td>
-            <td class="col-total" style="text-align:center;">155</td>
             <td style="text-align:right;" id="sim-total-custo">R$ 13.950</td>
           </tr>
         </tbody>
@@ -1197,16 +1189,13 @@
     document.querySelectorAll('#tab-simulador .mes-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    let dados, label, showApEsp, showEspEmp, showTotal;
+    let dados, label;
     if (tipo === 'ap_esp') {
       dados = SIM_AP_ESP; label = 'Aprendiz → Especialista';
-      showApEsp = true; showEspEmp = false; showTotal = false;
     } else if (tipo === 'esp_emp') {
       dados = SIM_ESP_EMP; label = 'Especialista → Empreendedor';
-      showApEsp = false; showEspEmp = true; showTotal = false;
     } else {
       dados = SIM_TOTAL; label = 'Todos';
-      showApEsp = true; showEspEmp = true; showTotal = true;
     }
 
     // Atualiza chart
@@ -1223,16 +1212,15 @@
     // Atualiza título tabela
     document.getElementById('sim-table-title').textContent = 'Detalhamento Mensal — ' + label;
 
-    // Mostra/oculta colunas da tabela
-    document.querySelectorAll('.col-ap-esp').forEach(el  => el.style.display = showApEsp  ? '' : 'none');
-    document.querySelectorAll('.col-esp-emp').forEach(el => el.style.display = showEspEmp ? '' : 'none');
-    document.querySelectorAll('.col-total').forEach(el   => el.style.display = showTotal  ? '' : 'none');
+    // Mostra/oculta colunas — ao filtrar, só mostra a coluna relevante
+    document.querySelectorAll('.col-ap-esp').forEach(el  => el.style.display = (tipo === 'todos' || tipo === 'ap_esp')  ? '' : 'none');
+    document.querySelectorAll('.col-esp-emp').forEach(el => el.style.display = (tipo === 'todos' || tipo === 'esp_emp') ? '' : 'none');
 
-    // Atualiza custo por linha da tabela (sempre td[4] = coluna Custo)
+    // Custo é sempre td[3] na estrutura da tabela
     const trs = document.querySelectorAll('#sim-tbody tr:not(.total-row)');
     trs.forEach((tr, i) => {
       const v = dados[i] || 0;
-      tr.querySelectorAll('td')[4].textContent = fmtBrl(v * KIT_PRICE);
+      tr.querySelectorAll('td')[3].textContent = fmtBrl(v * KIT_PRICE);
     });
 
     // Atualiza total
