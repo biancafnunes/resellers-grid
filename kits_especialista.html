@@ -1228,11 +1228,11 @@
     document.querySelectorAll('.col-esp-emp').forEach(el => el.style.display = showEspEmp ? '' : 'none');
     document.querySelectorAll('.col-total').forEach(el   => el.style.display = showTotal  ? '' : 'none');
 
-    // Atualiza custo por linha da tabela
+    // Atualiza custo por linha da tabela (sempre td[4] = coluna Custo)
     const trs = document.querySelectorAll('#sim-tbody tr:not(.total-row)');
     trs.forEach((tr, i) => {
       const v = dados[i] || 0;
-      tr.querySelectorAll('td')[tipo === 'todos' ? 4 : 2].textContent = fmtBrl(v * KIT_PRICE);
+      tr.querySelectorAll('td')[4].textContent = fmtBrl(v * KIT_PRICE);
     });
 
     // Atualiza total
