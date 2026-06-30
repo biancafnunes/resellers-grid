@@ -156,6 +156,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--gray-bg);colo
   <div class="tab active" onclick="setTab(0)">Visão Geral</div>
   <div class="tab" onclick="setTab(1)">Por Device</div>
   <div class="tab" onclick="setTab(2)">Por Nível</div>
+  <div class="tab" onclick="setTab(3)">Fontes &amp; Queries</div>
 </div>
 
 <!-- ═══════════════ TAB 0 — VISÃO GERAL ═══════════════ -->
@@ -444,6 +445,135 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--gray-bg);colo
 </div>
 </div>
 
+<!-- ═══════════════ TAB 3 — FONTES & QUERIES ═══════════════ -->
+<div class="tab-pane" id="pane-3">
+<div class="content">
+
+  <!-- RESUMO -->
+  <div class="section-label">Sobre este grid</div>
+  <div class="insight-box" style="margin-bottom:28px;">
+    <p style="margin-bottom:12px;">
+      <strong>Sazonalidade Semanal — Devices Sold · Canal Resellers</strong>
+    </p>
+    <p>
+      Este grid analisa o <strong>padrão de comportamento semanal de vendas de dispositivos Point</strong> (Pro 3 + Smart 2)
+      no canal Resellers entre <strong>janeiro e junho de 2026</strong>. O objetivo é identificar se existe uma correlação
+      consistente entre determinadas semanas do mês e maiores ou menores volumes de vendas, apoiando projeções e
+      planejamento do canal.
+    </p>
+    <p style="margin-top:10px;">
+      As semanas são definidas por faixas de dias fixas dentro do mês: <strong>Sem 1 = dias 1–7</strong>,
+      Sem 2 = 8–14, Sem 3 = 15–21, Sem 4 = 22–28, Sem 5 = 29–31 (quando existem).
+      Os dados incluem todos os níveis de reseller (Aprendiz, Especialista, Empreendedor, Top Empreendedor)
+      e ambos os modelos de device analisados.
+    </p>
+  </div>
+
+  <!-- TABELAS DE FONTES -->
+  <div class="section-label">Tabelas utilizadas</div>
+  <div class="tbl-wrap" style="margin-bottom:28px;">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="text-align:left;width:340px;">Tabela</th>
+          <th style="text-align:left;">Uso neste grid</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-family:monospace;font-size:11px;font-weight:600;color:#2563EB;">meli-bi-data.WHOWNER.BT_PRODUCT_ORDERS</td>
+          <td style="text-align:left;font-weight:400;">Pedidos de compra de devices · filtro: ORDER_GATEWAY=1, OPERATION_TYPE=1, SIT_SITE_ID='MLB'</td>
+        </tr>
+        <tr>
+          <td style="font-family:monospace;font-size:11px;font-weight:600;color:#2563EB;">meli-bi-data.WHOWNER.BT_PRODUCT_ORDER_ITEM</td>
+          <td style="text-align:left;font-weight:400;">Itens dos pedidos · filtro: PI_NAME IN ('Point Pro 3', 'Point Smart 2')</td>
+        </tr>
+        <tr>
+          <td style="font-family:monospace;font-size:11px;font-weight:600;color:#2563EB;">meli-bi-data.WHOWNER.BT_MP_POINT_USERS_GROUPS</td>
+          <td style="text-align:left;font-weight:400;">Vínculo entre comprador (CUS_CUST_ID_BUY) e grupo de reseller · filtro: ACTIVE=1</td>
+        </tr>
+        <tr>
+          <td style="font-family:monospace;font-size:11px;font-weight:600;color:#2563EB;">meli-bi-data.WHOWNER.BT_MP_POINT_GROUP</td>
+          <td style="text-align:left;font-weight:400;">Nome e tipo do grupo de reseller · filtro: GROUP_TYPE='RESELLER', ACTIVE=1 · campo: GROUP_NAME (nível)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- QUERY -->
+  <div class="section-label">Query principal</div>
+  <div class="tbl-wrap" style="margin-bottom:28px;">
+    <div style="background:#1A1A1A;padding:12px 20px;border-radius:12px 12px 0 0;">
+      <span style="font-size:11px;font-weight:700;color:var(--yellow);text-transform:uppercase;letter-spacing:.8px;">BigQuery · meli-bi-data · Billing project: meli-bi-data</span>
+    </div>
+    <pre style="background:#111;color:#E0E0E0;font-family:monospace;font-size:12px;line-height:1.7;padding:24px;overflow-x:auto;border-radius:0 0 12px 12px;white-space:pre;">SELECT
+  FORMAT_DATE('%Y-%m', DATE(o.PO_CREATED_AT))  AS mes,
+  CASE
+    WHEN EXTRACT(DAY FROM DATE(o.PO_CREATED_AT)) BETWEEN 1  AND 7  THEN 'Sem1'
+    WHEN EXTRACT(DAY FROM DATE(o.PO_CREATED_AT)) BETWEEN 8  AND 14 THEN 'Sem2'
+    WHEN EXTRACT(DAY FROM DATE(o.PO_CREATED_AT)) BETWEEN 15 AND 21 THEN 'Sem3'
+    WHEN EXTRACT(DAY FROM DATE(o.PO_CREATED_AT)) BETWEEN 22 AND 28 THEN 'Sem4'
+    ELSE                                                               'Sem5'
+  END AS semana,
+  oi.PI_NAME                                    AS device,
+  COALESCE(gr.GROUP_NAME, 'Aprendiz')           AS nivel,
+  COUNT(oi.PI_ORDER_ITEM_ID)                    AS qtd
+
+FROM `meli-bi-data.WHOWNER.BT_PRODUCT_ORDERS` o
+JOIN `meli-bi-data.WHOWNER.BT_PRODUCT_ORDER_ITEM` oi
+  ON o.IDX_ID = oi.IDX_ID
+LEFT JOIN `meli-bi-data.WHOWNER.BT_MP_POINT_USERS_GROUPS` ug
+  ON o.CUS_CUST_ID_BUY = ug.CUS_CUST_ID AND ug.ACTIVE = 1
+LEFT JOIN `meli-bi-data.WHOWNER.BT_MP_POINT_GROUP` gr
+  ON ug.GROUP_ID = gr.ID_GROUP
+ AND gr.GROUP_TYPE = 'RESELLER'
+ AND gr.ACTIVE = 1
+
+WHERE o.ORDER_GATEWAY  = '1'
+  AND o.SIT_SITE_ID    = 'MLB'
+  AND o.OPERATION_TYPE = '1'
+  AND DATE(o.PO_CREATED_AT) >= '2026-01-01'
+  AND DATE(o.PO_CREATED_AT) &lt;  '2026-07-01'
+  AND oi.PI_NAME IN ('Point Pro 3', 'Point Smart 2')
+
+GROUP BY 1, 2, 3, 4
+ORDER BY 1, 2, 3, 4</pre>
+  </div>
+
+  <!-- NOTAS -->
+  <div class="section-label">Notas metodológicas</div>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th style="text-align:left;width:200px;">Ponto</th>
+          <th style="text-align:left;">Detalhe</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:left;font-weight:700;">Definição de semana</td>
+          <td style="text-align:left;font-weight:400;">Por faixa de dias do mês (não semana calendário ISO). Sem 5 só existe em meses com 29+ dias; Fevereiro/26 não tem Sem 5.</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;font-weight:700;">Nível "Aprendiz"</td>
+          <td style="text-align:left;font-weight:400;">Inclui compradores sem grupo ativo em BT_MP_POINT_USERS_GROUPS (COALESCE para 'Aprendiz'). Pode conter compradores que ainda não possuem nível formal.</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;font-weight:700;">Devices</td>
+          <td style="text-align:left;font-weight:400;">Apenas Point Pro 3 e Point Smart 2. Outros modelos (Mini, etc.) excluídos do escopo.</td>
+        </tr>
+        <tr>
+          <td style="text-align:left;font-weight:700;">Extração</td>
+          <td style="text-align:left;font-weight:400;">Dados extraídos em 30/Jun/2026. Junho/26 inclui dados até 29/Jun (D-1). Os valores estão hardcoded no grid — não atualizam automaticamente.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</div><!-- /pane-3 -->
+
 <div class="footer">
   <span>Fonte: BT_PRODUCT_ORDERS + BT_PRODUCT_ORDER_ITEM · meli-bi-data.WHOWNER · Canal Resellers (BT_MP_POINT_GROUP, GROUP_TYPE=RESELLER) · Devices: Point Pro 3 + Point Smart 2 · Período: Jan–Jun/2026 · Gerado em Jun/2026.</span>
 </div>
@@ -600,6 +730,10 @@ function toggleTable(mode){
 function setTab(i){
   document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i===j));
   document.querySelectorAll('.tab-pane').forEach((p,j)=>p.classList.toggle('active',i===j));
+  // força re-render dos charts quando a aba volta a ficar visível
+  if(i===0) document.querySelectorAll('#pane-0 canvas').forEach(c=>{ const ch=Chart.getChart(c); if(ch) ch.resize(); });
+  if(i===1) document.querySelectorAll('#pane-1 canvas').forEach(c=>{ const ch=Chart.getChart(c); if(ch) ch.resize(); });
+  if(i===2) document.querySelectorAll('#pane-2 canvas').forEach(c=>{ const ch=Chart.getChart(c); if(ch) ch.resize(); });
 }
 
 // ── CHARTS ───────────────────────────────────────────────────
