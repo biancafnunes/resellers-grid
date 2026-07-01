@@ -459,22 +459,22 @@
   <div class="kpi-row mb32">
     <div class="kpi-card">
       <div class="kpi-label">Devices Mai · NI openers</div>
-      <div class="kpi-value">841</div>
-      <div class="kpi-sub">comprados em Mai/26 · 352–355 sellers ativos</div>
+      <div class="kpi-value">309</div>
+      <div class="kpi-sub">sem overlap · 246–280 sellers ativos</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Devices Mai · PP openers</div>
-      <div class="kpi-value">979</div>
-      <div class="kpi-sub">comprados em Mai/26 · 393–408 sellers ativos</div>
+      <div class="kpi-value">305</div>
+      <div class="kpi-sub">sem overlap · 226–267 sellers ativos</div>
     </div>
     <div class="kpi-card" style="background:var(--black);">
       <div class="kpi-label" style="color:#888;">TPV total NI</div>
-      <div class="kpi-value" style="color:var(--yellow);">R$ 5,5M</div>
+      <div class="kpi-value" style="color:var(--yellow);">R$ 4,4M</div>
       <div class="kpi-sub" style="color:#666;">Mai + Jun/26</div>
     </div>
     <div class="kpi-card" style="background:var(--black);">
       <div class="kpi-label" style="color:#888;">TPV total Preço Pro</div>
-      <div class="kpi-value" style="color:var(--yellow);">R$ 7,2M</div>
+      <div class="kpi-value" style="color:var(--yellow);">R$ 4,9M</div>
       <div class="kpi-sub" style="color:#666;">Mai + Jun/26</div>
     </div>
   </div>
@@ -506,13 +506,13 @@
           </thead>
           <tbody>
             <tr class="group-header"><td colspan="5">Novos Incentivos</td></tr>
-            <tr><td>NI</td><td>841</td><td>Mai/26</td><td>294</td><td>R$ 1.856.795</td></tr>
-            <tr><td>NI</td><td>841</td><td>Jun/26</td><td>335</td><td>R$ 3.621.455</td></tr>
-            <tr class="total"><td>NI</td><td>841</td><td>Total</td><td>—</td><td>R$ 5.478.250</td></tr>
+            <tr><td>NI</td><td>309</td><td>Mai/26</td><td>246</td><td>R$ 1.499.149</td></tr>
+            <tr><td>NI</td><td>309</td><td>Jun/26</td><td>280</td><td>R$ 2.945.832</td></tr>
+            <tr class="total"><td>NI</td><td>309</td><td>Total</td><td>—</td><td>R$ 4.444.981</td></tr>
             <tr class="group-header"><td colspan="5">Preço Pro</td></tr>
-            <tr><td>PP</td><td>979</td><td>Mai/26</td><td>325</td><td>R$ 2.542.102</td></tr>
-            <tr><td>PP</td><td>979</td><td>Jun/26</td><td>392</td><td>R$ 4.650.094</td></tr>
-            <tr class="total"><td>PP</td><td>979</td><td>Total</td><td>—</td><td>R$ 7.192.196</td></tr>
+            <tr><td>PP</td><td>305</td><td>Mai/26</td><td>226</td><td>R$ 1.696.409</td></tr>
+            <tr><td>PP</td><td>305</td><td>Jun/26</td><td>267</td><td>R$ 3.252.512</td></tr>
+            <tr class="total"><td>PP</td><td>305</td><td>Total</td><td>—</td><td>R$ 4.948.921</td></tr>
           </tbody>
         </table>
       </div>
@@ -675,7 +675,7 @@
       datasets: [
         {
           label: 'Novos Incentivos',
-          data: [1856795, 3621455],
+          data: [1499149, 2945832],
           backgroundColor: '#FFE600',
           borderColor: '#CCC',
           borderWidth: 1,
@@ -683,7 +683,7 @@
         },
         {
           label: 'Preço Pro',
-          data: [2542102, 4650094],
+          data: [1696409, 3252512],
           backgroundColor: '#1A1A1A',
           borderColor: '#000',
           borderWidth: 1,
@@ -707,7 +707,7 @@
       scales: {
         y: {
           beginAtZero: true,
-          max: 6000000,
+          max: 4000000,
           ticks: {
             callback: v => 'R$' + (v/1000000).toFixed(1) + 'M',
             font: { size: 10 }
@@ -726,14 +726,14 @@
       datasets: [
         {
           label: 'Devices ativos',
-          data: [305, 332, 342, 403],
+          data: [254, 279, 232, 275],
           backgroundColor: ['#FFE600','#FFE600','#1A1A1A','#1A1A1A'],
           borderRadius: 4,
           borderSkipped: false,
         },
         {
           label: 'Não ativados',
-          data: [536, 509, 637, 576],
+          data: [55, 30, 73, 30],
           backgroundColor: '#E0E0E0',
           borderRadius: 4,
           borderSkipped: false,
@@ -748,7 +748,7 @@
         x: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 } } },
         y: {
           stacked: true,
-          max: 1100,
+          max: 380,
           ticks: { font: { size: 10 } },
           grid: { color: '#eee' }
         }
@@ -764,7 +764,7 @@
           align: 'center',
           formatter: (v, ctx) => {
             const total = ctx.datasetIndex === 0
-              ? [841, 841, 979, 979][ctx.dataIndex]
+              ? [309, 309, 305, 305][ctx.dataIndex]
               : null;
             const pct = (v / total * 100).toFixed(1);
             return v + '\n' + pct + '%';
