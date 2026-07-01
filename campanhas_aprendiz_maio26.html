@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campanhas Aprendiz — Maio/Jun 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  :root {
+    --yellow: #FFE600;
+    --black:  #1A1A1A;
+    --gray-bg:#F4F4F4;
+    --white:  #FFFFFF;
+    --border: #E0E0E0;
+    --muted:  #888888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--gray-bg); color: var(--black); }
+
+  /* TOPBAR */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--black); padding: 14px 40px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .topbar-logo { width: 28px; height: 28px; background: var(--yellow); border-radius: 6px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:14px; }
+  .topbar-title { color: var(--white); font-weight: 700; font-size: 14px; }
+  .topbar-sub { color: var(--muted); font-size: 12px; margin-left: auto; }
+
+  /* HERO */
+  .hero {
+    background: var(--yellow); padding: 36px 40px 28px;
+  }
+  .hero-badge {
+    display: inline-block; background: var(--black); color: var(--yellow);
+    font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px;
+  }
+  .hero h1 { font-size: 28px; font-weight: 900; color: var(--black); line-height: 1.2; }
+  .hero p  { font-size: 14px; color: #444; margin-top: 6px; }
+
+  /* TABS */
+  .tabs-bar {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 0 40px; display: flex; gap: 0;
+  }
+  .tab-btn {
+    padding: 14px 22px; font-size: 13px; font-weight: 600; cursor: pointer;
+    border: none; background: none; color: var(--muted);
+    border-bottom: 3px solid transparent;
+    transition: color .15s, border-color .15s;
+  }
+  .tab-btn.active { color: var(--black); border-bottom-color: var(--black); }
+  .tab-btn:hover:not(.active) { color: var(--black); }
+
+  /* CONTENT */
+  .tab-content { display: none; padding: 32px 40px; }
+  .tab-content.active { display: block; }
+
+  /* MAIN GRID 50/50 */
+  .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  /* CARD */
+  .card {
+    background: var(--white); border-radius: 12px;
+    border: 1px solid var(--border); padding: 20px;
+  }
+  .card-black {
+    background: var(--black); border-radius: 12px; padding: 20px; color: var(--white);
+  }
+  .card-yellow {
+    background: var(--yellow); border-radius: 12px; padding: 20px;
+  }
+  .card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); margin-bottom: 8px; }
+  .card-title-white { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #888; margin-bottom: 8px; }
+  .card-number { font-size: 32px; font-weight: 900; }
+  .card-number-yellow { font-size: 32px; font-weight: 900; color: var(--yellow); }
+  .card-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .card-sub-dark { font-size: 12px; color: #555; margin-top: 4px; }
+
+  .card-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #2A2A2A;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .card-item:last-child { border-bottom: none; }
+  .card-item-label { font-size: 12px; color: #aaa; }
+  .card-item-value { font-size: 12px; font-weight: 700; color: var(--white); }
+
+  /* FUNIL */
+  .funil { display: flex; flex-direction: column; gap: 6px; }
+  .funil-step {
+    background: var(--black); border-radius: 8px; padding: 12px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .funil-step-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: .4px; }
+  .funil-step-value { font-size: 20px; font-weight: 900; color: var(--yellow); }
+  .funil-step-pct   { font-size: 11px; color: #666; margin-top: 2px; }
+  .funil-step.highlight { border: 2.5px solid var(--yellow); position: relative; }
+  .funil-badge {
+    position: absolute; top: -10px; left: 12px;
+    background: var(--yellow); color: var(--black);
+    font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 4px;
+  }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th {
+    background: #2D2D2D; color: var(--white);
+    padding: 9px 12px; text-align: right; font-weight: 700;
+    font-size: 11px; text-transform: uppercase; letter-spacing: .3px;
+  }
+  th:first-child { text-align: left; }
+  td {
+    padding: 9px 12px; border-bottom: 1px solid var(--border);
+    text-align: right; color: #333;
+  }
+  td:first-child { text-align: left; font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  tr.total td { background: #F7F7F7; font-weight: 800; }
+  tr.group-header td {
+    background: #1A1A1A; color: var(--yellow);
+    font-weight: 800; font-size: 11px; text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .pct-good  { color: #16a34a; font-weight: 700; }
+  .pct-warn  { color: #ca8a04; font-weight: 700; }
+  .pct-badge {
+    display: inline-block; background: var(--yellow); color: var(--black);
+    font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 13px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .5px; color: var(--black); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* KPI ROW */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi-card {
+    background: var(--white); border-radius: 10px; border: 1px solid var(--border);
+    padding: 16px;
+  }
+  .kpi-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--muted); margin-bottom: 6px; }
+  .kpi-value { font-size: 26px; font-weight: 900; }
+  .kpi-sub   { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  /* COMPARATIVO ROW */
+  .compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  /* CYCLE TABLE */
+  .cycle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  .mb16 { margin-bottom: 16px; }
+  .mb24 { margin-bottom: 24px; }
+  .mb32 { margin-bottom: 32px; }
+
+  /* CHART WRAP */
+  .chart-wrap { position: relative; height: 280px; }
+
+  /* FOOTER */
+  .footer { padding: 16px 40px 32px; }
+  .footer span { font-size: 11px; color: #AAAAAA; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">MP</div>
+  <div class="topbar-title">Resellers · Campanhas Aprendiz</div>
+  <div class="topbar-sub">Maio–Jun/2026 · Flows Mercurio</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Análise de Campanhas</div>
+  <h1>Campanhas Aprendiz — Maio/Jun 2026</h1>
+  <p>12 campanhas · Novos Incentivos + Preço Pro · Funil de engajamento + TPV gerado pelos sellers ativados</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="showTab('visao')">Visão Geral</button>
+  <button class="tab-btn" onclick="showTab('engajamento')">Engajamento</button>
+  <button class="tab-btn" onclick="showTab('tpv')">TPV Resultado</button>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- TAB 1 — VISÃO GERAL -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-visao" class="tab-content active">
+
+  <!-- KPIs -->
+  <div class="kpi-row mb32">
+    <div class="kpi-card">
+      <div class="kpi-label">Total campanhas</div>
+      <div class="kpi-value">12</div>
+      <div class="kpi-sub">4 NI · 8 Preço Pro</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Custs únicos impactados</div>
+      <div class="kpi-value">228.418</div>
+      <div class="kpi-sub">após deduplicação</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total abriram (Open)</div>
+      <div class="kpi-value">44.649</div>
+      <div class="kpi-sub">NI 24.718 · PP 19.931</div>
+    </div>
+    <div class="kpi-card" style="background:var(--black);">
+      <div class="kpi-label" style="color:#888;">Devices comprados em Mai</div>
+      <div class="kpi-value" style="color:var(--yellow);">1.820</div>
+      <div class="kpi-sub" style="color:#666;">NI 841 · PP 979</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <!-- Coluna esquerda: cards por grupo -->
+    <div>
+      <div class="section-title">Novos Incentivos</div>
+      <div class="card-black mb16">
+        <div class="card-title-white">Campanhas do grupo</div>
+        <div class="card-item">
+          <span class="card-item-label">72335 — Novos Incentivos 1</span>
+          <span class="card-item-value">04/Mai</span>
+        </div>
+        <div class="card-item">
+          <span class="card-item-label">73076 — Novos Incentivos 2</span>
+          <span class="card-item-value">04/Mai</span>
+        </div>
+        <div class="card-item">
+          <span class="card-item-label">74836 — Novos Incentivos 4</span>
+          <span class="card-item-value">19/Mai</span>
+        </div>
+        <div class="card-item">
+          <span class="card-item-label">74959 — Novos Incentivos 5</span>
+          <span class="card-item-value">19/Mai</span>
+        </div>
+      </div>
+      <div class="card-yellow mb24">
+        <div class="card-title">Total disparados</div>
+        <div class="card-number">148.854</div>
+        <div class="card-sub-dark">custs únicos impactados</div>
+      </div>
+
+      <div class="section-title">Preço Pro</div>
+      <div class="card-black mb16">
+        <div class="card-title-white">Campanhas do grupo</div>
+        <div class="card-item">
+          <span class="card-item-label">73287 — Preço Pro 1</span>
+          <span class="card-item-value">05/Mai</span>
+        </div>
+        <div class="card-item">
+          <span class="card-item-label">73763 — Preço Pro 2</span>
+          <span class="card-item-value">08/Mai</span>
+        </div>
+        <div class="card-item">
+          <span class="card-item-label">74772 — Preço Pro 3</span>
+          <span class="card-item-value">18/Mai</span>
+        </div>
+        <div class="card-item">
+          <span class="card-item-label">74789 — Preço Pro 4</span>
+          <span class="card-item-value">21/Mai</span>
+        </div>
+        <div class="card-item">
+          <span class="card-item-label">75680 — Preço Pro 5</span>
+          <span class="card-item-value">25/Mai</span>
+        </div>
+        <div class="card-item">
+          <span class="card-item-label">75708 — Preço Pro 6</span>
+          <span class="card-item-value">26/Mai</span>
+        </div>
+        <div class="card-item">
+          <span class="card-item-label">76286 — Preço Pro 7</span>
+          <span class="card-item-value">29/Mai</span>
+        </div>
+        <div class="card-item">
+          <span class="card-item-label">76427 — Preço Pro 8</span>
+          <span class="card-item-value">29/Mai</span>
+        </div>
+      </div>
+      <div class="card-yellow">
+        <div class="card-title">Total disparados</div>
+        <div class="card-number">79.564</div>
+        <div class="card-sub-dark">custs únicos impactados</div>
+      </div>
+    </div>
+
+    <!-- Coluna direita: tabela de campanhas -->
+    <div>
+      <div class="section-title">Todas as campanhas</div>
+      <div class="card" style="padding:0; overflow:hidden;">
+        <table>
+          <thead>
+            <tr>
+              <th>Campanha</th>
+              <th>Disp.</th>
+              <th>Sent</th>
+              <th>Conv.</th>
+              <th>Shown</th>
+              <th>Conv.</th>
+              <th>Open</th>
+              <th>Conv.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="group-header"><td colspan="8">Novos Incentivos</td></tr>
+            <tr><td>NI 1 · 72335</td><td>118.087</td><td>107.052</td><td class="pct-good">90,7%</td><td>90.881</td><td class="pct-good">84,9%</td><td><span class="pct-badge">14.112</span></td><td class="pct-good">15,5%</td></tr>
+            <tr><td>NI 2 · 73076</td><td>31.675</td><td>20.879</td><td class="pct-warn">65,9%</td><td>16.637</td><td>79,7%</td><td>2.355</td><td>14,2%</td></tr>
+            <tr><td>NI 4 · 74836</td><td>30.862</td><td>20.156</td><td class="pct-warn">65,3%</td><td>16.095</td><td>79,9%</td><td>1.274</td><td class="pct-warn">7,9%</td></tr>
+            <tr><td>NI 5 · 74959</td><td>114.254</td><td>102.487</td><td class="pct-good">89,7%</td><td>86.784</td><td class="pct-good">84,7%</td><td><span class="pct-badge">11.703</span></td><td>13,5%</td></tr>
+            <tr class="group-header"><td colspan="8">Preço Pro</td></tr>
+            <tr><td>Pro 1 · 73287</td><td>10.419</td><td>7.926</td><td>76,1%</td><td>6.793</td><td>85,7%</td><td>873</td><td>12,9%</td></tr>
+            <tr><td>Pro 2 · 73763</td><td>67.171</td><td>62.407</td><td class="pct-good">92,9%</td><td>53.232</td><td>85,3%</td><td>7.581</td><td>14,2%</td></tr>
+            <tr><td>Pro 3 · 74772</td><td>10.796</td><td>8.141</td><td>75,4%</td><td>6.895</td><td>84,7%</td><td>946</td><td>13,7%</td></tr>
+            <tr><td>Pro 4 · 74789</td><td>65.928</td><td>60.658</td><td class="pct-good">92,0%</td><td>51.147</td><td>84,3%</td><td>5.611</td><td>11,0%</td></tr>
+            <tr><td>Pro 5 · 75680</td><td>11.732</td><td>8.782</td><td>74,9%</td><td>7.428</td><td>84,6%</td><td>1.008</td><td>13,6%</td></tr>
+            <tr><td>Pro 6 · 75708</td><td>66.578</td><td>61.154</td><td class="pct-good">91,9%</td><td>51.531</td><td>84,3%</td><td><span class="pct-badge">8.519</span></td><td class="pct-good">16,5%</td></tr>
+            <tr><td>Pro 7 · 76286</td><td>67.947</td><td>62.378</td><td class="pct-good">91,8%</td><td>52.500</td><td>84,2%</td><td>5.011</td><td>9,5%</td></tr>
+            <tr><td>Pro 8 · 76427</td><td>11.730</td><td>8.749</td><td>74,6%</td><td>7.417</td><td>84,8%</td><td>584</td><td class="pct-warn">7,9%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- TAB 2 — ENGAJAMENTO -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-engajamento" class="tab-content">
+
+  <div class="section-title mb16">Funil por grupo — custs únicos</div>
+  <div class="compare-row mb32">
+
+    <!-- Novos Incentivos -->
+    <div>
+      <div style="font-size:13px; font-weight:800; margin-bottom:12px;">Novos Incentivos</div>
+      <div class="funil">
+        <div class="funil-step">
+          <div>
+            <div class="funil-step-label">Disparados</div>
+            <div class="funil-step-value">148.854</div>
+          </div>
+          <div class="funil-step-pct">base</div>
+        </div>
+        <div class="funil-step">
+          <div>
+            <div class="funil-step-label">Sent</div>
+            <div class="funil-step-value">129.217</div>
+          </div>
+          <div class="funil-step-pct">86,8%</div>
+        </div>
+        <div class="funil-step">
+          <div>
+            <div class="funil-step-label">Shown</div>
+            <div class="funil-step-value">117.616</div>
+          </div>
+          <div class="funil-step-pct">91,0% do Sent</div>
+        </div>
+        <div class="funil-step highlight">
+          <div class="funil-badge">Abertura</div>
+          <div>
+            <div class="funil-step-label">Open</div>
+            <div class="funil-step-value">24.718</div>
+          </div>
+          <div class="funil-step-pct">21,0% do Shown</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preço Especial -->
+    <div>
+      <div style="font-size:13px; font-weight:800; margin-bottom:12px;">Preço Pro</div>
+      <div class="funil">
+        <div class="funil-step">
+          <div>
+            <div class="funil-step-label">Disparados</div>
+            <div class="funil-step-value">79.564</div>
+          </div>
+          <div class="funil-step-pct">base</div>
+        </div>
+        <div class="funil-step">
+          <div>
+            <div class="funil-step-label">Sent</div>
+            <div class="funil-step-value">73.467</div>
+          </div>
+          <div class="funil-step-pct">92,3%</div>
+        </div>
+        <div class="funil-step">
+          <div>
+            <div class="funil-step-label">Shown</div>
+            <div class="funil-step-value">69.812</div>
+          </div>
+          <div class="funil-step-pct">95,0% do Sent</div>
+        </div>
+        <div class="funil-step highlight">
+          <div class="funil-badge">Abertura</div>
+          <div>
+            <div class="funil-step-label">Open</div>
+            <div class="funil-step-value">19.931</div>
+          </div>
+          <div class="funil-step-pct">28,5% do Shown</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title mb16">Conversão por campanha</div>
+  <div class="card" style="padding:0; overflow:hidden;">
+    <table>
+      <thead>
+        <tr>
+          <th>Campanha</th>
+          <th>Disparados</th>
+          <th>Sent</th>
+          <th>Conv.</th>
+          <th>Shown</th>
+          <th>Conv.</th>
+          <th>Open</th>
+          <th>Conv.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="group-header"><td colspan="8">Novos Incentivos</td></tr>
+        <tr><td>NI 1 · 72335</td><td>118.087</td><td>107.052</td><td class="pct-good">90,7%</td><td>90.881</td><td class="pct-good">84,9%</td><td>14.112</td><td class="pct-good">15,5%</td></tr>
+        <tr><td>NI 2 · 73076</td><td>31.675</td><td>20.879</td><td class="pct-warn">65,9%</td><td>16.637</td><td>79,7%</td><td>2.355</td><td>14,2%</td></tr>
+        <tr><td>NI 4 · 74836</td><td>30.862</td><td>20.156</td><td class="pct-warn">65,3%</td><td>16.095</td><td>79,9%</td><td>1.274</td><td class="pct-warn">7,9%</td></tr>
+        <tr><td>NI 5 · 74959</td><td>114.254</td><td>102.487</td><td class="pct-good">89,7%</td><td>86.784</td><td class="pct-good">84,7%</td><td>11.703</td><td>13,5%</td></tr>
+        <tr class="group-header"><td colspan="8">Preço Pro</td></tr>
+        <tr><td>Pro 1 · 73287</td><td>10.419</td><td>7.926</td><td>76,1%</td><td>6.793</td><td>85,7%</td><td>873</td><td>12,9%</td></tr>
+        <tr><td>Pro 2 · 73763</td><td>67.171</td><td>62.407</td><td class="pct-good">92,9%</td><td>53.232</td><td>85,3%</td><td>7.581</td><td>14,2%</td></tr>
+        <tr><td>Pro 3 · 74772</td><td>10.796</td><td>8.141</td><td>75,4%</td><td>6.895</td><td>84,7%</td><td>946</td><td>13,7%</td></tr>
+        <tr><td>Pro 4 · 74789</td><td>65.928</td><td>60.658</td><td class="pct-good">92,0%</td><td>51.147</td><td>84,3%</td><td>5.611</td><td>11,0%</td></tr>
+        <tr><td>Pro 5 · 75680</td><td>11.732</td><td>8.782</td><td>74,9%</td><td>7.428</td><td>84,6%</td><td>1.008</td><td>13,6%</td></tr>
+        <tr><td>Pro 6 · 75708</td><td>66.578</td><td>61.154</td><td class="pct-good">91,9%</td><td>51.531</td><td>84,3%</td><td>8.519</td><td class="pct-good">16,5%</td></tr>
+        <tr><td>Pro 7 · 76286</td><td>67.947</td><td>62.378</td><td class="pct-good">91,8%</td><td>52.500</td><td>84,2%</td><td>5.011</td><td>9,5%</td></tr>
+        <tr><td>Pro 8 · 76427</td><td>11.730</td><td>8.749</td><td>74,6%</td><td>7.417</td><td>84,8%</td><td>584</td><td class="pct-warn">7,9%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- TAB 3 — TPV RESULTADO -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-tpv" class="tab-content">
+
+  <!-- Devices KPIs -->
+  <div class="kpi-row mb32">
+    <div class="kpi-card">
+      <div class="kpi-label">Devices Mai · NI openers</div>
+      <div class="kpi-value">841</div>
+      <div class="kpi-sub">comprados em Mai/26 · 352–355 sellers ativos</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Devices Mai · PP openers</div>
+      <div class="kpi-value">979</div>
+      <div class="kpi-sub">comprados em Mai/26 · 393–408 sellers ativos</div>
+    </div>
+    <div class="kpi-card" style="background:var(--black);">
+      <div class="kpi-label" style="color:#888;">TPV total NI</div>
+      <div class="kpi-value" style="color:var(--yellow);">R$ 5,5M</div>
+      <div class="kpi-sub" style="color:#666;">Mai + Jun/26</div>
+    </div>
+    <div class="kpi-card" style="background:var(--black);">
+      <div class="kpi-label" style="color:#888;">TPV total Preço Pro</div>
+      <div class="kpi-value" style="color:var(--yellow);">R$ 7,2M</div>
+      <div class="kpi-sub" style="color:#666;">Mai + Jun/26</div>
+    </div>
+  </div>
+
+  <div class="main-grid mb32">
+    <!-- Gráfico -->
+    <div>
+      <div class="section-title mb16">TPV por ciclo e mês</div>
+      <div class="card">
+        <div class="chart-wrap">
+          <canvas id="chartTPV"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabela detalhada -->
+    <div>
+      <div class="section-title mb16">TPV gerado pelos devices — por mês</div>
+      <div class="card" style="padding:0; overflow:hidden;">
+        <table>
+          <thead>
+            <tr>
+              <th>Grupo</th>
+              <th>Devices Mai</th>
+              <th>Mês</th>
+              <th>Sellers ativos</th>
+              <th>TPV</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="group-header"><td colspan="5">Novos Incentivos</td></tr>
+            <tr><td>NI</td><td>841</td><td>Mai/26</td><td>294</td><td>R$ 1.856.795</td></tr>
+            <tr><td>NI</td><td>841</td><td>Jun/26</td><td>335</td><td>R$ 3.621.455</td></tr>
+            <tr class="total"><td>NI</td><td>841</td><td>Total</td><td>—</td><td>R$ 5.478.250</td></tr>
+            <tr class="group-header"><td colspan="5">Preço Pro</td></tr>
+            <tr><td>PP</td><td>979</td><td>Mai/26</td><td>325</td><td>R$ 2.542.102</td></tr>
+            <tr><td>PP</td><td>979</td><td>Jun/26</td><td>392</td><td>R$ 4.650.094</td></tr>
+            <tr class="total"><td>PP</td><td>979</td><td>Total</td><td>—</td><td>R$ 7.192.196</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráfico de ativação -->
+  <div class="section-title mb16">Taxa de ativação dos devices</div>
+  <div class="card mb32">
+    <div class="chart-wrap" style="height:300px;">
+      <canvas id="chartAtivacao"></canvas>
+    </div>
+  </div>
+
+  <!-- Nota metodológica -->
+  <div class="card">
+    <div style="font-size:12px; color:#555; line-height:1.7;">
+      <strong>Metodologia:</strong> TPV gerado pelos sellers (clientes finais) que utilizaram devices
+      comprados em Mai/26 pelos openers — revendedores que abriram a notificação das campanhas.
+      Linka <code>PAY_MPOS_DEVICE_ID</code> de <code>BT_MP_IC_DEVICE_SOLD</code> →
+      <code>BT_MP_IC_CUBO_SELLERS</code> → <code>BT_MP_IC_FORECAST_SELLERS</code> · FLAG_PROJ = 0.
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>Fontes: LK_MP_FLOWS_EXEC_RESULT · BT_OC_MERCURIO_EVENTS · BT_MP_IC_DEVICE_SOLD · BT_MP_IC_FORECAST_SELLERS · Jun/2026</span>
+</div>
+
+<script>
+  // TABS
+  function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // CHART TPV
+  Chart.register(ChartDataLabels);
+
+  new Chart(document.getElementById('chartTPV'), {
+    type: 'bar',
+    data: {
+      labels: ['Mai/26', 'Jun/26'],
+      datasets: [
+        {
+          label: 'Novos Incentivos',
+          data: [1856795, 3621455],
+          backgroundColor: '#FFE600',
+          borderColor: '#CCC',
+          borderWidth: 1,
+          borderRadius: 4,
+        },
+        {
+          label: 'Preço Pro',
+          data: [2542102, 4650094],
+          backgroundColor: '#1A1A1A',
+          borderColor: '#000',
+          borderWidth: 1,
+          borderRadius: 4,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 32 } },
+      plugins: {
+        legend: { display: true, position: 'top', labels: { font: { size: 11 }, boxWidth: 12 } },
+        datalabels: {
+          anchor: 'end', align: 'end',
+          formatter: v => 'R$' + (v/1000000).toFixed(1) + 'M',
+          font: { size: 10, weight: '700' },
+          color: '#333'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 6000000,
+          ticks: {
+            callback: v => 'R$' + (v/1000000).toFixed(1) + 'M',
+            font: { size: 10 }
+          },
+          grid: { color: '#eee' }
+        },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+  // CHART ATIVAÇÃO
+  new Chart(document.getElementById('chartAtivacao'), {
+    type: 'bar',
+    data: {
+      labels: ['NI · Mai/26', 'NI · Jun/26', 'PP · Mai/26', 'PP · Jun/26'],
+      datasets: [
+        {
+          label: 'Devices ativos',
+          data: [305, 332, 342, 403],
+          backgroundColor: ['#FFE600','#FFE600','#1A1A1A','#1A1A1A'],
+          borderRadius: 4,
+          borderSkipped: false,
+        },
+        {
+          label: 'Não ativados',
+          data: [536, 509, 637, 576],
+          backgroundColor: '#E0E0E0',
+          borderRadius: 4,
+          borderSkipped: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 32 } },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: {
+          stacked: true,
+          max: 1100,
+          ticks: { font: { size: 10 } },
+          grid: { color: '#eee' }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true, position: 'top',
+          labels: { font: { size: 11 }, boxWidth: 12 }
+        },
+        datalabels: {
+          display: (ctx) => ctx.datasetIndex === 0,
+          anchor: 'center',
+          align: 'center',
+          formatter: (v, ctx) => {
+            const total = ctx.datasetIndex === 0
+              ? [841, 841, 979, 979][ctx.dataIndex]
+              : null;
+            const pct = (v / total * 100).toFixed(1);
+            return v + '\n' + pct + '%';
+          },
+          font: { size: 11, weight: '700' },
+          color: (ctx) => ctx.dataIndex < 2 ? '#1A1A1A' : '#FFE600',
+          textAlign: 'center'
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
