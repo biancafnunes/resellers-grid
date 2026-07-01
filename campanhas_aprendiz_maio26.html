@@ -191,6 +191,7 @@
   <button class="tab-btn active" onclick="showTab('visao')">Visão Geral</button>
   <button class="tab-btn" onclick="showTab('engajamento')">Engajamento</button>
   <button class="tab-btn" onclick="showTab('tpv')">TPV Resultado</button>
+  <button class="tab-btn" onclick="showTab('fontes')">Fontes &amp; Queries</button>
 </div>
 
 <!-- ══════════════════════════════════════════ -->
@@ -535,6 +536,119 @@
       <code>BT_MP_IC_CUBO_SELLERS</code> → <code>BT_MP_IC_FORECAST_SELLERS</code> · FLAG_PROJ = 0.
     </div>
   </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- TAB 4 — FONTES & QUERIES -->
+<!-- ══════════════════════════════════════════ -->
+<div id="tab-fontes" class="tab-content">
+
+  <div class="section-title mb16">Tabelas utilizadas</div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;" class="mb32">
+
+    <div class="card-black" style="border-radius:12px; padding:20px;">
+      <div style="font-size:10px; font-weight:700; color:var(--yellow); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">1 · Execuções dos Flows</div>
+      <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:6px;">LK_MP_FLOWS_EXEC_RESULT</div>
+      <div style="font-size:12px; color:#aaa; line-height:1.7;">
+        Fonte principal das campanhas. Filtrado por <code style="color:var(--yellow)">WF_ID IN (...)</code> e <code style="color:var(--yellow)">INIT_SIT_SITE_ID = 'MLB'</code>.
+        Retorna: dias de envio, usuários disparados e <code style="color:var(--yellow)">campaign_id</code> do Mercurio extraído via <code style="color:var(--yellow)">JSON_VALUE(JSON_RESULT_DETAIL, '$.campaign_id')</code>.
+      </div>
+    </div>
+
+    <div class="card-black" style="border-radius:12px; padding:20px;">
+      <div style="font-size:10px; font-weight:700; color:var(--yellow); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">2 · Engajamento Push</div>
+      <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:6px;">BT_OC_MERCURIO_EVENTS</div>
+      <div style="font-size:12px; color:#aaa; line-height:1.7;">
+        Eventos de notificação push. Filtrado por <code style="color:var(--yellow)">CAMPAIGN_ID IN (...)</code>, <code style="color:var(--yellow)">SIT_SITE_ID = 'MLB'</code> e <code style="color:var(--yellow)">EVENT_TYPE IN ('sent','shown','open')</code>.
+        Retorna: usuários únicos por etapa do funil — sent, shown e open.
+      </div>
+    </div>
+
+    <div class="card-black" style="border-radius:12px; padding:20px;">
+      <div style="font-size:10px; font-weight:700; color:var(--yellow); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">3 · Venda de Devices</div>
+      <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:6px;">BT_MP_IC_DEVICE_SOLD</div>
+      <div style="font-size:12px; color:#aaa; line-height:1.7;">
+        Devices comprados pelos openers. Filtrado por <code style="color:var(--yellow)">CUS_CUST_ID_SEL IN (openers)</code> e <code style="color:var(--yellow)">DATA_VENDA = 202605</code>.
+        Retorna: <code style="color:var(--yellow)">PAY_MPOS_DEVICE_ID</code> — IDs únicos dos 841 (NI) e 979 (PP) devices comprados em Maio.
+      </div>
+    </div>
+
+    <div class="card-black" style="border-radius:12px; padding:20px;">
+      <div style="font-size:10px; font-weight:700; color:var(--yellow); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px;">4 · TPV por Device</div>
+      <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:6px;">BT_MP_IC_CUBO_SELLERS</div>
+      <div style="font-size:12px; color:#aaa; line-height:1.7;">
+        TPV e ativação dos devices específicos. JOIN em <code style="color:var(--yellow)">PAY_MPOS_DEVICE_ID</code> com os devices de Maio.
+        Retorna: <code style="color:var(--yellow)">COUNT(DISTINCT PAY_MPOS_DEVICE_ID)</code> ativos e <code style="color:var(--yellow)">SUM(TPV_EM_REAIS)</code> por mês — Maio e Junho/26.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title mb16">Fluxo das queries</div>
+  <div class="card mb32">
+    <div style="display:flex; flex-direction:column; gap:0;">
+
+      <div style="display:flex; align-items:flex-start; gap:16px; padding:16px 0; border-bottom:1px solid var(--border);">
+        <div style="min-width:28px; height:28px; background:var(--black); color:var(--yellow); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px;">1</div>
+        <div>
+          <div style="font-size:13px; font-weight:700; margin-bottom:4px;">Identificar openers por grupo</div>
+          <div style="font-size:12px; color:#555; line-height:1.7;">
+            <code>BT_OC_MERCURIO_EVENTS</code> — filtra <code>CAMPAIGN_ID</code> de cada grupo (NI / PP) com <code>EVENT_TYPE = 'open'</code> → gera lista de <code>USER_ID</code> distintos: <strong>24.718 NI</strong> e <strong>19.931 PP</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:flex-start; gap:16px; padding:16px 0; border-bottom:1px solid var(--border);">
+        <div style="min-width:28px; height:28px; background:var(--black); color:var(--yellow); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px;">2</div>
+        <div>
+          <div style="font-size:13px; font-weight:700; margin-bottom:4px;">Buscar devices comprados em Maio</div>
+          <div style="font-size:12px; color:#555; line-height:1.7;">
+            <code>BT_MP_IC_DEVICE_SOLD</code> — JOIN com openers em <code>CUS_CUST_ID_SEL</code>, filtro <code>DATA_VENDA = 202605</code> → <strong>841 devices NI</strong> e <strong>979 devices PP</strong> com seus <code>PAY_MPOS_DEVICE_ID</code>.
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:flex-start; gap:16px; padding:16px 0; border-bottom:1px solid var(--border);">
+        <div style="min-width:28px; height:28px; background:var(--black); color:var(--yellow); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px;">3</div>
+        <div>
+          <div style="font-size:13px; font-weight:700; margin-bottom:4px;">Medir ativação e TPV dos devices</div>
+          <div style="font-size:12px; color:#555; line-height:1.7;">
+            <code>BT_MP_IC_CUBO_SELLERS</code> — JOIN em <code>PAY_MPOS_DEVICE_ID</code>, filtro <code>TIM_DAY</code> Mai–Jun/26 → <code>COUNT(DISTINCT PAY_MPOS_DEVICE_ID)</code> para taxa de ativação e <code>SUM(TPV_EM_REAIS)</code> por mês.
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:flex-start; gap:16px; padding:16px 0;">
+        <div style="min-width:28px; height:28px; background:var(--black); color:var(--yellow); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px;">4</div>
+        <div>
+          <div style="font-size:13px; font-weight:700; margin-bottom:4px;">Funil de engajamento por grupo</div>
+          <div style="font-size:12px; color:#555; line-height:1.7;">
+            <code>LK_MP_FLOWS_EXEC_RESULT</code> → extrai <code>campaign_id</code> via JSON → <code>BT_OC_MERCURIO_EVENTS</code> filtrado por <code>CAMPAIGN_ID</code> e <code>EVENT_TYPE IN ('sent','shown','open')</code> → <code>COUNT(DISTINCT USER_ID)</code> por etapa e grupo.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section-title mb16">Período & Filtros globais</div>
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+    <div class="card">
+      <div class="kpi-label">Período</div>
+      <div style="font-size:14px; font-weight:700; margin-top:6px;">Mai – Jun/2026</div>
+      <div style="font-size:11px; color:var(--muted); margin-top:4px;">Campaigns disparadas a partir de 04/Mai/26</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">Site</div>
+      <div style="font-size:14px; font-weight:700; margin-top:6px;">MLB (Brasil)</div>
+      <div style="font-size:11px; color:var(--muted); margin-top:4px;">INIT_SIT_SITE_ID = 'MLB' · SIT_SITE_ID = 'MLB'</div>
+    </div>
+    <div class="card">
+      <div class="kpi-label">Billing project</div>
+      <div style="font-size:14px; font-weight:700; margin-top:6px;">meli-bi-data</div>
+      <div style="font-size:11px; color:var(--muted); margin-top:4px;">Schema: WHOWNER.*</div>
+    </div>
+  </div>
+
 </div>
 
 <!-- FOOTER -->
