@@ -178,6 +178,7 @@
 <div class="tabs-bar">
   <button class="tab-btn active" onclick="showTab('geral', this)">Visão Geral</button>
   <button class="tab-btn" onclick="showTab('alvos', this)">Alvos da Proposta</button>
+  <button class="tab-btn" onclick="showTab('fontes', this)">Fontes & Queries</button>
 </div>
 
 <!-- TAB: VISÃO GERAL -->
@@ -520,6 +521,138 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- TAB: FONTES & QUERIES -->
+<div id="tab-fontes" class="tab-panel">
+
+  <!-- RESUMO DO ESTUDO -->
+  <div class="panel" style="margin-bottom: 20px;">
+    <div class="panel-title">Resumo do Estudo</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; font-size: 13px; color: #444; line-height: 1.7;">
+      <div>
+        <div style="font-weight: 700; color: var(--black); margin-bottom: 6px;">Objetivo</div>
+        Entender o perfil declarado pelos candidatos a revendedor no formulário de onboarding do Trial e identificar quais, dentre eles, efetivamente avançaram na jornada de níveis do programa de resellers.
+      </div>
+      <div>
+        <div style="font-weight: 700; color: var(--black); margin-bottom: 6px;">Período</div>
+        Abril/2026 a Julho/2026 (parcial). O formulário passou a ser coletado a partir de 08/04/2026 — dados anteriores não existem nesta tabela.
+      </div>
+      <div>
+        <div style="font-weight: 700; color: var(--black); margin-bottom: 6px;">Resultado</div>
+        12.412 cadastros identificados. Apenas 197 (~1,6%) viraram resellers na base RSL. Desses, 14 subiram além do nível Aprendiz — alvo da proposta comercial.
+      </div>
+    </div>
+  </div>
+
+  <!-- FONTES -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+
+    <div class="panel">
+      <div class="panel-title">Tabela 1 — Perfilamento</div>
+      <div style="background: #F7F7F7; border-radius: 6px; padding: 12px 14px; font-size: 12px; font-family: monospace; color: #333; margin-bottom: 12px; word-break: break-all;">
+        meli-bi-data.WHOWNER.<b>LK_MP_SGROWTH_RESELLERS_TRIAL_FORM_RESPONSES</b>
+      </div>
+      <div style="font-size: 12px; color: #555; line-height: 1.7;">
+        <b>Granularidade:</b> 1 linha por USER_ID × QUESTION_ORDER<br>
+        <b>Filtros aplicados:</b> SITE_ID = 'MLB' · QUESTION_ORDER = 1<br>
+        <b>Pergunta usada:</b> "Qual o seu nível de experiência com a revenda de máquinas de cartão?"<br>
+        <b>Campo de data:</b> SUBMITTED_DATE (truncado em mês)<br>
+        <b>Métrica:</b> COUNT DISTINCT USER_ID por mês e resposta
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Tabela 2 — Nível do Revendedor</div>
+      <div style="background: #F7F7F7; border-radius: 6px; padding: 12px 14px; font-size: 12px; font-family: monospace; color: #333; margin-bottom: 12px; word-break: break-all;">
+        meli-bi-data.SBOX_WHMPBR.<b>BD_CUST_RESELLER_INFO</b>
+      </div>
+      <div style="font-size: 12px; color: #555; line-height: 1.7;">
+        <b>Granularidade:</b> 1 linha por RESELLER × MONTH_ (YYYYMM)<br>
+        <b>Filtro de partição:</b> MONTH_ >= 202401<br>
+        <b>Campo de nível:</b> NIVEL (Aprendiz / Especialista / Empreendedor / Top Empreendedor)<br>
+        <b>Lógica:</b> ROW_NUMBER() OVER (PARTITION BY RESELLER ORDER BY MONTH_ DESC) = 1 → nível mais recente<br>
+        <b>Join:</b> CAST(USER_ID AS INT64) = RESELLER
+      </div>
+    </div>
+  </div>
+
+  <!-- QUERIES -->
+  <div class="panel" style="margin-bottom: 20px;">
+    <div class="panel-title">Query 1 — Cadastros por Mês e Perfil</div>
+    <pre style="background: #1A1A1A; color: #FFE600; border-radius: 8px; padding: 18px 20px; font-size: 12px; line-height: 1.7; overflow-x: auto; white-space: pre-wrap;">SELECT
+  DATE_TRUNC(DATE(SUBMITTED_DATE), MONTH) AS mes_cadastro,
+  ANSWER_TEXT                             AS nivel_experiencia,
+  COUNT(DISTINCT USER_ID)                 AS qtd_resellers
+FROM `meli-bi-data.WHOWNER.LK_MP_SGROWTH_RESELLERS_TRIAL_FORM_RESPONSES`
+WHERE SITE_ID = 'MLB'
+  AND CAST(QUESTION_ORDER AS INT64) = 1
+GROUP BY 1, 2
+ORDER BY 1, 2</pre>
+  </div>
+
+  <div class="panel" style="margin-bottom: 20px;">
+    <div class="panel-title">Query 2 — Progressão além do Aprendiz (Visão Geral)</div>
+    <pre style="background: #1A1A1A; color: #FFE600; border-radius: 8px; padding: 18px 20px; font-size: 12px; line-height: 1.7; overflow-x: auto; white-space: pre-wrap;">WITH form AS (
+  SELECT
+    CAST(USER_ID AS INT64)                    AS cust_id,
+    DATE_TRUNC(DATE(SUBMITTED_DATE), MONTH)   AS mes_cadastro,
+    ANSWER_TEXT                               AS perfil_form
+  FROM `meli-bi-data.WHOWNER.LK_MP_SGROWTH_RESELLERS_TRIAL_FORM_RESPONSES`
+  WHERE SITE_ID = 'MLB'
+    AND CAST(QUESTION_ORDER AS INT64) = 1
+),
+latest_nivel AS (
+  SELECT
+    RESELLER,
+    NIVEL,
+    ROW_NUMBER() OVER (PARTITION BY RESELLER ORDER BY MONTH_ DESC) AS rn
+  FROM `meli-bi-data.SBOX_WHMPBR.BD_CUST_RESELLER_INFO`
+  WHERE MONTH_ >= 202401
+)
+SELECT
+  f.mes_cadastro,
+  f.perfil_form,
+  COUNT(DISTINCT f.cust_id)                                                           AS total_cadastros,
+  COUNT(DISTINCT CASE WHEN ln.NIVEL IS NOT NULL AND ln.NIVEL != 'Aprendiz'
+                      THEN f.cust_id END)                                             AS subiram_nivel
+FROM form f
+LEFT JOIN latest_nivel ln ON f.cust_id = ln.RESELLER AND ln.rn = 1
+GROUP BY 1, 2
+ORDER BY 1, 2</pre>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Query 3 — Lista dos CUSTs que Subiram de Nível</div>
+    <pre style="background: #1A1A1A; color: #FFE600; border-radius: 8px; padding: 18px 20px; font-size: 12px; line-height: 1.7; overflow-x: auto; white-space: pre-wrap;">WITH form AS (
+  SELECT
+    CAST(USER_ID AS INT64)                    AS cust_id,
+    DATE_TRUNC(DATE(SUBMITTED_DATE), MONTH)   AS mes_cadastro,
+    ANSWER_TEXT                               AS perfil_form
+  FROM `meli-bi-data.WHOWNER.LK_MP_SGROWTH_RESELLERS_TRIAL_FORM_RESPONSES`
+  WHERE SITE_ID = 'MLB'
+    AND CAST(QUESTION_ORDER AS INT64) = 1
+),
+latest_nivel AS (
+  SELECT
+    RESELLER,
+    NIVEL,
+    ROW_NUMBER() OVER (PARTITION BY RESELLER ORDER BY MONTH_ DESC) AS rn
+  FROM `meli-bi-data.SBOX_WHMPBR.BD_CUST_RESELLER_INFO`
+  WHERE MONTH_ >= 202401
+)
+SELECT
+  f.cust_id,
+  f.mes_cadastro,
+  f.perfil_form,
+  ln.NIVEL AS nivel_atual
+FROM form f
+JOIN latest_nivel ln ON f.cust_id = ln.RESELLER AND ln.rn = 1
+WHERE ln.NIVEL IS NOT NULL
+  AND ln.NIVEL != 'Aprendiz'
+ORDER BY f.mes_cadastro, ln.NIVEL</pre>
+  </div>
+
 </div>
 
 <!-- FOOTER -->
