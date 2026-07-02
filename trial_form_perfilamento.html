@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trial Form — Perfilamento & Progressão</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --yellow: #FFE600;
+    --black:  #1A1A1A;
+    --gray-bg:#F4F4F4;
+    --white:  #FFFFFF;
+    --border: #E0E0E0;
+    --muted:  #888888;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--gray-bg); color: var(--black); }
+
+  /* TOPBAR */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--black); color: var(--white);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 52px;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .topbar-logo { font-size: 18px; font-weight: 900; color: var(--yellow); letter-spacing: -0.5px; }
+  .topbar-sep { width: 1px; height: 22px; background: #333; }
+  .topbar-title { font-size: 13px; font-weight: 500; color: #AAAAAA; }
+  .topbar-date { font-size: 12px; color: #666; }
+
+  /* HERO */
+  .hero {
+    background: var(--yellow); padding: 32px 40px 28px;
+  }
+  .hero-badge {
+    display: inline-block; background: var(--black); color: var(--yellow);
+    font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 4px; margin-bottom: 12px;
+  }
+  .hero-title { font-size: 28px; font-weight: 900; color: var(--black); line-height: 1.15; margin-bottom: 6px; }
+  .hero-sub { font-size: 14px; color: #444; font-weight: 500; }
+
+  /* TABS */
+  .tabs-bar {
+    background: var(--white); border-bottom: 2px solid var(--border);
+    display: flex; padding: 0 40px; gap: 0;
+    position: sticky; top: 52px; z-index: 90;
+  }
+  .tab-btn {
+    padding: 14px 22px; font-size: 13px; font-weight: 600; color: var(--muted);
+    background: none; border: none; border-bottom: 3px solid transparent;
+    cursor: pointer; margin-bottom: -2px; transition: all 0.15s;
+  }
+  .tab-btn.active { color: var(--black); border-bottom-color: var(--black); }
+  .tab-btn:hover:not(.active) { color: var(--black); }
+
+  /* TAB PANELS */
+  .tab-panel { display: none; padding: 32px 40px 48px; }
+  .tab-panel.active { display: block; }
+
+  /* SUMMARY CARDS ROW */
+  .cards-row { display: flex; gap: 16px; margin-bottom: 28px; }
+  .card-stat {
+    flex: 1; background: var(--black); color: var(--white);
+    border-radius: 10px; padding: 20px 22px;
+  }
+  .card-stat.yellow { background: var(--yellow); color: var(--black); }
+  .card-stat-label { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+  .card-stat.yellow .card-stat-label { color: #555; }
+  .card-stat-value { font-size: 32px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+  .card-stat-sub { font-size: 12px; color: #888; }
+  .card-stat.yellow .card-stat-sub { color: #444; }
+
+  /* MAIN LAYOUT */
+  .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .panel {
+    background: var(--white); border-radius: 10px; padding: 24px;
+    border: 1px solid var(--border);
+  }
+  .panel-title { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead tr { background: #2D2D2D; }
+  thead th { color: var(--white); font-weight: 700; font-size: 11px; text-align: left; padding: 10px 12px; letter-spacing: 0.4px; }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: 10px 12px; color: var(--black); }
+  tbody tr:hover { background: #FAFAFA; }
+  .total-row td { font-weight: 800; background: #F7F7F7; }
+
+  .badge-nivel {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 3px 8px; border-radius: 4px;
+  }
+  .nivel-top { background: var(--black); color: var(--yellow); }
+  .nivel-emp { background: #333; color: #FFF; }
+  .nivel-esp { background: #777; color: #FFF; }
+  .nivel-apr { background: #E0E0E0; color: #555; }
+
+  .perfil-badge {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .perfil-ini { background: #E8F4FD; color: #1565C0; }
+  .perfil-int { background: #FFF3E0; color: #E65100; }
+  .perfil-esp { background: #E8F5E9; color: #2E7D32; }
+
+  .tag-subiu {
+    display: inline-block; background: var(--yellow); color: var(--black);
+    font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 4px;
+  }
+
+  /* MÊS HEADER */
+  .month-header { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; padding: 8px 12px 4px; background: var(--gray-bg); }
+
+  /* CHART CONTAINER */
+  .chart-wrap { position: relative; height: 300px; }
+
+  /* ALVOS TAB */
+  .alvos-header { display: flex; gap: 16px; margin-bottom: 28px; }
+  .alvo-card {
+    flex: 1; border-radius: 10px; padding: 20px 22px;
+    border: 1px solid var(--border); background: var(--white);
+  }
+  .alvo-card.destaque { background: var(--black); color: var(--white); border-color: var(--black); }
+  .alvo-card-num { font-size: 40px; font-weight: 900; line-height: 1; margin-bottom: 4px; }
+  .alvo-card.destaque .alvo-card-num { color: var(--yellow); }
+  .alvo-card-label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
+  .alvo-card.destaque .alvo-card-label { color: #888; }
+
+  /* CUST TABLE */
+  .cust-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .cust-table thead tr { background: #2D2D2D; }
+  .cust-table thead th { color: var(--white); font-weight: 700; font-size: 11px; text-align: left; padding: 10px 14px; letter-spacing: 0.4px; }
+  .cust-table tbody tr { border-bottom: 1px solid var(--border); }
+  .cust-table tbody tr:last-child { border-bottom: none; }
+  .cust-table tbody td { padding: 11px 14px; }
+  .cust-table tbody tr:hover { background: #FAFAFA; }
+  .cust-id { font-family: monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.3px; }
+
+  .insight-box {
+    background: var(--yellow); border-radius: 8px; padding: 14px 18px;
+    margin-bottom: 20px; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .insight-icon { font-size: 16px; }
+  .insight-text { font-size: 13px; font-weight: 600; color: var(--black); line-height: 1.5; }
+
+  /* FOOTER */
+  .footer { padding: 16px 40px 32px; }
+  .footer span { font-size: 11px; color: #AAAAAA; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-logo">MP</span>
+    <div class="topbar-sep"></div>
+    <span class="topbar-title">Resellers · Trial Form — Perfilamento & Progressão</span>
+  </div>
+  <span class="topbar-date">Jul/2026</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Proposta Comercial · Estudo</div>
+  <div class="hero-title">Perfilamento de Cadastros no Trial<br>e Progressão de Nível</div>
+  <div class="hero-sub">Abr/26 a Jul/26 · Quem se cadastrou, qual o perfil declarado e quem já avançou na jornada</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="showTab('geral', this)">Visão Geral</button>
+  <button class="tab-btn" onclick="showTab('alvos', this)">Alvos da Proposta</button>
+</div>
+
+<!-- TAB: VISÃO GERAL -->
+<div id="tab-geral" class="tab-panel active">
+
+  <!-- SUMMARY CARDS -->
+  <div class="cards-row">
+    <div class="card-stat yellow">
+      <div class="card-stat-label">Total Cadastros</div>
+      <div class="card-stat-value">12.412</div>
+      <div class="card-stat-sub">Abr/26 – Jul/26 (parcial)</div>
+    </div>
+    <div class="card-stat">
+      <div class="card-stat-label">Subiram de Nível</div>
+      <div class="card-stat-value">14</div>
+      <div class="card-stat-sub">além do nível Aprendiz</div>
+    </div>
+    <div class="card-stat">
+      <div class="card-stat-label">Taxa de Progressão</div>
+      <div class="card-stat-value">0,11%</div>
+      <div class="card-stat-sub">do total que preencheu o form</div>
+    </div>
+    <div class="card-stat">
+      <div class="card-stat-label">Melhor Perfil</div>
+      <div class="card-stat-value">Especialista</div>
+      <div class="card-stat-sub">maior taxa de conversão ao subir</div>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="main-layout">
+
+    <!-- TABELA MENSAL -->
+    <div class="panel">
+      <div class="panel-title">Cadastros por Mês · Perfil · Progressão</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th>Perfil Declarado</th>
+            <th style="text-align:right">Cadastros</th>
+            <th style="text-align:right">Subiram</th>
+            <th style="text-align:right">Taxa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ABR -->
+          <tr><td colspan="5" class="month-header">Abril / 2026 — 4.889 cadastros · 7 subiram</td></tr>
+          <tr>
+            <td>Abr/26</td>
+            <td><span class="perfil-badge perfil-ini">Iniciante</span></td>
+            <td style="text-align:right">3.635</td>
+            <td style="text-align:right"><span class="tag-subiu">1</span></td>
+            <td style="text-align:right; color:var(--muted)">0,03%</td>
+          </tr>
+          <tr>
+            <td>Abr/26</td>
+            <td><span class="perfil-badge perfil-int">Intermediário</span></td>
+            <td style="text-align:right">867</td>
+            <td style="text-align:right"><span class="tag-subiu">3</span></td>
+            <td style="text-align:right; color:var(--muted)">0,35%</td>
+          </tr>
+          <tr>
+            <td>Abr/26</td>
+            <td><span class="perfil-badge perfil-esp">Especialista</span></td>
+            <td style="text-align:right">387</td>
+            <td style="text-align:right"><span class="tag-subiu">3</span></td>
+            <td style="text-align:right; color:var(--muted)">0,78%</td>
+          </tr>
+          <!-- MAI -->
+          <tr><td colspan="5" class="month-header">Maio / 2026 — 3.966 cadastros · 6 subiram</td></tr>
+          <tr>
+            <td>Mai/26</td>
+            <td><span class="perfil-badge perfil-ini">Iniciante</span></td>
+            <td style="text-align:right">2.857</td>
+            <td style="text-align:right"><span class="tag-subiu">1</span></td>
+            <td style="text-align:right; color:var(--muted)">0,04%</td>
+          </tr>
+          <tr>
+            <td>Mai/26</td>
+            <td><span class="perfil-badge perfil-int">Intermediário</span></td>
+            <td style="text-align:right">776</td>
+            <td style="text-align:right"><span class="tag-subiu">1</span></td>
+            <td style="text-align:right; color:var(--muted)">0,13%</td>
+          </tr>
+          <tr>
+            <td>Mai/26</td>
+            <td><span class="perfil-badge perfil-esp">Especialista</span></td>
+            <td style="text-align:right">333</td>
+            <td style="text-align:right"><span class="tag-subiu">4</span></td>
+            <td style="text-align:right; color:var(--muted)">1,20%</td>
+          </tr>
+          <!-- JUN -->
+          <tr><td colspan="5" class="month-header">Junho / 2026 — 3.376 cadastros · 1 subiu</td></tr>
+          <tr>
+            <td>Jun/26</td>
+            <td><span class="perfil-badge perfil-ini">Iniciante</span></td>
+            <td style="text-align:right">2.380</td>
+            <td style="text-align:right; color:var(--muted)">0</td>
+            <td style="text-align:right; color:var(--muted)">—</td>
+          </tr>
+          <tr>
+            <td>Jun/26</td>
+            <td><span class="perfil-badge perfil-int">Intermediário</span></td>
+            <td style="text-align:right">710</td>
+            <td style="text-align:right"><span class="tag-subiu">1</span></td>
+            <td style="text-align:right; color:var(--muted)">0,14%</td>
+          </tr>
+          <tr>
+            <td>Jun/26</td>
+            <td><span class="perfil-badge perfil-esp">Especialista</span></td>
+            <td style="text-align:right">286</td>
+            <td style="text-align:right; color:var(--muted)">0</td>
+            <td style="text-align:right; color:var(--muted)">—</td>
+          </tr>
+          <!-- TOTAL -->
+          <tr class="total-row">
+            <td colspan="2">Total Geral</td>
+            <td style="text-align:right">12.412</td>
+            <td style="text-align:right">14</td>
+            <td style="text-align:right">0,11%</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top: 10px; font-size: 11px; color: var(--muted);">
+        * Jul/26 omitido por ser parcial (2 dias). Nenhum subiu de nível ainda.
+      </div>
+    </div>
+
+    <!-- GRÁFICO -->
+    <div class="panel">
+      <div class="panel-title">Cadastros por Mês e Perfil</div>
+      <div class="chart-wrap">
+        <canvas id="chartCadastros"></canvas>
+      </div>
+      <div style="margin-top: 20px;">
+        <div class="panel-title" style="margin-bottom: 12px;">Taxa de Progressão por Perfil</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Perfil</th>
+              <th style="text-align:right">Total Cadastros</th>
+              <th style="text-align:right">Subiram</th>
+              <th style="text-align:right">Taxa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="perfil-badge perfil-ini">Iniciante</span></td>
+              <td style="text-align:right">9.001</td>
+              <td style="text-align:right">2</td>
+              <td style="text-align:right; color:var(--muted)">0,02%</td>
+            </tr>
+            <tr>
+              <td><span class="perfil-badge perfil-int">Intermediário</span></td>
+              <td style="text-align:right">2.387</td>
+              <td style="text-align:right">5</td>
+              <td style="text-align:right; color:var(--muted)">0,21%</td>
+            </tr>
+            <tr>
+              <td><span class="perfil-badge perfil-esp">Especialista</span></td>
+              <td style="text-align:right">1.024</td>
+              <td style="text-align:right">7</td>
+              <td style="text-align:right; font-weight:800; color:var(--black)">0,68%</td>
+            </tr>
+            <tr class="total-row">
+              <td>Total</td>
+              <td style="text-align:right">12.412</td>
+              <td style="text-align:right">14</td>
+              <td style="text-align:right">0,11%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: ALVOS DA PROPOSTA -->
+<div id="tab-alvos" class="tab-panel">
+
+  <!-- INSIGHT BOX -->
+  <div class="insight-box">
+    <span class="insight-icon">★</span>
+    <span class="insight-text">
+      Estes 14 revendedores são os únicos, dentre 12.412 cadastros, que comprovaram capacidade de avançar na jornada.
+      São os alvos prioritários para uma proposta comercial diferenciada.
+    </span>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="alvos-header">
+    <div class="alvo-card destaque">
+      <div class="alvo-card-num">1</div>
+      <div class="alvo-card-label">Top Empreendedor</div>
+    </div>
+    <div class="alvo-card">
+      <div class="alvo-card-num" style="color:var(--black)">2</div>
+      <div class="alvo-card-label">Empreendedores</div>
+    </div>
+    <div class="alvo-card">
+      <div class="alvo-card-num" style="color:var(--black)">11</div>
+      <div class="alvo-card-label">Especialistas</div>
+    </div>
+    <div class="alvo-card">
+      <div class="alvo-card-num" style="color:var(--black)">14</div>
+      <div class="alvo-card-label">Total de Alvos</div>
+    </div>
+  </div>
+
+  <!-- CUST TABLE -->
+  <div class="panel" style="padding: 0; overflow: hidden;">
+    <table class="cust-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>CUST ID</th>
+          <th>Mês Cadastro</th>
+          <th>Perfil Declarado no Form</th>
+          <th>Nível Atual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--muted)">1</td>
+          <td><span class="cust-id">281399578</span></td>
+          <td>Mai/26</td>
+          <td><span class="perfil-badge perfil-esp">Especialista</span></td>
+          <td><span class="badge-nivel nivel-top">Top Empreendedor</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">2</td>
+          <td><span class="cust-id">169602600</span></td>
+          <td>Mai/26</td>
+          <td><span class="perfil-badge perfil-esp">Especialista</span></td>
+          <td><span class="badge-nivel nivel-emp">Empreendedor</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">3</td>
+          <td><span class="cust-id">242062301</span></td>
+          <td>Jun/26</td>
+          <td><span class="perfil-badge perfil-int">Intermediário</span></td>
+          <td><span class="badge-nivel nivel-emp">Empreendedor</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">4</td>
+          <td><span class="cust-id">332188136</span></td>
+          <td>Abr/26</td>
+          <td><span class="perfil-badge perfil-esp">Especialista</span></td>
+          <td><span class="badge-nivel nivel-esp">Especialista</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">5</td>
+          <td><span class="cust-id">1382784672</span></td>
+          <td>Abr/26</td>
+          <td><span class="perfil-badge perfil-esp">Especialista</span></td>
+          <td><span class="badge-nivel nivel-esp">Especialista</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">6</td>
+          <td><span class="cust-id">212643273</span></td>
+          <td>Abr/26</td>
+          <td><span class="perfil-badge perfil-esp">Especialista</span></td>
+          <td><span class="badge-nivel nivel-esp">Especialista</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">7</td>
+          <td><span class="cust-id">1388425394</span></td>
+          <td>Mai/26</td>
+          <td><span class="perfil-badge perfil-esp">Especialista</span></td>
+          <td><span class="badge-nivel nivel-esp">Especialista</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">8</td>
+          <td><span class="cust-id">1918195093</span></td>
+          <td>Mai/26</td>
+          <td><span class="perfil-badge perfil-esp">Especialista</span></td>
+          <td><span class="badge-nivel nivel-esp">Especialista</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">9</td>
+          <td><span class="cust-id">3324207640</span></td>
+          <td>Abr/26</td>
+          <td><span class="perfil-badge perfil-int">Intermediário</span></td>
+          <td><span class="badge-nivel nivel-esp">Especialista</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">10</td>
+          <td><span class="cust-id">3336447015</span></td>
+          <td>Abr/26</td>
+          <td><span class="perfil-badge perfil-int">Intermediário</span></td>
+          <td><span class="badge-nivel nivel-esp">Especialista</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">11</td>
+          <td><span class="cust-id">127692057</span></td>
+          <td>Abr/26</td>
+          <td><span class="perfil-badge perfil-int">Intermediário</span></td>
+          <td><span class="badge-nivel nivel-esp">Especialista</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">12</td>
+          <td><span class="cust-id">637335445</span></td>
+          <td>Mai/26</td>
+          <td><span class="perfil-badge perfil-int">Intermediário</span></td>
+          <td><span class="badge-nivel nivel-esp">Especialista</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">13</td>
+          <td><span class="cust-id">3329364534</span></td>
+          <td>Abr/26</td>
+          <td><span class="perfil-badge perfil-ini">Iniciante</span></td>
+          <td><span class="badge-nivel nivel-esp">Especialista</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--muted)">14</td>
+          <td><span class="cust-id">423482253</span></td>
+          <td>Mai/26</td>
+          <td><span class="perfil-badge perfil-ini">Iniciante</span></td>
+          <td><span class="badge-nivel nivel-esp">Especialista</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- NOTAS -->
+  <div style="margin-top: 20px; display: flex; gap: 16px;">
+    <div class="panel" style="flex:1; background:#1A1A1A; border-color:#1A1A1A;">
+      <div class="panel-title" style="color:var(--yellow);">Perfil que mais converte</div>
+      <div style="font-size:13px; color:#AAAAAA; line-height: 1.7;">
+        <b style="color:#FFF;">Especialista</b> declarado no form tem taxa <b style="color:var(--yellow)">0,68%</b> — 34× maior que Iniciante (0,02%).<br>
+        Priorizar esse perfil no funil de captação pode ter impacto direto na qualidade do canal.
+      </div>
+    </div>
+    <div class="panel" style="flex:1;">
+      <div class="panel-title">Outliers notáveis</div>
+      <div style="font-size:13px; color:#555; line-height: 1.7;">
+        <b>3329364534</b> e <b>423482253</b> declararam <span class="perfil-badge perfil-ini">Iniciante</span> mas chegaram a <span class="badge-nivel nivel-esp">Especialista</span>. Provavelmente subestimaram a própria experiência — bom sinal de potencial latente.<br><br>
+        <b>281399578</b> é o único <span class="badge-nivel nivel-top">Top Empreendedor</span> — merece abordagem individual.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>Fontes: LK_MP_SGROWTH_RESELLERS_TRIAL_FORM_RESPONSES (perfilamento) · SBOX_WHMPBR.BD_CUST_RESELLER_INFO (nível atual) · Jul/2026</span>
+</div>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  Chart.register(ChartDataLabels);
+
+  const ctx = document.getElementById('chartCadastros').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Abr/26', 'Mai/26', 'Jun/26'],
+      datasets: [
+        {
+          label: 'Iniciante',
+          data: [3635, 2857, 2380],
+          backgroundColor: '#CCCCCC',
+          borderRadius: 3,
+          datalabels: { display: false }
+        },
+        {
+          label: 'Intermediário',
+          data: [867, 776, 710],
+          backgroundColor: '#888888',
+          borderRadius: 3,
+          datalabels: { display: false }
+        },
+        {
+          label: 'Especialista',
+          data: [387, 333, 286],
+          backgroundColor: '#1A1A1A',
+          borderRadius: 3,
+          datalabels: {
+            display: true,
+            anchor: 'end',
+            align: 'top',
+            color: '#444',
+            font: { weight: '800', size: 12 },
+            formatter: (val, ctx) => {
+              const total = ctx.chart.data.datasets.reduce((s, d) => s + d.data[ctx.dataIndex], 0);
+              return total.toLocaleString('pt-BR');
+            }
+          }
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { font: { size: 12, family: 'Inter' }, padding: 16 }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toLocaleString('pt-BR')}`
+          }
+        }
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false } },
+        y: { stacked: true, max: 6000, grid: { color: '#EEEEEE' },
+             ticks: { font: { size: 11 }, callback: v => v.toLocaleString('pt-BR') } }
+      },
+      layout: { padding: { top: 28 } }
+    }
+  });
+</script>
+</body>
+</html>
