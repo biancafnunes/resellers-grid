@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canal Resellers · Análise Aprendiz Jan–Jun/26</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+  <style>
+    :root {
+      --yellow: #FFE600;
+      --black:  #1A1A1A;
+      --gray-bg:#F4F4F4;
+      --white:  #FFFFFF;
+      --border: #E0E0E0;
+      --muted:  #888888;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',-apple-system,sans-serif; background:var(--gray-bg); color:var(--black); font-size:13px; }
+
+    /* TOPBAR */
+    .topbar { background:var(--black); padding:13px 32px; display:flex; align-items:center; gap:10px; position:sticky; top:0; z-index:100; }
+    .topbar-brand { color:var(--yellow); font-weight:800; font-size:14px; }
+    .topbar-sep   { color:#444; }
+    .topbar-title { color:#AAAAAA; font-size:12px; }
+
+    /* HERO */
+    .hero { background:var(--yellow); padding:32px 40px 28px; }
+    .hero-badge { display:inline-block; background:var(--black); color:var(--yellow); font-size:10px; font-weight:700; letter-spacing:1.2px; padding:4px 14px; border-radius:20px; text-transform:uppercase; margin-bottom:14px; }
+    .hero-title  { font-size:36px; font-weight:900; color:var(--black); line-height:1.1; margin-bottom:10px; letter-spacing:-1px; }
+    .hero-subtitle { font-size:12px; color:#3A3A3A; line-height:1.6; }
+
+    /* TABS */
+    .tabs-bar { background:var(--white); border-bottom:2px solid var(--border); padding:0 40px; display:flex; gap:4px; }
+    .tab { padding:13px 18px; font-size:13px; font-weight:500; color:var(--muted); cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:color 0.15s; user-select:none; }
+    .tab:hover { color:var(--black); }
+    .tab.active { color:var(--black); font-weight:700; border-bottom:3px solid var(--black); }
+    .tab-pane { display:none; }
+    .tab-pane.active { display:block; }
+
+    /* LAYOUT */
+    .main-layout { display:grid; grid-template-columns:1fr 1fr; gap:24px; padding:32px 40px 56px; align-items:start; }
+    .full-width   { padding:0 40px 48px; }
+
+    /* KPI CARDS */
+    .kpi-row { display:flex; gap:14px; margin-bottom:22px; flex-wrap:wrap; }
+    .kpi-card { background:var(--white); border:1px solid var(--border); border-radius:10px; padding:18px 22px; flex:1; min-width:140px; }
+    .kpi-card.yellow { background:var(--yellow); border-color:var(--yellow); }
+    .kpi-label { font-size:10px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:6px; }
+    .kpi-card.yellow .kpi-label { color:#5A5000; }
+    .kpi-value { font-size:26px; font-weight:900; color:var(--black); line-height:1; }
+    .kpi-sub   { font-size:11px; color:var(--muted); margin-top:4px; }
+    .kpi-card.yellow .kpi-sub { color:#5A5000; }
+
+    /* SECTION LABEL */
+    .section-label { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+    .section-badge { background:var(--yellow); color:var(--black); font-size:9px; font-weight:700; padding:3px 9px; border-radius:20px; text-transform:uppercase; letter-spacing:.8px; }
+    .section-title { font-size:13px; font-weight:700; }
+
+    /* CHART */
+    .chart-card { background:var(--white); border:1px solid var(--border); border-radius:10px; padding:22px; }
+    .chart-title { font-size:13px; font-weight:700; margin-bottom:16px; }
+
+    /* TABLE */
+    .table-card  { background:var(--white); border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+    table        { width:100%; border-collapse:collapse; }
+    th           { background:#2D2D2D; color:#fff; font-size:11px; font-weight:600; padding:10px 14px; text-align:right; letter-spacing:.4px; }
+    th:first-child { text-align:left; }
+    td           { padding:10px 14px; border-bottom:1px solid var(--border); text-align:right; font-size:12px; }
+    td:first-child { text-align:left; font-weight:600; }
+    tr:last-child td { border-bottom:none; }
+    tr.total-row td  { background:#F7F7F7; font-weight:800; border-top:2px solid var(--border); }
+    tr:hover td      { background:#FAFAFA; }
+
+    /* HIGHLIGHT CELLS */
+    .cell-yellow { color:#9A8600; font-weight:700; }
+    .cell-gray   { color:#555; }
+
+    /* RODAPÉ */
+    .footer { padding:16px 40px 32px; }
+    .footer span { font-size:11px; color:#AAAAAA; }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <span class="topbar-brand">Canal Resellers</span>
+  <span class="topbar-sep">·</span>
+  <span class="topbar-title">Análise Aprendiz · Jan–Jun/26</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Nível Aprendiz · 2026</div>
+  <div class="hero-title">Devices, Resellers & TPV<br>Jan – Jun/26</div>
+  <div class="hero-subtitle">Análise mensal do nível Aprendiz — devices vendidos, resellers compradores e TPV M0/M1 com ticket médio.</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <div class="tab active" onclick="switchTab('devices')">Devices &amp; Resellers</div>
+  <div class="tab"        onclick="switchTab('tpv')">TPV M0 / M1</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     TAB 1 — DEVICES & RESELLERS
+════════════════════════════════════════════════════════ -->
+<div id="tab-devices" class="tab-pane active">
+
+  <div class="main-layout">
+
+    <!-- COLUNA ESQUERDA: KPIs + Tabela -->
+    <div>
+      <div class="kpi-row">
+        <div class="kpi-card yellow">
+          <div class="kpi-label">Devices vendidos</div>
+          <div class="kpi-value">14.765</div>
+          <div class="kpi-sub">Jan–Jun/26 · Pro3 + Smart2</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Média mensal</div>
+          <div class="kpi-value">2.461</div>
+          <div class="kpi-sub">devices / mês</div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-bottom:10px;">
+        <span class="section-badge">Mensal</span>
+        <span class="section-title">Devices vendidos &amp; Resellers com compra</span>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Mês</th>
+              <th>Resellers c/ compra</th>
+              <th>Devices vendidos</th>
+              <th>Devices / Reseller</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Jan/26</td><td>934</td><td>3.186</td><td class="cell-yellow">3,4</td></tr>
+            <tr><td>Fev/26</td><td>957</td><td>2.738</td><td class="cell-yellow">2,9</td></tr>
+            <tr><td>Mar/26</td><td>891</td><td>2.213</td><td class="cell-yellow">2,5</td></tr>
+            <tr><td>Abr/26</td><td>787</td><td>1.584</td><td class="cell-yellow">2,0</td></tr>
+            <tr><td>Mai/26</td><td>1.138</td><td>2.609</td><td class="cell-yellow">2,3</td></tr>
+            <tr><td>Jun/26</td><td>1.112</td><td>2.435</td><td class="cell-yellow">2,2</td></tr>
+            <tr class="total-row"><td>Total</td><td>5.819</td><td>14.765</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COLUNA DIREITA: Gráfico -->
+    <div>
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">Pico de devices</div>
+          <div class="kpi-value">3.186</div>
+          <div class="kpi-sub">Janeiro/26</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Pico de resellers</div>
+          <div class="kpi-value">1.138</div>
+          <div class="kpi-sub">Maio/26</div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-bottom:10px;">
+        <span class="section-badge">Evolução</span>
+        <span class="section-title">Devices vendidos vs Resellers com compra</span>
+      </div>
+
+      <div class="chart-card">
+        <canvas id="chartDevices" height="220"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     TAB 2 — TPV M0 / M1
+════════════════════════════════════════════════════════ -->
+<div id="tab-tpv" class="tab-pane">
+
+  <div class="main-layout">
+
+    <!-- COLUNA ESQUERDA: KPIs + Tabela -->
+    <div>
+      <div class="kpi-row">
+        <div class="kpi-card yellow">
+          <div class="kpi-label">Total TPV M0</div>
+          <div class="kpi-value">R$ 29,4M</div>
+          <div class="kpi-sub">Jan–Jun/26 · 15.522 sellers</div>
+        </div>
+        <div class="kpi-card yellow">
+          <div class="kpi-label">Total TPV M1</div>
+          <div class="kpi-value">R$ 34,9M</div>
+          <div class="kpi-sub">Jan–Jun/26 · 7.911 sellers</div>
+        </div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">Ticket médio M0</div>
+          <div class="kpi-value">R$ 1.897</div>
+          <div class="kpi-sub">por seller / mês</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Ticket médio M1</div>
+          <div class="kpi-value">R$ 4.415</div>
+          <div class="kpi-sub">2,3× maior que M0</div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-bottom:10px;">
+        <span class="section-badge">Mensal</span>
+        <span class="section-title">TPV M0 &amp; M1 com ticket médio</span>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Mês</th>
+              <th>Sellers M0</th>
+              <th>TPV M0</th>
+              <th>Médio M0</th>
+              <th>Sellers M1</th>
+              <th>TPV M1</th>
+              <th>Médio M1</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Jan/26</td>
+              <td>2.735</td><td>R$ 5.107.949</td><td class="cell-yellow">R$ 1.867</td>
+              <td class="cell-gray">—</td><td class="cell-gray">—</td><td class="cell-gray">—</td>
+            </tr>
+            <tr>
+              <td>Fev/26</td>
+              <td>2.778</td><td>R$ 4.774.828</td><td class="cell-yellow">R$ 1.718</td>
+              <td>1.661</td><td>R$ 7.787.947</td><td class="cell-yellow">R$ 4.688</td>
+            </tr>
+            <tr>
+              <td>Mar/26</td>
+              <td>2.871</td><td>R$ 5.567.725</td><td class="cell-yellow">R$ 1.939</td>
+              <td>1.667</td><td>R$ 6.542.925</td><td class="cell-yellow">R$ 3.924</td>
+            </tr>
+            <tr>
+              <td>Abr/26</td>
+              <td>2.485</td><td>R$ 5.393.513</td><td class="cell-yellow">R$ 2.170</td>
+              <td>1.707</td><td>R$ 6.738.582</td><td class="cell-yellow">R$ 3.947</td>
+            </tr>
+            <tr>
+              <td>Mai/26</td>
+              <td>2.515</td><td>R$ 4.684.991</td><td class="cell-yellow">R$ 1.862</td>
+              <td>1.536</td><td>R$ 7.830.176</td><td class="cell-yellow">R$ 5.097</td>
+            </tr>
+            <tr>
+              <td>Jun/26</td>
+              <td>2.138</td><td>R$ 3.917.415</td><td class="cell-yellow">R$ 1.832</td>
+              <td>1.340</td><td>R$ 6.031.644</td><td class="cell-yellow">R$ 4.501</td>
+            </tr>
+            <tr class="total-row">
+              <td>Total</td>
+              <td>15.522</td><td>R$ 29.446.421</td><td>R$ 1.897</td>
+              <td>7.911</td><td>R$ 34.931.274</td><td>R$ 4.415</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COLUNA DIREITA: Gráficos -->
+    <div>
+      <div class="section-label" style="margin-bottom:10px;">
+        <span class="section-badge">Evolução</span>
+        <span class="section-title">TPV M0 vs M1 por mês (R$)</span>
+      </div>
+      <div class="chart-card" style="margin-bottom:20px;">
+        <canvas id="chartTPV" height="200"></canvas>
+      </div>
+
+      <div class="section-label" style="margin-bottom:10px;">
+        <span class="section-badge">Ticket</span>
+        <span class="section-title">TPV médio por seller M0 vs M1 (R$)</span>
+      </div>
+      <div class="chart-card">
+        <canvas id="chartMedio" height="200"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RODAPÉ -->
+<div class="footer">
+  <span>Fontes: BT_PRODUCT_ORDERS × BT_MP_POINT_USERS_GROUPS (devices/resellers) · SBOX_WHMPBR.BD_CUST_RESELLER_INFO (TPV M0/M1) · Nível Aprendiz · Point Pro3 + Smart2 · Jul/26</span>
+</div>
+
+<script>
+  const MESES = ['Jan/26','Fev/26','Mar/26','Abr/26','Mai/26','Jun/26'];
+
+  // ── Tab switcher ─────────────────────────────────────
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach((t,i) => {
+      const names = ['devices','tpv'];
+      t.classList.toggle('active', names[i] === name);
+    });
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+  }
+
+  // ── CHART 1: Devices + Resellers ─────────────────────
+  new Chart(document.getElementById('chartDevices'), {
+    type: 'bar',
+    plugins: [ChartDataLabels],
+    data: {
+      labels: MESES,
+      datasets: [
+        {
+          label: 'Devices vendidos',
+          data: [3186, 2738, 2213, 1584, 2609, 2435],
+          backgroundColor: '#FFE600',
+          borderRadius: 4,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Resellers c/ compra',
+          data: [934, 957, 891, 787, 1138, 1112],
+          backgroundColor: '#CCCCCC',
+          borderRadius: 4,
+          yAxisID: 'y2',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 11 }, boxWidth: 12 } },
+        datalabels: {
+          anchor: 'end', align: 'end',
+          font: { family: 'Inter', size: 10, weight: '700' },
+          color: '#1A1A1A',
+          formatter: v => v.toLocaleString('pt-BR'),
+        }
+      },
+      layout: { padding: { top: 24 } },
+      scales: {
+        y:  { position: 'left',  grid: { color: '#F0F0F0' }, ticks: { font: { family: 'Inter', size: 11 }, callback: v => v.toLocaleString('pt-BR') }, title: { display: true, text: 'Devices', font: { family: 'Inter', size: 11 } } },
+        y2: { position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { family: 'Inter', size: 11 }, callback: v => v.toLocaleString('pt-BR') }, title: { display: true, text: 'Resellers', font: { family: 'Inter', size: 11 } } }
+      }
+    }
+  });
+
+  // ── CHART 2: TPV M0 vs M1 ────────────────────────────
+  new Chart(document.getElementById('chartTPV'), {
+    type: 'bar',
+    plugins: [ChartDataLabels],
+    data: {
+      labels: MESES,
+      datasets: [
+        {
+          label: 'TPV M0',
+          data: [5107949, 4774828, 5567725, 5393513, 4684991, 3917415],
+          backgroundColor: '#FFE600',
+          borderRadius: 4,
+        },
+        {
+          label: 'TPV M1',
+          data: [0, 7787947, 6542925, 6738582, 7830176, 6031644],
+          backgroundColor: '#555555',
+          borderRadius: 4,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 11 }, boxWidth: 12 } },
+        datalabels: { display: false }
+      },
+      scales: {
+        x: { stacked: false },
+        y: {
+          grid: { color: '#F0F0F0' },
+          ticks: {
+            font: { family: 'Inter', size: 11 },
+            callback: v => 'R$ ' + (v/1000000).toFixed(1) + 'M'
+          }
+        }
+      }
+    }
+  });
+
+  // ── CHART 3: Ticket médio M0 vs M1 ───────────────────
+  new Chart(document.getElementById('chartMedio'), {
+    type: 'bar',
+    plugins: [ChartDataLabels],
+    data: {
+      labels: MESES,
+      datasets: [
+        {
+          label: 'Médio M0',
+          data: [1867, 1718, 1939, 2170, 1862, 1832],
+          backgroundColor: '#FFE600',
+          borderRadius: 4,
+        },
+        {
+          label: 'Médio M1',
+          data: [0, 4688, 3924, 3947, 5097, 4501],
+          backgroundColor: '#555555',
+          borderRadius: 4,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 11 }, boxWidth: 12 } },
+        datalabels: {
+          anchor: 'end', align: 'end',
+          font: { family: 'Inter', size: 10, weight: '700' },
+          color: ctx => ctx.dataset.backgroundColor === '#FFE600' ? '#9A8600' : '#333',
+          formatter: v => v === 0 ? '' : 'R$ ' + v.toLocaleString('pt-BR'),
+        }
+      },
+      layout: { padding: { top: 28 } },
+      scales: {
+        y: {
+          grid: { color: '#F0F0F0' },
+          ticks: {
+            font: { family: 'Inter', size: 11 },
+            callback: v => 'R$ ' + v.toLocaleString('pt-BR')
+          }
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
