@@ -606,20 +606,24 @@ GROUP BY 1 ORDER BY 1</pre>
       plugins: {
         legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 11 }, boxWidth: 12 } },
         datalabels: {
-          anchor: 'end', align: 'end',
+          anchor: 'end', align: 'top',
+          clamp: true,
           font: { family: 'Inter', size: 10, weight: '700' },
-          color: '#1A1A1A',
-          formatter: v => v === 0 ? '' : 'R$ ' + (v/1000000).toFixed(1) + 'M',
+          color: ctx => ctx.datasetIndex === 0 ? '#9A8600' : '#FFFFFF',
+          backgroundColor: ctx => ctx.datasetIndex === 0 ? '#FFF9CC' : '#555555',
+          borderRadius: 4,
+          padding: { top: 3, bottom: 3, left: 5, right: 5 },
+          formatter: v => v === 0 ? '' : 'R$ ' + (v/1000000).toFixed(1).replace('.',',') + 'M',
         }
       },
-      layout: { padding: { top: 24 } },
+      layout: { padding: { top: 36 } },
       scales: {
         x: { stacked: false },
         y: {
           grid: { color: '#F0F0F0' },
           ticks: {
             font: { family: 'Inter', size: 11 },
-            callback: v => 'R$ ' + (v/1000000).toFixed(1) + 'M'
+            callback: v => 'R$ ' + (v/1000000).toFixed(0) + 'M'
           }
         }
       }
@@ -652,13 +656,17 @@ GROUP BY 1 ORDER BY 1</pre>
       plugins: {
         legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 11 }, boxWidth: 12 } },
         datalabels: {
-          anchor: 'end', align: 'end',
+          anchor: 'end', align: 'top',
+          clamp: true,
           font: { family: 'Inter', size: 10, weight: '700' },
-          color: ctx => ctx.dataset.backgroundColor === '#FFE600' ? '#9A8600' : '#333',
+          color: ctx => ctx.datasetIndex === 0 ? '#9A8600' : '#FFFFFF',
+          backgroundColor: ctx => ctx.datasetIndex === 0 ? '#FFF9CC' : '#555555',
+          borderRadius: 4,
+          padding: { top: 3, bottom: 3, left: 5, right: 5 },
           formatter: v => v === 0 ? '' : 'R$ ' + v.toLocaleString('pt-BR'),
         }
       },
-      layout: { padding: { top: 28 } },
+      layout: { padding: { top: 36 } },
       scales: {
         y: {
           grid: { color: '#F0F0F0' },
