@@ -103,6 +103,7 @@
   <div class="tab active" onclick="switchTab('devices')">Devices &amp; Resellers</div>
   <div class="tab"        onclick="switchTab('tpv')">TPV M0 / M1</div>
   <div class="tab"        onclick="switchTab('ativacao')">Ativação Mai/26</div>
+  <div class="tab"        onclick="switchTab('fontes')">Fontes &amp; Queries</div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
@@ -411,6 +412,116 @@
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════
+     TAB 4 — FONTES & QUERIES
+════════════════════════════════════════════════════════ -->
+<div id="tab-fontes" class="tab-pane">
+  <div style="padding:32px 40px 56px; max-width:960px;">
+
+    <!-- ABA 1 -->
+    <div style="margin-bottom:32px;">
+      <div class="section-label"><span class="section-badge">Aba 1</span><span class="section-title">Devices &amp; Resellers</span></div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:10px;">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Fontes</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+          <span style="background:#F4F4F4;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;">WHOWNER.BT_PRODUCT_ORDERS</span>
+          <span style="background:#F4F4F4;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;">WHOWNER.BT_PRODUCT_ORDER_ITEM</span>
+          <span style="background:#F4F4F4;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;">WHOWNER.BT_MP_POINT_USERS_GROUPS</span>
+          <span style="background:#F4F4F4;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;">WHOWNER.BT_MP_POINT_GROUP</span>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Query</div>
+        <pre style="background:#1A1A1A;color:#FFE600;border-radius:8px;padding:16px 18px;font-size:11px;line-height:1.7;overflow-x:auto;white-space:pre-wrap;">SELECT
+  FORMAT_DATE('%Y-%m', DATE(o.PO_CREATED_AT))   AS mes,
+  COUNT(DISTINCT o.CUS_CUST_ID_BUY)              AS resellers_com_compra,
+  COUNT(oi.PI_ORDER_ITEM_ID)                     AS devices_vendidos
+FROM `meli-bi-data.WHOWNER.BT_PRODUCT_ORDERS` o
+JOIN `meli-bi-data.WHOWNER.BT_PRODUCT_ORDER_ITEM` oi ON o.IDX_ID = oi.IDX_ID
+LEFT JOIN `meli-bi-data.WHOWNER.BT_MP_POINT_USERS_GROUPS` ug
+  ON o.CUS_CUST_ID_BUY = ug.CUS_CUST_ID AND ug.ACTIVE = 1
+LEFT JOIN `meli-bi-data.WHOWNER.BT_MP_POINT_GROUP` gr
+  ON ug.GROUP_ID = gr.ID_GROUP AND gr.GROUP_TYPE = 'RESELLER' AND gr.ACTIVE = 1
+WHERE o.ORDER_GATEWAY  = '1'        -- canal Resellers
+  AND o.SIT_SITE_ID    = 'MLB'
+  AND o.OPERATION_TYPE = '1'        -- somente compras
+  AND DATE(o.PO_CREATED_AT) BETWEEN '2026-01-01' AND '2026-06-30'
+  AND oi.PI_NAME IN ('Point Pro 3', 'Point Smart 2')
+  AND COALESCE(gr.GROUP_NAME, 'Aprendiz') = 'Aprendiz'
+GROUP BY 1 ORDER BY 1</pre>
+      </div>
+    </div>
+
+    <!-- ABA 2 -->
+    <div style="margin-bottom:32px;">
+      <div class="section-label"><span class="section-badge">Aba 2</span><span class="section-title">TPV M0 / M1</span></div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:10px;">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Fonte</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+          <span style="background:#F4F4F4;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;">SBOX_WHMPBR.BD_CUST_RESELLER_INFO</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.6;">
+          Tabela consolidada mensal de resellers. Campos <code style="background:#F4F4F4;padding:1px 5px;border-radius:4px;">TPV_M0</code> e <code style="background:#F4F4F4;padding:1px 5px;border-radius:4px;">TPV_M1</code> pré-calculados. Fonte de referência oficial do time para análises de ciclo de vida no canal Resellers.
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Query</div>
+        <pre style="background:#1A1A1A;color:#FFE600;border-radius:8px;padding:16px 18px;font-size:11px;line-height:1.7;overflow-x:auto;white-space:pre-wrap;">SELECT
+  MONTH_,
+  SUM(TPV_M0)                              AS tpv_m0,
+  SUM(TPV_M1)                              AS tpv_m1,
+  SUM(QNT_M0)                              AS sellers_m0,
+  SUM(QNT_M1)                              AS sellers_m1,
+  SAFE_DIVIDE(SUM(TPV_M0), SUM(QNT_M0))   AS tpv_medio_m0,
+  SAFE_DIVIDE(SUM(TPV_M1), SUM(QNT_M1))   AS tpv_medio_m1
+FROM `meli-bi-data.SBOX_WHMPBR.BD_CUST_RESELLER_INFO`
+WHERE MONTH_ BETWEEN 202601 AND 202606
+  AND NIVEL = 'Aprendiz'
+GROUP BY 1 ORDER BY 1</pre>
+      </div>
+    </div>
+
+    <!-- ABA 3 -->
+    <div style="margin-bottom:32px;">
+      <div class="section-label"><span class="section-badge">Aba 3</span><span class="section-title">Ativação Mai/26</span></div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px 24px;">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Fontes</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+          <span style="background:#F4F4F4;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;">WHOWNER.BT_PRODUCT_ORDERS</span>
+          <span style="background:#F4F4F4;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;">WHOWNER.BT_PRODUCT_ORDER_ITEM</span>
+          <span style="background:#F4F4F4;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;">WHOWNER.LK_PRODUCT_DEVICE</span>
+          <span style="background:#F4F4F4;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:monospace;">WHOWNER.BT_MP_IC_CUBO_SELLERS</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.6;">
+          Rastreamento device-a-device via serial <code style="background:#F4F4F4;padding:1px 5px;border-radius:4px;">PAY_MPOS_DEVICE_ID</code>. Identifica os 2.609 devices comprados em Mai/26 e cruza com as transações geradas nos meses seguintes. Devices sem serial disponível no <code style="background:#F4F4F4;padding:1px 5px;border-radius:4px;">LK_PRODUCT_DEVICE</code> não são rastreados.
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;">Query</div>
+        <pre style="background:#1A1A1A;color:#FFE600;border-radius:8px;padding:16px 18px;font-size:11px;line-height:1.7;overflow-x:auto;white-space:pre-wrap;">WITH devices_comprados AS (
+  SELECT DISTINCT ld.PAY_MPOS_DEVICE_ID
+  FROM `meli-bi-data.WHOWNER.BT_PRODUCT_ORDERS` o
+  JOIN `meli-bi-data.WHOWNER.BT_PRODUCT_ORDER_ITEM` oi ON o.IDX_ID = oi.IDX_ID
+  JOIN `meli-bi-data.WHOWNER.LK_PRODUCT_DEVICE` ld ON oi.PD_ID = ld.PD_ID
+  LEFT JOIN `meli-bi-data.WHOWNER.BT_MP_POINT_USERS_GROUPS` ug
+    ON o.CUS_CUST_ID_BUY = ug.CUS_CUST_ID AND ug.ACTIVE = 1
+  LEFT JOIN `meli-bi-data.WHOWNER.BT_MP_POINT_GROUP` gr
+    ON ug.GROUP_ID = gr.ID_GROUP AND gr.GROUP_TYPE = 'RESELLER' AND gr.ACTIVE = 1
+  WHERE o.ORDER_GATEWAY = '1' AND o.SIT_SITE_ID = 'MLB'
+    AND o.OPERATION_TYPE = '1'
+    AND DATE(o.PO_CREATED_AT) BETWEEN '2026-05-01' AND '2026-05-31'
+    AND oi.PI_NAME IN ('Point Pro 3', 'Point Smart 2')
+    AND COALESCE(gr.GROUP_NAME, 'Aprendiz') = 'Aprendiz'
+    AND ld.PAY_MPOS_DEVICE_ID IS NOT NULL
+)
+SELECT
+  FORMAT_DATE('%Y-%m', c.TIM_DAY)       AS mes,
+  COUNT(DISTINCT c.PAY_MPOS_DEVICE_ID)  AS devices_com_tpv,
+  SUM(c.TPV_EM_REAIS)                   AS tpv_total
+FROM `meli-bi-data.WHOWNER.BT_MP_IC_CUBO_SELLERS` c
+JOIN devices_comprados dc ON c.PAY_MPOS_DEVICE_ID = dc.PAY_MPOS_DEVICE_ID
+WHERE c.TIM_DAY >= '2026-05-01'
+GROUP BY 1 ORDER BY 1</pre>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- RODAPÉ -->
 <div class="footer">
   <span>Fontes: BT_PRODUCT_ORDERS × BT_MP_POINT_USERS_GROUPS (devices/resellers) · SBOX_WHMPBR.BD_CUST_RESELLER_INFO (TPV M0/M1) · Nível Aprendiz · Point Pro3 + Smart2 · Jul/26</span>
@@ -421,7 +532,7 @@
 
   // ── Tab switcher ─────────────────────────────────────
   function switchTab(name) {
-    const names = ['devices','tpv','ativacao'];
+    const names = ['devices','tpv','ativacao','fontes'];
     document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i] === name));
     document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
