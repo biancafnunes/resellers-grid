@@ -605,8 +605,14 @@ GROUP BY 1 ORDER BY 1</pre>
       responsive: true,
       plugins: {
         legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 11 }, boxWidth: 12 } },
-        datalabels: { display: false }
+        datalabels: {
+          anchor: 'end', align: 'end',
+          font: { family: 'Inter', size: 10, weight: '700' },
+          color: '#1A1A1A',
+          formatter: v => v === 0 ? '' : 'R$ ' + (v/1000000).toFixed(1) + 'M',
+        }
       },
+      layout: { padding: { top: 24 } },
       scales: {
         x: { stacked: false },
         y: {
