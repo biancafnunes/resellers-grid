@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proposta Comercial — Mercado Pago</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
 /* ─── Reset & Base ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -433,7 +434,7 @@ body.ss-mode .ss-exit-btn { display: block; }
 
     <div class="actions-row ss-hide">
       <button class="btn-secondary" onclick="showTab('input')">← Editar</button>
-      <button class="btn-dark" onclick="enterSS()">📸 Modo Screenshot para WhatsApp</button>
+      <button class="btn-dark" id="btnDownload" onclick="downloadCard()">📲 Salvar para WhatsApp</button>
     </div>
 
     <div class="tip-box ss-hide">
@@ -627,7 +628,73 @@ function showTab(tab) {
   document.getElementById('tab-proposal').classList.toggle('active', tab === 'proposal');
 }
 
-/* ──── SCREENSHOT MODE ──── */
+/* ──── DOWNLOAD COM BORDAS ARREDONDADAS ──── */
+async function downloadCard() {
+  const btn = document.getElementById('btnDownload');
+  btn.textContent = '⏳ Gerando...';
+  btn.disabled = true;
+
+  const card = document.getElementById('proposalCard');
+  const padding = 18;
+  const scale  = 2;
+  const radius = 14 * scale;
+
+  try {
+    // Captura o card com fundo transparente
+    const cardCanvas = await html2canvas(card, {
+      backgroundColor: null,
+      scale: scale,
+      useCORS: true,
+      logging: false,
+    });
+
+    // Cria canvas final com padding e fundo da página
+    const out = document.createElement('canvas');
+    out.width  = cardCanvas.width  + padding * scale * 2;
+    out.height = cardCanvas.height + padding * scale * 2;
+    const ctx = out.getContext('2d');
+
+    // Fundo
+    ctx.fillStyle = '#EEF3F8';
+    ctx.fillRect(0, 0, out.width, out.height);
+
+    // Clip com bordas arredondadas
+    const x = padding * scale;
+    const y = padding * scale;
+    const w = cardCanvas.width;
+    const h = cardCanvas.height;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + w - radius, y);
+    ctx.arcTo(x + w, y,     x + w, y + radius,     radius);
+    ctx.lineTo(x + w, y + h - radius);
+    ctx.arcTo(x + w, y + h, x + w - radius, y + h, radius);
+    ctx.lineTo(x + radius,  y + h);
+    ctx.arcTo(x,     y + h, x,     y + h - radius, radius);
+    ctx.lineTo(x,    y + radius);
+    ctx.arcTo(x,     y,     x + radius, y,          radius);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(cardCanvas, x, y);
+    ctx.restore();
+
+    // Download
+    const link = document.createElement('a');
+    link.download = 'proposta_mp.png';
+    link.href = out.toDataURL('image/png');
+    link.click();
+  } catch(e) {
+    alert('Erro ao gerar imagem. Tente novamente.');
+    console.error(e);
+  } finally {
+    btn.textContent = '📲 Salvar para WhatsApp';
+    btn.disabled = false;
+  }
+}
+
+/* ──── SCREENSHOT MODE (legado) ──── */
 function enterSS() { document.body.classList.add('ss-mode'); window.scrollTo(0,0); }
 function exitSS()  { document.body.classList.remove('ss-mode'); }
 
