@@ -262,6 +262,9 @@ input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--mp-blue)
 .rate-nil { color: #C5D0DF; }
 .rate-zero { color: #A8B8CC; font-weight: 600; }
 .highlight-row td { background: #EDF6FD !important; }
+.badge-sj { display:inline-block; font-size:8px; font-weight:800; background:#D1FAE5; color:#065F46; border-radius:4px; padding:1px 4px; margin-left:4px; vertical-align:middle; letter-spacing:.3px; }
+.badge-cj { display:inline-block; font-size:8px; font-weight:800; background:#FEF3C7; color:#92400E; border-radius:4px; padding:1px 4px; margin-left:4px; vertical-align:middle; letter-spacing:.3px; }
+.rates-legend { display:flex; gap:10px; font-size:9px; color:var(--text-3); margin-top:5px; margin-bottom:0; }
 
 /* Other payments — removed, merged into info-grid */
 
@@ -408,6 +411,37 @@ body.ss-mode .ss-exit-btn { display: block; }
       </div>
     </div>
 
+    <!-- Juros -->
+    <div class="form-section">
+      <div class="section-title">💳 Parcelamento com / sem juros</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Sem juros até</label>
+          <select id="f_sj" onchange="rebuildProposal()" style="padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;color:var(--text-1);background:#FAFCFF;outline:none;">
+            <option value="0">Não aplicável</option>
+            <option value="1">1x</option>
+            <option value="2">2x</option>
+            <option value="3" selected>3x</option>
+            <option value="4">4x</option>
+            <option value="5">5x</option>
+            <option value="6">6x</option>
+            <option value="7">7x</option>
+            <option value="8">8x</option>
+            <option value="9">9x</option>
+            <option value="10">10x</option>
+            <option value="11">11x</option>
+            <option value="12">12x</option>
+            <option value="99">Todas sem juros</option>
+          </select>
+        </div>
+        <div class="form-group" style="justify-content:flex-end;padding-top:22px;">
+          <div style="background:#F5F9FE;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-2);border:1px solid var(--border);">
+            🟢 <strong>SJ</strong> sem juros &nbsp;·&nbsp; 🟠 <strong>CJ</strong> com juros
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Other MOPs -->
     <div class="form-section">
       <div class="section-title">💰 Outros Meios de Pagamento</div>
@@ -526,6 +560,7 @@ function buildProposalHTML() {
   const plataforma = getField('f_plataforma');
   const boleto     = getField('f_boleto');
   const pix        = getField('f_pix');
+  const sjAte      = parseInt(document.getElementById('f_sj')?.value || '0');
   const hideEmpty  = document.getElementById('hideEmpty').checked;
 
   const rates = getRates();
@@ -536,8 +571,20 @@ function buildProposalHTML() {
   const rateRows = filteredRates.map((r, idx) => {
     const hasAny = COLS_VISIBLE.some(c => !isNil(r[c]));
     const isHead = r.label === '1x / Pré-Pago' || r.label === 'Débito';
+
+    // Badge SJ/CJ — aplica em linhas numéricas com taxas
+    let badge = '';
+    if (sjAte > 0 && hasAny && r.label !== 'Débito' && r.label !== 'Recorrente') {
+      const num = parseInt(r.label); // ex: "3x" → 3, "1x / Pré-Pago" → 1
+      if (!isNaN(num)) {
+        badge = num <= sjAte
+          ? '<span class="badge-sj">SJ</span>'
+          : '<span class="badge-cj">CJ</span>';
+      }
+    }
+
     return `<tr${isHead ? ' class="highlight-row"' : ''}>
-      <td${!hasAny ? ' style="opacity:.45"' : ''}>${r.label}</td>
+      <td${!hasAny ? ' style="opacity:.45"' : ''}>${r.label}${badge}</td>
       <td>${fmtCell(r.master)}</td>
       <td>${fmtCell(r.visa)}</td>
       <td>${fmtCell(r.elo)}</td>
@@ -587,6 +634,8 @@ function buildProposalHTML() {
         <tbody>${rateRows}</tbody>
       </table>
     </div>
+
+    ${sjAte > 0 ? `<div class="rates-legend"><span>🟢 <strong>SJ</strong> Sem juros</span><span>🟠 <strong>CJ</strong> Com juros</span></div>` : ''}
 
     <div class="info-grid" style="margin-bottom:4px;">
       <div class="info-item">
