@@ -235,15 +235,15 @@ input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--mp-blue)
 }
 .prop-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-.conditions-grid { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-.cond-item {
-  display: flex; align-items: center; gap: 9px;
-  background: #F5F9FE; border-radius: 7px; padding: 7px 10px;
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 12px; }
+.info-item {
+  display: flex; align-items: center; gap: 7px;
+  background: #F5F9FE; border-radius: 7px; padding: 6px 9px;
   border-left: 3px solid var(--mp-blue);
 }
-.cond-icon { font-size: 13px; flex-shrink: 0; }
-.cond-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text-3); }
-.cond-value { font-size: 11.5px; font-weight: 600; color: var(--text-1); }
+.info-icon { font-size: 12px; flex-shrink: 0; }
+.info-label { font-size: 8.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--text-3); line-height: 1.2; }
+.info-value { font-size: 11px; font-weight: 700; color: var(--text-1); line-height: 1.2; }
 
 /* Rates table in proposal */
 .prop-rates-wrap { border-radius: 7px; overflow: hidden; border: 1px solid #E8EFF7; margin-bottom: 12px; }
@@ -262,16 +262,7 @@ input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--mp-blue)
 .rate-zero { color: #A8B8CC; font-weight: 600; }
 .highlight-row td { background: #EDF6FD !important; }
 
-/* Other payments */
-.other-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 14px; }
-.other-card {
-  background: #F5F9FE; border-radius: 7px; padding: 8px 10px;
-  border: 1.5px solid #E2EBF5; text-align: center;
-}
-.other-card .oc-icon { font-size: 14px; margin-bottom: 3px; }
-.other-card .oc-label { font-size: 8.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--text-3); margin-bottom: 3px; }
-.other-card .oc-value { font-size: 14px; font-weight: 800; color: var(--mp-navy); }
-.other-card .oc-value.nil { color: #C5D0DF; font-size: 12px; }
+/* Other payments — removed, merged into info-grid */
 
 /* — Proposal Footer — */
 .pf {
@@ -566,15 +557,23 @@ function buildProposalHTML() {
   </div>
 
   <div class="pb">
-    <div class="prop-section-label">Condições Gerais</div>
-    <div class="conditions-grid">
-      <div class="cond-item">
-        <div class="cond-icon">⚡</div>
-        <div><div class="cond-label">Recebimento</div><div class="cond-value">${receb}</div></div>
+    <div class="prop-section-label">Condições</div>
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-icon">⚡</div>
+        <div><div class="info-label">Recebimento</div><div class="info-value">${receb}</div></div>
       </div>
-      <div class="cond-item">
-        <div class="cond-icon">🏬</div>
-        <div><div class="cond-label">Plataforma</div><div class="cond-value">${plataforma}</div></div>
+      <div class="info-item">
+        <div class="info-icon">🏬</div>
+        <div><div class="info-label">Plataforma</div><div class="info-value">${plataforma}</div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">🧾</div>
+        <div><div class="info-label">Boleto</div><div class="info-value">${boleto || '—'}</div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">⚡</div>
+        <div><div class="info-label">Pix</div><div class="info-value">${pix || '—'}</div></div>
       </div>
     </div>
 
@@ -594,19 +593,6 @@ function buildProposalHTML() {
       </table>
     </div>
 
-    <div class="prop-section-label">Outros Meios de Pagamento</div>
-    <div class="other-grid">
-      <div class="other-card">
-        <div class="oc-icon">🧾</div>
-        <div class="oc-label">Boleto Bancário</div>
-        ${fmtOther(boleto)}
-      </div>
-      <div class="other-card">
-        <div class="oc-icon">⚡</div>
-        <div class="oc-label">Pix</div>
-        ${fmtOther(pix)}
-      </div>
-    </div>
   </div>
 
   <div class="pf">
