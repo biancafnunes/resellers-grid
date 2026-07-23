@@ -567,17 +567,9 @@ function buildProposalHTML() {
         <div class="info-icon">🏬</div>
         <div><div class="info-label">Plataforma</div><div class="info-value">${plataforma}</div></div>
       </div>
-      <div class="info-item">
-        <div class="info-icon">🧾</div>
-        <div><div class="info-label">Boleto</div><div class="info-value">${boleto || '—'}</div></div>
-      </div>
-      <div class="info-item">
-        <div class="info-icon">⚡</div>
-        <div><div class="info-label">Pix</div><div class="info-value">${pix || '—'}</div></div>
-      </div>
     </div>
 
-    <div class="prop-section-label">Taxas Finais</div>
+    <div class="prop-section-label" style="margin-top:10px;">Taxas Finais</div>
     <div class="prop-rates-wrap">
       <table class="prop-rates-table">
         <thead>
@@ -593,6 +585,16 @@ function buildProposalHTML() {
       </table>
     </div>
 
+    <div class="info-grid" style="margin-bottom:4px;">
+      <div class="info-item">
+        <div class="info-icon">🧾</div>
+        <div><div class="info-label">Boleto</div><div class="info-value">${boleto || '—'}</div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-icon">⚡</div>
+        <div><div class="info-label">Pix</div><div class="info-value">${pix || '—'}</div></div>
+      </div>
+    </div>
   </div>
 
   <div class="pf">
