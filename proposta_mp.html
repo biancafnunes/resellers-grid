@@ -387,12 +387,6 @@ body.ss-mode .ss-exit-btn { display: block; }
           <input type="text" id="f_recebimento" value="em 2 dias">
         </div>
         <div class="form-group">
-          <label>Cobertura de Chargeback</label>
-          <input type="text" id="f_chargeback" value="Sem cobertura">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
           <label>Plataforma</label>
           <input type="text" id="f_plataforma" value="Tray Varejo">
         </div>
@@ -414,7 +408,6 @@ body.ss-mode .ss-exit-btn { display: block; }
               <th class="th-master">Master</th>
               <th class="th-visa">Visa</th>
               <th class="th-elo">Elo</th>
-              <th class="th-hiper">Hiper</th>
               <th class="th-amex">Amex</th>
             </tr>
           </thead>
@@ -430,16 +423,6 @@ body.ss-mode .ss-exit-btn { display: block; }
         <div class="form-group">
           <label>Boleto</label>
           <input type="text" id="f_boleto" value="R$ 1,99">
-        </div>
-        <div class="form-group">
-          <label>Saldo Mercado Pago</label>
-          <input type="text" id="f_saldo" value="-">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>PEC</label>
-          <input type="text" id="f_pec" value="R$ 0,00">
         </div>
         <div class="form-group">
           <label>Pix</label>
@@ -498,6 +481,7 @@ const ROWS = [
 ];
 
 const COLS = ['master','visa','elo','hiper','amex'];
+const COLS_VISIBLE = ['master','visa','elo','amex'];
 
 /* ──── BUILD FORM TABLE ──── */
 function buildFormTable() {
@@ -506,6 +490,7 @@ function buildFormTable() {
     const tr = document.createElement('tr');
     let cells = `<td><strong>${row.label}</strong></td>`;
     COLS.forEach(col => {
+      if (col === 'hiper') return;
       cells += `<td><input type="text" id="r_${i}_${col}" value="${row[col]}" oninput="rebuildProposal()"></td>`;
     });
     tr.innerHTML = cells;
@@ -546,28 +531,24 @@ function buildProposalHTML() {
   const validity   = getField('f_validity');
   const date       = getField('f_date');
   const receb      = getField('f_recebimento');
-  const chargeback = getField('f_chargeback');
   const plataforma = getField('f_plataforma');
   const boleto     = getField('f_boleto');
-  const saldo      = getField('f_saldo');
-  const pec        = getField('f_pec');
   const pix        = getField('f_pix');
   const hideEmpty  = document.getElementById('hideEmpty').checked;
 
   const rates = getRates();
   const filteredRates = hideEmpty
-    ? rates.filter(r => COLS.some(c => !isNil(r[c])))
+    ? rates.filter(r => COLS_VISIBLE.some(c => !isNil(r[c])))
     : rates;
 
   const rateRows = filteredRates.map((r, idx) => {
-    const hasAny = COLS.some(c => !isNil(r[c]));
+    const hasAny = COLS_VISIBLE.some(c => !isNil(r[c]));
     const isHead = r.label === '1x / Pré-Pago' || r.label === 'Débito';
     return `<tr${isHead ? ' class="highlight-row"' : ''}>
       <td${!hasAny ? ' style="opacity:.45"' : ''}>${r.label}</td>
       <td>${fmtCell(r.master)}</td>
       <td>${fmtCell(r.visa)}</td>
       <td>${fmtCell(r.elo)}</td>
-      <td>${fmtCell(r.hiper)}</td>
       <td>${fmtCell(r.amex)}</td>
     </tr>`;
   }).join('');
@@ -591,16 +572,12 @@ function buildProposalHTML() {
         <div><div class="cond-label">Recebimento</div><div class="cond-value">${receb}</div></div>
       </div>
       <div class="cond-item">
-        <div class="cond-icon">🛡️</div>
-        <div><div class="cond-label">Cobertura de Chargeback</div><div class="cond-value">${chargeback}</div></div>
-      </div>
-      <div class="cond-item">
         <div class="cond-icon">🏬</div>
         <div><div class="cond-label">Plataforma</div><div class="cond-value">${plataforma}</div></div>
       </div>
     </div>
 
-    <div class="prop-section-label">Taxas Finais por Parcelamento</div>
+    <div class="prop-section-label">Taxas Finais</div>
     <div class="prop-rates-wrap">
       <table class="prop-rates-table">
         <thead>
@@ -609,7 +586,6 @@ function buildProposalHTML() {
             <th style="background:var(--master)">Master</th>
             <th style="background:var(--visa)">Visa</th>
             <th style="background:var(--elo)">Elo</th>
-            <th style="background:var(--hiper)">Hiper</th>
             <th style="background:var(--amex)">Amex</th>
           </tr>
         </thead>
@@ -625,16 +601,6 @@ function buildProposalHTML() {
         ${fmtOther(boleto)}
       </div>
       <div class="other-card">
-        <div class="oc-icon">💙</div>
-        <div class="oc-label">Saldo Mercado Pago</div>
-        ${fmtOther(saldo)}
-      </div>
-      <div class="other-card">
-        <div class="oc-icon">📋</div>
-        <div class="oc-label">PEC</div>
-        ${fmtOther(pec)}
-      </div>
-      <div class="other-card">
         <div class="oc-icon">⚡</div>
         <div class="oc-label">Pix</div>
         ${fmtOther(pix)}
@@ -648,8 +614,8 @@ function buildProposalHTML() {
       ${date}
     </div>
     <div class="pf-consultant">
-      <strong>${consultant || 'Consultor Mercado Pago'}</strong>
-      <span>Consultor Mercado Pago</span>
+      <strong>${consultant || 'Gerente Big Sellers'}</strong>
+      <span>Gerente Big Sellers (Mercado Pago)</span>
     </div>
   </div>`;
 }
