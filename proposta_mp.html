@@ -255,16 +255,16 @@ input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--mp-blue)
 }
 .prop-rates-table th:first-child { text-align: left; padding-left: 9px; background: var(--mp-navy); width: 58px; }
 .prop-rates-table td { padding: 4.5px 3px; text-align: center; border-bottom: 1px solid #F0F5FB; }
-.prop-rates-table td:first-child { text-align: left; padding-left: 9px; font-weight: 600; color: var(--text-2); font-size: 10px; }
+.prop-rates-table td:first-child { text-align: left; padding-left: 9px; font-weight: 600; color: var(--text-2); font-size: 10px; display:flex; align-items:center; justify-content:space-between; padding-right:6px; }
 .prop-rates-table tr:nth-child(even) td { background: #FAFCFF; }
 .prop-rates-table tr:last-child td { border-bottom: none; }
 .rate-val { font-weight: 700; color: var(--text-1); }
 .rate-nil { color: #C5D0DF; }
 .rate-zero { color: #A8B8CC; font-weight: 600; }
 .highlight-row td { background: #EDF6FD !important; }
-.badge-sj, .badge-cj { display:inline-flex; align-items:center; font-size:7.5px; font-weight:800; border-radius:3px; padding:1px 4px; margin-left:5px; line-height:1; letter-spacing:.3px; position:relative; top:-0.5px; }
-.badge-sj { background:#D1FAE5; color:#065F46; }
-.badge-cj { background:#FEF3C7; color:#92400E; }
+.badge-sj, .badge-cj { display:inline-flex; align-items:center; flex-shrink:0; font-size:7px; font-weight:800; border-radius:3px; padding:1px 4px; line-height:1; letter-spacing:.3px; }
+.badge-sj { background:rgba(209,250,229,0.55); color:#059669; }
+.badge-cj { background:rgba(254,243,199,0.55); color:#B45309; }
 .rates-legend { display:flex; gap:10px; font-size:9px; color:var(--text-3); margin-top:5px; margin-bottom:0; }
 
 /* Other payments — removed, merged into info-grid */
@@ -579,8 +579,8 @@ function buildProposalHTML() {
       const num = parseInt(r.label); // ex: "3x" → 3, "1x" → 1
       if (!isNaN(num)) {
         badge = num <= sjAte
-          ? '<span class="badge-sj">SJ</span>'
-          : '<span class="badge-cj">CJ</span>';
+          ? `<span class="badge-sj">SJ</span>`
+          : `<span class="badge-cj">CJ</span>`;
       }
     }
 
