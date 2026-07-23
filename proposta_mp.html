@@ -262,8 +262,9 @@ input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--mp-blue)
 .rate-nil { color: #C5D0DF; }
 .rate-zero { color: #A8B8CC; font-weight: 600; }
 .highlight-row td { background: #EDF6FD !important; }
-.badge-sj { display:inline-block; font-size:8px; font-weight:800; background:#D1FAE5; color:#065F46; border-radius:4px; padding:1px 4px; margin-left:4px; vertical-align:middle; letter-spacing:.3px; }
-.badge-cj { display:inline-block; font-size:8px; font-weight:800; background:#FEF3C7; color:#92400E; border-radius:4px; padding:1px 4px; margin-left:4px; vertical-align:middle; letter-spacing:.3px; }
+.badge-sj, .badge-cj { display:inline-flex; align-items:center; font-size:7.5px; font-weight:800; border-radius:3px; padding:1px 4px; margin-left:5px; line-height:1; letter-spacing:.3px; position:relative; top:-0.5px; }
+.badge-sj { background:#D1FAE5; color:#065F46; }
+.badge-cj { background:#FEF3C7; color:#92400E; }
 .rates-legend { display:flex; gap:10px; font-size:9px; color:var(--text-3); margin-top:5px; margin-bottom:0; }
 
 /* Other payments — removed, merged into info-grid */
