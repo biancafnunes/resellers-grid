@@ -266,7 +266,9 @@ input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--mp-blue)
 .badge-sj, .badge-cj { display:inline-flex; align-items:center; flex-shrink:0; font-size:7px; font-weight:800; border-radius:3px; padding:1px 4px; line-height:1; letter-spacing:.3px; }
 .badge-sj { background:rgba(209,250,229,0.55); color:#059669; }
 .badge-cj { background:rgba(254,243,199,0.55); color:#B45309; }
-.rates-legend { display:flex; gap:10px; font-size:9px; color:var(--text-3); margin-top:5px; margin-bottom:0; }
+.rates-legend { display:flex; gap:12px; font-size:8px; color:var(--text-3); margin-top:5px; margin-bottom:8px; justify-content:center; align-items:center; }
+.prop-partner { font-size:10px; color:var(--text-2); margin-bottom:10px; padding:7px 10px; background:#F5F9FE; border-radius:7px; display:flex; align-items:center; gap:6px; }
+.prop-partner strong { color:var(--text-1); font-size:12px; }
 
 /* Other payments — removed, merged into info-grid */
 
@@ -748,10 +750,10 @@ function buildProposalHTML() {
         <div class="ph-sub">Proposta exclusiva — não divulgue</div>
       </div>
     </div>
-    ${client ? `<div class="ph-client"><div class="ph-client-label">Para</div><div class="ph-client-name">${client}</div></div>` : ''}
   </div>
 
   <div class="pb">
+    ${client ? `<div class="prop-partner">🤝 Para <strong>${client}</strong></div>` : ''}
     <div class="prop-section-label">Condições</div>
     <div class="info-grid">
       <div class="info-item">
