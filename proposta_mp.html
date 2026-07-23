@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proposta Comercial — Mercado Pago</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
 /* ─── Reset & Base ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -347,6 +348,12 @@ body.ss-mode .ss-exit-btn { display: block; }
         <img id="uploadedImg" src="" style="display:none" alt="">
         <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFile(event)">
       </div>
+      <div id="ocrPanel" style="display:none; margin-top:10px;">
+        <button id="btnOcr" onclick="runOCR()" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--mp-navy),#1A3A60);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;">
+          🔍 Ler taxas da imagem automaticamente
+        </button>
+        <div id="ocrStatus" style="margin-top:8px;font-size:12px;color:var(--text-2);text-align:center;min-height:18px;"></div>
+      </div>
     </div>
 
     <!-- Identification -->
@@ -509,6 +516,106 @@ const ROWS = [
 
 const COLS = ['master','visa','elo','hiper','amex'];
 const COLS_VISIBLE = ['master','visa','elo','amex'];
+
+/* ──── OCR ──── */
+async function runOCR() {
+  const btn = document.getElementById('btnOcr');
+  const status = document.getElementById('ocrStatus');
+  const imgSrc = document.getElementById('uploadedImg').src;
+  if (!imgSrc) return;
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Lendo imagem...';
+  status.textContent = 'Aguarde, isso pode levar alguns segundos...';
+
+  try {
+    status.textContent = '📥 Carregando motor de leitura...';
+    const { data: { text } } = await Tesseract.recognize(imgSrc, 'por+eng', {
+      logger: m => {
+        if (m.status === 'recognizing text')
+          status.textContent = `🔍 Lendo... ${Math.round(m.progress * 100)}%`;
+      }
+    });
+
+    const filled = fillRatesFromOCR(text);
+    rebuildProposal();
+
+    status.innerHTML = filled > 0
+      ? `✅ <strong>${filled} linha(s)</strong> preenchida(s)! Confira os valores antes de gerar.`
+      : '⚠️ Não foi possível identificar as taxas. Preencha manualmente.';
+  } catch(e) {
+    status.textContent = '❌ Erro ao ler imagem. Preencha manualmente.';
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔍 Ler taxas da imagem automaticamente';
+  }
+}
+
+function fillRatesFromOCR(text) {
+  // Mapeia labels para índices do ROWS
+  const rowMap = [
+    { idx: 0,  patterns: ['débito','debito','debit'] },
+    { idx: 1,  patterns: ['1x'] },
+    { idx: 2,  patterns: ['2x'] },
+    { idx: 3,  patterns: ['3x'] },
+    { idx: 4,  patterns: ['4x'] },
+    { idx: 5,  patterns: ['5x'] },
+    { idx: 6,  patterns: ['6x'] },
+    { idx: 7,  patterns: ['7x'] },
+    { idx: 8,  patterns: ['8x'] },
+    { idx: 9,  patterns: ['9x'] },
+    { idx: 10, patterns: ['10x'] },
+    { idx: 11, patterns: ['11x'] },
+    { idx: 12, patterns: ['12x'] },
+    { idx: 13, patterns: ['13x'] },
+    { idx: 14, patterns: ['14x'] },
+    { idx: 15, patterns: ['15x'] },
+    { idx: 16, patterns: ['16x'] },
+    { idx: 17, patterns: ['17x'] },
+    { idx: 18, patterns: ['18x'] },
+    { idx: 19, patterns: ['recorrente'] },
+  ];
+
+  const FORM_COLS = ['master', 'visa', 'elo', 'hiper', 'amex'];
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  let filled = 0;
+
+  for (const line of lines) {
+    const lower = line.toLowerCase();
+
+    const rowDef = rowMap.find(r => r.patterns.some(p => {
+      const re = new RegExp(`(?:^|\\s)${p.replace('x','[xX]')}(?:\\s|/|$)`);
+      return re.test(lower);
+    }));
+    if (!rowDef) continue;
+
+    // Extrai percentuais e traços da linha
+    const vals = [];
+    const tokens = line.split(/\s+/);
+    for (const tok of tokens) {
+      const clean = tok.replace(/[°oO]/g, '0').replace(/,/g, ',');
+      if (/^\d+[,.]?\d*\s*%?$/.test(clean)) {
+        const num = clean.replace('%','').replace(',','.').trim();
+        vals.push(parseFloat(num).toFixed(2).replace('.',',') + '%');
+      } else if (/^[-—–]+$/.test(tok)) {
+        vals.push('-');
+      }
+    }
+
+    if (vals.length === 0) continue;
+
+    FORM_COLS.forEach((col, ci) => {
+      if (ci < vals.length) {
+        const el = document.getElementById(`r_${rowDef.idx}_${col}`);
+        if (el) el.value = vals[ci];
+      }
+    });
+    filled++;
+  }
+
+  return filled;
+}
 
 /* ──── BUILD FORM TABLE ──── */
 function buildFormTable() {
@@ -755,6 +862,8 @@ function applyImage(src) {
   const area = document.getElementById('uploadArea');
   img.src = src; img.style.display = 'block';
   hint.style.display = 'none'; area.classList.add('has-image');
+  document.getElementById('ocrPanel').style.display = 'block';
+  document.getElementById('ocrStatus').textContent = '';
 }
 function handleFile(e) {
   const file = e.target.files[0]; if (!file) return;
