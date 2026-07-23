@@ -485,7 +485,7 @@ body.ss-mode .ss-exit-btn { display: block; }
 /* ──── DATA ──── */
 const ROWS = [
   { id:'debito',    label:'Débito',        master:'-',      visa:'-',      elo:'-',      hiper:'-',      amex:'-'      },
-  { id:'r1',        label:'1x / Pré-Pago', master:'3,40%',  visa:'3,40%',  elo:'3,40%',  hiper:'1,94%',  amex:'3,40%'  },
+  { id:'r1',        label:'1x', master:'3,40%',  visa:'3,40%',  elo:'3,40%',  hiper:'1,94%',  amex:'3,40%'  },
   { id:'r2',        label:'2x',            master:'4,80%',  visa:'4,80%',  elo:'4,80%',  hiper:'2,80%',  amex:'4,80%'  },
   { id:'r3',        label:'3x',            master:'5,00%',  visa:'5,00%',  elo:'5,00%',  hiper:'3,00%',  amex:'5,00%'  },
   { id:'r4',        label:'4x',            master:'2,00%',  visa:'2,00%',  elo:'2,00%',  hiper:'0,00%',  amex:'2,00%'  },
@@ -570,12 +570,12 @@ function buildProposalHTML() {
 
   const rateRows = filteredRates.map((r, idx) => {
     const hasAny = COLS_VISIBLE.some(c => !isNil(r[c]));
-    const isHead = r.label === '1x / Pré-Pago' || r.label === 'Débito';
+    const isHead = r.label === '1x' || r.label === 'Débito';
 
     // Badge SJ/CJ — aplica em linhas numéricas com taxas
     let badge = '';
     if (sjAte > 0 && hasAny && r.label !== 'Débito' && r.label !== 'Recorrente') {
-      const num = parseInt(r.label); // ex: "3x" → 3, "1x / Pré-Pago" → 1
+      const num = parseInt(r.label); // ex: "3x" → 3, "1x" → 1
       if (!isNaN(num)) {
         badge = num <= sjAte
           ? '<span class="badge-sj">SJ</span>'
