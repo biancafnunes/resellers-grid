@@ -332,7 +332,14 @@ document.fonts.ready.then(() => requestAnimationFrame(frame));
 
 // ── Download button ──────────────────────────────────────
 document.getElementById('dlBtn').addEventListener('click', () => {
-  canvas.toBlob(blob => {
+  // Espelha horizontalmente para compensar o mirror automático do Meet
+  const tmp = document.createElement('canvas');
+  tmp.width = W; tmp.height = H;
+  const tCtx = tmp.getContext('2d');
+  tCtx.translate(W, 0);
+  tCtx.scale(-1, 1);
+  tCtx.drawImage(canvas, 0, 0);
+  tmp.toBlob(blob => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'meet_background_mercadopago.png';
