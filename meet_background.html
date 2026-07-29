@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>MP Meet Background</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #000814;
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+#bg { position: absolute; transform-origin: top left; }
+.dl-btn {
+  position: fixed; top: 20px; right: 20px; z-index: 99;
+  background: rgba(0,177,234,0.12);
+  border: 1px solid rgba(0,177,234,0.55);
+  color: rgba(0,200,255,0.9);
+  padding: 11px 22px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px; font-weight: 500;
+  letter-spacing: 3px; text-transform: uppercase;
+  cursor: pointer; backdrop-filter: blur(6px);
+  transition: all 0.2s;
+}
+.dl-btn:hover { background: rgba(0,177,234,0.28); color: #fff; }
+</style>
+</head>
+<body>
+<canvas id="bg" width="1920" height="1080"></canvas>
+<button class="dl-btn" id="dlBtn">⬇ Download PNG</button>
+<script>
+const canvas = document.getElementById('bg');
+const ctx    = canvas.getContext('2d');
+const W = 1920, H = 1080;
+
+// ── Scale canvas to fit viewport ─────────────────────────
+function updateScale() {
+  const s = Math.min(window.innerWidth / W, window.innerHeight / H);
+  canvas.style.transform = `scale(${s})`;
+  canvas.style.left = ((window.innerWidth  - W * s) / 2) + 'px';
+  canvas.style.top  = ((window.innerHeight - H * s) / 2) + 'px';
+}
+updateScale();
+window.addEventListener('resize', updateScale);
+
+// ── Particles ────────────────────────────────────────────
+const PARTS = Array.from({ length: 95 }, () => ({
+  x:  Math.random() * W,
+  y:  Math.random() * H,
+  vx: (Math.random() - 0.5) * 0.38,
+  vy: (Math.random() - 0.5) * 0.38,
+  r:  Math.random() * 1.8 + 0.5,
+  a:  Math.random() * 0.35 + 0.1
+}));
+const MAX_DIST = 170;
+
+// ── Draw functions ───────────────────────────────────────
+function drawBg() {
+  ctx.fillStyle = '#000814';
+  ctx.fillRect(0, 0, W, H);
+
+  const glows = [
+    { x: 360, y: 540, r: 680, c0: 'rgba(0,50,120,0.52)', c1: 'rgba(0,50,120,0)' },
+    { x: 1490, y: 125, r: 390, c0: 'rgba(0,177,234,0.07)', c1: 'rgba(0,177,234,0)' },
+    { x: 1700, y: 900, r: 320, c0: 'rgba(0,100,80,0.05)', c1: 'rgba(0,100,80,0)' },
+  ];
+  for (const g of glows) {
+    const gr = ctx.createRadialGradient(g.x, g.y, 0, g.x, g.y, g.r);
+    gr.addColorStop(0, g.c0); gr.addColorStop(1, g.c1);
+    ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
+  }
+}
+
+function drawGrid() {
+  ctx.strokeStyle = 'rgba(0,177,234,0.052)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x <= W; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = 0; y <= H; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+}
+
+function drawOrb(t) {
+  const cx = 300, cy = 540;
+
+  // Ambient halo
+  const ha = ctx.createRadialGradient(cx, cy, 0, cx, cy, 370);
+  ha.addColorStop(0, 'rgba(0,177,234,0.07)'); ha.addColorStop(1, 'rgba(0,177,234,0)');
+  ctx.fillStyle = ha; ctx.beginPath(); ctx.arc(cx, cy, 370, 0, Math.PI * 2); ctx.fill();
+
+  // Rings
+  const rings = [
+    { r: 100, spd: 0.70, col: 'rgba(0,177,234,0.50)', dr: 5.5, dash: false },
+    { r: 150, spd: -0.44, col: 'rgba(0,177,234,0.28)', dr: 6.0, dash: true  },
+    { r: 198, spd: 0.31, col: 'rgba(0,177,234,0.15)', dr: 5.5, dash: false },
+    { r: 248, spd: -0.22, col: 'rgba(0,177,234,0.10)', dr: 4.0, dash: false },
+  ];
+  for (const rg of rings) {
+    ctx.beginPath(); ctx.arc(cx, cy, rg.r, 0, Math.PI * 2);
+    ctx.strokeStyle = rg.col; ctx.lineWidth = rg.dash ? 1.2 : 1;
+    ctx.setLineDash(rg.dash ? [9, 5] : []);
+    ctx.stroke(); ctx.setLineDash([]);
+
+    const angle = t * rg.spd - Math.PI / 2;
+    const brt   = 0.6 + 0.4 * Math.sin(t * 1.8);
+    ctx.beginPath();
+    ctx.arc(cx + rg.r * Math.cos(angle), cy + rg.r * Math.sin(angle), rg.dr, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,${Math.round(177 + 33 * brt)},234,${0.7 + 0.3 * brt})`;
+    ctx.fill();
+  }
+
+  // Pulsing inner ring
+  const pr = 65 + 5 * Math.sin(t * 1.8);
+  const pa = 0.3 + 0.5 * Math.abs(Math.sin(t * 1.8));
+  ctx.beginPath(); ctx.arc(cx, cy, pr, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(0,177,234,${pa})`; ctx.lineWidth = 1.5; ctx.stroke();
+
+  // Core
+  const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 65);
+  cg.addColorStop(0.00, 'rgba(220,245,255,0.95)');
+  cg.addColorStop(0.22, 'rgba(0,210,255,0.75)');
+  cg.addColorStop(0.50, 'rgba(0,155,230,0.45)');
+  cg.addColorStop(0.75, 'rgba(0,80,160,0.15)');
+  cg.addColorStop(1.00, 'rgba(0,0,0,0)');
+  const pulse = 20 * Math.sin(t * 0.5);
+  ctx.shadowColor = 'rgba(0,190,255,0.9)'; ctx.shadowBlur = 42 + pulse;
+  ctx.fillStyle = cg; ctx.beginPath(); ctx.arc(cx, cy, 65, 0, Math.PI * 2); ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+function drawParticles() {
+  for (let i = 0; i < PARTS.length; i++) {
+    for (let j = i + 1; j < PARTS.length; j++) {
+      const dx = PARTS[i].x - PARTS[j].x, dy = PARTS[i].y - PARTS[j].y;
+      const d  = Math.hypot(dx, dy);
+      if (d < MAX_DIST) {
+        ctx.beginPath();
+        ctx.moveTo(PARTS[i].x, PARTS[i].y);
+        ctx.lineTo(PARTS[j].x, PARTS[j].y);
+        ctx.strokeStyle = `rgba(0,177,234,${0.12 * (1 - d / MAX_DIST)})`;
+        ctx.lineWidth = 0.55; ctx.stroke();
+      }
+    }
+  }
+  for (const p of PARTS) {
+    const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 5);
+    grd.addColorStop(0, `rgba(0,177,234,${p.a * 0.35})`);
+    grd.addColorStop(1, 'rgba(0,177,234,0)');
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
+    ctx.fillStyle = grd; ctx.fill();
+
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,177,234,${p.a})`; ctx.fill();
+
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < -12) p.x = W + 12; if (p.x > W + 12) p.x = -12;
+    if (p.y < -12) p.y = H + 12; if (p.y > H + 12) p.y = -12;
+  }
+}
+
+function drawAccentLines() {
+  [[92, 0.45], [H - 104, 0.5]].forEach(([y, peak]) => {
+    const g = ctx.createLinearGradient(0, y, W, y);
+    g.addColorStop(0, 'rgba(0,177,234,0)');
+    g.addColorStop(0.25, `rgba(0,177,234,${peak * 0.55})`);
+    g.addColorStop(0.5,  `rgba(0,177,234,${peak})`);
+    g.addColorStop(0.75, `rgba(0,177,234,${peak * 0.55})`);
+    g.addColorStop(1, 'rgba(0,177,234,0)');
+    ctx.strokeStyle = g; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  });
+}
+
+function drawCorners() {
+  ctx.strokeStyle = 'rgba(0,177,234,0.75)'; ctx.lineWidth = 1.5;
+  const s = 52, p = 38;
+  const corners = [
+    [[p, p + s], [p, p], [p + s, p]],
+    [[W-p-s, p], [W-p, p], [W-p, p+s]],
+    [[p, H-p-s], [p, H-p], [p+s, H-p]],
+    [[W-p-s, H-p], [W-p, H-p], [W-p, H-p-s]],
+  ];
+  for (const pts of corners) {
+    ctx.beginPath();
+    ctx.moveTo(...pts[0]); ctx.lineTo(...pts[1]); ctx.lineTo(...pts[2]);
+    ctx.stroke();
+  }
+}
+
+function drawCircuit() {
+  ctx.lineWidth = 1; ctx.lineCap = 'round';
+
+  const traces = [
+    { a: 0.18, segs: [[0,900],[120,900],[160,860],[300,860]], dots: [[120,900],[300,860]] },
+    { a: 0.14, segs: [[0,940],[80,940],[110,910],[240,910]], dots: [] },
+    { a: 0.18, segs: [[300,860],[300,820],[380,820],[420,780]], dots: [[300,820]] },
+    { a: 0.12, segs: [[W,180],[W-100,180],[W-140,220],[W-280,220]], dots: [[W-100,180],[W-280,220]] },
+    { a: 0.10, segs: [[W,140],[W-60,140],[W-100,180]], dots: [] },
+  ];
+
+  for (const tr of traces) {
+    ctx.globalAlpha = tr.a;
+    ctx.strokeStyle = 'rgba(0,177,234,0.85)';
+    ctx.beginPath(); ctx.moveTo(...tr.segs[0]);
+    for (let i = 1; i < tr.segs.length; i++) ctx.lineTo(...tr.segs[i]);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(0,177,234,0.85)';
+    for (const d of tr.dots) { ctx.beginPath(); ctx.arc(d[0], d[1], 3, 0, Math.PI * 2); ctx.fill(); }
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawRightPanel(t) {
+  const widths = [190, 110, 150, 75, 170, 95];
+  const rx = W - 76, startY = H / 2 - widths.length * 8;
+
+  for (let i = 0; i < widths.length; i++) {
+    const a  = 0.18 + 0.57 * (0.5 + 0.5 * Math.sin(t * 0.8 + i * 0.5));
+    const y  = startY + i * 16;
+    const g  = ctx.createLinearGradient(rx - widths[i], y, rx, y);
+    g.addColorStop(0, 'rgba(0,177,234,0)'); g.addColorStop(1, `rgba(0,177,234,${a})`);
+    ctx.strokeStyle = g; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(rx - widths[i], y); ctx.lineTo(rx, y); ctx.stroke();
+  }
+}
+
+function drawStats() {
+  const stats = [['TPV',130],['MAS',85],['TPN',105],['ACQ',65],['ENG',95]];
+  ctx.globalAlpha = 0.18;
+  for (let i = 0; i < stats.length; i++) {
+    const [lbl, w] = stats[i];
+    const x = W - 100 - w - 68, y = 132 + i * 24;
+    ctx.font = '500 11px Rajdhani, monospace';
+    ctx.fillStyle = 'rgba(0,177,234,0.9)'; ctx.fillText(lbl, x, y);
+    ctx.fillStyle = 'rgba(0,177,234,0.8)'; ctx.fillRect(x + 56, y - 10, w, 2);
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawScanline(t) {
+  const y = ((t * 80) % (H + 20)) - 10;
+  const g = ctx.createLinearGradient(0, y, W, y);
+  g.addColorStop(0, 'rgba(0,177,234,0)'); g.addColorStop(0.25, 'rgba(0,177,234,0.1)');
+  g.addColorStop(0.5, 'rgba(0,177,234,0.35)'); g.addColorStop(0.75, 'rgba(0,177,234,0.1)');
+  g.addColorStop(1, 'rgba(0,177,234,0)');
+  ctx.strokeStyle = g; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+}
+
+function drawBrand() {
+  const bx = 76, by = H - 52;
+
+  // Emblem circles
+  ctx.strokeStyle = 'rgba(0,177,234,0.65)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.arc(bx + 30, by - 30, 28.5, 0, Math.PI * 2); ctx.stroke();
+  ctx.strokeStyle = 'rgba(0,177,234,0.3)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(bx + 30, by - 30, 20, 0, Math.PI * 2); ctx.stroke();
+
+  // Chevron >>
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.strokeStyle = 'rgba(0,210,255,0.95)'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(bx+18, by-42); ctx.lineTo(bx+30, by-30); ctx.lineTo(bx+18, by-18); ctx.stroke();
+  ctx.strokeStyle = 'rgba(0,177,234,0.45)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(bx+28, by-42); ctx.lineTo(bx+41, by-30); ctx.lineTo(bx+28, by-18); ctx.stroke();
+
+  // Text
+  ctx.shadowColor = 'rgba(0,177,234,0.9)'; ctx.shadowBlur = 22;
+  ctx.fillStyle = '#ffffff'; ctx.font = '700 36px Orbitron, monospace';
+  ctx.fillText('MERCADO PAGO', bx + 80, by - 19);
+  ctx.shadowBlur = 0;
+
+  ctx.fillStyle = 'rgba(0,177,234,0.7)'; ctx.font = '500 13px Rajdhani, sans-serif';
+  if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '7px';
+  ctx.fillText('STRATEGY & PLANNING  ·  BRASIL', bx + 80, by - 1);
+  if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
+}
+
+// ── Animation loop ───────────────────────────────────────
+let start = null;
+function frame(ts) {
+  if (!start) start = ts;
+  const t = (ts - start) / 1000;
+
+  drawBg();
+  drawGrid();
+  drawCircuit();
+  drawParticles();
+  drawOrb(t);
+  drawAccentLines();
+  drawCorners();
+  drawRightPanel(t);
+  drawStats();
+  drawScanline(t);
+  drawBrand();
+
+  requestAnimationFrame(frame);
+}
+
+// Wait for fonts before starting
+document.fonts.ready.then(() => requestAnimationFrame(frame));
+
+// ── Download button ──────────────────────────────────────
+document.getElementById('dlBtn').addEventListener('click', () => {
+  canvas.toBlob(blob => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'meet_background_mercadopago.png';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }, 'image/png');
+});
+</script>
+</body>
+</html>
