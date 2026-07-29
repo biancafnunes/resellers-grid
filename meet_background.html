@@ -57,38 +57,9 @@ const PARTS = Array.from({ length: 95 }, () => ({
 }));
 const MAX_DIST = 170;
 
-// MP logo — handshake oval (SVG → data URL)
-const _mpSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 372">
-  <defs>
-    <clipPath id="c">
-      <ellipse cx="230" cy="186" rx="221" ry="177"/>
-    </clipPath>
-  </defs>
-  <ellipse cx="230" cy="186" rx="221" ry="177" fill="#2BC5F5"/>
-  <polygon points="9,98 451,112 451,272 9,258" fill="white" clip-path="url(#c)"/>
-  <path d="M9,354 C44,331 86,307 126,285 C156,268 180,253 200,241
-           C214,232 224,225 234,221 C242,218 250,219 256,224
-           L246,236 C238,242 228,249 215,258 C197,270 176,284 150,300
-           C115,322 72,346 28,366 Z"
-        fill="white" stroke="#1A17A3" stroke-width="10" stroke-linejoin="round"
-        clip-path="url(#c)"/>
-  <circle cx="257" cy="224" r="12" fill="white" stroke="#1A17A3" stroke-width="6" clip-path="url(#c)"/>
-  <circle cx="244" cy="234" r="11" fill="white" stroke="#1A17A3" stroke-width="6" clip-path="url(#c)"/>
-  <circle cx="231" cy="244" r="11" fill="white" stroke="#1A17A3" stroke-width="6" clip-path="url(#c)"/>
-  <circle cx="219" cy="255" r="10" fill="white" stroke="#1A17A3" stroke-width="6" clip-path="url(#c)"/>
-  <path d="M451,18 C426,43 396,70 361,97 C333,119 309,136 287,151
-           C271,162 259,169 249,173 C241,177 233,177 227,171
-           L237,161 C245,155 256,148 269,139 C289,126 313,110 341,91
-           C373,69 407,45 441,19 Z"
-        fill="white" stroke="#1A17A3" stroke-width="10" stroke-linejoin="round"
-        clip-path="url(#c)"/>
-  <path d="M227,171 C221,159 223,146 231,139 C241,133 255,137 259,147
-           C263,157 257,171 247,175 Z"
-        fill="white" stroke="#1A17A3" stroke-width="6" clip-path="url(#c)"/>
-  <ellipse cx="230" cy="186" rx="221" ry="177" fill="none" stroke="#1A17A3" stroke-width="18"/>
-</svg>`;
+// MP logo (PNG real do repositório)
 const logoImg = new Image();
-logoImg.src = 'data:image/svg+xml,' + encodeURIComponent(_mpSVG);
+logoImg.src = 'mp_logo.png';
 
 // ── Draw functions ───────────────────────────────────────
 function drawBg() {
@@ -281,28 +252,27 @@ function drawScanline(t) {
   ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
 }
 
+function drawLogoBackground() {
+  if (!logoImg.complete || logoImg.naturalWidth === 0) return;
+  const w = 820;
+  const h = Math.round(w * logoImg.naturalHeight / logoImg.naturalWidth);
+  const x = W - w - 60;
+  const y = 58;
+  ctx.globalAlpha = 0.9;
+  ctx.drawImage(logoImg, x, y, w, h);
+  ctx.globalAlpha = 1;
+}
+
 function drawBrand() {
   const bx = 76, by = H - 52;
-
-  // Logo do Mercado Pago
-  if (logoImg.complete && logoImg.naturalWidth > 0) {
-    ctx.drawImage(logoImg, bx, by - 78, 97, 78);
-  }
-
-  // Texto
-  ctx.shadowColor = 'rgba(0,177,234,0.9)'; ctx.shadowBlur = 22;
-  ctx.fillStyle = '#ffffff'; ctx.font = '700 36px Orbitron, monospace';
-  ctx.fillText('MERCADO PAGO', bx + 108, by - 24);
+  ctx.shadowColor = 'rgba(0,177,234,0.9)'; ctx.shadowBlur = 20;
+  ctx.fillStyle = '#ffffff'; ctx.font = '700 34px Orbitron, monospace';
+  ctx.fillText('MERCADO PAGO', bx, by - 10);
   ctx.shadowBlur = 0;
-
-  ctx.fillStyle = 'rgba(0,177,234,0.7)'; ctx.font = '500 13px Rajdhani, sans-serif';
-  if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '7px';
-  ctx.fillText('STRATEGY & PLANNING  ·  BRASIL', bx + 108, by - 5);
-  if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
 }
 
 function drawPhrase(t) {
-  const cx = 1420, cy = 470;
+  const cx = 1380, cy = 700;
   const pulse = 0.5 + 0.5 * Math.sin(t * 0.55);
 
   // Linha decorativa acima
@@ -344,6 +314,7 @@ function frame(ts) {
   drawCircuit();
   drawParticles();
   drawOrb(t);
+  drawLogoBackground();
   drawAccentLines();
   drawCorners();
   drawRightPanel(t);
