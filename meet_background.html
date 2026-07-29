@@ -57,6 +57,24 @@ const PARTS = Array.from({ length: 95 }, () => ({
 }));
 const MAX_DIST = 170;
 
+// MP logo (SVG → data URL, carregado como Image para canvas)
+const _mpSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="mpbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00B8F2"/>
+      <stop offset="100%" stop-color="#0090CC"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="44" fill="url(#mpbg)"/>
+  <!-- M -->
+  <path d="M34 148 L34 60 L68 60 L100 110 L132 60 L166 60 L166 148 L142 148 L142 96 L108 148 L92 148 L58 96 L58 148 Z"
+        fill="white"/>
+  <!-- P (dot) -->
+  <circle cx="155" cy="148" r="14" fill="white"/>
+</svg>`;
+const logoImg = new Image();
+logoImg.src = 'data:image/svg+xml,' + encodeURIComponent(_mpSVG);
+
 // ── Draw functions ───────────────────────────────────────
 function drawBg() {
   ctx.fillStyle = '#000814';
@@ -251,29 +269,53 @@ function drawScanline(t) {
 function drawBrand() {
   const bx = 76, by = H - 52;
 
-  // Emblem circles
-  ctx.strokeStyle = 'rgba(0,177,234,0.65)'; ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.arc(bx + 30, by - 30, 28.5, 0, Math.PI * 2); ctx.stroke();
-  ctx.strokeStyle = 'rgba(0,177,234,0.3)'; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.arc(bx + 30, by - 30, 20, 0, Math.PI * 2); ctx.stroke();
+  // Logo do Mercado Pago
+  if (logoImg.complete && logoImg.naturalWidth > 0) {
+    ctx.drawImage(logoImg, bx, by - 68, 68, 68);
+  }
 
-  // Chevron >>
-  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  ctx.strokeStyle = 'rgba(0,210,255,0.95)'; ctx.lineWidth = 3;
-  ctx.beginPath(); ctx.moveTo(bx+18, by-42); ctx.lineTo(bx+30, by-30); ctx.lineTo(bx+18, by-18); ctx.stroke();
-  ctx.strokeStyle = 'rgba(0,177,234,0.45)'; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(bx+28, by-42); ctx.lineTo(bx+41, by-30); ctx.lineTo(bx+28, by-18); ctx.stroke();
-
-  // Text
+  // Texto
   ctx.shadowColor = 'rgba(0,177,234,0.9)'; ctx.shadowBlur = 22;
   ctx.fillStyle = '#ffffff'; ctx.font = '700 36px Orbitron, monospace';
-  ctx.fillText('MERCADO PAGO', bx + 80, by - 19);
+  ctx.fillText('MERCADO PAGO', bx + 84, by - 22);
   ctx.shadowBlur = 0;
 
   ctx.fillStyle = 'rgba(0,177,234,0.7)'; ctx.font = '500 13px Rajdhani, sans-serif';
   if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '7px';
-  ctx.fillText('STRATEGY & PLANNING  ·  BRASIL', bx + 80, by - 1);
+  ctx.fillText('STRATEGY & PLANNING  ·  BRASIL', bx + 84, by - 4);
   if (ctx.letterSpacing !== undefined) ctx.letterSpacing = '0px';
+}
+
+function drawPhrase(t) {
+  const cx = 1420, cy = 470;
+  const pulse = 0.5 + 0.5 * Math.sin(t * 0.55);
+
+  // Linha decorativa acima
+  const g1 = ctx.createLinearGradient(cx - 240, cy - 68, cx + 240, cy - 68);
+  g1.addColorStop(0, 'rgba(0,177,234,0)');
+  g1.addColorStop(0.5, `rgba(0,177,234,${0.32 + 0.18 * pulse})`);
+  g1.addColorStop(1, 'rgba(0,177,234,0)');
+  ctx.strokeStyle = g1; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(cx - 240, cy - 68); ctx.lineTo(cx + 240, cy - 68); ctx.stroke();
+
+  // Texto da frase
+  ctx.textAlign = 'center';
+  ctx.shadowColor = 'rgba(0,177,234,0.85)';
+  ctx.shadowBlur = 14 + 8 * pulse;
+  ctx.fillStyle = `rgba(255,255,255,${0.82 + 0.12 * pulse})`;
+  ctx.font = '600 56px Rajdhani, "Segoe UI", sans-serif';
+  ctx.fillText('Soluções para', cx, cy);
+  ctx.fillText('o seu negócio', cx, cy + 68);
+  ctx.shadowBlur = 0;
+  ctx.textAlign = 'left';
+
+  // Linha decorativa abaixo
+  const g2 = ctx.createLinearGradient(cx - 240, cy + 92, cx + 240, cy + 92);
+  g2.addColorStop(0, 'rgba(0,177,234,0)');
+  g2.addColorStop(0.5, `rgba(0,177,234,${0.32 + 0.18 * pulse})`);
+  g2.addColorStop(1, 'rgba(0,177,234,0)');
+  ctx.strokeStyle = g2; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(cx - 240, cy + 92); ctx.lineTo(cx + 240, cy + 92); ctx.stroke();
 }
 
 // ── Animation loop ───────────────────────────────────────
@@ -293,6 +335,7 @@ function frame(ts) {
   drawStats();
   drawScanline(t);
   drawBrand();
+  drawPhrase(t);
 
   requestAnimationFrame(frame);
 }
